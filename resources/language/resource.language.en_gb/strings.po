@@ -1,0 +1,458 @@
+armkai# Kodi Media Center language file
+# Addon Name: animepahe
+# Addon id: plugin.video.animepahe
+# Addon Provider: SwagOtaku
+msgid ""
+msgstr ""
+
+msgctxt "#30000"
+msgid "Last Watched: "
+msgstr ""
+
+msgctxt "#30001"
+msgid "Airing Anime Calendar"
+msgstr ""
+
+msgctxt "#30002"
+msgid "Latest"
+msgstr ""
+
+msgctxt "#30003"
+msgid "Latest - English Dubbed"
+msgstr ""
+
+msgctxt "#30004"
+msgid "Trending Now"
+msgstr ""
+
+msgctxt "#30005"
+msgid "Popular This Season"
+msgstr ""
+
+msgctxt "#30006"
+msgid "Upcoming Next Season"
+msgstr ""
+
+msgctxt "#30007"
+msgid "All Time Popular"
+msgstr ""
+
+msgctxt "#30008"
+msgid "Genres & Tags"
+msgstr ""
+
+msgctxt "#30009"
+msgid "Search"
+msgstr ""
+
+msgctxt "#30010"
+msgid "Tools"
+msgstr ""
+
+msgctxt "#30020"
+msgid "Open Settings Menu"
+msgstr ""
+
+msgctxt "#30021"
+msgid "Clear Cache"
+msgstr ""
+
+msgctxt "#30022"
+msgid "Clear Local Torrent Cache"
+msgstr ""
+
+msgctxt "#30023"
+msgid "Clear Search History"
+msgstr ""
+
+msgctxt "#30024"
+msgid "Wipe addon data"
+msgstr ""
+
+msgctxt "#30025"
+msgid "This will completely clear your addon settings. Are you sure you want to do this?"
+msgstr ""
+
+######DEBRID DIRECTORY#######
+msgctxt "#30100"
+msgid "Open this link in a browser: {}"
+msgstr ""
+
+msgctxt "#30101"
+msgid "Enter the code: {}"
+msgstr ""
+
+msgctxt "#30102"
+msgid "This code has been copied to your clipboard"
+msgstr ""
+
+msgctxt "#30103"
+msgid "Authentication is completed"
+msgstr ""
+
+msgctxt "#30104"
+msgid "Please Note\nYou appear to have authorized a non-premium account and will not be able to play items using this account"
+msgstr ""
+
+msgctxt "#30105"
+msgid "Authentication with Real-Debrid has failed, please try again"
+msgstr ""
+
+######DATABASE.PY######
+msgctxt "#30200"
+msgid "Cache"
+msgstr ""
+
+msgctxt "#30201"
+msgid "All Cache Successfully Cleared"
+msgstr ""
+
+msgctxt "#30202"
+msgid "Local Result Cache Successfully Cleared"
+msgstr ""
+
+######SKINS DIRECTORY######
+msgctxt "#40100"
+msgid "[B]Open this link in a browser: [COLOR deepskyblue]https://armkai.vercel.app/api/mal[/COLOR][/B]"
+msgstr ""
+
+msgctxt "#40101"
+msgid "[B]After authorizing, MAL will redirect to its homepage. Copy & paste the redirect url (e.g. url [COLOR deepskyblue]https://myanimelist.net/?code=...[/COLOR]) below.[/B]"
+msgstr ""
+
+msgctxt "#40105"
+msgid "[B]Open this link in a browser: [COLOR deepskyblue]https://armkai.vercel.app/api/anilist[/COLOR][/B]"
+msgstr ""
+
+msgctxt "#40106"
+msgid "[B]After authorizing, copy & paste the token below.[/B]"
+msgstr ""
+
+msgctxt "#40110"
+msgid "[B]*Note: If using addon on Amazon Fire TV Stick/Android TV Box, you can copy & paste text using a Kodi remote app like [COLOR limegreen]Kore[/COLOR] or [COLOR limegreen]Yatse[/COLOR][/B]"
+msgstr ""
+
+msgctxt "#40221"
+msgid "Torrents"
+msgstr ""
+
+msgctxt "#40222"
+msgid "Cached"
+msgstr ""
+
+msgctxt "#40223"
+msgid "Embeds"
+msgstr ""
+
+msgctxt "#40224"
+msgid "Cloudfiles"
+msgstr ""
+
+msgctxt "#40225"
+msgid "Remaining providers"
+msgstr ""
+
+msgctxt "#40226"
+msgid "Provider"
+msgstr ""
+
+msgctxt "#40227"
+msgid "Source"
+msgstr ""
+
+msgctxt "#40228"
+msgid "Resolution"
+msgstr ""
+
+msgctxt "#40229"
+msgid "Info"
+msgstr ""
+
+msgctxt "#40230"
+msgid "Year"
+msgstr ""
+
+msgctxt "#40231"
+msgid "Rating"
+msgstr ""
+
+msgctxt "#40232"
+msgid "Aired"
+msgstr ""
+
+msgctxt "#40233"
+msgid "Debrid"
+msgstr ""
+
+msgctxt "#40234"
+msgid "Size"
+msgstr ""
+
+msgctxt "#40235"
+msgid "Provider"
+msgstr ""
+
+msgctxt "#40236"
+msgid "Source type"
+msgstr ""
+
+msgctxt "#40237"
+msgid "Resolution"
+msgstr ""
+
+msgctxt "#40238"
+msgid "Info"
+msgstr ""
+
+######SETTINGS.XML VALUES######
+msgctxt "#40300"
+msgid "General"
+msgstr ""
+
+msgctxt "#40301"
+msgid "Enable search history"
+msgstr ""
+
+msgctxt "#40302"
+msgid "Interface"
+msgstr ""
+
+msgctxt "#40303"
+msgid "Set content types"
+msgstr ""
+
+msgctxt "#40304"
+msgid "Menu content type"
+msgstr ""
+
+msgctxt "#40305"
+msgid "addons"
+msgstr ""
+
+msgctxt "#40306"
+msgid "tvshows"
+msgstr ""
+
+msgctxt "#40307"
+msgid "Playback"
+msgstr ""
+
+msgctxt "#40308"
+msgid "Movie Play Style"
+msgstr ""
+
+msgctxt "#40309"
+msgid "Episode Play Style"
+msgstr ""
+
+msgctxt "#40310"
+msgid "Auto Play"
+msgstr ""
+
+msgctxt "#40311"
+msgid "Source Select"
+msgstr ""
+
+msgctxt "#40312"
+msgid "Auto try next link on resolve failure (Source Select)"
+msgstr ""
+
+msgctxt "#40313"
+msgid "Audio"
+msgstr ""
+
+msgctxt "#40314"
+msgid "Preferred Audio Stream (Dual Audio)"
+msgstr ""
+
+msgctxt "#40315"
+msgid "jpn"
+msgstr ""
+
+msgctxt "#40316"
+msgid "eng"
+msgstr ""
+
+msgctxt "#40317"
+msgid "Playing Next Dialog"
+msgstr ""
+
+msgctxt "#40318"
+msgid "Enable Playing Next Dialog"
+msgstr ""
+
+msgctxt "#40319"
+msgid "Minimum Seconds Left Before Showing Dialog"
+msgstr ""
+
+msgctxt "#40320"
+msgid "Default Action if Nothing Selected"
+msgstr ""
+
+msgctxt "#40321"
+msgid "Play"
+msgstr ""
+
+msgctxt "#40322"
+msgid "Pause"
+msgstr ""
+
+msgctxt "#40323"
+msgid "Skip Intro Dialog"
+msgstr ""
+
+msgctxt "#40324"
+msgid "Enable Skip Intro Dialog"
+msgstr ""
+
+msgctxt "#40325"
+msgid "Seconds to skip"
+msgstr ""
+
+msgctxt "#40326"
+msgid "Sort & Filter"
+msgstr ""
+
+msgctxt "#40327"
+msgid "Source Filters"
+msgstr ""
+
+msgctxt "#40328"
+msgid "Max Resolution"
+msgstr ""
+
+msgctxt "#40329"
+msgid "Hide HEVC Items"
+msgstr ""
+
+msgctxt "#40330"
+msgid "Hide Dub Sources"
+msgstr ""
+
+msgctxt "#40331"
+msgid "Sort Sourcing"
+msgstr ""
+
+msgctxt "#40332"
+msgid "Sort Sources Method"
+msgstr ""
+
+msgctxt "#40333"
+msgid "Enable Teritary Dub Sort Preference"
+msgstr ""
+
+msgctxt "#40334"
+msgid "Accounts"
+msgstr ""
+
+msgctxt "#40335"
+msgid "Real-Debrid"
+msgstr ""
+
+msgctxt "#40336"
+msgid "Enable Real-Debrid..."
+msgstr ""
+
+msgctxt "#40337"
+msgid "Real-Debrid Username"
+msgstr ""
+
+msgctxt "#40338"
+msgid "Authorize Real-Debrid..."
+msgstr ""
+
+msgctxt "#40339"
+msgid "Real-Debrid Priority"
+msgstr ""
+
+msgctxt "#40340"
+msgid "AllDebrid"
+msgstr ""
+
+msgctxt "#40341"
+msgid "Enable AllDebrid..."
+msgstr ""
+
+msgctxt "#40342"
+msgid "AllDebrid Username"
+msgstr ""
+
+msgctxt "#40343"
+msgid "Authorize AllDebrid..."
+msgstr ""
+
+msgctxt "#40344"
+msgid "All-Debrid Priority"
+msgstr ""
+
+msgctxt "#40345"
+msgid "Watchlist"
+msgstr ""
+
+msgctxt "#40346"
+msgid "Update Watchlist"
+msgstr ""
+
+msgctxt "#40347"
+msgid "Watchlist to update"
+msgstr ""
+
+msgctxt "#40348"
+msgid "AniList"
+msgstr ""
+
+msgctxt "#40349"
+msgid "Enable AniList"
+msgstr ""
+
+msgctxt "#40350"
+msgid "Username:"
+msgstr ""
+
+msgctxt "#40351"
+msgid "Token:"
+msgstr ""
+
+msgctxt "#40352"
+msgid "Click to Authorize..."
+msgstr ""
+
+msgctxt "#40353"
+msgid "List settings..."
+msgstr ""
+
+msgctxt "#40354"
+msgid "Sort by:"
+msgstr ""
+
+msgctxt "#40355"
+msgid "Kitsu"
+msgstr ""
+
+msgctxt "#40356"
+msgid "Enable Kitsu"
+msgstr ""
+
+msgctxt "#40357"
+msgid "Email:"
+msgstr ""
+
+msgctxt "#40358"
+msgid "Password:"
+msgstr ""
+
+msgctxt "#40359"
+msgid "Click to Login..."
+msgstr ""
+
+msgctxt "#40360"
+msgid "How titles will be displayed:"
+msgstr ""
+
+msgctxt "#40361"
+msgid "MyAnimeList"
+msgstr ""
+
+msgctxt "#40362"
+msgid "Enable MyAnimeList"
+msgstr ""

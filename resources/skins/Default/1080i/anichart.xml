@@ -1,0 +1,353 @@
+<window type="dialog">
+    <defaultcontrol>2</defaultcontrol>
+    <coordinates>
+        <left>0</left>
+        <top>0</top>
+    </coordinates>
+    <controls>
+        <!-- Background Texture -->
+        <control type="image">
+            <texture>$INFO[Window().Property(texture.white)]</texture>
+            <colordiffuse>FF000000</colordiffuse>
+        </control>
+        <!-- Background -->
+        <control type="image">
+            <top>0</top>
+            <left>0</left>
+            <width>1920</width>
+            <height>1080</height>
+            <texture background="true">$INFO[Window().Property(kaito.fanart)]</texture>
+        </control>
+
+        <control type="image">
+            <top>0</top>
+            <left>0</left>
+            <width>1920</width>
+            <height>1080</height>
+            <texture background="true">$INFO[Window().Property(texture.white)]</texture>
+            <colordiffuse>CC000000</colordiffuse>
+        </control>
+
+
+
+        <!--&lt;!&ndash; Additional Background Difuse &ndash;&gt;-->
+        <!--<control type="image">-->
+            <!--<texture>$INFO[Window().Property(texture.white)]</texture>-->
+            <!--<colordiffuse>8936353b</colordiffuse>-->
+        <!--</control>-->
+
+        <!-- kaito Logo -->
+        <control type="image" id="1001">
+            <top>-990</top>
+            <left>913</left>
+            <width>75</width>
+            <aspectratio>keep</aspectratio>
+            <texture>$INFO[Window().Property(kaito.logo)]</texture>
+        </control>
+
+        <!-- Grouplist Texture -->
+        <control type="image">
+            <visible>true</visible>
+            <left>75</left>
+            <top>100</top>
+            <width>1750</width>
+            <height>900</height>
+            <border>5</border>
+            <texture>$INFO[Window().Property(texture.white)]</texture>
+            <colordiffuse>AA2e2d32</colordiffuse>
+        </control>
+
+        <!-- Sources List -->
+        <control type="panel" id="1000">
+        	<left>120</left>
+        	<top>100</top>
+        	<width>1700</width>
+        	<height>900</height>
+        	<onleft>9000</onleft>
+        	<onright>60</onright>
+        	<onup>52</onup>
+        	<ondown>52</ondown>
+        	<scrolltime tween="sine" easing="out">200</scrolltime>
+        	<autoscroll>true</autoscroll>
+        	<viewtype label="Sources">icon</viewtype>
+        	<pagecontrol>60</pagecontrol>
+        	<itemlayout height="410" width="845">
+        		<control type="image">
+        			<left>10</left>
+        			<top>10</top>
+        			<width>260</width>
+              <height>370</height>
+        			<texture>$INFO[ListItem.Property(poster)]</texture>
+        		</control>
+            <control type="image">
+                <left>10</left>
+                <top>280</top>
+                <width>260</width>
+                <height>100</height>
+                <texture>$INFO[Window().Property(texture.white)]</texture>
+                <colordiffuse>ff1a1a1a</colordiffuse>
+            </control>
+            <control type="textbox">
+        			<left>10</left>
+        			<top>280</top>
+        			<width>260</width>
+        			<height>100</height>
+        			<font>font12</font>
+              <textcolor>AAFFFFFF</textcolor>
+        			<align>left</align>
+              <autoscroll delay="3000" time="1500" repeat="5000"></autoscroll>
+        			<label>[B]$INFO[ListItem.Property(release_title)][/B]</label>
+        		</control>
+        		<control type="label">
+        			<left>300</left>
+        			<top>10</top>
+        			<width>400</width>
+        			<height>22</height>
+        			<font>font12</font>
+        			<selectedcolor>green</selectedcolor>
+        			<align>left</align>
+        			<label>Ep $INFO[ListItem.Property(ep_title)] at</label>
+        		</control>
+            <control type="label">
+              <left>300</left>
+              <top>42</top>
+              <width>400</width>
+              <height>22</height>
+              <font>font14</font>
+              <selectedcolor>green</selectedcolor>
+              <align>left</align>
+              <label>[B]$INFO[ListItem.Property(ep_airingAt)][/B]</label>
+            </control>
+            <control type="textbox">
+              <left>300</left>
+              <top>110</top>
+              <width>450</width>
+              <height min="20" max="200">auto</height>
+              <font>font10</font>
+              <textcolor>AAFFFFFF</textcolor>
+              <align>left</align>
+              <label>$INFO[ListItem.Property(plot)]</label>
+            </control>
+            <control type="image">
+                <left>300</left>
+                <top>330</top>
+                <width>400</width>
+                <height>30</height>
+                <texture>$INFO[Window().Property(texture.white)]</texture>
+                <colordiffuse>aa4da6ff</colordiffuse>
+            </control>
+            <control type="label">
+              <left>305</left>
+              <top>330</top>
+              <width>395</width>
+              <height>22</height>
+              <font>font10</font>
+              <selectedcolor>green</selectedcolor>
+              <align>center</align>
+              <label>[B]$INFO[ListItem.Property(genres)][/B]</label>
+            </control>
+            <control type="group">
+              <left>700</left>
+              <top>10</top>
+              <control type="image">
+                  <visible>Integer.IsGreaterOrEqual(ListItem.Property(averageScore),75)</visible>
+                  <width>35</width>
+                  <height>35</height>
+                  <texture>$INFO[Window().Property(texture.aver)]</texture>
+              </control>
+              <control type="image">
+                  <visible>Integer.IsGreater(ListItem.Property(averageScore),60) + Integer.IsLess(ListItem.Property(averageScore),75)</visible>
+                  <width>35</width>
+                  <height>35</height>
+                  <texture>$INFO[Window().Property(texture.averstr)]</texture>
+              </control>
+              <control type="image">
+                  <visible>Integer.IsGreater(ListItem.Property(averageScore),0) + Integer.IsLessOrEqual(ListItem.Property(averageScore),60)</visible>
+                  <width>35</width>
+                  <height>35</height>
+                  <texture>$INFO[Window().Property(texture.aversad)]</texture>
+              </control>
+            </control>
+            <control type="label">
+              <visible>Integer.IsGreater(ListItem.Property(averageScore),0)</visible>
+              <left>745</left>
+              <top>10</top>
+              <width>50</width>
+              <height>22</height>
+              <font>font12</font>
+              <selectedcolor>gn</selectedcolor>
+              <align>left</align>
+              <label>$INFO[ListItem.Property(averageScore)]%</label>
+            </control>
+            <control type="group">
+              <left>700</left>
+              <top>60</top>
+              <control type="image">
+                  <visible>Integer.IsGreater(ListItem.Property(rank),0)</visible>
+                  <width>35</width>
+                  <height>35</height>
+                  <texture>$INFO[Window().Property(texture.popular)]</texture>
+              </control>
+            </control>
+            <control type="label">
+              <visible>Integer.IsGreater(ListItem.Property(rank),0)</visible>
+              <left>745</left>
+              <top>60</top>
+              <width>50</width>
+              <height>22</height>
+              <font>font12</font>
+              <selectedcolor>gn</selectedcolor>
+              <align>left</align>
+              <label>#$INFO[ListItem.Property(rank)]</label>
+            </control>
+        	</itemlayout>
+        	<focusedlayout height="390" width="800">
+            <control type="image">
+                <width>100%</width>
+                <height>100%</height>
+                <texture>$INFO[Window().Property(texture.white)]</texture>
+                <colordiffuse>25d3d3d3</colordiffuse>
+            </control>
+        		<control type="image">
+        			<left>10</left>
+        			<top>10</top>
+        			<width>260</width>
+        			<height>370</height>
+        			<texture>$INFO[ListItem.Property(poster)]</texture>
+        			<animation effect="zoom" end="5,5,270,380" time="100">focus</animation>
+        		</control>
+            <control type="image">
+                <left>10</left>
+                <top>280</top>
+                <width>260</width>
+                <height>100</height>
+                <texture>$INFO[Window().Property(texture.white)]</texture>
+                <colordiffuse>ff1a1a1a</colordiffuse>
+                <animation effect="zoom" end="5,280,270,110" time="100">focus</animation>
+            </control>
+            <control type="textbox">
+              <left>10</left>
+              <top>280</top>
+              <width>260</width>
+              <height>100</height>
+              <font>font12</font>
+              <textcolor>AAFFFFFF</textcolor>
+              <align>left</align>
+              <autoscroll delay="4000" time="1500" repeat="5000"></autoscroll>
+              <label>[B]$INFO[ListItem.Property(release_title)][/B]</label>
+            </control>
+        		<control type="label">
+        			<left>300</left>
+        			<top>10</top>
+        			<width>400</width>
+        			<height>22</height>
+        			<font>font12</font>
+        			<selectedcolor>green</selectedcolor>
+        			<align>left</align>
+        			<label>Ep $INFO[ListItem.Property(ep_title)] at</label>
+        		</control>
+            <control type="label">
+              <left>300</left>
+              <top>42</top>
+              <width>400</width>
+              <height>22</height>
+              <font>font14</font>
+              <selectedcolor>green</selectedcolor>
+              <align>left</align>
+              <label>[B]$INFO[ListItem.Property(ep_airingAt)][/B]</label>
+            </control>
+            <control type="textbox">
+              <left>300</left>
+              <top>110</top>
+              <width>450</width>
+              <height min="20" max="200">auto</height>
+              <font>font10</font>
+              <textcolor>AAFFFFFF</textcolor>
+              <align>left</align>
+              <autoscroll delay="3000" time="1500" repeat="5000"></autoscroll>
+              <label>$INFO[ListItem.Property(plot)]</label>
+            </control>
+            <control type="image">
+                <left>300</left>
+                <top>330</top>
+                <width>400</width>
+                <height>30</height>
+                <texture>$INFO[Window().Property(texture.white)]</texture>
+                <colordiffuse>aa4da6ff</colordiffuse>
+            </control>
+            <control type="label">
+              <left>305</left>
+              <top>330</top>
+              <width>395</width>
+              <height>22</height>
+              <font>font10</font>
+              <selectedcolor>green</selectedcolor>
+              <align>center</align>
+              <label>[B]$INFO[ListItem.Property(genres)][/B]</label>
+            </control>
+            <control type="group">
+              <left>700</left>
+              <top>10</top>
+              <control type="image">
+                  <visible>Integer.IsGreaterOrEqual(ListItem.Property(averageScore),75)</visible>
+                  <width>35</width>
+                  <height>35</height>
+                  <texture>$INFO[Window().Property(texture.aver)]</texture>
+              </control>
+              <control type="image">
+                  <visible>Integer.IsGreater(ListItem.Property(averageScore),60) + Integer.IsLess(ListItem.Property(averageScore),75)</visible>
+                  <width>35</width>
+                  <height>35</height>
+                  <texture>$INFO[Window().Property(texture.averstr)]</texture>
+              </control>
+              <control type="image">
+                  <visible>Integer.IsGreater(ListItem.Property(averageScore),0) + Integer.IsLessOrEqual(ListItem.Property(averageScore),60)</visible>
+                  <width>35</width>
+                  <height>35</height>
+                  <texture>$INFO[Window().Property(texture.aversad)]</texture>
+              </control>
+            </control>
+            <control type="label">
+              <visible>Integer.IsGreater(ListItem.Property(averageScore),0)</visible>
+              <left>745</left>
+              <top>10</top>
+              <width>50</width>
+              <height>22</height>
+              <font>font12</font>
+              <selectedcolor>green</selectedcolor>
+              <align>left</align>
+              <label>$INFO[ListItem.Property(averageScore)]%</label>
+            </control>
+            <control type="group">
+              <left>700</left>
+              <top>60</top>
+              <control type="image">
+                  <visible>Integer.IsGreater(ListItem.Property(rank),0)</visible>
+                  <width>35</width>
+                  <height>35</height>
+                  <texture>$INFO[Window().Property(texture.popular)]</texture>
+              </control>
+            </control>
+            <control type="label">
+              <visible>Integer.IsGreater(ListItem.Property(rank),0)</visible>
+              <left>745</left>
+              <top>60</top>
+              <width>50</width>
+              <height>22</height>
+              <font>font12</font>
+              <selectedcolor>green</selectedcolor>
+              <align>left</align>
+              <label>#$INFO[ListItem.Property(rank)]</label>
+            </control>
+        	</focusedlayout>
+        </control>
+
+        <!--LAYOUT GRID-->
+        <!--<control type="image">-->
+        <!--<width>100%</width>-->
+        <!--<height>100%</height>-->
+        <!--<texture>$INFO[Window(13000).Property(test_pattern)]</texture>-->
+        <!--<colordiffuse>55FFFFFF</colordiffuse>-->
+        <!--</control>-->
+    </controls>
+</window>

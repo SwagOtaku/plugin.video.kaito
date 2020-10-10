@@ -1,0 +1,101 @@
+<window type="dialog">
+    <defaultcontrol>1000</defaultcontrol>
+    <coordinates>
+        <left>0</left>
+        <top>0</top>
+    </coordinates>
+    <controls>
+        <!-- Background Texture -->
+        <control type="image">
+            <texture>$INFO[Window().Property(texture.white)]</texture>
+            <colordiffuse>FF000000</colordiffuse>
+        </control>
+
+        <control type="group">
+          <top>50</top>
+          <left>60</left>
+           <control type="label">
+              <height>100</height>
+              <width>1800</width>
+              <font>font12</font>
+              <label>$ADDON[plugin.video.kaito 40100]</label>
+           </control>
+           <control type="label">
+              <top>50</top>
+              <height>100</height>
+              <width>1800</width>
+              <font>font12</font>
+              <label>$ADDON[plugin.video.kaito 40101]</label>
+           </control>
+           <control type="label">
+              <top>100</top>
+              <height>100</height>
+              <width>1800</width>
+              <font>font12</font>
+              <label>$ADDON[plugin.video.kaito 40110]</label>
+           </control>
+        </control>
+
+        <!-- Quick Access Panel -->
+       <control type="group" id="4000">
+           <left>40</left>
+            <control type="grouplist">
+                <onup>2000</onup>
+                <ondown>2000</ondown>
+                <top>200</top>
+                <defaultcontrol>1000</defaultcontrol>
+                <control type="edit" id="1000">
+                    <left>-10</left>
+                    <height>100</height>
+                    <width>1820</width>
+                    <font>font12</font>
+                    <textcolor>AAFFFFFF</textcolor>
+                    <label>[B]  - Auth url:[/B]</label>
+                    <hinttext>Enter auth url   </hinttext>
+                    <disabledcolor>FF000000</disabledcolor>
+                  	<invalidcolor>FFFFFFFF</invalidcolor>
+                  	<pulseonselect>no</pulseonselect>
+                </control>
+            </control>
+
+       </control>
+
+       <control type="group">
+          <top>75</top>
+          <left>50</left>
+            <control type="grouplist" id="2000">
+                <onup>4000</onup>
+                <ondown>4000</ondown>
+                <top>200</top>
+                <height>75</height>
+                <orientation>horizontal</orientation>
+                <control type="button" id="1002">
+                    <width>300</width>
+                    <align>center</align>
+                    <height>100</height>
+                    <font>font12</font>
+                    <focuscolor>deepskyblue</focuscolor>
+                    <label>Authorize</label>
+                </control>
+                <control type="button" id="1003">
+                    <top>450</top>
+                    <width>300</width>
+                    <align>center</align>
+                    <height>100</height>
+                    <font>font12</font>
+                    <focuscolor>deepskyblue</focuscolor>
+                    <label>Cancel</label>
+                </control>
+            </control>
+
+       </control>
+
+        <!--LAYOUT GRID-->
+        <!--<control type="image">-->
+        <!--<width>100%</width>-->
+        <!--<height>100%</height>-->
+        <!--<texture>$INFO[Window(13000).Property(test_pattern)]</texture>-->
+        <!--<colordiffuse>55FFFFFF</colordiffuse>-->
+        <!--</control>-->
+    </controls>
+</window>

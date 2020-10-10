@@ -1,0 +1,175 @@
+<window type="dialog">
+    <defaultcontrol>2</defaultcontrol>
+    <coordinates>
+        <left>0</left>
+        <top>0</top>
+    </coordinates>
+    <controls>
+        <!-- Background Texture -->
+        <control type="image">
+            <texture>$INFO[Window().Property(texture.white)]</texture>
+            <colordiffuse>FF000000</colordiffuse>
+        </control>
+        <!-- Background -->
+        <control type="image">
+            <top>0</top>
+            <left>0</left>
+            <width>1920</width>
+            <height>1080</height>
+            <texture background="true">$INFO[Window().Property(seren.fanart)]</texture>
+        </control>
+
+        <control type="image">
+            <top>0</top>
+            <left>0</left>
+            <width>1920</width>
+            <height>1080</height>
+            <texture background="true">$INFO[Window().Property(texture.white)]</texture>
+            <colordiffuse>CC000000</colordiffuse>
+        </control>
+
+        <!-- Side Info -->
+        <control type="group">
+            <top>80</top>
+            <left>1450</left>
+            <control type="image">
+                <width>400</width>
+                <height>600</height>
+                <top>50</top>
+                <texture>$INFO[ListItem.Property(ree)]</texture>
+            </control>
+
+            <control type="group">
+                <top>370</top>
+                <control type="label">
+                    <top>0</top>
+                    <width>400</width>
+                    <font>font12</font>
+                    <textcolor>AAFFFFFF</textcolor>
+                    <align>center</align>
+                    <aligny>center</aligny>
+                    <label>[COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(release_title)] [/COLOR]</label>
+                </control>
+                <control type="label">
+                    <wrapmultiline>true</wrapmultiline>
+                    <top>340</top>
+                    <left>-25</left>
+                    <height min="20" max="200">auto</height>
+                    <width>450</width>
+                    <font>font10</font>
+                    <textcolor>AAFFFFFF</textcolor>
+                    <align>center</align>
+                    <aligny>top</aligny>
+                    <label>$INFO[ListItem.Property(ploti)]</label>
+                </control>
+            </control>
+
+        </control>
+
+
+        <!--&lt;!&ndash; Additional Background Difuse &ndash;&gt;-->
+        <!--<control type="image">-->
+            <!--<texture>$INFO[Window().Property(texture.white)]</texture>-->
+            <!--<colordiffuse>8936353b</colordiffuse>-->
+        <!--</control>-->
+
+        <!-- Seren Logo -->
+        <control type="image" id="1001">
+            <top>-900</top>
+            <left>913</left>
+            <width>75</width>
+            <aspectratio>keep</aspectratio>
+            <texture>$INFO[Window().Property(seren.logo)]</texture>
+        </control>
+
+        <!-- Grouplist Texture -->
+        <control type="image">
+            <visible>true</visible>
+            <left>190</left>
+            <top>100</top>
+            <width>970</width>
+            <height>425</height>
+            <border>5</border>
+            <texture>$INFO[Window().Property(texture.white)]</texture>
+            <colordiffuse>AA2e2d32</colordiffuse>
+        </control>
+
+        <!-- Sources List -->
+        <control type="panel" id="1000">
+        	<left>190</left>
+        	<top>100</top>
+        	<width>970</width>
+        	<height>425</height>
+        	<onleft>9000</onleft>
+        	<onright>60</onright>
+        	<onup>52</onup>
+        	<ondown>52</ondown>
+        	<scrolltime tween="sine" easing="out">200</scrolltime>
+        	<autoscroll>true</autoscroll>
+        	<viewtype label="Sources">icon</viewtype>
+        	<pagecontrol>60</pagecontrol>
+        	<include>contentpanelslide</include>
+        	<itemlayout height="125" width="300">
+        		<control type="image">
+        			<left>10</left>
+        			<top>10</top>
+        			<width>100</width>
+        			<height>100</height>
+        			<texture>$INFO[Window().Property(seren.logo)]</texture>
+        		</control>
+        		<control type="label">
+        			<left>90</left>
+        			<top>0</top>
+        			<width>110</width>
+        			<height>22</height>
+        			<font>font13</font>
+        			<selectedcolor>green</selectedcolor>
+        			<align>center</align>
+        			<label>LUL</label>
+        		</control>
+        	</itemlayout>
+        	<focusedlayout height="125" width="300">
+            <control type="image">
+                <width>100%</width>
+                <height>100%</height>
+                <texture>$INFO[Window().Property(texture.white)]</texture>
+                <colordiffuse>25d3d3d3</colordiffuse>
+            </control>
+        		<control type="image">
+        			<width>110</width>
+        			<height>110</height>
+        			<left>5</left>
+        			<top>5</top>
+        			<texture>folder-focus.png</texture>
+        			<animation effect="zoom" end="0,0,120,120" time="100">focus</animation>
+        		</control>
+        		<control type="image">
+        			<left>10</left>
+        			<top>10</top>
+        			<width>100</width>
+        			<height>100</height>
+        			<texture>$INFO[Window().Property(seren.logo)]</texture>
+        			<animation effect="zoom" end="5,5,110,110" time="100">focus</animation>
+        		</control>
+        		<control type="label">
+        			<left>90</left>
+        			<top>0</top>
+        			<width>110</width>
+        			<height>22</height>
+        			<font>font13</font>
+        			<selectedcolor>green</selectedcolor>
+        			<align>center</align>
+        			<label>LUL</label>
+        		</control>
+        	</focusedlayout>
+        </control>
+
+        <!--LAYOUT GRID-->
+        <!--<control type="image">-->
+        <!--<width>100%</width>-->
+        <!--<height>100%</height>-->
+        <!--<texture>$INFO[Window(13000).Property(test_pattern)]</texture>-->
+        <!--<colordiffuse>55FFFFFF</colordiffuse>-->
+        <!--</control>-->
+    </controls>
+</window>
