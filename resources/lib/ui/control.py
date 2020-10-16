@@ -87,6 +87,12 @@ def all_debrid_enabled():
     else:
         return False
 
+def premiumize_enabled():
+    if getSetting('premiumize.token') != '' and getSetting('premiumize.enabled') == 'true':
+        return True
+    else:
+        return False
+
 def myanimelist_enabled():
     if getSetting('mal.token') != '' and getSetting('mal.enabled') == 'true':
         return True

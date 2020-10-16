@@ -9,7 +9,7 @@
 		<setting type="lsep" label="40302"/>
 		<setting id="sep"/>
 		<setting id="contenttype.bool" label="40303" type="bool" default="false"/>
-		<setting id="contenttype.menu" type="labelenum" subsetting="true" label="40304" lvalues="40305|40306" default="40305" visible="eq(-1,true)"/>
+		<setting id="contenttype.menu" type="labelenum" subsetting="true" label="40304" lvalues="40305|40306|40368" default="40305" visible="eq(-1,true)"/>
 		<!--
 		<setting id="contenttype.seasons" type="labelenum" label="- Seasons content type" values="seasons|tvshows" default="tvshows" visible="eq(-2,true)"/>
 		<setting id="contenttype.episodes" type="labelenum" label="- Episodes content type" values="episodes|tvshows" default="tvshows" visible="eq(-3,true)"/>
@@ -67,13 +67,21 @@
 
 	<!-- Accounts -->
 	<category label="40334">
+		<!-- Premiumize -->
+		<setting type="lsep" label="40363" />
+		<setting type="sep" />
+		<setting id="premiumize.enabled" type="bool" default="false" label="40364" />
+		<setting id="premiumize.username" type="text" label="40365" default="" enable="false" visible="eq(-1,true)" />
+		<setting id="premiumize.auth_start" type="action" label="40366" option="close" action="RunPlugin(plugin://plugin.video.kaito/authPremiumize)" visible="eq(-2,true)" />
+		<setting id="premiumize.priority" type="slider" subsetting="true" label="40367" option="int" range="1,1,10" default="10" visible="eq(-3,true)" />
+
 		<!-- Real-Debrid -->
 		<setting type="lsep" label="40335" />
 		<setting type="sep" />
 		<setting id="realdebrid.enabled" type="bool" default="false" label="40336" />
 		<setting id="rd.username" type="text" label="40337" default="" enable="false" visible="eq(-1,true)" />
 		<setting id="rd.auth_start" type="action" label="40338" option="close" action="RunPlugin(plugin://plugin.video.kaito/authRealDebrid)" visible="eq(-2,true)" />
-		<setting id="rd.priority" type="slider" subsetting="true" label="40339" option="int" range="1,1,10" default="10" visible="false" />
+		<setting id="rd.priority" type="slider" subsetting="true" label="40339" option="int" range="1,1,10" default="10" visible="eq(-3,true)" />
 
 		<!-- All Debrid -->
 		<setting type="lsep" label="40340" />
@@ -81,7 +89,7 @@
 		<setting id="alldebrid.enabled" type="bool" default="false" label="40341" />
 		<setting id="alldebrid.username" type="text" default="" label="40342" enable="false" visible="eq(-1,true)"/>
 		<setting id="alldebrid.auth_start" type="action" label="40343" option="close" action="RunPlugin(plugin://plugin.video.kaito/authAllDebrid)" visible="eq(-2,true)" />
-		<setting id="alldebrid.priority" type="slider" subsetting="true" label="40344" option="int" range="1,1,10" default="10" visible="false" />
+		<setting id="alldebrid.priority" type="slider" subsetting="true" label="40344" option="int" range="1,1,10" default="10" visible="eq(-3,true)" />
 	</category>
 
 <!-- Watchlist -->

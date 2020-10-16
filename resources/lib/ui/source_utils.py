@@ -105,11 +105,13 @@ def get_best_match(episode, filename):
     match = re.search(
         r'''(?ix)                                           # Ignore case (i), and use verbose regex (x)
         (?:                                                 # non-grouping pattern
-          e|x|episode|ep\s|_|-\s|e0|x0|episode0|_0|-\s0|^        # e or x or episode or start of a line
+          e|x|episode|ep|ep\.|_|-                            # e or x or episode or start of a line
           )                                                 # end non-grouping pattern 
-        _|\s*                                                 # 0-or-more whitespaces
-        ({})                                                # exactly 2 digits
-        '''.format(episode), filename)
+        \s*                                                 # 0-or-more whitespaces
+        (?<![\d])
+        ({}|{})                                             # episode num format: xx or xxx
+        (?![\d])
+        '''.format(episode.zfill(2), episode.zfill(3)), filename)
     if match:
         return match.group(1)
 
@@ -138,3 +140,18 @@ def clean_title(title, broken=None):
     title = re.sub(r'\&', 'and', title)
 
     return title.strip()
+
+def is_file_ext_valid(file_name):
+    try:
+        import xbmc
+
+        COMMON_VIDEO_EXTENSIONS = xbmc.getSupportedMedia('video').split('|')
+
+        COMMON_VIDEO_EXTENSIONS = [i for i in COMMON_VIDEO_EXTENSIONS if i != '' and i != '.zip']
+    except:
+        pass
+
+    if '.' + file_name.split('.')[-1] not in COMMON_VIDEO_EXTENSIONS:
+        return False
+
+    return True

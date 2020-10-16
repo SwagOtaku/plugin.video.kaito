@@ -111,6 +111,10 @@ msgctxt "#30202"
 msgid "Local Result Cache Successfully Cleared"
 msgstr ""
 
+msgctxt "#30203"
+msgid "[COLOR red]WARNING[/COLOR]\nThis will reset all meta information, are you sure?"
+msgstr ""
+
 ######SKINS DIRECTORY######
 msgctxt "#40100"
 msgid "[B]Open this link in a browser: [COLOR deepskyblue]https://armkai.vercel.app/api/mal[/COLOR][/B]"
@@ -455,4 +459,28 @@ msgstr ""
 
 msgctxt "#40362"
 msgid "Enable MyAnimeList"
+msgstr ""
+
+msgctxt "#40363"
+msgid "Premiumize"
+msgstr ""
+
+msgctxt "#40364"
+msgid "Enable Premiumize..."
+msgstr ""
+
+msgctxt "#40365"
+msgid "Premiumize Username"
+msgstr ""
+
+msgctxt "#40366"
+msgid "Authorize Premiumize..."
+msgstr ""
+
+msgctxt "#40367"
+msgid "Premiumize Priority"
+msgstr ""
+
+msgctxt "#40368"
+msgid "episodes"
 msgstr ""

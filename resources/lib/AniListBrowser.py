@@ -473,10 +473,11 @@ class AniListBrowser():
 
     def _process_mal_to_anilist(self, res):
         titles = self._get_titles(res)
+        start_date = self._get_start_date(res)
         database._update_show(
             res['id'],
             res.get('idMal'),
-            str({'name': res['title']['userPreferred'], 'episodes': res['episodes'], 'query': titles, 'poster':res['coverImage']['extraLarge']})
+            str({'name': res['title']['userPreferred'], 'start_date': start_date, 'episodes': res['episodes'], 'query': titles, 'poster':res['coverImage']['extraLarge']})
             )
 
         return  database.get_show(str(res['id']))
@@ -486,10 +487,11 @@ class AniListBrowser():
 
         if not in_database:
             titles = self._get_titles(res)
+            start_date = self._get_start_date(res)
             database._update_show(
                 res['id'],
                 res.get('idMal'),
-                str({'name': res['title']['userPreferred'], 'episodes': res['episodes'], 'query': titles, 'poster':res['coverImage']['extraLarge']})
+                str({'name': res['title']['userPreferred'], 'start_date': start_date, 'episodes': res['episodes'], 'query': titles, 'poster':res['coverImage']['extraLarge']})
                 )
 
         #remove cached eps for releasing shows every five days so new eps metadata can be shown
@@ -587,8 +589,17 @@ class AniListBrowser():
         if res['format'] == 'MOVIE':
             titles = res['title'].values()
         titles = filter(lambda x: all(ord(char) < 128 for char in x) if x else [], titles)[:3]
-        query_titles = '|'.join(titles)
+        query_titles = '({})'.format(')|('.join(map(str, titles)))
         return query_titles
+
+    def _get_start_date(self, res):
+        try:
+            start_date = res.get('startDate')
+            start_date = '{}-{:02}-{:02}'.format(start_date['year'], start_date['month'], start_date['day'])
+        except:
+            start_date = 'null'
+
+        return start_date
 
     def _parse_view(self, base, is_dir=True):
         return [

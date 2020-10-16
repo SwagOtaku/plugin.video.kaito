@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from resources.lib.ui import maintenance
-from resources.lib.ui import database
+from resources.lib.ui import database_sync
 
-database.build_tables()
+database_sync.AnilistSyncDatabase()
 maintenance.run_maintenance()

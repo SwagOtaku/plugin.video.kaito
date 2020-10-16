@@ -91,12 +91,27 @@ class TRAKTAPI:
 
         return all_results
 
-    def _process_season_view(self, anilist_id, show_meta, url):
+    def _process_season_view(self, anilist_id, meta_ids, kodi_meta, url):
         result = self._json_request(url)
-        mapfunc = partial(self._parse_trakt_view, show_id=anilist_id, show_meta=show_meta)
+        mapfunc = partial(self._parse_trakt_view, show_id=anilist_id, show_meta=meta_ids)
         all_results = map(mapfunc, result)
-        return all_results
+        return all_results, 'seasons'
 
+    def _process_direct_season_view(self, anilist_id, meta_ids, kodi_meta, url):
+        result = self._json_request(url)
+
+        try:
+            season_year = kodi_meta['start_date'].split('-')[0] + '-'
+            seasons = [k for k in result if k['number'] != 0]
+            season = next((item for item in seasons if season_year in item["first_aired"]), None)
+            database._update_season(anilist_id, season['number'])
+            all_results = self.get_trakt_episodes(anilist_id, season['number']), 'episodes'
+        except:
+            mapfunc = partial(self._parse_trakt_view, show_id=anilist_id, show_meta=meta_ids)
+            all_results = map(mapfunc, result), 'seasons'
+
+        return all_results
+    
     def _process_trakt_episode_view(self, anilist_id, show_meta, season, poster, fanart, eps_watched, url, data, base_plugin_url):
         update_time = datetime.today().strftime('%Y-%m-%d')
         result = self._json_request(url)
@@ -143,12 +158,18 @@ class TRAKTAPI:
         except:
             pass        
 
-    def get_trakt_seasons(self, anilist_id, meta_ids, kodi_meta):
+    def get_trakt_seasons(self, anilist_id, meta_ids, kodi_meta, db_correction):
         fanart = self._add_fanart(anilist_id, meta_ids, kodi_meta)
         url = 'shows/%d/seasons?extended=full' % meta_ids['trakt']
-        return self._process_season_view(anilist_id, meta_ids, url)
 
-    def get_anime(self, anilist_id):
+        if db_correction:
+            target = self._process_season_view
+        else:
+            target = self._process_direct_season_view
+
+        return target(anilist_id, meta_ids, kodi_meta, url)
+
+    def get_anime(self, anilist_id, db_correction):
         seasons = database.get_season_list(anilist_id)
 
         if seasons:                
@@ -162,7 +183,7 @@ class TRAKTAPI:
 
         meta_ids = ast.literal_eval(show['meta_ids'])
 
-        return self.get_trakt_seasons(anilist_id, meta_ids, kodi_meta), 'seasons'
+        return self.get_trakt_seasons(anilist_id, meta_ids, kodi_meta, db_correction)
 
     def get_trakt_episodes(self, show_id, season):
         show_meta = ast.literal_eval(database.get_show(show_id)['meta_ids'])

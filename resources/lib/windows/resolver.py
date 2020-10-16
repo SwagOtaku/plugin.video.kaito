@@ -4,7 +4,7 @@ import requests
 import sys
 
 from resources.lib.ui import control
-##from resources.lib.debrid import premiumize as Premiumize
+from resources.lib.debrid import premiumize
 from resources.lib.debrid import real_debrid
 from resources.lib.debrid import all_debrid
 from resources.lib.windows.base_window import BaseWindow
@@ -31,7 +31,7 @@ class Resolver(BaseWindow):
 
         self.pack_select = None
         self.resolvers = {'all_debrid': all_debrid.AllDebrid,
-                          'premiumize': 'prem',
+                          'premiumize':  premiumize.Premiumize,
                           'real_debrid': real_debrid.RealDebrid}
 
     def onInit(self):

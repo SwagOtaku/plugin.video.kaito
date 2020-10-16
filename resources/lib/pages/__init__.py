@@ -77,7 +77,7 @@ class Sources(DisplayWindow):
         get_backup = args['get_backup']
         self.setProperty('process_started', 'true')
 
-        if control.real_debrid_enabled() or control.all_debrid_enabled():
+        if control.real_debrid_enabled() or control.all_debrid_enabled() or control.premiumize_enabled():
             self.threads.append(
                 threading.Thread(target=self.nyaa_worker, args=(query, anilist_id, episode, media_type,)))
         else:
@@ -198,13 +198,15 @@ class Sources(DisplayWindow):
             embed_list = [i for i in _torrent_list if i['lang'] == 0] + \
                          [i for i in embed_list if i['lang'] == 0]
 
+        debrid_priorities = self.debrid_priority()
+
         for resolution in resolutions:
             if sort_method == 0 or sort_method == 2:
-##                for debrid in debrid_priorities:
-                for torrent in torrent_list:
-##                    if debrid['slug'] == torrent['debrid_provider']:
-                    if torrent['quality'] == resolution:
-                        sortedList.append(torrent)
+                for debrid in debrid_priorities:
+                    for torrent in torrent_list:
+                        if debrid['slug'] == torrent['debrid_provider']:
+                            if torrent['quality'] == resolution:
+                                sortedList.append(torrent)
 
             if sort_method == 1 or sort_method == 2:
                 for file in embed_list:
@@ -213,11 +215,11 @@ class Sources(DisplayWindow):
 
         if sort_method == 1:
             for resolution in resolutions:
-##                for debrid in debrid_priorities:
-                for torrent in torrent_list:
-##                        if torrent['debrid_provider'] == debrid['slug']:
-                    if torrent['quality'] == resolution:
-                        sortedList.append(torrent)
+                for debrid in debrid_priorities:
+                    for torrent in torrent_list:
+                        if torrent['debrid_provider'] == debrid['slug']:
+                            if torrent['quality'] == resolution:
+                                sortedList.append(torrent)
 
         if sort_method == 0:
             for resolution in resolutions:

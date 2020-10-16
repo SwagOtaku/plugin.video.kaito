@@ -68,7 +68,7 @@ def seasonCorrection(payload, params):
 def seasonCorrectionDatabase(payload, params):
     show_id, meta_ids = payload.rsplit("/")
     clean_show = _BROWSER.clean_show(show_id, meta_ids)
-    trakt, content_type = _BROWSER.get_anime_trakt(show_id)
+    trakt, content_type = _BROWSER.get_anime_trakt(show_id, True)
     return control.draw_items(trakt, content_type)
 
 @route('find_similar/*')
@@ -85,6 +85,11 @@ def authAllDebrid(payload, params):
 def authAllDebrid(payload, params):
     from resources.lib.debrid.real_debrid import RealDebrid
     RealDebrid().auth()
+
+@route('authPremiumize')
+def authPremiumize(payload, params):
+    from resources.lib.debrid.premiumize import Premiumize
+    Premiumize().auth()
 
 @route('settings')
 def SETTINGS(payload, params):
@@ -146,11 +151,11 @@ def ANILIST_AIRING(payload, params):
 
 @route('latest')
 def LATEST(payload, params):
-    return control.draw_items(_BROWSER.get_latest(control.real_debrid_enabled()))
+    return control.draw_items(_BROWSER.get_latest(control.real_debrid_enabled(), control.premiumize_enabled()))
 
 @route('latest_dub')
 def LATEST_DUB(payload, params):
-    return control.draw_items(_BROWSER.get_latest_dub(control.real_debrid_enabled()))
+    return control.draw_items(_BROWSER.get_latest_dub(control.real_debrid_enabled(), control.premiumize_enabled()))
 
 @route('anilist_trending')
 def ANILIST_TRENDING(payload, params):
@@ -226,7 +231,8 @@ def SEARCH_PAGES(payload, params):
 
 @route('play_latest/*')
 def PLAY(payload, params):
-    link = _BROWSER.get_latest_sources(payload)
+    debrid_provider, hash_ = payload.rsplit('/')
+    link = _BROWSER.get_latest_sources(debrid_provider, hash_)
     player.play_source(link)
 
 @route('play_movie/*')

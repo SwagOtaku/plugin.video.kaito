@@ -1,6 +1,6 @@
 import json
 from ui import utils, database
-from debrid import real_debrid
+from debrid import real_debrid, premiumize
 import pages
 from ui.BrowserBase import BrowserBase
 from indexers import simkl, trakt
@@ -25,8 +25,8 @@ class KaitoBrowser(BrowserBase):
     	result.insert(len(result),utils.allocate_item("Clear Search History...", "clear_history", True))
     	return result
 
-    def get_latest(self, real_debrid_enabled):
-        if real_debrid_enabled:
+    def get_latest(self, real_debrid_enabled, premiumize_enabled):
+        if real_debrid_enabled or premiumize_enabled:
             page = pages.nyaa.sources
         else:
             page = pages.gogoanime.sources
@@ -34,8 +34,8 @@ class KaitoBrowser(BrowserBase):
         latest = database.get(page().get_latest, 0.125)
         return latest
 
-    def get_latest_dub(self, real_debrid_enabled):
-        if real_debrid_enabled:
+    def get_latest_dub(self, real_debrid_enabled, premiumize_enabled):
+        if real_debrid_enabled or premiumize_enabled:
             page = pages.nyaa.sources
         else:
             page = pages.gogoanime.sources
@@ -74,8 +74,8 @@ class KaitoBrowser(BrowserBase):
     def get_trakt_episodes(self, show_id, season, page=1):
         return trakt.TRAKTAPI().get_trakt_episodes(show_id, season)
 
-    def get_anime_trakt(self, anilist_id):
-        anime = trakt.TRAKTAPI().get_anime(anilist_id)
+    def get_anime_trakt(self, anilist_id, db_correction=False):
+        anime = trakt.TRAKTAPI().get_anime(anilist_id, db_correction)
 
         if not anime:
             anime = self.get_anime_simkl(anilist_id)
@@ -157,8 +157,11 @@ class KaitoBrowser(BrowserBase):
         sources = pages.getSourcesHelper(actionArgs)
         return sources
 
-    def get_latest_sources(self, hash_):
+    def get_latest_sources(self, debrid_provider, hash_):
+        resolvers = {'premiumize':  premiumize.Premiumize,
+                     'real_debrid': real_debrid.RealDebrid}
+
         magnet = 'magnet:?xt=urn:btih:' + hash_
-        api = real_debrid.RealDebrid()
-        link = api.resolve_single_magnet(hash_, magnet)
+        api = resolvers[debrid_provider]
+        link = api().resolve_single_magnet(hash_, magnet)
         return link
