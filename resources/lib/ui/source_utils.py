@@ -1,5 +1,6 @@
 import re
 import string
+import xbmc
 
 def strip_non_ascii_and_unprintable(text):
     result = ''.join(char for char in text if char in string.printable)
@@ -100,20 +101,51 @@ def getInfo(release_title):
         
     return info
 
-def get_best_match(episode, filename):
-    filename = re.sub(r'\[.*?\]', '', filename)
-    match = re.search(
-        r'''(?ix)                                           # Ignore case (i), and use verbose regex (x)
-        (?:                                                 # non-grouping pattern
-          e|x|episode|ep|ep\.|_|-                            # e or x or episode or start of a line
-          )                                                 # end non-grouping pattern 
-        \s*                                                 # 0-or-more whitespaces
-        (?<![\d])
-        ({}|{})                                             # episode num format: xx or xxx
-        (?![\d])
-        '''.format(episode.zfill(2), episode.zfill(3)), filename)
-    if match:
-        return match.group(1)
+def get_cache_check_reg(episode):
+    try:
+        playList = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
+        info = playList[playList.getposition()].getVideoInfoTag()
+        season = str(info.getSeason()).zfill(2)
+    except:
+        season = '' 
+
+    reg_string = r'''(?ix)                              # Ignore case (i), and use verbose regex (x)
+                 (?:                                    # non-grouping pattern
+                   s|season                             # s or season
+                   )?
+                 ({})?                                  #season num format
+                 (?:                                    # non-grouping pattern
+                   e|x|episode|ep|ep\.|_|-              # e or x or episode or start of a line
+                   )                                    # end non-grouping pattern 
+                 \s*                                    # 0-or-more whitespaces
+                 (?<![\d])
+                 ({}|{})                                # episode num format: xx or xxx
+                 (?![\d])
+                 '''.format(season, episode.zfill(2), episode.zfill(3))
+
+    return re.compile(reg_string)
+
+def get_best_match(dict_key, dictionary_list, episode):
+    regex = get_cache_check_reg(episode)
+
+    files = []
+
+    for i in dictionary_list:
+        path = re.sub(r'\[.*?\]', '', i[dict_key].split('/')[-1])
+        i['regex_matches'] = regex.findall(path)
+        files.append(i)
+
+    files = [i for i in files if len(i['regex_matches']) > 0]
+
+    if len(files) == 0:
+        return None
+
+    files = sorted(files, key=lambda x: len(' '.join(list(x['regex_matches'][0]))), reverse=True)
+
+    if len(files) != 1:
+        files = user_select(files)
+
+    return files[0]
 
 def cleanTitle(title):
     title = clean_title(title)
@@ -155,3 +187,18 @@ def is_file_ext_valid(file_name):
         return False
 
     return True
+
+def run_once(f):
+    def wrapper(*args, **kwargs):
+        if not wrapper.has_run:
+            wrapper.has_run = True
+            return f(*args, **kwargs)
+    wrapper.has_run = False
+    return wrapper
+
+@run_once
+def user_select(files):
+    import xbmcgui
+    idx = xbmcgui.Dialog().select('dsds', [i['path'].rsplit('/')[-1] for i in files])
+    files = [files[idx]]
+    return files

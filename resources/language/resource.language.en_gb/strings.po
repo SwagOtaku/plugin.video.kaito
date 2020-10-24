@@ -14,38 +14,42 @@ msgid "Airing Anime Calendar"
 msgstr ""
 
 msgctxt "#30002"
-msgid "Latest"
+msgid "Airing Dubbed Anime"
 msgstr ""
 
 msgctxt "#30003"
-msgid "Latest - English Dubbed"
+msgid "Latest"
 msgstr ""
 
 msgctxt "#30004"
-msgid "Trending Now"
+msgid "Latest - English Dubbed"
 msgstr ""
 
 msgctxt "#30005"
-msgid "Popular This Season"
+msgid "Trending Now"
 msgstr ""
 
 msgctxt "#30006"
-msgid "Upcoming Next Season"
+msgid "Popular This Season"
 msgstr ""
 
 msgctxt "#30007"
-msgid "All Time Popular"
+msgid "Upcoming Next Season"
 msgstr ""
 
 msgctxt "#30008"
-msgid "Genres & Tags"
+msgid "All Time Popular"
 msgstr ""
 
 msgctxt "#30009"
-msgid "Search"
+msgid "Genres & Tags"
 msgstr ""
 
 msgctxt "#30010"
+msgid "Search"
+msgstr ""
+
+msgctxt "#30011"
 msgid "Tools"
 msgstr ""
 
@@ -483,4 +487,16 @@ msgstr ""
 
 msgctxt "#40368"
 msgid "episodes"
+msgstr ""
+
+msgctxt "#40369"
+msgid "Title Language"
+msgstr ""
+
+msgctxt "#40370"
+msgid "Romaji (Shingeki no Kyojin)"
+msgstr ""
+
+msgctxt "#40371"
+msgid "English (Attack on Titan)"
 msgstr ""

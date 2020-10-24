@@ -3,6 +3,7 @@
 	<!-- General -->
 	<category label="40300">
 		<!-- General -->
+		<setting id="titlelanguage" type="labelenum" label="40369" lvalues="40370|40371" default ="40370"/>
 		<setting id="searchhistory" type="labelenum" label="40301" values="Yes|No" default="Yes"/>
 
 		<!-- Interface -->

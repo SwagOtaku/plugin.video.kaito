@@ -8,10 +8,12 @@ from resources.lib.ui import database
 
 class SourceSelect(BaseWindow):
 
-    def __init__(self, xml_file, location, actionArgs=None, sources=None, **kwargs):
+    def __init__(self, xml_file, location, actionArgs=None, sources=None, anilist_id=None, rescrape=None, **kwargs):
         super(SourceSelect, self).__init__(xml_file, location, actionArgs=actionArgs)
         self.actionArgs = actionArgs
         self.sources = sources
+        self.anilist_id = anilist_id
+        self.rescrape = rescrape
         self.position = -1
         self.canceled = False
         self.display_list = None
@@ -117,6 +119,11 @@ class SourceSelect(BaseWindow):
             sources = self.sources[self.position:]
         else:
             sources = [self.sources[self.position]]
+
+        if self.rescrape:
+            selected_source = self.sources[self.position]
+            selected_source['name'] = selected_source['release_title']
+            database.addTorrentList(self.anilist_id, [selected_source], 2)
 
         resolver = Resolver(*('resolver.xml', control.ADDON_PATH), actionArgs=self.actionArgs)
 

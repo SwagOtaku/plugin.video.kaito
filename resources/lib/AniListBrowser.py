@@ -11,6 +11,18 @@ from ui import database
 class AniListBrowser():
     _URL = "https://graphql.anilist.co"
 
+    def __init__(self, title_key=None):
+        if title_key:
+            self._TITLE_LANG = self._title_lang(title_key)
+
+    def _title_lang(self, title_key):
+        title_lang = {
+            "Romaji (Shingeki no Kyojin)": "userPreferred",
+            "English (Attack on Titan)": "english",
+            }
+
+        return title_lang[title_key]
+
     def _handle_paging(self, hasNextPage, base_url, page):
         if not hasNextPage:
             return []
@@ -507,6 +519,10 @@ class AniListBrowser():
 
         kodi_meta = ast.literal_eval(database.get_show(str(res['id']))['kodi_meta'])
 
+        title = res['title'][self._TITLE_LANG]
+        if not title:
+            title = res['title']['userPreferred']
+
         info = {}
 
         try:
@@ -520,7 +536,7 @@ class AniListBrowser():
             pass
 
         try:
-            info['title'] = res['title']['userPreferred']
+            info['title'] = title
         except:
             pass
 
@@ -543,7 +559,7 @@ class AniListBrowser():
         info['mediatype'] = 'tvshow'
 
         base = {
-            "name": res['title']['userPreferred'],
+            "name": title,
             "url": "animes/%s/%s" % (res['id'], res.get('idMal')),
             "image": res['coverImage']['extraLarge'],
             "fanart": kodi_meta.get('fanart', res['coverImage']['extraLarge']),
@@ -569,9 +585,12 @@ class AniListBrowser():
         genres = res['media']['genres']
         if genres:
             genres = ' | '.join(genres[:3])
+        title = res['media']['title'][self._TITLE_LANG]
+        if not title:
+            title = res['media']['title']['userPreferred']
 
         base = {
-            'release_title': res['media']['title']['userPreferred'],
+            'release_title': title,
             'poster': res['media']['coverImage']['extraLarge'],
             'ep_title': '{} {} {}'.format(res['episode'], airing_status, airingAt_day),
             'ep_airingAt': airingAt_time,

@@ -184,14 +184,9 @@ class Premiumize:
             return stream_link
 
         elif len(filter_list) >= 5:
-            filter_files = sorted([idx for idx, i in enumerate(filter_list) \
-                                   if source_utils.get_best_match(
-                                       episode,
-                                       i['path'].rsplit('/', 1)[1])
-                                   ])
+            identified_file = source_utils.get_best_match('path', folder_details, episode)
 
-            identified_file = filter_files[0]
-            stream_link = self._fetch_transcode_or_standard(filter_list[identified_file])
+            stream_link = self._fetch_transcode_or_standard(identified_file)
             return stream_link
 
         filter_list = [tfile for tfile in folder_details if 'sample' not in tfile['path'].lower()]

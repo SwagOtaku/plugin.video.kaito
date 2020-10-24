@@ -14,10 +14,16 @@ def get_anilist_res(mal_id):
     return AniListBrowser().get_mal_to_anilist(mal_id)
 
 def get_auth_dialog(flavor):
-    from resources.lib.windows.wlf_auth import WatchlistFlavorAuth
+    import sys
+    from resources.lib.windows import wlf_auth
 
-    auth = WatchlistFlavorAuth(*('wlf_auth_%s.xml' % flavor, control.ADDON_PATH),
-                                    flavor=flavor).doModal()
+    platform = sys.platform
+
+    if 'linux' in platform:
+        auth = wlf_auth.AltWatchlistFlavorAuth(flavor).set_settings()
+    else:
+        auth = wlf_auth.WatchlistFlavorAuth(*('wlf_auth_%s.xml' % flavor, control.ADDON_PATH),
+                                        flavor=flavor).doModal()
 
     if auth:
         return WatchlistFlavor.login_request(flavor)
@@ -42,7 +48,7 @@ def WATCHLIST(payload, params):
 @route('watchlist_status_type/*')
 def WATCHLIST_STATUS_TYPE(payload, params):
     flavor, status = payload.rsplit("/")
-    return control.draw_items(WatchlistFlavor.watchlist_status_request(flavor, status))
+    return control.draw_items(WatchlistFlavor.watchlist_status_request(flavor, status, params))
 
 @route('watchlist_status_type_pages/*')
 def WATCHLIST_STATUS_TYPE_PAGES(payload, params):
@@ -95,7 +101,9 @@ def WATCHLIST_QUERY(payload, params):
     link = SourceSelect(*('source_select.xml', control.ADDON_PATH),
                         actionArgs=_mock_args, sources=sources).doModal()
 
-    control.play_source(link)
+    from ui import player
+
+    player.play_source(link)
 
 def watchlist_update(anilist_id, episode):
     flavor = WatchlistFlavor.get_update_flavor()

@@ -74,20 +74,21 @@ class Sources(DisplayWindow):
         anilist_id = args['anilist_id']
         episode = args['episode']
         media_type = args['media_type']
+        rescrape = args['rescrape']
         get_backup = args['get_backup']
         self.setProperty('process_started', 'true')
 
         if control.real_debrid_enabled() or control.all_debrid_enabled() or control.premiumize_enabled():
             self.threads.append(
-                threading.Thread(target=self.nyaa_worker, args=(query, anilist_id, episode, media_type,)))
+                threading.Thread(target=self.nyaa_worker, args=(query, anilist_id, episode, media_type, rescrape,)))
         else:
             self.remainingProviders.remove('nyaa')
 
         self.threads.append(
-            threading.Thread(target=self.gogo_worker, args=(anilist_id, episode, get_backup,)))
+            threading.Thread(target=self.gogo_worker, args=(anilist_id, episode, get_backup, rescrape,)))
 
         self.threads.append(
-            threading.Thread(target=self.animixplay_worker, args=(anilist_id, episode, get_backup,)))
+            threading.Thread(target=self.animixplay_worker, args=(anilist_id, episode, get_backup, rescrape,)))
 
         for i in self.threads:
             i.start()
@@ -136,19 +137,23 @@ class Sources(DisplayWindow):
         self.close()
         return
 
-    def nyaa_worker(self, query, anilist_id, episode, media_type):
-        self.nyaaSources = nyaa.sources().get_sources(query, anilist_id, episode, media_type)
+    def nyaa_worker(self, query, anilist_id, episode, media_type, rescrape):
+        self.nyaaSources = nyaa.sources().get_sources(query, anilist_id, episode, media_type, rescrape)
         self.torrentCacheSources += self.nyaaSources
         self.remainingProviders.remove('nyaa')        
 
-    def gogo_worker(self, anilist_id, episode, get_backup):
-        self.gogoSources = gogoanime.sources().get_sources(anilist_id, episode, get_backup)
-        self.embedSources += self.gogoSources
+    def gogo_worker(self, anilist_id, episode, get_backup, rescrape):
+        if not rescrape:
+            self.gogoSources = gogoanime.sources().get_sources(anilist_id, episode, get_backup)
+            self.embedSources += self.gogoSources
+
         self.remainingProviders.remove('gogo')        
 
-    def animixplay_worker(self, anilist_id, episode, get_backup):
-        self.animixplaySources = animixplay.sources().get_sources(anilist_id, episode, get_backup)
-        self.embedSources += self.animixplaySources
+    def animixplay_worker(self, anilist_id, episode, get_backup, rescrape):
+        if not rescrape:
+            self.animixplaySources = animixplay.sources().get_sources(anilist_id, episode, get_backup)
+            self.embedSources += self.animixplaySources
+
         self.remainingProviders.remove('animixplay')
 
     def resolutionList(self):

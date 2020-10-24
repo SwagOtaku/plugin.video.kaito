@@ -69,6 +69,26 @@ class WatchlistFlavorBase(object):
     def watchlist_update(self, episode, kitsu_id):
         raise NotImplementedError("watchlist_update should be implemented by subclass")
 
+    def _get_next_up_meta(self, mal_id, next_up, anilist_id=None):
+        show_meta = {}
+        next_up_meta = None
+
+        if anilist_id:
+            show = database.get_show(anilist_id)
+        else:
+            show = database.get_show_mal(mal_id)
+
+        if show:
+            show_meta = ast.literal_eval(show['kodi_meta'])
+            episodes = database.get_episode_list(show['anilist_id'])
+            if episodes:
+                try:
+                    next_up_meta = ast.literal_eval(episodes[next_up]['kodi_meta'])
+                except:
+                    show = None
+
+        return show, show_meta, next_up_meta
+
     def _get_mapping_id(self, anilist_id, flavor):
         try:
             mapping_id = database.get_show(anilist_id)[flavor]

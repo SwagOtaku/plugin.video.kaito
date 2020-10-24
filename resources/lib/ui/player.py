@@ -283,13 +283,19 @@ def _prefetch_play_link(link):
         "headers": linkInfo.headers,
     }
 
-def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=None, episode=None):
+def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=None, episode=None, rescrape=False):
     linkInfo = _prefetch_play_link(link)
     if not linkInfo:
         cancelPlayback()
         return
 
     item = xbmcgui.ListItem(path=linkInfo['url'])
+
+    if rescrape:
+        episode_info = build_playlist(anilist_id, '', True)[episode - 1]
+        item.setInfo('video', infoLabels=episode_info['info'])
+        item.setArt(episode_info['image'])
+
     if 'Content-Type' in linkInfo['headers']:
         item.setProperty('mimetype', linkInfo['headers']['Content-Type'])
 

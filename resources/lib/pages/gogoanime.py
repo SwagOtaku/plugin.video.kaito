@@ -76,8 +76,11 @@ class sources(BrowserBase):
 
     def _parse_latest_view(self, res):
         res = res.a
+        info = {}
         slug, episode = (res['href'][1:]).rsplit('-episode-')
         url = '%s/%s' %(slug, episode)
         name = '%s - Ep. %s' % (res['title'], episode)
         image = res.img['src']
-        return utils.allocate_item(name, "play_gogo/" + str(url), False, image)
+        info['title'] = name
+        info['mediatype'] = 'tvshow'
+        return utils.allocate_item(name, "play_gogo/" + str(url), False, image, info)

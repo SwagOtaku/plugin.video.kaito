@@ -63,3 +63,29 @@ class WatchlistFlavorAuth(BaseWindow):
 
         self.authorized = True
         self.close()
+
+class AltWatchlistFlavorAuth:
+    def __init__(self, flavor=None):
+        self.flavor = flavor
+        self.authorized = False
+
+    def set_settings(self):
+        res = {}
+        dialog = control.kodiGui.Dialog()
+        if self.flavor == 'anilist':
+            res['username'] = dialog.input('Enter AniList username', type=control.kodiGui.INPUT_ALPHANUM)
+            res['token'] = dialog.input('Enter AniList token', type=control.kodiGui.INPUT_ALPHANUM)
+        else:
+            res['authvar'] = dialog.input('Enter MAL auth url', type=control.kodiGui.INPUT_ALPHANUM)
+
+        try:
+            for _id, value in res.items():
+                if not value:
+                    raise Exception
+
+                control.setSetting('%s.%s' % (self.flavor, _id), value)
+                self.authorized = True
+        except:
+            pass
+
+        return self.authorized

@@ -84,6 +84,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
 
     def __mal_statuses(self):
         statuses = [
+            ("Next Up", "watching?next_up=true"),
             ("Currently Watching", "watching"),
             ("Completed", "completed"),
             ("On Hold", "on_hold"),
@@ -94,7 +95,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
 
         return statuses
         
-    def get_watchlist_status(self, status, offset=0, page=1):
+    def get_watchlist_status(self, status, next_up, offset=0, page=1):
         params = {
             "status": status,
             "order": self.__get_sort(),
@@ -104,11 +105,16 @@ class MyAnimeListWLF(WatchlistFlavorBase):
             }
 
         url = self._to_url("users/@me/animelist")
-        return self._process_status_view(url, params, "watchlist_status_type_pages/mal/%s/%%s/%%d" % status, page)
+        return self._process_status_view(url, params, next_up, "watchlist_status_type_pages/mal/%s/%%s/%%d" % status, page)
 
-    def _process_status_view(self, url, params, base_plugin_url, page):
+    def _process_status_view(self, url, params, next_up, base_plugin_url, page):
         results = (self._get_request(url, headers=self.__headers(), params=params)).json()
-        all_results = map(self._base_watchlist_status_view, results['data'])
+
+        if next_up:
+            all_results = map(self._base_next_up_view, results['data'])
+        else:
+            all_results = map(self._base_watchlist_status_view, results['data'])
+
         all_results = list(itertools.chain(*all_results))
 
         all_results += self._handle_paging(results['paging'].get('next'), base_plugin_url, page)
@@ -123,10 +129,16 @@ class MyAnimeListWLF(WatchlistFlavorBase):
             pass
 
         try:
+            info['title'] = res['node']['title']
+        except:
+            pass
+
+        try:
             info['duration'] = res['node']['average_episode_duration']
         except:
             pass
-        
+
+        info['mediatype'] = 'tvshow'
 
         base = {
             "name": '%s - %s/%s' % (res['node']["title"], res['list_status']["num_episodes_watched"], res['node']["num_episodes"]),
@@ -134,6 +146,55 @@ class MyAnimeListWLF(WatchlistFlavorBase):
             "image": res['node']['main_picture'].get('large', res['node']['main_picture']['medium']),
             "plot": info,
         }
+
+        if res['node']['media_type'] == 'movie' and res['node']["num_episodes"] == 1:
+            base['url'] = "watchlist_to_movie/%s" % (res['node']['id'])
+            base['plot']['mediatype'] = 'movie'
+            return self._parse_view(base, False)
+
+        return self._parse_view(base)
+
+    def _base_next_up_view(self, res):
+        mal_id = res['node']['id']
+        progress = res['list_status']["num_episodes_watched"]
+        next_up = progress + 1
+        episode_count = res['node']["num_episodes"]
+        title = '%s - %s/%s' % (res['node']["title"], progress, episode_count)
+        image = res['node']['main_picture'].get('large', res['node']['main_picture']['medium'])
+
+        show, show_meta, next_up_meta = self._get_next_up_meta(mal_id, progress)
+        if show:
+            title = 'Ep. %d/%d' % (next_up, episode_count)
+            url = 'play/%d/%d' % (show['anilist_id'], next_up)
+            image = show_meta.get('fanart', image)
+            if next_up_meta:
+                try:
+                    title = '%s - %s' % (title, next_up_meta['info']['title'])
+                    image = next_up_meta['image']['thumb']
+                except:
+                    pass
+
+        info = {}
+
+        info['episode'] = next_up                    
+
+        info['title'] = title
+
+        info['tvshowtitle'] = res['node']['title']
+
+        info['mediatype'] = 'tvshow'
+
+        base = {
+            "name": title,
+            "url": "watchlist_to_ep/%s//%s" % (res['node']['id'], res['list_status']["num_episodes_watched"]),
+            "image": image,
+            "plot": info,
+        }
+        
+        if show:
+            base['url'] = url
+            base['plot']['mediatype'] = 'episode'
+            return self._parse_view(base, False)
 
         if res['node']['media_type'] == 'movie' and res['node']["num_episodes"] == 1:
             base['url'] = "watchlist_to_movie/%s" % (res['node']['id'])

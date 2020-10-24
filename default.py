@@ -10,18 +10,23 @@ import ast
 
 MENU_ITEMS = [
     (control.lang(30001), "anilist_airing", ''),
-    (control.lang(30002), "latest", ''),
-    (control.lang(30003), "latest_dub", ''),
-    (control.lang(30004), "anilist_trending", ''),
-    (control.lang(30005), "anilist_popular", ''),
-    (control.lang(30006), "anilist_upcoming", ''),
-    (control.lang(30007), 'anilist_all_time_popular', ''),
-    (control.lang(30008), "anilist_genres", ''),
-    (control.lang(30009), "search_history", ''),
-    (control.lang(30010), "tools", ''),
+    (control.lang(30002), "airing_dub", ''),
+    (control.lang(30003), "latest", ''),
+    (control.lang(30004), "latest_dub", ''),
+    (control.lang(30005), "anilist_trending", ''),
+    (control.lang(30006), "anilist_popular", ''),
+    (control.lang(30007), "anilist_upcoming", ''),
+    (control.lang(30008), 'anilist_all_time_popular', ''),
+    (control.lang(30009), "anilist_genres", ''),
+    (control.lang(30010), "search_history", ''),
+    (control.lang(30011), "tools", ''),
 ]
 
+_TITLE_LANG = control.getSetting("titlelanguage")
+
 _BROWSER = KaitoBrowser()
+
+_ANILIST_BROWSER = AniListBrowser(_TITLE_LANG)
 
 def _add_last_watched():
     anilist_id = control.getSetting("addon.last_watched")
@@ -74,7 +79,7 @@ def seasonCorrectionDatabase(payload, params):
 @route('find_similar/*')
 def FIND_SIMILAR(payload, params):
     anilist_id, mal_id = payload.split("/")[1:]
-    return control.draw_items(AniListBrowser().get_recommendation(anilist_id))
+    return control.draw_items(_ANILIST_BROWSER.get_recommendation(anilist_id))
 
 @route('authAllDebrid')
 def authAllDebrid(payload, params):
@@ -136,7 +141,7 @@ def TEST(payload, params):
 
 @route('anilist_airing')
 def ANILIST_AIRING(payload, params):
-    airing = AniListBrowser().get_airing()
+    airing = _ANILIST_BROWSER.get_airing()
     from resources.lib.windows.anichart import Anichart
 
     anime = Anichart(*('anichart.xml', control.ADDON_PATH),
@@ -149,60 +154,64 @@ def ANILIST_AIRING(payload, params):
 
     return control.draw_items(anime, content_type)
 
+@route('airing_dub')
+def AIRING_DUB(payload, params):
+    return control.draw_items(_BROWSER.get_airing_dub())
+
 @route('latest')
 def LATEST(payload, params):
-    return control.draw_items(_BROWSER.get_latest(control.real_debrid_enabled(), control.premiumize_enabled()))
+    return control.draw_items(_BROWSER.get_latest(control.real_debrid_enabled(), control.premiumize_enabled()), 'episodes')
 
 @route('latest_dub')
 def LATEST_DUB(payload, params):
-    return control.draw_items(_BROWSER.get_latest_dub(control.real_debrid_enabled(), control.premiumize_enabled()))
+    return control.draw_items(_BROWSER.get_latest_dub(control.real_debrid_enabled(), control.premiumize_enabled()), 'episodes')
 
 @route('anilist_trending')
 def ANILIST_TRENDING(payload, params):
-    return control.draw_items(AniListBrowser().get_trending())
+    return control.draw_items(_ANILIST_BROWSER.get_trending())
 
 @route('anilist_trending/*')
 def ANILIST_TRENDING_PAGES(payload, params):
-    return control.draw_items(AniListBrowser().get_trending(int(payload)))
+    return control.draw_items(_ANILIST_BROWSER.get_trending(int(payload)))
 
 @route('anilist_popular')
 def ANILIST_POPULAR(payload, params):
-    return control.draw_items(AniListBrowser().get_popular())
+    return control.draw_items(_ANILIST_BROWSER.get_popular())
 
 @route('anilist_popular/*')
 def ANILIST_POPULAR_PAGES(payload, params):
-    return control.draw_items(AniListBrowser().get_popular(int(payload)))
+    return control.draw_items(_ANILIST_BROWSER.get_popular(int(payload)))
 
 @route('anilist_upcoming')
 def ANILIST_POPULAR(payload, params):
-    return control.draw_items(AniListBrowser().get_upcoming())
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming())
 
 @route('anilist_upcoming/*')
 def ANILIST_POPULAR_PAGES(payload, params):
-    return control.draw_items(AniListBrowser().get_upcoming(int(payload)))
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming(int(payload)))
 
 @route('anilist_all_time_popular')
 def ANILIST_ALL_TIME_POPULAR(payload, params):
-    return control.draw_items(AniListBrowser().get_all_time_popular())
+    return control.draw_items(_ANILIST_BROWSER.get_all_time_popular())
 
 @route('anilist_all_time_popular/*')
 def ANILIST_ALL_TIME_POPULAR_PAGES(payload, params):
-    return control.draw_items(AniListBrowser().get_all_time_popular(int(payload)))
+    return control.draw_items(_ANILIST_BROWSER.get_all_time_popular(int(payload)))
 
 @route('anilist_genres')
 def ANILIST_GENRES(payload, params):
-    return control.draw_items(AniListBrowser().get_genres(genre_dialog))
+    return control.draw_items(_ANILIST_BROWSER.get_genres(genre_dialog))
 
 @route('anilist_genres/*')
 def ANILIST_GENRES_PAGES(payload, params):
     genres, tags, page = payload.split("/")[-3:]
-    return control.draw_items(AniListBrowser().get_genres_page(genres, tags, int(page)))
+    return control.draw_items(_ANILIST_BROWSER.get_genres_page(genres, tags, int(page)))
 
 @route('search_history')
 def SEARCH_HISTORY(payload, params):
     history = database.getSearchHistory('show')
     if "Yes" in control.getSetting('searchhistory') :
-        return control.draw_items(_BROWSER.search_history(history))
+        return control.draw_items(_BROWSER.search_history(history), contentType=control.getSetting("contenttype.menu"))
     else :
         return SEARCH(payload,params)
 
@@ -222,12 +231,12 @@ def SEARCH(payload, params):
         database.addSearchHistory(query, 'show')
         history = database.getSearchHistory('show')
 
-    return control.draw_items(AniListBrowser().get_search(query))
+    return control.draw_items(_ANILIST_BROWSER.get_search(query))
 
 @route('search/*')
 def SEARCH_PAGES(payload, params):
     query, page = payload.rsplit("/", 1)
-    return control.draw_items(AniListBrowser().get_search(query, int(page)))
+    return control.draw_items(_ANILIST_BROWSER.get_search(query, int(page)))
 
 @route('play_latest/*')
 def PLAY(payload, params):
@@ -301,6 +310,24 @@ def PLAY(payload, params):
                         watchlist_update,
                         _BROWSER.get_episodeList,
                         int(episode))
+
+@route('rescrape_play/*')
+def RESCRAPE_PLAY(payload, params):
+    anilist_id, episode = payload.rsplit("/")
+    sources = _BROWSER.get_sources(anilist_id, episode, 'show', True)
+    _mock_args = {"anilist_id": anilist_id}
+
+    from resources.lib.windows.source_select import SourceSelect
+
+    link = SourceSelect(*('source_select.xml', control.ADDON_PATH),
+                        actionArgs=_mock_args, sources=sources, anilist_id=anilist_id, rescrape=True).doModal()
+
+    player.play_source(link,
+                        anilist_id,
+                        watchlist_update,
+                        _BROWSER.get_episodeList,
+                        int(episode),
+                        rescrape=True)
 
 @route('tools')
 def TOOLS_MENU(payload, params):

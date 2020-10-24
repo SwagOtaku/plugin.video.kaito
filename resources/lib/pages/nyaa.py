@@ -13,10 +13,13 @@ import ast
 
 class sources(BrowserBase):
     def _parse_anime_view(self, res):
+        info = {}
         url = '{}/{}'.format(res['debrid_provider'], res['hash'])
         name = res['name']
         image = 'DefaultVideo.png'
-        return utils.allocate_item(name, "play_latest/" + str(url), False, image)
+        info['title'] = name
+        info['mediatype'] = 'tvshow'
+        return utils.allocate_item(name, "play_latest/" + str(url), False, image, info)
 
     def _parse_nyaa_episode_view(self, res, episode):
         source = {
@@ -132,7 +135,7 @@ class sources(BrowserBase):
         all_results = map(mapfunc, cache_list)
         return all_results
 
-    def _process_nyaa_backup(self, url, anilist_id, _zfill, episode=''):
+    def _process_nyaa_backup(self, url, anilist_id, _zfill, episode='', rescrape=False):
         json_resp = requests.get(url).text
         results = bs.BeautifulSoup(json_resp, 'html.parser')
         rex = r'(magnet:)+[^"]*'
@@ -155,9 +158,11 @@ class sources(BrowserBase):
         for torrent in list_:
             torrent['hash'] = re.findall(r'btih:(.*?)(?:&|$)', torrent['magnet'])[0]
 
+        if not rescrape:
+            database.addTorrentList(anilist_id, list_, _zfill)
+
         cache_list = TorrentCacheCheck().torrentCacheCheck(list_)
         cache_list = sorted(cache_list, key=lambda k: k['downloads'], reverse=True)
-        database.addTorrentList(anilist_id, cache_list, _zfill)
 
         mapfunc = partial(self._parse_nyaa_episode_view, episode=episode)
         all_results = map(mapfunc, cache_list)
@@ -189,20 +194,23 @@ class sources(BrowserBase):
         except:
             pass
 
-    def get_sources(self, query, anilist_id, episode, media_type):
+    def get_sources(self, query, anilist_id, episode, media_type, rescrape):
         if media_type == 'movie':
             return self._get_movie_sources(query, anilist_id, episode)
 
-        sources = self._get_episode_sources(query, anilist_id, episode)
+        sources = self._get_episode_sources(query, anilist_id, episode, rescrape)
 
         if not sources:
             sources = self._get_episode_sources_backup(query, anilist_id, episode)
 
         return sources
 
-    def _get_episode_sources(self, show, anilist_id, episode):
+    def _get_episode_sources(self, show, anilist_id, episode, rescrape):
 ##        if int(anilist_id) in [114236]:
 ##            return
+
+        if rescrape:
+            return self._get_episode_sources_pack(show, anilist_id, episode)
 
         try:
             cached_sources, zfill_int = database.getTorrentList(anilist_id)
@@ -250,6 +258,21 @@ class sources(BrowserBase):
 
         url = "https://nyaa.si/?f=0&c=1_2&q=%s" % query
         return self._process_nyaa_episodes(url, episode)
+
+    def _get_episode_sources_pack(self, show, anilist_id, episode):
+        query = '%s "Batch"|"Complete Series"' % (show)
+
+        episodes = ast.literal_eval(database.get_show(anilist_id)['kodi_meta'])['episodes']
+        if episodes:
+            query += '|"01-{0}"|"01~{0}"|"01 - {0}"|"01 ~ {0}"'.format(episodes)
+
+        season = database.get_season_list(anilist_id)
+        if season:
+            season = season['season']
+            query += '|"S{0}"|"Season {0}"'.format(season)
+
+        url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=seeders&&o=desc" % query
+        return self._process_nyaa_backup(url, anilist_id, 2, episode.zfill(2), True)
 
     def _get_movie_sources(self, query, anilist_id, episode):
         query = requests.utils.quote(query)

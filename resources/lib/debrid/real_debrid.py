@@ -253,29 +253,30 @@ class RealDebrid:
             hashCheck = self.checkHash(hash_)
 
             for storage_variant in hashCheck[hash_]['rd']:
-                key_list = ','.join(storage_variant.keys())
-
-                if episode and len(key_list) == 1:
-                    key_list = 'all'
+                key_list = 'all'
 
                 torrent = self.addMagnet(magnet)
 
                 self.torrentSelect(torrent['id'], key_list)
 
                 files = self.torrentInfo(torrent['id'])
-                selected_files = [i for i in files['files'] if i['selected'] == 1]
+                selected_files = [(idx, i) for idx, i in enumerate([i for i in files['files'] if i['selected'] == 1])]
 
                 if len(selected_files) == 1:
                     stream_link = self.resolve_hoster(files['links'][0])
 
                 elif len(selected_files) >= 5:
                     try:
-                        selected_files = sorted([idx for idx, i in enumerate(selected_files) if source_utils.get_best_match(episode, i['path'])])
-                        stream_link = self.resolve_hoster(files['links'][selected_files[0]])
+                        best_match = source_utils.get_best_match('path', [i[1] for i in selected_files], episode)
+
+                        file_index = [i[0] for i in selected_files if i[1]['path'] == best_match['path']][0]
+
+                        link = files['links'][file_index]
+                        stream_link = self.resolve_hoster(link)
                     except:
                         stream_link = None
+
                 else:
-                    selected_files = [(idx, i) for idx, i in enumerate(selected_files)]
                     selected_files = sorted(selected_files, key=lambda x: x[1]['bytes'], reverse=True)
                     stream_link = self.resolve_hoster(files['links'][selected_files[0][0]])
 

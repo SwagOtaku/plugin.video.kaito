@@ -56,8 +56,8 @@ class WatchlistFlavor(object):
         return WatchlistFlavor.__instance_flavor(name).watchlist()
 
     @staticmethod
-    def watchlist_status_request(name, status):
-        return WatchlistFlavor.__instance_flavor(name).get_watchlist_status(status)
+    def watchlist_status_request(name, status, next_up):
+        return WatchlistFlavor.__instance_flavor(name).get_watchlist_status(status, next_up)
 
     @staticmethod
     def watchlist_status_request_pages(name, status, offset, page):

@@ -14,6 +14,24 @@ class KaitoBrowser(BrowserBase):
         name = res
         return utils.allocate_item(name, "search/" + name + "/1", True)
 
+    def _parse_airing_dub_view(self, res):
+        name = res.values()[0]
+        mal_id = (res.keys()[0]).rsplit('/')[-2]
+        url = 'watchlist_to_ep/{}//0'.format(mal_id)
+
+        try:
+            image = ast.literal_eval(database.get_show_mal(mal_id)['kodi_meta'])['poster']
+        except:
+            image = 'DefaultVideo.png'
+
+        info = {}
+
+        info['title'] = name
+        info['plot'] = '** = Dub production suspended until further notice.\n++ = Dub is being produced from home studios with an irregular release schedule.'
+        info['mediatype'] = 'tvshow'
+
+        return utils.allocate_item(name, url, True, image, info)
+
     def _json_request(self, url, data=''):
         response = json.loads(self._get_request(url, data))
         return response
@@ -24,6 +42,15 @@ class KaitoBrowser(BrowserBase):
     	result.insert(0,utils.allocate_item("New Search", "search", True))
     	result.insert(len(result),utils.allocate_item("Clear Search History...", "clear_history", True))
     	return result
+
+    def get_airing_dub(self):
+        resp = requests.get('https://armkai.vercel.app/api/airingdub')
+
+        if not resp.ok:
+            return []
+
+        all_results = map(self._parse_airing_dub_view, resp.json())
+        return all_results
 
     def get_latest(self, real_debrid_enabled, premiumize_enabled):
         if real_debrid_enabled or premiumize_enabled:
@@ -103,7 +130,7 @@ class KaitoBrowser(BrowserBase):
 
         return self.get_anime_trakt(anilist_id)
 
-    def get_episodeList(self, show_id, pass_idx):
+    def get_episodeList(self, show_id, pass_idx, rescrape=False):
         from ui import control
 
         episodes = database.get_episode_list(int(show_id))
@@ -112,6 +139,9 @@ class KaitoBrowser(BrowserBase):
             items = trakt.TRAKTAPI()._process_trakt_episodes(show_id, '', episodes, '')
         else:
             items = simkl.SIMKLAPI().get_episodes(show_id)
+
+        if rescrape:
+            return items
 
         items =  [i for i in items if self.is_aired(i['info'])]
 
@@ -144,7 +174,7 @@ class KaitoBrowser(BrowserBase):
             # Assume an item is not aired if we do not have any information on it or fail to identify
             return False
 
-    def get_sources(self, anilist_id, episode, media_type):
+    def get_sources(self, anilist_id, episode, media_type, rescrape=False):
         show = database.get_show(anilist_id)
         query = ast.literal_eval(show['kodi_meta'])['query']
         actionArgs = {
@@ -152,6 +182,7 @@ class KaitoBrowser(BrowserBase):
             'anilist_id': anilist_id,
             'episode': episode,
             'media_type': media_type,
+            'rescrape': rescrape,
             'get_backup': self.get_backup
             }
         sources = pages.getSourcesHelper(actionArgs)

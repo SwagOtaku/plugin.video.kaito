@@ -58,6 +58,7 @@ class AniListWLF(WatchlistFlavorBase):
 
     def __anilist_statuses(self):
         statuses = [
+            ("Next Up", "CURRENT?next_up=true"),
             ("Current", "CURRENT"),
             ("Rewatching", "REPEATING"),
             ("Plan to Watch", "PLANNING"),
@@ -68,7 +69,7 @@ class AniListWLF(WatchlistFlavorBase):
 
         return statuses
 
-    def get_watchlist_status(self, status):
+    def get_watchlist_status(self, status, next_up):
         query = '''
         query ($userId: Int, $userName: String, $status: MediaListStatus, $type: MediaType, $sort: [MediaListSort]) {
             MediaListCollection(userId: $userId, userName: $userName, status: $status, type: $type, sort: $sort) {
@@ -121,9 +122,9 @@ class AniListWLF(WatchlistFlavorBase):
             'sort': [self.__get_sort()]
             }
 
-        return self._process_status_view(query, variables, "watchlist/%d", page=1)
+        return self._process_status_view(query, variables, next_up, "watchlist/%d", page=1)
 
-    def _process_status_view(self, query, variables, base_plugin_url, page):
+    def _process_status_view(self, query, variables, next_up, base_plugin_url, page):
         result = self._post_request(self._URL, json={'query': query, 'variables': variables})
         results = result.json()
 
@@ -135,7 +136,11 @@ class AniListWLF(WatchlistFlavorBase):
         except IndexError:
             entries = []
 
-        all_results = map(self._base_watchlist_status_view, reversed(entries))
+        if next_up:
+            all_results = map(self._base_next_up_view, reversed(entries))
+        else:
+            all_results = map(self._base_watchlist_status_view, reversed(entries))
+    
         all_results = list(itertools.chain(*all_results))
         return all_results
 
@@ -197,6 +202,60 @@ class AniListWLF(WatchlistFlavorBase):
             "image": res['coverImage']['extraLarge'],
             "plot": info,
         }
+
+        if res['format'] == 'MOVIE' and res['episodes'] == 1:
+            base['url'] = "play_movie/%s/1" % (res['id'])
+            base['plot']['mediatype'] = 'movie'
+            return self._parse_view(base, False)
+
+        return self._parse_view(base)
+
+    def _base_next_up_view(self, res):
+        progress = res['progress']
+        res = res['media']
+        next_up = progress + 1
+        episode_count = res['episodes'] if res['episodes'] is not None else 0
+        title = '%s - %s/%s' % (res['title']['userPreferred'], progress, episode_count)
+        image = res['coverImage']['extraLarge']
+
+        show, show_meta, next_up_meta = self._get_next_up_meta('', progress, res['id'])
+        if show:
+            title = 'Ep. %d/%d' % (next_up, episode_count)
+            url = 'play/%d/%d' % (show['anilist_id'], next_up)
+            image = show_meta.get('fanart', image)
+            if next_up_meta:
+                try:
+                    title = '%s - %s' % (title, next_up_meta['info']['title'])
+                    image = next_up_meta['image']['thumb']
+                except:
+                    pass
+
+        info = {}
+
+        try:
+            info['genre'] = res.get('genres')
+        except:
+            pass
+
+        info['episode'] = next_up
+
+        info['title'] = title
+
+        info['tvshowtitle'] = res['title']['userPreferred']
+
+        info['mediatype'] = 'tvshow'
+
+        base = {
+            "name": title,
+            "url": "watchlist_query/%s/%s" % (res['id'], res.get('idMal')),
+            "image": image,
+            "plot": info,
+        }
+
+        if show:
+            base['url'] = url
+            base['plot']['mediatype'] = 'episode'
+            return self._parse_view(base, False)
 
         if res['format'] == 'MOVIE' and res['episodes'] == 1:
             base['url'] = "play_movie/%s/1" % (res['id'])

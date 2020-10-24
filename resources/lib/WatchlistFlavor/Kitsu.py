@@ -94,6 +94,7 @@ class KitsuWLF(WatchlistFlavorBase):
 
     def __kitsu_statuses(self):
         statuses = [
+            ("Next Up", "current?next_up=true"),
             ("Current", "current"),
             ("Want to Watch", "planned"),
             ("Completed", "completed"),
@@ -103,7 +104,7 @@ class KitsuWLF(WatchlistFlavorBase):
 
         return statuses
 
-    def get_watchlist_status(self, status, offset=0, page=1):
+    def get_watchlist_status(self, status, next_up, offset=0, page=1):
         url = self._to_url("edge/library-entries")
 
         params = {
@@ -117,14 +118,19 @@ class KitsuWLF(WatchlistFlavorBase):
             "sort": self.__get_sort(),
             }
 
-        return self._process_watchlist_view(url, params, "watchlist_status_type_pages/kitsu/%s/%%s/%%d" % status, page)
+        return self._process_watchlist_view(url, params, next_up, "watchlist_status_type_pages/kitsu/%s/%%s/%%d" % status, page)
 
-    def _process_watchlist_view(self, url, params, base_plugin_url, page):
+    def _process_watchlist_view(self, url, params, next_up, base_plugin_url, page):
         result = (self._get_request(url, headers=self.__headers(), params=params)).json()
         _list = result["data"]
         el = result["included"][:len(_list)]
         self._mapping = filter(lambda x: x['type'] == 'mappings', result['included'])
-        all_results = map(self._base_watchlist_view, _list, el)
+
+        if next_up:
+            all_results = map(self._base_next_up_view, _list, el)
+        else:
+            all_results = map(self._base_watchlist_view, _list, el)
+
         all_results = list(itertools.chain(*all_results))
 
         all_results += self._handle_paging(result['links'].get('next'), base_plugin_url, page)
@@ -143,9 +149,16 @@ class KitsuWLF(WatchlistFlavorBase):
             pass
 
         try:
+            info['title'] = eres["attributes"]["titles"].get(self.__get_title_lang(), eres["attributes"]['canonicalTitle'])
+        except:
+            pass
+
+        try:
             info['duration'] = eres['attributes']['episodeLength'] * 60
         except:
             pass
+
+        info['mediatype'] = 'tvshow'
 
         base = {
             "name": '%s - %d/%d' % (eres["attributes"]["titles"].get(self.__get_title_lang(), eres["attributes"]['canonicalTitle']),
@@ -155,6 +168,56 @@ class KitsuWLF(WatchlistFlavorBase):
             "image": eres["attributes"]['posterImage']['large'],
             "plot": info,
         }
+
+        if eres['attributes']['subtype'] == 'movie' and eres['attributes']['episodeCount'] == 1:
+            base['url'] = "watchlist_to_movie/%s" % (mal_id)
+            base['plot']['mediatype'] = 'movie'
+            return self._parse_view(base, False)
+
+        return self._parse_view(base)
+
+    def _base_next_up_view(self, res, eres):
+        _id = eres['id']
+        mal_id = self._mapping_mal(_id)
+
+        progress = res["attributes"]['progress']
+        next_up = progress + 1
+        episode_count = eres["attributes"]['episodeCount'] if eres["attributes"]['episodeCount'] is not None else 0
+        title = 'Ep. %d/%d' % (next_up, episode_count)
+        image = eres["attributes"]['posterImage']['large']
+
+        show, show_meta, next_up_meta = self._get_next_up_meta(mal_id, progress)
+        if show:
+            url = 'play/%d/%d' % (show['anilist_id'], next_up)
+            image = show_meta.get('fanart', image)
+            if next_up_meta:
+                try:
+                    title = '%s - %s' % (title, next_up_meta['info']['title'])
+                    image = next_up_meta['image']['thumb']
+                except:
+                    pass
+
+        info = {}
+
+        info['episode'] = next_up
+
+        info['title'] = title
+
+        info['tvshowtitle'] = eres["attributes"]["titles"].get(self.__get_title_lang(), eres["attributes"]['canonicalTitle'])
+
+        info['mediatype'] = 'tvshow'
+
+        base = {
+            "name": title,
+            "url": "watchlist_to_ep/%s/%s/%s" % (mal_id, _id, res["attributes"]['progress']),
+            "image": image,
+            "plot": info,
+        }
+
+        if show:
+            base['url'] = url
+            base['plot']['mediatype'] = 'episode'
+            return self._parse_view(base, False)
 
         if eres['attributes']['subtype'] == 'movie' and eres['attributes']['episodeCount'] == 1:
             base['url'] = "watchlist_to_movie/%s" % (mal_id)

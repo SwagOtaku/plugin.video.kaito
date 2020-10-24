@@ -1,3 +1,12 @@
+Changelog 0.0.3:
+- Added Rescrape Item option to episode context menu
+- Added setting 'Title Language' to set titles to romaji/english
+- Added 'Airing Dubbed Anime' menu item
+- Added 'Next Up' to watchlist menu items
+- Adjusted content types of items
+- Adjusted MAL/AniList auth for linux os
+- Improved season torrent pack handling
+
 Changelog 0.0.2:
 - Added premiumize support
 - Improved handling of episodes/seasons retrieval
