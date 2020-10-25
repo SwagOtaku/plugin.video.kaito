@@ -18,7 +18,9 @@ class AniListBrowser():
     def _title_lang(self, title_key):
         title_lang = {
             "40370": "userPreferred",
+            "Romaji (Shingeki no Kyojin)": "userPreferred",
             "40371": "english",
+            "English (Attack on Titan)": "english"
             }
 
         return title_lang[title_key]
