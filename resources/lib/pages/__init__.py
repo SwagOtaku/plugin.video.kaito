@@ -1,5 +1,5 @@
 import threading
-from . import nyaa, gogoanime, animixplay
+from . import nyaa, gogoanime, animixplay, debrid_cloudfiles
 from ..ui import control
 from resources.lib.windows.get_sources_window import GetSources as DisplayWindow
 import time
@@ -73,6 +73,8 @@ class Sources(DisplayWindow):
         query = args['query']
         anilist_id = args['anilist_id']
         episode = args['episode']
+        status = args['status']
+        filter_lang = args['filter_lang']
         media_type = args['media_type']
         rescrape = args['rescrape']
         get_backup = args['get_backup']
@@ -80,7 +82,7 @@ class Sources(DisplayWindow):
 
         if control.real_debrid_enabled() or control.all_debrid_enabled() or control.premiumize_enabled():
             self.threads.append(
-                threading.Thread(target=self.nyaa_worker, args=(query, anilist_id, episode, media_type, rescrape,)))
+                threading.Thread(target=self.nyaa_worker, args=(query, anilist_id, episode, status, media_type, rescrape,)))
         else:
             self.remainingProviders.remove('nyaa')
 
@@ -89,6 +91,9 @@ class Sources(DisplayWindow):
 
         self.threads.append(
             threading.Thread(target=self.animixplay_worker, args=(anilist_id, episode, get_backup, rescrape,)))
+
+        self.threads.append(
+            threading.Thread(target=self.user_cloud_inspection, args=(query, anilist_id, episode, media_type, rescrape,)))
 
         for i in self.threads:
             i.start()
@@ -127,18 +132,18 @@ class Sources(DisplayWindow):
             runtime = time.time() - start_time
             self.progress = int(100 - float(1 - (runtime / float(timeout))) * 100)
     
-        if len(self.torrentCacheSources) + len(self.embedSources) == 0:
+        if len(self.torrentCacheSources) + len(self.embedSources) + len(self.cloud_files) == 0:
             self.return_data = []
             self.close()
             return
 
-        sourcesList = self.sortSources(self.torrentCacheSources, self.embedSources)
+        sourcesList = self.sortSources(self.torrentCacheSources, self.embedSources, filter_lang)
         self.return_data = sourcesList
         self.close()
         return
 
-    def nyaa_worker(self, query, anilist_id, episode, media_type, rescrape):
-        self.nyaaSources = nyaa.sources().get_sources(query, anilist_id, episode, media_type, rescrape)
+    def nyaa_worker(self, query, anilist_id, episode, status, media_type, rescrape):
+        self.nyaaSources = nyaa.sources().get_sources(query, anilist_id, episode, status, media_type, rescrape)
         self.torrentCacheSources += self.nyaaSources
         self.remainingProviders.remove('nyaa')        
 
@@ -156,9 +161,25 @@ class Sources(DisplayWindow):
 
         self.remainingProviders.remove('animixplay')
 
+    def user_cloud_inspection(self, query, anilist_id, episode, media_type, rescrape):
+        self.remainingProviders.append('Cloud Inspection')
+
+        if not rescrape:
+            debrid = {}
+            
+            if control.real_debrid_enabled() and control.getSetting('rd.cloudInspection') == 'true':
+                debrid['real_debrid'] = True
+
+            if control.premiumize_enabled() and control.getSetting('premiumize.cloudInspection') == 'true':
+                debrid['premiumize'] = True
+
+            self.usercloudSources = debrid_cloudfiles.sources().get_sources(debrid, query, episode)
+            self.cloud_files += self.usercloudSources
+
+        self.remainingProviders.remove('Cloud Inspection')
+
     def resolutionList(self):
         resolutions = []
-##        max_res = 0
         max_res = int(control.getSetting('general.maxResolution'))
         if max_res == 3 or max_res < 3:
             resolutions.append('NA')
@@ -181,21 +202,33 @@ class Sources(DisplayWindow):
         if control.getSetting('alldebrid.enabled') == 'true':
             p.append({'slug': 'all_debrid', 'priority': int(control.getSetting('alldebrid.priority'))})
 
+        p.append({'slug': '', 'priority': 11})
+
         p = sorted(p, key=lambda i: i['priority'])
 
         return p
 
-    def sortSources(self, torrent_list, embed_list):
-##        sort_method = 0
+    def sortSources(self, torrent_list, embed_list, filter_lang):
         sort_method = int(control.getSetting('general.sortsources'))
 
         sortedList = []
-##
+
         resolutions = self.resolutionList()
 
         resolutions.reverse()
 
-        if control.getSetting('general.dubsort') == 'true':
+        for i in self.cloud_files:
+            sortedList.append(i)
+
+        if filter_lang:
+            filter_lang = int(filter_lang)
+            _torrent_list = torrent_list
+
+            torrent_list = [i for i in _torrent_list if i['lang'] != filter_lang]
+
+            embed_list = [i for i in embed_list if i['lang'] != filter_lang]
+
+        elif control.getSetting('general.dubsort') == 'true':
             _torrent_list = torrent_list
             torrent_list = [i for i in _torrent_list if i['lang'] > 0] + \
                            [i for i in embed_list if i['lang'] > 0]

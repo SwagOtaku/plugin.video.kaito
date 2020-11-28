@@ -78,7 +78,7 @@ class KaitoBrowser(BrowserBase):
             mal_id = self.get_mal_id(anilist_id)
             database.add_mapping_id(anilist_id, 'mal_id', str(mal_id))
 
-        result = requests.get("https://kaito-b.firebaseio.com/%s/Sites/%s.json" % (mal_id, source))
+        result = requests.get("https://kaito-b.firebaseio.com/%s/Pages/%s.json" % (mal_id, source))
         return result.json()
 
     def get_mal_id(self, anilist_id):
@@ -101,18 +101,22 @@ class KaitoBrowser(BrowserBase):
     def get_trakt_episodes(self, show_id, season, page=1):
         return trakt.TRAKTAPI().get_trakt_episodes(show_id, season)
 
-    def get_anime_trakt(self, anilist_id, db_correction=False):
+    def get_anime_trakt(self, anilist_id, db_correction=False, filter_lang=None):
         anime = trakt.TRAKTAPI().get_anime(anilist_id, db_correction)
 
+        if anime and filter_lang:
+            for i in anime[0]:
+                i['url'] += filter_lang
+
         if not anime:
-            anime = self.get_anime_simkl(anilist_id)
+            anime = self.get_anime_simkl(anilist_id, filter_lang)
 
         return anime
 
-    def get_anime_simkl(self, anilist_id):
-        return simkl.SIMKLAPI().get_anime(anilist_id)
+    def get_anime_simkl(self, anilist_id, params):
+        return simkl.SIMKLAPI().get_anime(anilist_id, params)
 
-    def get_anime_init(self, anilist_id):
+    def get_anime_init(self, anilist_id, filter_lang=None):
         show_meta = database.get_show(anilist_id)
 
         if not show_meta:
@@ -124,13 +128,13 @@ class KaitoBrowser(BrowserBase):
             trakt_id = trakt.TRAKTAPI().get_trakt_id(name)
 
             if not trakt_id:
-                return self.get_anime_simkl(anilist_id)
+                return self.get_anime_simkl(anilist_id, filter_lang)
 
             database.add_meta_ids(anilist_id, str(trakt_id))
 
-        return self.get_anime_trakt(anilist_id)
+        return self.get_anime_trakt(anilist_id, filter_lang=filter_lang)
 
-    def get_episodeList(self, show_id, pass_idx, rescrape=False):
+    def get_episodeList(self, show_id, pass_idx, filter_lang=None, rescrape=False):
         from ui import control
 
         episodes = database.get_episode_list(int(show_id))
@@ -149,6 +153,10 @@ class KaitoBrowser(BrowserBase):
 
         for i in playlist:
             url = i[0]
+
+            if filter_lang:
+                url += filter_lang
+
             control.playList.add(url=url, listitem=i[1])
 
     def is_aired(self, info):
@@ -174,13 +182,15 @@ class KaitoBrowser(BrowserBase):
             # Assume an item is not aired if we do not have any information on it or fail to identify
             return False
 
-    def get_sources(self, anilist_id, episode, media_type, rescrape=False):
+    def get_sources(self, anilist_id, episode, filter_lang, media_type, rescrape=False):
         show = database.get_show(anilist_id)
-        query = ast.literal_eval(show['kodi_meta'])['query']
+        kodi_meta = ast.literal_eval(show['kodi_meta'])
         actionArgs = {
-            'query': query,
+            'query': kodi_meta['query'],
             'anilist_id': anilist_id,
             'episode': episode,
+            'status': kodi_meta['status'],
+            'filter_lang': filter_lang,
             'media_type': media_type,
             'rescrape': rescrape,
             'get_backup': self.get_backup

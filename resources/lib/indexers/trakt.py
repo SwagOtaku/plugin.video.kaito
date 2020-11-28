@@ -59,7 +59,7 @@ class TRAKTAPI:
         return parsed
 
     def _parse_trakt_episode_view(self, res, show_id, show_meta, season, poster, fanart, eps_watched, update_time):
-        url = "%s/%s" % (show_id, res['number'])
+        url = "%s/%s/" % (show_id, res['number'])
         name = 'Ep. %d (%s)' % (res['number'], res.get('title', ''))
         try:
             image = TMDBAPI().episodeIDToListItem(season, str(res['number']), show_meta)['thumb']
@@ -79,7 +79,7 @@ class TRAKTAPI:
             info['aired'] = res['first_aired'][:10]
         except:
             pass
-        info['tvshowtitle'] = ast.literal_eval(database.get_show(show_id)['kodi_meta'])['name']
+        info['tvshowtitle'] = ast.literal_eval(database.get_show(show_id)['kodi_meta'])['title_userPreferred']
         info['mediatype'] = 'episode'
         parsed = utils.allocate_item(name, "play/" + str(url), False, image, info, fanart, poster)
         database._update_episode(show_id, season, res['number'], res['number_abs'], update_time, parsed)
@@ -124,6 +124,7 @@ class TRAKTAPI:
         result = self._json_request(url)
 
         if not result:
+            name = name.replace('?', '')
             name = re.findall('\d*\D+', name)[0]
             url = 'search/show?query=%s&genres=anime&extended=full' % name
             result = self._json_request(url)
@@ -140,6 +141,7 @@ class TRAKTAPI:
 
         if not result:
             name = re.findall('\d*\D+', name)[0]
+            name = name.replace('?', '')
             url = 'search/show?query=%s&genres=anime&extended=full' % name
             result = self._json_request(url)
 

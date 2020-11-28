@@ -1,6 +1,6 @@
-armkai# Kodi Media Center language file
-# Addon Name: animepahe
-# Addon id: plugin.video.animepahe
+# Kodi Media Center language file
+# Addon Name: kaito
+# Addon id: plugin.video.kaito
 # Addon Provider: SwagOtaku
 msgid ""
 msgstr ""
@@ -75,6 +75,10 @@ msgstr ""
 
 msgctxt "#30025"
 msgid "This will completely clear your addon settings. Are you sure you want to do this?"
+msgstr ""
+
+msgctxt "#30026"
+msgid "Rebuild Database"
 msgstr ""
 
 ######DEBRID DIRECTORY#######
@@ -499,4 +503,8 @@ msgstr ""
 
 msgctxt "#40371"
 msgid "English (Attack on Titan)"
+msgstr ""
+
+msgctxt "#40372"
+msgid "Inspect Cloud Files on Scrape"
 msgstr ""

@@ -10,8 +10,9 @@ def set_browser(browser):
     _BROWSER = browser
 
 def get_anilist_res(mal_id):
+    title_lang = control.getSetting("titlelanguage")
     from AniListBrowser import AniListBrowser
-    return AniListBrowser().get_mal_to_anilist(mal_id)
+    return AniListBrowser(title_lang).get_mal_to_anilist(mal_id)
 
 def get_auth_dialog(flavor):
     import sys
@@ -53,7 +54,7 @@ def WATCHLIST_STATUS_TYPE(payload, params):
 @route('watchlist_status_type_pages/*')
 def WATCHLIST_STATUS_TYPE_PAGES(payload, params):
     flavor, status, offset, page = payload.rsplit("/")
-    return control.draw_items(WatchlistFlavor.watchlist_status_request_pages(flavor, status, offset, int(page)))
+    return control.draw_items(WatchlistFlavor.watchlist_status_request_pages(flavor, status, params, offset, int(page)))
 
 @route('watchlist_query/*')
 def WATCHLIST_QUERY(payload, params):
@@ -94,7 +95,7 @@ def WATCHLIST_QUERY(payload, params):
         show_meta = get_anilist_res(mal_id)
 
     anilist_id = show_meta['anilist_id']
-    sources = _BROWSER.get_sources(anilist_id, '1', 'movie')
+    sources = _BROWSER.get_sources(anilist_id, '1', None, 'movie')
     _mock_args = {'anilist_id': anilist_id}
     from resources.lib.windows.source_select import SourceSelect
 

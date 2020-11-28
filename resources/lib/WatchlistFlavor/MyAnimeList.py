@@ -159,20 +159,14 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         progress = res['list_status']["num_episodes_watched"]
         next_up = progress + 1
         episode_count = res['node']["num_episodes"]
-        title = '%s - %s/%s' % (res['node']["title"], progress, episode_count)
-        image = res['node']['main_picture'].get('large', res['node']['main_picture']['medium'])
+        title = '%s - %s/%s' % (res['node']["title"], next_up, episode_count)
+        poster = image = res['node']['main_picture'].get('large', res['node']['main_picture']['medium'])
 
-        show, show_meta, next_up_meta = self._get_next_up_meta(mal_id, progress)
-        if show:
-            title = 'Ep. %d/%d' % (next_up, episode_count)
-            url = 'play/%d/%d' % (show['anilist_id'], next_up)
-            image = show_meta.get('fanart', image)
-            if next_up_meta:
-                try:
-                    title = '%s - %s' % (title, next_up_meta['info']['title'])
-                    image = next_up_meta['image']['thumb']
-                except:
-                    pass
+        anilist_id, next_up_meta = self._get_next_up_meta(mal_id, int(progress))
+        if next_up_meta:
+            url = 'play/%d/%d/' % (anilist_id, next_up)
+            title = '%d/%d - %s' % (next_up, episode_count, next_up_meta.get('title', 'Episode {}'.format(next_up)))
+            image = next_up_meta.get('image', poster)
 
         info = {}
 
@@ -182,18 +176,19 @@ class MyAnimeListWLF(WatchlistFlavorBase):
 
         info['tvshowtitle'] = res['node']['title']
 
-        info['mediatype'] = 'tvshow'
+        info['mediatype'] = 'episode'
 
         base = {
             "name": title,
             "url": "watchlist_to_ep/%s//%s" % (res['node']['id'], res['list_status']["num_episodes_watched"]),
             "image": image,
             "plot": info,
+            "fanart": image,
+            "poster": poster,
         }
         
-        if show:
+        if next_up_meta:
             base['url'] = url
-            base['plot']['mediatype'] = 'episode'
             return self._parse_view(base, False)
 
         if res['node']['media_type'] == 'movie' and res['node']["num_episodes"] == 1:

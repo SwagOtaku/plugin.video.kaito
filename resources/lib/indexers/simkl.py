@@ -25,8 +25,12 @@ class SIMKLAPI:
         response = response.json()
         return response
 
-    def _parse_episode_view(self, res, anilist_id, poster, fanart, eps_watched):
-        url = "%s/%s" % (anilist_id, res['episode'])
+    def _parse_episode_view(self, res, anilist_id, poster, fanart, eps_watched, filter_lang):
+        url = "%s/%s/" % (anilist_id, res['episode'])
+
+        if filter_lang:
+            url += filter_lang
+        
         name = 'Ep. %d (%s)' % (res['episode'], res.get('title'))
         image =  self.imagePath % res['img']
         info = {}
@@ -43,27 +47,27 @@ class SIMKLAPI:
             info['aired'] = res['date'][:10]
         except:
             pass
-        info['tvshowtitle'] = ast.literal_eval(database.get_show(anilist_id)['kodi_meta'])['name']
+        info['tvshowtitle'] = ast.literal_eval(database.get_show(anilist_id)['kodi_meta'])['title_userPreferred']
         info['mediatype'] = 'episode'
         parsed = utils.allocate_item(name, "play/" + str(url), False, image, info, fanart, poster)
         return parsed
 
-    def _process_episode_view(self, anilist_id, json_resp, base_plugin_url, page):
+    def _process_episode_view(self, anilist_id, json_resp, filter_lang, base_plugin_url, page):
         kodi_meta = ast.literal_eval(database.get_show(anilist_id)['kodi_meta'])
         fanart = kodi_meta.get('fanart')
         poster = kodi_meta.get('poster')
         eps_watched = kodi_meta.get('eps_watched')
         json_resp = filter(lambda x: x['type'] == 'episode', json_resp)
-        mapfunc = partial(self._parse_episode_view, anilist_id=anilist_id, poster=poster, fanart=fanart, eps_watched=eps_watched)
+        mapfunc = partial(self._parse_episode_view, anilist_id=anilist_id, poster=poster, fanart=fanart, eps_watched=eps_watched, filter_lang=filter_lang)
         all_results = map(mapfunc, json_resp)
 
         return all_results
 
-    def get_anime(self, anilist_id):
+    def get_anime(self, anilist_id, filter_lang):
         show = database.get_show(anilist_id)
 
         if show['simkl_id']:
-            return self.get_episodes(anilist_id), 'episodes'
+            return self.get_episodes(anilist_id, filter_lang), 'episodes'
 
         show_meta = show['meta_ids']
         kodi_meta = ast.literal_eval(show['kodi_meta'])
@@ -82,7 +86,7 @@ class SIMKLAPI:
                 database.update_kodi_meta(int(anilist_id), kodi_meta)
 
 
-        return self.get_episodes(anilist_id), 'episodes'
+        return self.get_episodes(anilist_id, filter_lang), 'episodes'
 
     def _get_episodes(self, anilist_id):
         simkl_id = database.get_show(anilist_id)['simkl_id']
@@ -93,9 +97,9 @@ class SIMKLAPI:
         json_resp = self._json_request(url, data)
         return json_resp
 
-    def get_episodes(self, anilist_id, page=1):
+    def get_episodes(self, anilist_id, filter_lang=None, page=1):
         episodes = database.get(self._get_episodes, 6, anilist_id)
-        return self._process_episode_view(anilist_id, episodes, "animes_page/%s/%%d" % anilist_id, page)
+        return self._process_episode_view(anilist_id, episodes, filter_lang, "animes_page/%s/%%d" % anilist_id, page)
 
     def get_anime_search(self, q):
         data = {

@@ -63,7 +63,7 @@ class watchlistPlayer(xbmc.Player):
         self.media_type = None
 ##        self.AVStarted = False
 
-    def handle_player(self, anilist_id, watchlist_update, build_playlist, episode):
+    def handle_player(self, anilist_id, watchlist_update, build_playlist, episode, filter_lang):
         self._anilist_id = anilist_id
 
         if watchlist_update:
@@ -71,11 +71,12 @@ class watchlistPlayer(xbmc.Player):
 
         self._build_playlist = build_playlist
         self._episode = episode
+        self._filter_lang = filter_lang
         self.keepAlive()
         
     def onPlayBackStarted(self):
         if self._build_playlist:
-            self._build_playlist(self._anilist_id, self._episode)
+            self._build_playlist(self._anilist_id, self._episode, self._filter_lang)
 
         current_ = playList.getposition()
         self.media_type = playList[current_].getVideoInfoTag().getMediaType()
@@ -160,13 +161,13 @@ class watchlistPlayer(xbmc.Player):
             audio_lang = self.getAvailableAudioStreams()
             if len(audio_lang) > 1:
                 try:
-                    preferred_audio = control.getSetting('general.audio')
-                    audio_int = audio_lang.index(preferred_audio)
+                    preferred_audio = int(control.getSetting('general.audio'))
+                    audio_int = audio_lang.index(control.lang(preferred_audio))
                     self.setAudioStream(audio_int)
                 except:
                     pass
                 try:
-                    if preferred_audio == 'jpn':
+                    if preferred_audio == 40315:
                         self.setSubtitleStream(1)
                 except:
                     pass
@@ -283,7 +284,7 @@ def _prefetch_play_link(link):
         "headers": linkInfo.headers,
     }
 
-def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=None, episode=None, rescrape=False):
+def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=None, episode=None, filter_lang=None, rescrape=False):
     linkInfo = _prefetch_play_link(link)
     if not linkInfo:
         cancelPlayback()
@@ -292,7 +293,7 @@ def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=Non
     item = xbmcgui.ListItem(path=linkInfo['url'])
 
     if rescrape:
-        episode_info = build_playlist(anilist_id, '', True)[episode - 1]
+        episode_info = build_playlist(anilist_id, '', filter_lang, rescrape=True)[episode - 1]
         item.setInfo('video', infoLabels=episode_info['info'])
         item.setArt(episode_info['image'])
 
@@ -302,7 +303,7 @@ def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=Non
     # Run any mimetype hook
     item = hook_mimetype.trigger(linkInfo['headers']['Content-Type'], item)
     xbmcplugin.setResolvedUrl(HANDLE, True, item)
-    watchlistPlayer().handle_player(anilist_id, watchlist_update, build_playlist, episode)
+    watchlistPlayer().handle_player(anilist_id, watchlist_update, build_playlist, episode, filter_lang)
 
 @hook_mimetype('application/dash+xml')
 def _DASH_HOOK(item):

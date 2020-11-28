@@ -104,7 +104,7 @@
         			<width>400</width>
         			<height>22</height>
         			<font>font12</font>
-        			<selectedcolor>green</selectedcolor>
+        			<selectedcolor>white</selectedcolor>
         			<align>left</align>
         			<label>Ep $INFO[ListItem.Property(ep_title)] at</label>
         		</control>
@@ -114,7 +114,7 @@
               <width>400</width>
               <height>22</height>
               <font>font14</font>
-              <selectedcolor>green</selectedcolor>
+              <selectedcolor>white</selectedcolor>
               <align>left</align>
               <label>[B]$INFO[ListItem.Property(ep_airingAt)][/B]</label>
             </control>
@@ -142,7 +142,7 @@
               <width>395</width>
               <height>22</height>
               <font>font10</font>
-              <selectedcolor>green</selectedcolor>
+              <selectedcolor>white</selectedcolor>
               <align>center</align>
               <label>[B]$INFO[ListItem.Property(genres)][/B]</label>
             </control>
@@ -242,7 +242,7 @@
         			<width>400</width>
         			<height>22</height>
         			<font>font12</font>
-        			<selectedcolor>green</selectedcolor>
+        			<selectedcolor>white</selectedcolor>
         			<align>left</align>
         			<label>Ep $INFO[ListItem.Property(ep_title)] at</label>
         		</control>
@@ -252,7 +252,7 @@
               <width>400</width>
               <height>22</height>
               <font>font14</font>
-              <selectedcolor>green</selectedcolor>
+              <selectedcolor>white</selectedcolor>
               <align>left</align>
               <label>[B]$INFO[ListItem.Property(ep_airingAt)][/B]</label>
             </control>
@@ -281,7 +281,7 @@
               <width>395</width>
               <height>22</height>
               <font>font10</font>
-              <selectedcolor>green</selectedcolor>
+              <selectedcolor>white</selectedcolor>
               <align>center</align>
               <label>[B]$INFO[ListItem.Property(genres)][/B]</label>
             </control>
@@ -314,7 +314,7 @@
               <width>50</width>
               <height>22</height>
               <font>font12</font>
-              <selectedcolor>green</selectedcolor>
+              <selectedcolor>white</selectedcolor>
               <align>left</align>
               <label>$INFO[ListItem.Property(averageScore)]%</label>
             </control>
@@ -335,7 +335,7 @@
               <width>50</width>
               <height>22</height>
               <font>font12</font>
-              <selectedcolor>green</selectedcolor>
+              <selectedcolor>white</selectedcolor>
               <align>left</align>
               <label>#$INFO[ListItem.Property(rank)]</label>
             </control>

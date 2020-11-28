@@ -70,8 +70,7 @@ class WatchlistFlavorBase(object):
         raise NotImplementedError("watchlist_update should be implemented by subclass")
 
     def _get_next_up_meta(self, mal_id, next_up, anilist_id=None):
-        show_meta = {}
-        next_up_meta = None
+        next_up_meta = {}
 
         if anilist_id:
             show = database.get_show(anilist_id)
@@ -80,14 +79,27 @@ class WatchlistFlavorBase(object):
 
         if show:
             show_meta = ast.literal_eval(show['kodi_meta'])
+            next_up_meta['image'] = show_meta.get('fanart')
+            anilist_id = show['anilist_id']
             episodes = database.get_episode_list(show['anilist_id'])
             if episodes:
                 try:
-                    next_up_meta = ast.literal_eval(episodes[next_up]['kodi_meta'])
+                    episode_meta = ast.literal_eval(episodes[next_up]['kodi_meta'])
+                    next_up_meta['title'] = episode_meta['info']['title']
+                    next_up_meta['image'] = episode_meta['image']['thumb']
                 except:
-                    show = None
+                    pass
 
-        return show, show_meta, next_up_meta
+            elif show['simkl_id']:
+                try:
+                    resp = requests.get('https://api.simkl.com/anime/episodes/%s?extended=full' % show['simkl_id']).json()
+                    episode_meta = resp[next_up]
+                    next_up_meta['title'] = episode_meta['title']
+                    next_up_meta['image'] = 'https://simkl.net/episodes/%s_w.jpg' % episode_meta['img']
+                except:
+                    pass                
+
+        return anilist_id, next_up_meta
 
     def _get_mapping_id(self, anilist_id, flavor):
         try:
@@ -121,7 +133,7 @@ class WatchlistFlavorBase(object):
                                 base["image"],
                                 base["plot"],
                                 base.get("fanart"),
-                                base["image"])
+                                base.get("poster"))
             ]
 
     def _to_url(self, url=''):

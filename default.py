@@ -40,7 +40,7 @@ def _add_last_watched():
 
     MENU_ITEMS.insert(0, (
         "%s[I]%s[/I]" % (control.lang(30000), last_watched['name']),
-        "animes/%s/" % anilist_id,
+        "animes/%s/null/" % anilist_id,
         last_watched['poster']
     ))
 
@@ -65,7 +65,7 @@ def genre_dialog(genre_display_list):
 
 @route('season_correction/*')
 def seasonCorrection(payload, params):
-    anilist_id, mal_id = payload.split("/")[1:]
+    anilist_id, mal_id, filter_lang = payload.split("/")[1:]
     trakt = _BROWSER.search_trakt_shows(anilist_id)
     return control.draw_items(trakt)
 
@@ -78,7 +78,7 @@ def seasonCorrectionDatabase(payload, params):
 
 @route('find_similar/*')
 def FIND_SIMILAR(payload, params):
-    anilist_id, mal_id = payload.split("/")[1:]
+    anilist_id, mal_id, filter_lang = payload.split("/")[1:]
     return control.draw_items(_ANILIST_BROWSER.get_recommendation(anilist_id))
 
 @route('authAllDebrid')
@@ -87,7 +87,7 @@ def authAllDebrid(payload, params):
     AllDebrid().auth()
 
 @route('authRealDebrid')
-def authAllDebrid(payload, params):
+def authRealDebrid(payload, params):
     from resources.lib.debrid.real_debrid import RealDebrid
     RealDebrid().auth()
 
@@ -109,6 +109,11 @@ def CLEAR_CACHE(payload, params):
 def CLEAR_TORRENT_CACHE(payload, params):
     return database.torrent_cache_clear()
 
+@route('rebuild_database')
+def REBUILD_DATABASE(payload, params):
+    from resources.lib.ui.database_sync import AnilistSyncDatabase
+    AnilistSyncDatabase().re_build_database()
+
 @route('wipe_addon_data')
 def WIPE_ADDON_DATA(payload, params):
     dialog = control.yesno_dialog(control.lang(30010), control.lang(30025))
@@ -116,8 +121,8 @@ def WIPE_ADDON_DATA(payload, params):
 
 @route('animes/*')
 def ANIMES_PAGE(payload, params):
-    anilist_id, mal_id = payload.rsplit("/")
-    anime_general, content = _BROWSER.get_anime_init(anilist_id)
+    anilist_id, mal_id, filter_lang = payload.rsplit("/")
+    anime_general, content = _BROWSER.get_anime_init(anilist_id, filter_lang)
     return control.draw_items(anime_general, content)
 
 @route('animes_trakt/*')
@@ -222,7 +227,7 @@ def CLEAR_HISTORY(payload, params):
 
 @route('search')
 def SEARCH(payload, params):
-    query = control.keyboard(control.lang(30009))
+    query = control.keyboard(control.lang(30010))
     if not query:
         return False
 
@@ -246,12 +251,12 @@ def PLAY(payload, params):
 
 @route('play_movie/*')
 def PLAY_MOVIE(payload, params):
-    anilist_id, episode = payload.rsplit("/")
-    sources = _BROWSER.get_sources(anilist_id, episode, 'movie')
+    anilist_id, episode, filter_lang = payload.rsplit("/")
+    sources = _BROWSER.get_sources(anilist_id, episode, filter_lang, 'movie')
 
     _mock_args = {'anilist_id': anilist_id}
 
-    if control.getSetting('general.playstyle.movie') == '1' or params:
+    if control.getSetting('general.playstyle.movie') == '1' or params.get('source_select'):
 
         from resources.lib.windows.source_select import SourceSelect
 
@@ -287,11 +292,11 @@ def PLAY_GOGO(payload, params):
 
 @route('play/*')
 def PLAY(payload, params):
-    anilist_id, episode = payload.rsplit("/")
-    sources = _BROWSER.get_sources(anilist_id, episode, 'show')
+    anilist_id, episode, filter_lang = payload.rsplit("/")
+    sources = _BROWSER.get_sources(anilist_id, episode, filter_lang, 'show')
     _mock_args = {"anilist_id": anilist_id}
 
-    if control.getSetting('general.playstyle.episode') == '1' or params:
+    if control.getSetting('general.playstyle.episode') == '1' or params.get('source_select'):
 
         from resources.lib.windows.source_select import SourceSelect
 
@@ -309,12 +314,13 @@ def PLAY(payload, params):
                         anilist_id,
                         watchlist_update,
                         _BROWSER.get_episodeList,
-                        int(episode))
+                        int(episode),
+                        filter_lang)
 
 @route('rescrape_play/*')
 def RESCRAPE_PLAY(payload, params):
-    anilist_id, episode = payload.rsplit("/")
-    sources = _BROWSER.get_sources(anilist_id, episode, 'show', True)
+    anilist_id, episode, filter_lang = payload.rsplit("/")
+    sources = _BROWSER.get_sources(anilist_id, episode, filter_lang, 'show', True)
     _mock_args = {"anilist_id": anilist_id}
 
     from resources.lib.windows.source_select import SourceSelect
@@ -327,6 +333,7 @@ def RESCRAPE_PLAY(payload, params):
                         watchlist_update,
                         _BROWSER.get_episodeList,
                         int(episode),
+                        filter_lang,
                         rescrape=True)
 
 @route('tools')
@@ -336,6 +343,7 @@ def TOOLS_MENU(payload, params):
         (control.lang(30021), "clear_cache", ''),
         (control.lang(30022), "clear_torrent_cache", ''),
         (control.lang(30023), "clear_history", ''),
+        (control.lang(30026), "rebuild_database", ''),
         (control.lang(30024), "wipe_addon_data", ''),
         ]
 

@@ -15,7 +15,23 @@ def getAudio_lang(release_title):
         lang = 2
 
     return lang
-    
+
+def getQuality(release_title):
+    release_title = release_title.lower()
+    quality = 'NA'
+    if '4k' in release_title:
+        quality = '4K'
+    if '2160' in release_title:
+        quality = '4K'
+    if '1080' in release_title:
+        quality = '1080p'
+    if '720' in release_title:
+        quality = '720p'
+    if '480' in release_title:
+        quality = 'NA'
+
+    return quality
+
 def getInfo(release_title):
     info = []
     release_title = cleanTitle(release_title)
@@ -143,7 +159,7 @@ def get_best_match(dict_key, dictionary_list, episode):
     files = sorted(files, key=lambda x: len(' '.join(list(x['regex_matches'][0]))), reverse=True)
 
     if len(files) != 1:
-        files = user_select(files)
+        files = user_select(files, dict_key)
 
     return files[0]
 
@@ -175,8 +191,6 @@ def clean_title(title, broken=None):
 
 def is_file_ext_valid(file_name):
     try:
-        import xbmc
-
         COMMON_VIDEO_EXTENSIONS = xbmc.getSupportedMedia('video').split('|')
 
         COMMON_VIDEO_EXTENSIONS = [i for i in COMMON_VIDEO_EXTENSIONS if i != '' and i != '.zip']
@@ -188,6 +202,30 @@ def is_file_ext_valid(file_name):
 
     return True
 
+def filter_single_episode(episode, release_title):
+    filename = re.sub(r'\[.*?\]', '', release_title)
+    filename = filename.lower()
+
+    try:
+        playList = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
+        info = playList[playList.getposition()].getVideoInfoTag()
+        season = str(info.getSeason()).zfill(2)
+        season = 's' + season
+    except:
+        season = ''
+
+    filter_episode = [
+        '%se%s' % (season, episode.zfill(3)),
+        '%se%s' % (season, episode.zfill(2)),
+        episode.zfill(3),
+        episode.zfill(2)
+        ]
+
+    if next((string for string in filter_episode if string in filename), False):
+        return True
+
+    return False
+
 def run_once(f):
     def wrapper(*args, **kwargs):
         if not wrapper.has_run:
@@ -197,8 +235,8 @@ def run_once(f):
     return wrapper
 
 @run_once
-def user_select(files):
+def user_select(files, dict_key):
     import xbmcgui
-    idx = xbmcgui.Dialog().select('dsds', [i['path'].rsplit('/')[-1] for i in files])
+    idx = xbmcgui.Dialog().select('Select File', [i[dict_key].rsplit('/')[-1] for i in files])
     files = [files[idx]]
     return files

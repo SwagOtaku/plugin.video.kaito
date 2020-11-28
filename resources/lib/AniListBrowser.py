@@ -7,6 +7,7 @@ import ast
 from functools import partial
 from ui import utils
 from ui import database
+from ui.divide_flavors import div_flavor
 
 class AniListBrowser():
     _URL = "https://graphql.anilist.co"
@@ -14,6 +15,8 @@ class AniListBrowser():
     def __init__(self, title_key=None):
         if title_key:
             self._TITLE_LANG = self._title_lang(title_key)
+        else:
+            self._TITLE_LANG = "userPreferred"
 
     def _title_lang(self, title_key):
         title_lang = {
@@ -460,10 +463,16 @@ class AniListBrowser():
         json_res = results['data']['Media'] 
         return json_res  
 
-    def _process_anilist_view(self, json_res, base_plugin_url, page):
+    @div_flavor
+    def _process_anilist_view(self, json_res, base_plugin_url, page, dub=False):
         hasNextPage = json_res['pageInfo']['hasNextPage']
 
-        all_results = map(self._base_anilist_view, json_res['ANIME'])
+        if dub:
+            mapfunc = partial(self._base_anilist_view, mal_dub=dub)
+        else:
+            mapfunc = self._base_anilist_view
+
+        all_results = map(mapfunc, json_res['ANIME'])
         all_results = list(itertools.chain(*all_results))
 
         all_results += self._handle_paging(hasNextPage, base_plugin_url, page)
@@ -476,10 +485,17 @@ class AniListBrowser():
         all_results = map(mapfunc, filter_json)
         return all_results
 
-    def _process_recommendation_view(self, json_res, base_plugin_url, page):
+    @div_flavor
+    def _process_recommendation_view(self, json_res, base_plugin_url, page, dub=False):
         hasNextPage = json_res['pageInfo']['hasNextPage']
         res = [i['mediaRecommendation'] for i in json_res['nodes']]
-        all_results = map(self._base_anilist_view, res)
+
+        if dub:
+            mapfunc = partial(self._base_anilist_view, mal_dub=dub)
+        else:
+            mapfunc = self._base_anilist_view
+
+        all_results = map(mapfunc, res)
         all_results = list(itertools.chain(*all_results))
 
         all_results += self._handle_paging(hasNextPage, base_plugin_url, page)
@@ -488,25 +504,15 @@ class AniListBrowser():
     def _process_mal_to_anilist(self, res):
         titles = self._get_titles(res)
         start_date = self._get_start_date(res)
-        database._update_show(
-            res['id'],
-            res.get('idMal'),
-            str({'name': res['title']['userPreferred'], 'start_date': start_date, 'episodes': res['episodes'], 'query': titles, 'poster':res['coverImage']['extraLarge']})
-            )
+        self._database_update_show(res)
 
         return  database.get_show(str(res['id']))
 
-    def _base_anilist_view(self, res):
+    def _base_anilist_view(self, res, mal_dub=None):
         in_database = database.get_show(str(res['id']))
 
         if not in_database:
-            titles = self._get_titles(res)
-            start_date = self._get_start_date(res)
-            database._update_show(
-                res['id'],
-                res.get('idMal'),
-                str({'name': res['title']['userPreferred'], 'start_date': start_date, 'episodes': res['episodes'], 'query': titles, 'poster':res['coverImage']['extraLarge']})
-                )
+            self._database_update_show(res)
 
         #remove cached eps for releasing shows every five days so new eps metadata can be shown
         if res.get('status') == 'RELEASING':
@@ -560,20 +566,25 @@ class AniListBrowser():
 
         info['mediatype'] = 'tvshow'
 
+        dub = False
+        mal_id = str(res.get('idMal', 0))
+        if mal_dub and mal_dub.get(mal_id):
+            dub = True
+
         base = {
             "name": title,
-            "url": "animes/%s/%s" % (res['id'], res.get('idMal')),
+            "url": "animes/%s/%s/" % (res['id'], res.get('idMal')),
             "image": res['coverImage']['extraLarge'],
             "fanart": kodi_meta.get('fanart', res['coverImage']['extraLarge']),
             "info": info
         }
 
         if res['format'] == 'MOVIE' and res['episodes'] == 1:
-            base['url'] = "play_movie/%s/1" % (res['id'])
+            base['url'] = "play_movie/%s/1/" % (res['id'])
             base['info']['mediatype'] = 'movie'
-            return self._parse_view(base, False)
+            return self._parse_view(base, False, dub=dub)
 
-        return self._parse_view(base)
+        return self._parse_view(base, dub=dub)
 
     def _base_airing_view(self, res, ts):
         airingAt = datetime.datetime.fromtimestamp(res['airingAt'])
@@ -605,6 +616,28 @@ class AniListBrowser():
             
         return base
 
+    def _database_update_show(self, res):
+        titles = self._get_titles(res)
+        start_date = self._get_start_date(res)
+        title_userPreferred = res['title'][self._TITLE_LANG]
+        if not title_userPreferred:
+            title_userPreferred = res['title']['userPreferred']
+
+        kodi_meta = {}
+        kodi_meta['name'] = res['title']['userPreferred']
+        kodi_meta['title_userPreferred'] = title_userPreferred
+        kodi_meta['start_date'] = start_date
+        kodi_meta['query'] = titles
+        kodi_meta['episodes'] = res['episodes']
+        kodi_meta['poster'] = res['coverImage']['extraLarge']
+        kodi_meta['status'] = res.get('status')
+        
+        database._update_show(
+            res['id'],
+            res.get('idMal'),
+            str(kodi_meta)
+            )
+
     def _get_titles(self, res):
         titles = list(set(res['title'].values()))
         if res['format'] == 'MOVIE':
@@ -622,7 +655,10 @@ class AniListBrowser():
 
         return start_date
 
-    def _parse_view(self, base, is_dir=True):
+    def _parse_view(self, base, is_dir=True, dub=False):
+        if dub:
+            return self._parse_div_view(base, is_dir)
+
         return [
             utils.allocate_item("%s" % base["name"],
                                 base["url"],
@@ -632,6 +668,29 @@ class AniListBrowser():
                                 base["fanart"],
                                 base["image"])
             ]
+
+    def _parse_div_view(self, base, is_dir):
+        parsed_view = [
+            utils.allocate_item("%s" % base["name"],
+                                base["url"] + '2',
+                                is_dir,
+                                base["image"],
+                                base["info"],
+                                base["fanart"],
+                                base["image"])
+            ]
+
+        parsed_view.append(
+            utils.allocate_item("%s (Dub)" % base["name"],
+                                base["url"] + '0',
+                                is_dir,
+                                base["image"],
+                                base["info"],
+                                base["fanart"],
+                                base["image"])
+            )
+
+        return parsed_view
 
     def get_genres(self, genre_dialog):
         query = '''
@@ -698,6 +757,7 @@ class AniListBrowser():
                     isAdult: $isAdult
                 ) {
                     id
+                    idMal
                     title {
                         userPreferred,
                         romaji,
@@ -737,7 +797,8 @@ class AniListBrowser():
 
         return self._process_genre_view(query, variables, "anilist_genres/%s/%s/%%d" %(genre_list, tag_list), page)
 
-    def _process_genre_view(self, query, variables, base_plugin_url, page):
+    @div_flavor
+    def _process_genre_view(self, query, variables, base_plugin_url, page, dub=False):
         result = requests.post(self._URL, json={'query': query, 'variables': variables})
         results = result.json()
 
@@ -747,7 +808,12 @@ class AniListBrowser():
         anime_res = results['data']['Page']['ANIME']
         hasNextPage = results['data']['Page']['pageInfo']['hasNextPage']
 
-        all_results = map(self._base_anilist_view, anime_res)
+        if dub:
+            mapfunc = partial(self._base_anilist_view, mal_dub=dub)
+        else:
+            mapfunc = self._base_anilist_view
+
+        all_results = map(mapfunc, anime_res)
         all_results = list(itertools.chain(*all_results))
 
         all_results += self._handle_paging(hasNextPage, base_plugin_url, page)

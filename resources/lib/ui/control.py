@@ -47,6 +47,8 @@ anilistSyncDB_lock = threading.Lock()
 torrentScrapeCacheFile = os.path.join(dataPath, 'torrentScrape.db')
 torrentScrapeCacheFile_lock = threading.Lock()
 
+maldubFile = os.path.join(dataPath, 'mal_dub.json')
+
 kodiGui = xbmcgui
 showDialog = xbmcgui.Dialog()
 dialogWindow = kodiGui.WindowDialog

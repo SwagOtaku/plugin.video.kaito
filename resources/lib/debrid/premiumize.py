@@ -5,7 +5,6 @@ import requests
 
 from resources.lib.ui import source_utils
 from resources.lib.ui import control
-##from resources.lib.common import tools
 from resources.lib.ui import database
 
 

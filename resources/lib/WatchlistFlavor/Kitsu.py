@@ -182,20 +182,16 @@ class KitsuWLF(WatchlistFlavorBase):
 
         progress = res["attributes"]['progress']
         next_up = progress + 1
+        anime_title = eres["attributes"]["titles"].get(self.__get_title_lang(), eres["attributes"]['canonicalTitle'])
         episode_count = eres["attributes"]['episodeCount'] if eres["attributes"]['episodeCount'] is not None else 0
-        title = 'Ep. %d/%d' % (next_up, episode_count)
-        image = eres["attributes"]['posterImage']['large']
+        title = '%s - %d/%d' % (anime_title, next_up, episode_count)
+        poster = image = eres["attributes"]['posterImage']['large']
 
-        show, show_meta, next_up_meta = self._get_next_up_meta(mal_id, progress)
-        if show:
-            url = 'play/%d/%d' % (show['anilist_id'], next_up)
-            image = show_meta.get('fanart', image)
-            if next_up_meta:
-                try:
-                    title = '%s - %s' % (title, next_up_meta['info']['title'])
-                    image = next_up_meta['image']['thumb']
-                except:
-                    pass
+        anilist_id, next_up_meta = self._get_next_up_meta(mal_id, int(progress))
+        if next_up_meta:
+            url = 'play/%d/%d/' % (anilist_id, next_up)
+            title = '%d/%d - %s' % (next_up, episode_count, next_up_meta.get('title', 'Episode {}'.format(next_up)))
+            image = next_up_meta.get('image', poster)
 
         info = {}
 
@@ -203,20 +199,21 @@ class KitsuWLF(WatchlistFlavorBase):
 
         info['title'] = title
 
-        info['tvshowtitle'] = eres["attributes"]["titles"].get(self.__get_title_lang(), eres["attributes"]['canonicalTitle'])
+        info['tvshowtitle'] = anime_title
 
-        info['mediatype'] = 'tvshow'
+        info['mediatype'] = 'episode'
 
         base = {
             "name": title,
             "url": "watchlist_to_ep/%s/%s/%s" % (mal_id, _id, res["attributes"]['progress']),
             "image": image,
             "plot": info,
+            "fanart": image,
+            "poster": poster,
         }
 
-        if show:
+        if next_up_meta:
             base['url'] = url
-            base['plot']['mediatype'] = 'episode'
             return self._parse_view(base, False)
 
         if eres['attributes']['subtype'] == 'movie' and eres['attributes']['episodeCount'] == 1:

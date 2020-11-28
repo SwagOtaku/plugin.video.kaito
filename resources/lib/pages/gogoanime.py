@@ -34,7 +34,7 @@ class sources(BrowserBase):
             link = element.a.get('data-video')
             type_ = 'hoster'
 
-            if server == 'Xstreamcdn':
+            if server == 'xstreamcdn':
                 type_ = 'embed'
 
             elif server == 'vidcdn':
@@ -53,7 +53,7 @@ class sources(BrowserBase):
                 'provider': 'gogo',
                 'size': 'NA',
                 'info': source_utils.getInfo(slug),
-                'lang': source_utils.getAudio_lang(slug)
+                'lang': source_utils.getAudio_lang(title)
                 }
             sources.append(source)
 

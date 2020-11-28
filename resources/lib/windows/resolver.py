@@ -68,8 +68,12 @@ class Resolver(BaseWindow):
                             self.close()
                             return
 
-                    elif i['type'] == 'hoster':
-                        stream_link = self.resolve_source(i)
+                    elif i['type'] == 'cloud' or i['type'] == 'hoster':
+
+                        if i['type'] == 'cloud' and i['debrid_provider'] == 'premiumize':
+                            stream_link = i['hash']
+                        else:
+                            stream_link = self.resolve_source(self.resolvers[i['debrid_provider']], i)
 
                         if stream_link is None:
                             continue
@@ -124,7 +128,7 @@ class Resolver(BaseWindow):
 
             if source['type'] == 'torrent':
                 stream_link = api.resolve_single_magnet(hash_, magnet, source['episode_re'])
-            elif source['type'] == 'hoster':
+            elif source['type'] == 'cloud' or source['type'] == 'hoster':
                 stream_link = api.resolve_hoster(hash_)
         except:
             import traceback
@@ -136,6 +140,9 @@ class Resolver(BaseWindow):
 
 ##        if tools.getSetting('general.tempSilent') == 'true':
 ##            self.silent = True
+
+        if not sources:
+            return None
 
         self.sources = sources
         self.args = args

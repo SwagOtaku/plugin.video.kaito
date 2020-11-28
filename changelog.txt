@@ -1,3 +1,12 @@
+Changelog 0.0.6:
+- Added Premiumize and Real-Debrid cloud inspection
+- Added setting 'Seperate Dubs and Subs' to seperate anime into sub and dub list items if dub is available (test flight)
+- Added instruction dialog for MAL/AniList auth for linux os
+- Adjusted set titles to romaji/english
+- Adjusted Tertiary Dub filter
+- Improved 'Next Up'
+- Improved season torrent pack scraping
+
 Changelog 0.0.5:
 - Fixed bug
 

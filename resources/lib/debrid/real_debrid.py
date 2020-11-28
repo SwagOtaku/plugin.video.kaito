@@ -179,6 +179,11 @@ class RealDebrid:
         response = self.post_url(url, postData)
         return response
 
+    def list_torrents(self):
+        url = "https://api.real-debrid.com/rest/1.0/torrents"
+        response = self.get_url(url)
+        return response
+
     def torrentInfo(self, id):
         url = "https://api.real-debrid.com/rest/1.0/torrents/info/%s" % id
         return self.get_url(url)

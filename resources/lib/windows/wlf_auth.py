@@ -73,9 +73,19 @@ class AltWatchlistFlavorAuth:
         res = {}
         dialog = control.kodiGui.Dialog()
         if self.flavor == 'anilist':
+            dialog.textviewer(control.ADDON_NAME + ': AniList',
+                              '{}\n{}\n{}'.format(control.lang(40105),
+                                                  control.lang(40106).replace('below', 'in the input dialog that will popup once you close this'),
+                                                  control.lang(40110)))
+
             res['username'] = dialog.input('Enter AniList username', type=control.kodiGui.INPUT_ALPHANUM)
             res['token'] = dialog.input('Enter AniList token', type=control.kodiGui.INPUT_ALPHANUM)
         else:
+            dialog.textviewer(control.ADDON_NAME + ': MyAnimeList',
+                              '{}\n{}\n{}'.format(control.lang(40100),
+                                                  control.lang(40101).replace('below', 'in the input dialog that will popup once you close this'),
+                                                  control.lang(40110)))
+
             res['authvar'] = dialog.input('Enter MAL auth url', type=control.kodiGui.INPUT_ALPHANUM)
 
         try:

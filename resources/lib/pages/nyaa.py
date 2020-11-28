@@ -10,6 +10,7 @@ import requests
 import threading
 import copy
 import ast
+import itertools
 
 class sources(BrowserBase):
     def _parse_anime_view(self, res):
@@ -105,7 +106,7 @@ class sources(BrowserBase):
 
         return all_results
 
-    def _process_nyaa_episodes(self, url, episode):
+    def _process_nyaa_episodes(self, url, episode, season=None):
         json_resp = requests.get(url).text
         results = bs.BeautifulSoup(json_resp, 'html.parser')
         rex = r'(magnet:)+[^"]*'
@@ -125,11 +126,41 @@ class sources(BrowserBase):
              }
             for magnet,name,size,downloads in search_results]
 
-        for torrent in list_:
+        regex = r'\ss(\d+)|season\s(\d+)|(\d+)+(?:st|[nr]d|th)\sseason'
+        regex_ep = r'\de(\d+)\b|\se(\d+)\b|\s-\s(\d{1,3})\b'
+        rex = re.compile(regex)
+        rex_ep = re.compile(regex_ep)
+
+        filtered_list = []
+
+        for idx, torrent in enumerate(list_):
             torrent['hash'] = re.findall(r'btih:(.*?)(?:&|$)', torrent['magnet'])[0]
 
+            if season:
+                title = torrent['name'].lower()
 
-        cache_list = TorrentCacheCheck().torrentCacheCheck(list_)
+                ep_match = rex_ep.findall(title)
+                ep_match = map(int, list(itertools.ifilter(None, itertools.chain(*ep_match))))
+
+                if ep_match and ep_match[0] != int(episode):
+                    regex_ep_range = r'\s\d+-\d+|\s\d+~\d+|\s\d+\s-\s\d+|\s\d+\s~\s\d+'
+                    rex_ep_range = re.compile(regex_ep_range)
+
+                    if rex_ep_range.search(title):
+                        pass
+                    else:
+                        continue
+                
+                match = rex.findall(title)
+                match = map(int, list(itertools.ifilter(None, itertools.chain(*match))))
+
+                if not match or match[0] == int(season):
+                    filtered_list.append(torrent)
+
+            else:
+                filtered_list.append(torrent)
+
+        cache_list = TorrentCacheCheck().torrentCacheCheck(filtered_list)
         cache_list = sorted(cache_list, key=lambda k: k['downloads'], reverse=True)
         mapfunc = partial(self._parse_nyaa_episode_view, episode=episode)
         all_results = map(mapfunc, cache_list)
@@ -168,6 +199,35 @@ class sources(BrowserBase):
         all_results = map(mapfunc, cache_list)
         return all_results
 
+    def _process_nyaa_movie(self, url, episode):
+        json_resp = requests.get(url).text
+        results = bs.BeautifulSoup(json_resp, 'html.parser')
+        rex = r'(magnet:)+[^"]*'
+        search_results = [
+            (i.find_all('a',{'href':re.compile(rex)})[0].get('href'),
+             i.find_all('a', {'class': None})[1].get('title'),
+             i.find_all('td', {'class': 'text-center'})[1].text,
+             i.find_all('td', {'class': 'text-center'})[-1].text)
+            for i in results.select("tr.danger,tr.default,tr.success")
+            ]
+
+        list_ = [
+            {'magnet': magnet,
+             'name': name,
+             'size': size.replace('i', ''),
+             'downloads': int(downloads)
+             }
+            for magnet,name,size,downloads in search_results]
+
+        for idx, torrent in enumerate(list_):
+            torrent['hash'] = re.findall(r'btih:(.*?)(?:&|$)', torrent['magnet'])[0]
+
+        cache_list = TorrentCacheCheck().torrentCacheCheck(list_)
+        cache_list = sorted(cache_list, key=lambda k: k['downloads'], reverse=True)
+        mapfunc = partial(self._parse_nyaa_episode_view, episode=episode)
+        all_results = map(mapfunc, cache_list)
+        return all_results
+
     def _process_cached_sources(self, list_, episode):
         cache_list = TorrentCacheCheck().torrentCacheCheck(list_)
         mapfunc = partial(self._parse_nyaa_cached_episode_view, episode=episode)
@@ -194,21 +254,18 @@ class sources(BrowserBase):
         except:
             pass
 
-    def get_sources(self, query, anilist_id, episode, media_type, rescrape):
+    def get_sources(self, query, anilist_id, episode, status, media_type, rescrape):
         if media_type == 'movie':
             return self._get_movie_sources(query, anilist_id, episode)
 
-        sources = self._get_episode_sources(query, anilist_id, episode, rescrape)
+        sources = self._get_episode_sources(query, anilist_id, episode, status, rescrape)
 
         if not sources:
             sources = self._get_episode_sources_backup(query, anilist_id, episode)
 
         return sources
 
-    def _get_episode_sources(self, show, anilist_id, episode, rescrape):
-##        if int(anilist_id) in [114236]:
-##            return
-
+    def _get_episode_sources(self, show, anilist_id, episode, status, rescrape):
         if rescrape:
             return self._get_episode_sources_pack(show, anilist_id, episode)
 
@@ -224,10 +281,27 @@ class sources(BrowserBase):
         season = database.get_season_list(anilist_id)
         if season:
             season = str(season['season']).zfill(2)
-            query += '|"S%sE%s"' %(season, episode.zfill(2))
+            query += '|"S%sE%s "' %(season, episode.zfill(2))
 
         url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % query            
-        return self._process_nyaa_episodes(url, episode.zfill(2))
+
+
+        if status == 'FINISHED':
+            query = '%s "Batch"|"Complete Series"' % (show)
+
+            episodes = ast.literal_eval(database.get_show(anilist_id)['kodi_meta'])['episodes']
+            if episodes:
+                query += '|"01-{0}"|"01~{0}"|"01 - {0}"|"01 ~ {0}"'.format(episodes)
+
+            if season:
+                query += '|"S{0}"|"Season {0}"'.format(season)
+                query += '|"S%sE%s "' %(season, episode.zfill(2))
+
+            query += '|"- %s"' % (episode.zfill(2))
+
+            url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=seeders&&o=desc" % query
+
+        return self._process_nyaa_episodes(url, episode.zfill(2), season)
 
     def _get_episode_sources_backup(self, db_query, anilist_id, episode):
         show = requests.get("https://kaito-title.firebaseio.com/%s.json" % anilist_id).json()
@@ -277,7 +351,7 @@ class sources(BrowserBase):
     def _get_movie_sources(self, query, anilist_id, episode):
         query = requests.utils.quote(query)
         url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % query
-        sources = self._process_nyaa_episodes(url, '1')
+        sources = self._process_nyaa_movie(url, '1')
 
         if not sources:
             sources = self._get_movie_sources_backup(anilist_id)
@@ -298,7 +372,7 @@ class sources(BrowserBase):
         
         query = requests.utils.quote(show)
         url = "https://nyaa.si/?f=0&c=1_2&q=%s" % query
-        return self._process_nyaa_episodes(url, episode)
+        return self._process_nyaa_movie(url, episode)
 
 class TorrentCacheCheck:
     def __init__(self):
