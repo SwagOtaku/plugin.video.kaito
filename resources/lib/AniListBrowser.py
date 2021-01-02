@@ -518,9 +518,10 @@ class AniListBrowser():
         if res.get('status') == 'RELEASING':
             try:
                 from datetime import datetime, timedelta
-                check_update = (datetime.today() - timedelta(days=5)).strftime('%Y-%m-%d')
+                present = datetime.now()
                 last_updated = database.get_episode_list(res['id'])[0]['last_updated']
-                if check_update == last_updated:
+                last_updated = datetime.strptime(last_updated, '%Y-%m-%d')
+                if last_updated.date() <= present.date():
                     database.remove_episodes(res['id'])
             except:
                 pass

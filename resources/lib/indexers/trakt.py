@@ -3,7 +3,6 @@ import json
 import ast
 import re
 from functools import partial
-from datetime import datetime
 from tmdb import TMDBAPI
 from ..ui import database, utils
 
@@ -113,7 +112,8 @@ class TRAKTAPI:
         return all_results
     
     def _process_trakt_episode_view(self, anilist_id, show_meta, season, poster, fanart, eps_watched, url, data, base_plugin_url):
-        update_time = datetime.today().strftime('%Y-%m-%d')
+        from datetime import datetime, timedelta
+        update_time = (datetime.today() + timedelta(days=5)).strftime('%Y-%m-%d')
         result = self._json_request(url)
         mapfunc = partial(self._parse_trakt_episode_view, show_id=anilist_id, show_meta=show_meta, season=season, poster=poster, fanart=fanart, eps_watched=eps_watched, update_time=update_time)
         all_results = map(mapfunc, result)

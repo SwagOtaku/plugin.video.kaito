@@ -87,6 +87,7 @@ class WatchlistFlavorBase(object):
                     episode_meta = ast.literal_eval(episodes[next_up]['kodi_meta'])
                     next_up_meta['title'] = episode_meta['info']['title']
                     next_up_meta['image'] = episode_meta['image']['thumb']
+                    next_up_meta['plot'] = episode_meta['info']['plot']
                 except:
                     pass
 
@@ -96,6 +97,7 @@ class WatchlistFlavorBase(object):
                     episode_meta = resp[next_up]
                     next_up_meta['title'] = episode_meta['title']
                     next_up_meta['image'] = 'https://simkl.net/episodes/%s_w.jpg' % episode_meta['img']
+                    next_up_meta['plot'] = episode_meta['description']
                 except:
                     pass                
 

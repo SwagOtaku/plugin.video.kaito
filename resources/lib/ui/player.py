@@ -75,7 +75,7 @@ class watchlistPlayer(xbmc.Player):
         self.keepAlive()
         
     def onPlayBackStarted(self):
-        if self._build_playlist:
+        if self._build_playlist and playList.size() == 1:
             self._build_playlist(self._anilist_id, self._episode, self._filter_lang)
 
         current_ = playList.getposition()

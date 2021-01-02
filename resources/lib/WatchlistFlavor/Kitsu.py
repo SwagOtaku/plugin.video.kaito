@@ -186,12 +186,14 @@ class KitsuWLF(WatchlistFlavorBase):
         episode_count = eres["attributes"]['episodeCount'] if eres["attributes"]['episodeCount'] is not None else 0
         title = '%s - %d/%d' % (anime_title, next_up, episode_count)
         poster = image = eres["attributes"]['posterImage']['large']
+        plot = None
 
         anilist_id, next_up_meta = self._get_next_up_meta(mal_id, int(progress))
         if next_up_meta:
             url = 'play/%d/%d/' % (anilist_id, next_up)
             title = '%d/%d - %s' % (next_up, episode_count, next_up_meta.get('title', 'Episode {}'.format(next_up)))
             image = next_up_meta.get('image', poster)
+            plot = next_up_meta.get('plot')
 
         info = {}
 
@@ -200,6 +202,8 @@ class KitsuWLF(WatchlistFlavorBase):
         info['title'] = title
 
         info['tvshowtitle'] = anime_title
+
+        info['plot'] = plot
 
         info['mediatype'] = 'episode'
 

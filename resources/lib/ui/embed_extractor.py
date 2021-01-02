@@ -214,11 +214,13 @@ __register_extractor(["http://mp4upload.com/",
                      __extract_mp4upload)
 
 __register_extractor(["https://vidstreaming.io",
-                      "https://gogo-stream.com"],
+                      "https://gogo-stream.com",
+                      "https://gogo-play.net"],
                      __extract_vidstream,
                      None,
                      [{'d': 'https://vidstreaming.io'},
-                      {'d': 'https://gogo-stream.com'}])
+                      {'d': 'https://gogo-stream.com'},
+                      {'d': 'https://gogo-play.net'}])
 
 __register_extractor(["https://www.xstreamcdn.com/v/",
                       "https://gcloud.live/v/",

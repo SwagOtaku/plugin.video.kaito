@@ -131,7 +131,7 @@ def get_cache_check_reg(episode):
                    )?
                  ({})?                                  #season num format
                  (?:                                    # non-grouping pattern
-                   e|x|episode|ep|ep\.|_|-              # e or x or episode or start of a line
+                   e|x|episode|ep|ep\.|_|-|\(              # e or x or episode or start of a line
                    )                                    # end non-grouping pattern 
                  \s*                                    # 0-or-more whitespaces
                  (?<![\d])

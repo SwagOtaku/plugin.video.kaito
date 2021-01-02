@@ -24,7 +24,7 @@ class AnilistSyncDatabase:
         # You will need to update the below version number to match the new addon version
         # This will ensure that the metadata required for operations is available
         # You may also update this version number to force a rebuild of the database after updating Seren
-        self.last_meta_update = '0.0.6'
+        self.last_meta_update = '0.0.7'
 
         control.anilistSyncDB_lock.acquire()
 
@@ -68,7 +68,7 @@ class AnilistSyncDatabase:
         # Migrate from an old version before database migrations
         if 'kaito_version' not in self.activites:
 ##            control.log('Upgrading Trakt Sync Database Version')
-            self.clear_all_meta(False)
+            self.clear_all_meta()
             control.anilistSyncDB_lock.acquire()
             cursor = self._get_cursor()
             cursor.execute('ALTER TABLE activities ADD COLUMN kaito_version TEXT')
@@ -96,20 +96,16 @@ class AnilistSyncDatabase:
 
         return False
 
-    def clear_all_meta(self, notify=True):
-##        if notify:
-##            confirm = tools.showDialog.yesno(tools.addonName, tools.lang(40139))
-##            if confirm == 0:
-##                return
-        control.anilistSyncDB_lock.acquire()
-        cursor = self._get_cursor()
-        cursor.execute("DELETE FROM shows")
-        cursor.execute("DELETE FROM seasons")
-        cursor.execute("DELETE FROM episodes")
-        cursor.connection.commit()
-        cursor.close()
-        control.try_release_lock(control.anilistSyncDB_lock)
-        control.showDialog.notification(control.ADDON_NAME + ': Trakt', 'sddsds', time=5000)
+    def clear_all_meta(self):
+        path = control.anilistSyncDB
+        xbmcvfs.delete(path)
+        file = open(path, 'a+')
+        file.close()
+
+        self._build_show_table()
+        self._build_episode_table()
+        self._build_sync_activities()
+        self._build_season_table()
 
     def _build_show_table(self):
         control.anilistSyncDB_lock.acquire()
@@ -216,20 +212,10 @@ class AnilistSyncDatabase:
             if confirm == 0:
                 return
 
-        control.anilistSyncDB_lock.acquire()
-        cursor = self._get_cursor()
-        cursor.execute('DROP TABLE IF EXISTS shows')
-        cursor.execute('DROP TABLE IF EXISTS seasons')
-        cursor.execute('DROP TABLE IF EXISTS episodes')
-        cursor.execute('DROP TABLE IF EXISTS activities')
-        try:
-            cursor.execute("VACCUM")
-        except:
-            pass
-        cursor.connection.commit()
-        cursor.close()
-
-        control.try_release_lock(control.anilistSyncDB_lock)
+        path = control.anilistSyncDB
+        xbmcvfs.delete(path)
+        file = open(path, 'a+')
+        file.close()
 
         self._build_show_table()
         self._build_episode_table()

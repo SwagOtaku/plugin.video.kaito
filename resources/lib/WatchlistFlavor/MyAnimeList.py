@@ -161,12 +161,14 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         episode_count = res['node']["num_episodes"]
         title = '%s - %s/%s' % (res['node']["title"], next_up, episode_count)
         poster = image = res['node']['main_picture'].get('large', res['node']['main_picture']['medium'])
+        plot = None
 
         anilist_id, next_up_meta = self._get_next_up_meta(mal_id, int(progress))
         if next_up_meta:
             url = 'play/%d/%d/' % (anilist_id, next_up)
             title = '%d/%d - %s' % (next_up, episode_count, next_up_meta.get('title', 'Episode {}'.format(next_up)))
             image = next_up_meta.get('image', poster)
+            plot = next_up_meta.get('plot')
 
         info = {}
 
@@ -175,6 +177,8 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         info['title'] = title
 
         info['tvshowtitle'] = res['node']['title']
+
+        info['plot'] = plot
 
         info['mediatype'] = 'episode'
 

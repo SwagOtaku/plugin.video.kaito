@@ -39,7 +39,7 @@ def _add_last_watched():
         return
 
     MENU_ITEMS.insert(0, (
-        "%s[I]%s[/I]" % (control.lang(30000), last_watched['name']),
+        "%s[I]%s[/I]" % (control.lang(30000), last_watched['name'].encode('utf-8')),
         "animes/%s/null/" % anilist_id,
         last_watched['poster']
     ))

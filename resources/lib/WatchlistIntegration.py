@@ -58,7 +58,17 @@ def WATCHLIST_STATUS_TYPE_PAGES(payload, params):
 
 @route('watchlist_query/*')
 def WATCHLIST_QUERY(payload, params):
-    anilist_id, mal_id = payload.rsplit("/")
+    anilist_id, mal_id, eps_watched = payload.rsplit("/")
+    show_meta = database.get_show(anilist_id)
+
+    if not show_meta:
+        from AniListBrowser import AniListBrowser
+        show_meta = AniListBrowser().get_anilist(anilist_id)
+
+    kodi_meta = ast.literal_eval(show_meta['kodi_meta'])
+    kodi_meta['eps_watched'] = eps_watched
+    database.update_kodi_meta(anilist_id, kodi_meta)
+
     anime_general, content_type = _BROWSER.get_anime_init(anilist_id)
     return control.draw_items(anime_general, content_type)
 

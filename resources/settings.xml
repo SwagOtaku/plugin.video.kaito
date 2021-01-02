@@ -78,7 +78,7 @@
 		<setting id="premiumize.username" type="text" label="40365" default="" enable="false" visible="eq(-1,true)" />
 		<setting id="premiumize.auth_start" type="action" label="40366" option="close" action="RunPlugin(plugin://plugin.video.kaito/authPremiumize)" visible="eq(-2,true)" />
 		<setting id="premiumize.priority" type="slider" subsetting="true" label="40367" option="int" range="1,1,10" default="10" visible="eq(-3,true)" />
-		<setting id="premiumize.cloudInspection" type="bool" subsetting="true" label="40372" default="true" visible="eq(-4,true)" />
+		<setting id="premiumize.cloudInspection" type="bool" subsetting="true" label="40372" default="false" visible="eq(-4,true)" />
 
 		<!-- Real-Debrid -->
 		<setting type="lsep" label="40335" />
@@ -87,7 +87,7 @@
 		<setting id="rd.username" type="text" label="40337" default="" enable="false" visible="eq(-1,true)" />
 		<setting id="rd.auth_start" type="action" label="40338" option="close" action="RunPlugin(plugin://plugin.video.kaito/authRealDebrid)" visible="eq(-2,true)" />
 		<setting id="rd.priority" type="slider" subsetting="true" label="40339" option="int" range="1,1,10" default="10" visible="eq(-3,true)" />
-		<setting id="rd.cloudInspection" type="bool" subsetting="true" label="40372" default="true" visible="eq(-4,true)" />
+		<setting id="rd.cloudInspection" type="bool" subsetting="true" label="40372" default="false" visible="eq(-4,true)" />
 
 		<!-- All Debrid -->
 		<setting type="lsep" label="40340" />

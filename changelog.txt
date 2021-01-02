@@ -1,3 +1,10 @@
+Changelog 0.0.7:
+- Improved cloud inspection
+- Adjusted 'Next Up'
+- Adjusted 'Rebuild Database'
+- Fixed gogo embed
+- Fixed new episodes not being added
+
 Changelog 0.0.6:
 - Added Premiumize and Real-Debrid cloud inspection
 - Added setting 'Seperate Dubs and Subs' to seperate anime into sub and dub list items if dub is available (test flight)

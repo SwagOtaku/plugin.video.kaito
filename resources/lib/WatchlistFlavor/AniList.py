@@ -198,7 +198,7 @@ class AniListWLF(WatchlistFlavorBase):
 
         base = {
             "name": '%s - %d/%d' % (res["title"]["userPreferred"], progress, res['episodes'] if res['episodes'] is not None else 0),
-            "url": "watchlist_query/%s/%s" % (res['id'], res.get('idMal')),
+            "url": "watchlist_query/%s/%s/%d" % (res['id'], res.get('idMal'), progress),
             "image": res['coverImage']['extraLarge'],
             "plot": info,
         }
@@ -217,12 +217,14 @@ class AniListWLF(WatchlistFlavorBase):
         episode_count = res['episodes'] if res['episodes'] is not None else 0
         title = '%s - %s/%s' % (res['title']['userPreferred'], next_up, episode_count)
         poster = image = res['coverImage']['extraLarge']
+        plot = None
 
         anilist_id, next_up_meta = self._get_next_up_meta('', progress, res['id'])
         if next_up_meta:
             url = 'play/%d/%d/' % (anilist_id, next_up)
             title = '%d/%d - %s' % (next_up, episode_count, next_up_meta.get('title', 'Episode {}'.format(next_up)))
             image = next_up_meta.get('image', poster)
+            plot = next_up_meta.get('plot')
 
         info = {}
 
@@ -237,11 +239,13 @@ class AniListWLF(WatchlistFlavorBase):
 
         info['tvshowtitle'] = res['title']['userPreferred']
 
+        info['plot'] = plot
+
         info['mediatype'] = 'episode'
 
         base = {
             "name": title,
-            "url": "watchlist_query/%s/%s" % (res['id'], res.get('idMal')),
+            "url": "watchlist_query/%s/%s/%d" % (res['id'], res.get('idMal'), progress),
             "image": image,
             "plot": info,
             "fanart": image,
