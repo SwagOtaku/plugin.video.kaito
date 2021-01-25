@@ -98,13 +98,22 @@ def WATCHLIST_TO_EP(payload, params):
 
 @route('watchlist_to_movie/*')
 def WATCHLIST_QUERY(payload, params):
-    mal_id = payload
-    show_meta = database.get_show_mal(mal_id)
+    if params:
+        anilist_id = params['anilist_id']
+        show_meta = database.get_show(anilist_id)
 
-    if not show_meta:
-        show_meta = get_anilist_res(mal_id)
+        if not show_meta:
+            from AniListBrowser import AniListBrowser
+            show_meta = AniListBrowser().get_anilist(anilist_id)
+    else:
+        mal_id = payload
+        show_meta = database.get_show_mal(mal_id)
 
-    anilist_id = show_meta['anilist_id']
+        if not show_meta:
+            show_meta = get_anilist_res(mal_id)
+
+        anilist_id = show_meta['anilist_id']
+
     sources = _BROWSER.get_sources(anilist_id, '1', None, 'movie')
     _mock_args = {'anilist_id': anilist_id}
     from resources.lib.windows.source_select import SourceSelect

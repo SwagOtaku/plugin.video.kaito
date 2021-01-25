@@ -61,7 +61,7 @@ def on_stopped():
 
 #Will be called on genre page
 def genre_dialog(genre_display_list):
-    return control.multiselect_dialog(control.lang(30004), genre_display_list)
+    return control.multiselect_dialog(control.lang(30009), genre_display_list)
 
 @route('season_correction/*')
 def seasonCorrection(payload, params):

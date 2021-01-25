@@ -124,6 +124,40 @@ class AniListWLF(WatchlistFlavorBase):
 
         return self._process_status_view(query, variables, next_up, "watchlist/%d", page=1)
 
+    def get_watchlist_anime_entry(self, anilist_id):
+        query = '''
+        query ($mediaId: Int) {
+            Media (id: $mediaId) {
+                id
+                mediaListEntry {
+                    id
+                    mediaId
+                    status
+                    score
+                    progress
+                    user {
+                        id
+                        name
+                    }
+                }
+            }
+        }
+        '''
+
+        variables = {
+            'mediaId': anilist_id
+            }
+
+        result = self._post_request(self._URL, headers=self.__headers(), json={'query': query, 'variables': variables})
+        results = result.json()['data']['Media']['mediaListEntry']
+
+        anime_entry = {}
+        anime_entry['eps_watched'] = results['progress']
+        anime_entry['status'] = results['status'].title()
+        anime_entry['score'] = results['score']
+
+        return anime_entry
+
     def _process_status_view(self, query, variables, next_up, base_plugin_url, page):
         result = self._post_request(self._URL, json={'query': query, 'variables': variables})
         results = result.json()
@@ -204,7 +238,7 @@ class AniListWLF(WatchlistFlavorBase):
         }
 
         if res['format'] == 'MOVIE' and res['episodes'] == 1:
-            base['url'] = "play_movie/%s/1" % (res['id'])
+            base['url'] = "watchlist_to_movie/?anilist_id=%s" % (res['id'])
             base['plot']['mediatype'] = 'movie'
             return self._parse_view(base, False)
 
@@ -257,7 +291,7 @@ class AniListWLF(WatchlistFlavorBase):
             return self._parse_view(base, False)
 
         if res['format'] == 'MOVIE' and res['episodes'] == 1:
-            base['url'] = "play_movie/%s/1" % (res['id'])
+            base['url'] = "watchlist_to_movie/?anilist_id=%s" % (res['id'])
             base['plot']['mediatype'] = 'movie'
             return self._parse_view(base, False)
 

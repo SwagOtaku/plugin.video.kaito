@@ -236,6 +236,27 @@ class KitsuWLF(WatchlistFlavorBase):
                     break
 
         return mal_id
+        
+    def get_watchlist_anime_entry(self, anilist_id):
+        kitsu_id = self._get_mapping_id(anilist_id, 'kitsu_id')
+
+        if not kitsu_id:
+            return
+
+        url = self._to_url("edge/library-entries")
+        params = {
+            "filter[user_id]": self._user_id,
+            "filter[anime_id]": kitsu_id
+            }
+        result = self._get_request(url, headers=self.__headers(), params=params)
+        item_dict = result.json()['data'][0]['attributes']
+
+        anime_entry = {}
+        anime_entry['eps_watched'] = item_dict['progress']
+        anime_entry['status'] = item_dict['status']
+        anime_entry['score'] = item_dict['ratingTwenty']
+
+        return anime_entry
 
     def watchlist_update(self, anilist_id, episode):
         kitsu_id = self._get_mapping_id(anilist_id, 'kitsu_id')

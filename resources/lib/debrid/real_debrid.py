@@ -136,7 +136,7 @@ class RealDebrid:
             }
 
         try:
-            response = requests.get(url, headers=headers, timeout=5).text
+            response = requests.get(url, headers=headers, timeout=(5, None)).text
         except requests.exceptions.Timeout:
             response = ''
 

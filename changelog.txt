@@ -1,3 +1,8 @@
+Changelog 0.0.8:
+- Fixed movies not working in AniList watchlist
+- Fixed scrape and rescrape running twice
+- Updated anime season for upcoming and trending menu items
+
 Changelog 0.0.7:
 - Improved cloud inspection
 - Adjusted 'Next Up'

@@ -226,15 +226,15 @@ def filter_single_episode(episode, release_title):
 
     return False
 
-def run_once(f):
-    def wrapper(*args, **kwargs):
-        if not wrapper.has_run:
-            wrapper.has_run = True
-            return f(*args, **kwargs)
-    wrapper.has_run = False
-    return wrapper
+##def run_once(f):
+##    def wrapper(*args, **kwargs):
+##        if not wrapper.has_run:
+##            wrapper.has_run = True
+##            return f(*args, **kwargs)
+##    wrapper.has_run = False
+##    return wrapper
 
-@run_once
+##@run_once
 def user_select(files, dict_key):
     import xbmcgui
     idx = xbmcgui.Dialog().select('Select File', [i[dict_key].rsplit('/')[-1] for i in files])

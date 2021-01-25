@@ -51,10 +51,10 @@ class SourceSelect(BaseWindow):
         super(SourceSelect, self).doModal()
         return self.stream_link
 
-    def onClick(self, controlId):
-
-        if controlId == 1000:
-            self.handle_action(7)
+##    def onClick(self, controlId):
+##
+##        if controlId == 1000:
+##            self.handle_action(7)
 
     def handle_action(self, actionID):
         if (time.time() - self.last_action) < .5:

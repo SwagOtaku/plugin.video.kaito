@@ -107,6 +107,27 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         url = self._to_url("users/@me/animelist")
         return self._process_status_view(url, params, next_up, "watchlist_status_type_pages/mal/%s/%%s/%%d" % status, page)
 
+    def get_watchlist_anime_entry(self, anilist_id):
+        mal_id = self._get_mapping_id(anilist_id, 'mal_id')
+
+        if not mal_id:
+            return
+
+        params = {
+            "fields": 'my_list_status',
+            }
+
+        url = self._to_url("users/@me/animelist")
+        results = self._get_request(url, headers=self.__headers(), params=params)
+        results = results.json()['data'][0]['node']['my_list_status']
+
+        anime_entry = {}
+        anime_entry['eps_watched'] = results['num_episodes_watched']
+        anime_entry['status'] = results['status'].title()
+        anime_entry['score'] = results['score']
+
+        return anime_entry
+
     def _process_status_view(self, url, params, next_up, base_plugin_url, page):
         results = (self._get_request(url, headers=self.__headers(), params=params)).json()
 

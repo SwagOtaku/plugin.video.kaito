@@ -39,7 +39,7 @@ class Sources(DisplayWindow):
         self.embedSources = []
         self.hosterSources = []
         self.cloud_files = []
-        self.remainingProviders = ['nyaa', 'gogo', 'animixplay']
+        self.remainingProviders = ['nyaa', 'gogo']
         self.allTorrents = {}
         self.allTorrents_len = 0
         self.hosterDomains = {}
@@ -89,8 +89,8 @@ class Sources(DisplayWindow):
         self.threads.append(
             threading.Thread(target=self.gogo_worker, args=(anilist_id, episode, get_backup, rescrape,)))
 
-        self.threads.append(
-            threading.Thread(target=self.animixplay_worker, args=(anilist_id, episode, get_backup, rescrape,)))
+##        self.threads.append(
+##            threading.Thread(target=self.animixplay_worker, args=(anilist_id, episode, get_backup, rescrape,)))
 
         self.threads.append(
             threading.Thread(target=self.user_cloud_inspection, args=(query, anilist_id, episode, media_type, rescrape,)))
@@ -98,7 +98,7 @@ class Sources(DisplayWindow):
         for i in self.threads:
             i.start()
 
-        timeout = 20
+        timeout = 60
         start_time = time.time()
         runtime = 0
 
