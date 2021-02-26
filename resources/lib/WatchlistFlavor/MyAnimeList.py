@@ -98,7 +98,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
     def get_watchlist_status(self, status, next_up, offset=0, page=1):
         params = {
             "status": status,
-            "order": self.__get_sort(),
+            "sort": self.__get_sort(),
             "limit": 100,
             "offset": offset,
             "fields": 'list_status,num_episodes,synopsis,media_type,average_episode_duration',
