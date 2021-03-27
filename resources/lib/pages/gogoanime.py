@@ -23,7 +23,7 @@ class sources(BrowserBase):
         return all_results
 
     def _process_gogo(self, slug, show_id, episode):
-        url = "https://gogoanime.so/%s-episode-%s" % (slug, episode)
+        url = "https://gogoanime.ai/%s-episode-%s" % (slug, episode)
         title = (slug.replace('-', ' ')).title()
         result = requests.get(url).text
         soup = bs.BeautifulSoup(result, 'html.parser')
