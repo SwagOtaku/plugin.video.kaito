@@ -1,6 +1,7 @@
 import json
 import requests
-from . import control
+from resources.lib.ui import control
+
 
 def div_flavor(f):
     def wrapper(*args, **kwargs):
@@ -12,6 +13,7 @@ def div_flavor(f):
         return f(*args, **kwargs)
 
     return wrapper
+
 
 def _get_mal_dub():
     try:

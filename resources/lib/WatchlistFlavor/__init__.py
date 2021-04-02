@@ -1,10 +1,9 @@
-from time import time
-from ..ui import control
-from WatchlistFlavorBase import WatchlistFlavorBase
+from resources.lib.ui import control
+from resources.lib.WatchlistFlavor.WatchlistFlavorBase import WatchlistFlavorBase
+from resources.lib.WatchlistFlavor import AniList  # noQA
+from resources.lib.WatchlistFlavor import Kitsu  # noQA
+from resources.lib.WatchlistFlavor import MyAnimeList  # noQA
 
-import MyAnimeList
-import Kitsu
-import AniList
 
 class WatchlistFlavor(object):
     __LOGIN_KEY = "addon.login"
@@ -35,7 +34,7 @@ class WatchlistFlavor(object):
 
         if not WatchlistFlavor.__SELECTED:
             WatchlistFlavor.__SELECTED = \
-                    WatchlistFlavor.__instance_flavor(selected)
+                WatchlistFlavor.__instance_flavor(selected)
 
         return WatchlistFlavor.__SELECTED
 
@@ -47,7 +46,7 @@ class WatchlistFlavor(object):
 
         if not WatchlistFlavor.__SELECTED:
             WatchlistFlavor.__SELECTED = \
-                    WatchlistFlavor.__instance_flavor(selected)
+                WatchlistFlavor.__instance_flavor(selected)
 
         return WatchlistFlavor.__SELECTED
 
@@ -77,7 +76,7 @@ class WatchlistFlavor(object):
             raise Exception("Invalid flavor %s" % flavor)
 
         flavor_class = WatchlistFlavor.__instance_flavor(flavor)
-        login_ts = ''#int(time())
+        login_ts = ''  # int(time())
 
         return WatchlistFlavor.__set_login(flavor,
                                            flavor_class.login(),
@@ -105,7 +104,7 @@ class WatchlistFlavor(object):
 
     @staticmethod
     def __is_flavor_valid(name):
-        return WatchlistFlavor.__get_flavor_class(name) != None
+        return WatchlistFlavor.__get_flavor_class(name) is not None
 
     @staticmethod
     def __instance_flavor(name):
@@ -126,7 +125,7 @@ class WatchlistFlavor(object):
         if not res:
             return control.ok_dialog('Login', 'Incorrect username or password')
 
-        for _id, value in res.items():
+        for _id, value in list(res.items()):
             control.setSetting('%s.%s' % (flavor, _id), value)
 
         control.refresh()

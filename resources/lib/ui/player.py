@@ -1,14 +1,10 @@
 import sys
-import xbmc
-import xbmcaddon
-import xbmcplugin
-import xbmcgui
-import http
-
-from . import control
+from kodi_six import xbmc, xbmcaddon, xbmcplugin, xbmcgui
+from resources.lib.ui import http, control
+import six
 
 try:
-    HANDLE=int(sys.argv[1])
+    HANDLE = int(sys.argv[1])
 except:
     HANDLE = '1'
 
@@ -16,20 +12,16 @@ addonInfo = xbmcaddon.Addon().getAddonInfo
 ADDON_NAME = addonInfo('id')
 __settings__ = xbmcaddon.Addon(ADDON_NAME)
 addonInfo = __settings__.getAddonInfo
-
-try:
-    ADDON_PATH = __settings__.getAddonInfo('path').decode('utf-8')
-except:
-    ADDON_PATH = __settings__.getAddonInfo('path')
+ADDON_PATH = __settings__.getAddonInfo('path')
 
 kodiGui = xbmcgui
-execute = xbmc.executebuiltin
 
 playList = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
 player = xbmc.Player
 
 progressDialog = xbmcgui.DialogProgress()
 kodi = xbmc
+
 
 class hook_mimetype(object):
     __MIME_HOOKS = {}
@@ -50,6 +42,7 @@ class hook_mimetype(object):
         self.__MIME_HOOKS[self._type] = func
         return func
 
+
 class watchlistPlayer(xbmc.Player):
 
     def __init__(self):
@@ -61,7 +54,7 @@ class watchlistPlayer(xbmc.Player):
         self.current_time = 0
         self.updated = False
         self.media_type = None
-##        self.AVStarted = False
+        # self.AVStarted = False
 
     def handle_player(self, anilist_id, watchlist_update, build_playlist, episode, filter_lang):
         self._anilist_id = anilist_id
@@ -73,7 +66,7 @@ class watchlistPlayer(xbmc.Player):
         self._episode = episode
         self._filter_lang = filter_lang
         self.keepAlive()
-        
+
     def onPlayBackStarted(self):
         if self._build_playlist and playList.size() == 1:
             self._build_playlist(self._anilist_id, self._episode, self._filter_lang)
@@ -83,17 +76,17 @@ class watchlistPlayer(xbmc.Player):
         control.setSetting('addon.last_watched', self._anilist_id)
         pass
 
-##    def onAVStarted(self):
-##        self.AVStarted = True
-##
-##    def onAVChange(self):
-##        self.AVStarted = True
+    # def onAVStarted(self):
+    #     self.AVStarted = True
+
+    # def onAVChange(self):
+    #     self.AVStarted = True
 
     def onPlayBackStopped(self):
         playList.clear()
 
-##    def onPlayBackEnded(self):
-##        pass
+    # def onPlayBackEnded(self):
+    #     pass
 
     def onPlayBackError(self):
         playList.clear()
@@ -108,7 +101,7 @@ class watchlistPlayer(xbmc.Player):
         media_length = self.getTotalTime()
         watched_percent = 0
 
-        if int(media_length) is not 0:
+        if int(media_length) != 0:
             watched_percent = float(current_position) / float(media_length) * 100
 
         return watched_percent
@@ -151,9 +144,9 @@ class watchlistPlayer(xbmc.Player):
                 break
             xbmc.sleep(250)
 
-##        for i in range(0, 480):
-##            if self.AVStarted:
-##                break
+        # for i in range(0, 480):
+        #     if self.AVStarted:
+        #         break
 
         control.closeAllDialogs()
 
@@ -203,6 +196,7 @@ class watchlistPlayer(xbmc.Player):
                 else:
                     xbmc.sleep(1000)
 
+
 class PlayerDialogs(xbmc.Player):
 
     def __init__(self):
@@ -242,7 +236,7 @@ class PlayerDialogs(xbmc.Player):
         from resources.lib.windows.skip_intro import SkipIntro
 
         SkipIntro(*('skip_intro.xml', ADDON_PATH),
-                    actionArgs={'item_type': 'skip_intro'}).doModal()
+                  actionArgs={'item_type': 'skip_intro'}).doModal()
 
     def _show_still_watching(self):
         return True
@@ -264,9 +258,11 @@ class PlayerDialogs(xbmc.Player):
             return False
         return True
 
+
 def cancelPlayback():
     playList.clear()
     xbmcplugin.setResolvedUrl(HANDLE, False, xbmcgui.ListItem())
+
 
 def _prefetch_play_link(link):
     if callable(link):
@@ -275,7 +271,7 @@ def _prefetch_play_link(link):
     if not link:
         return None
 
-    linkInfo = http.head_request(link);
+    linkInfo = http.head_request(link)
     if linkInfo.status_code != 200:
         raise Exception('could not resolve %s. status_code=%d' %
                         (link, linkInfo.status_code))
@@ -283,6 +279,7 @@ def _prefetch_play_link(link):
         "url": linkInfo.url,
         "headers": linkInfo.headers,
     }
+
 
 def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=None, episode=None, filter_lang=None, rescrape=False):
     linkInfo = _prefetch_play_link(link)
@@ -305,28 +302,34 @@ def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=Non
     xbmcplugin.setResolvedUrl(HANDLE, True, item)
     watchlistPlayer().handle_player(anilist_id, watchlist_update, build_playlist, episode, filter_lang)
 
+
 @hook_mimetype('application/dash+xml')
 def _DASH_HOOK(item):
     import inputstreamhelper
     is_helper = inputstreamhelper.Helper('mpd')
     if is_helper.check_inputstream():
-        item.setProperty('inputstreamaddon', is_helper.inputstream_addon)
-        item.setProperty('inputstream.adaptive.manifest_type',
-                             'mpd')
+        if six.PY2:
+            item.setProperty('inputstreamaddon', is_helper.inputstream_addon)
+        else:
+            item.setProperty('inputstream', is_helper.inputstream_addon)
+        item.setProperty('inputstream.adaptive.manifest_type', 'mpd')
         item.setContentLookup(False)
     else:
         raise Exception("InputStream Adaptive is not supported.")
 
     return item
 
+
 @hook_mimetype('application/vnd.apple.mpegurl')
 def _HLS_HOOK(item):
     import inputstreamhelper
     is_helper = inputstreamhelper.Helper('hls')
     if is_helper.check_inputstream():
-        item.setProperty('inputstreamaddon', is_helper.inputstream_addon)
-        item.setProperty('inputstream.adaptive.manifest_type',
-                             'hls')
+        if six.PY2:
+            item.setProperty('inputstreamaddon', is_helper.inputstream_addon)
+        else:
+            item.setProperty('inputstream', is_helper.inputstream_addon)
+        item.setProperty('inputstream.adaptive.manifest_type', 'hls')
         item.setContentLookup(False)
     else:
         raise Exception("InputStream Adaptive is not supported.")

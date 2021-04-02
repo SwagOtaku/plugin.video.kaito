@@ -5,7 +5,7 @@ def allocate_item(name, url, is_dir=False, image='', info='', fanart=None, poste
         'poster': poster,
         'thumb': image,
         'fanart': fanart
-        }
+    }
     new_res['name'] = name
     new_res['url'] = url
     new_res['info'] = info

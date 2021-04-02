@@ -3,9 +3,10 @@ import re
 import threading
 import json
 import time
-
+from kodi_six import xbmcgui
 from resources.lib.ui import source_utils
 from resources.lib.ui import control
+
 
 class RealDebrid:
     def __init__(self):
@@ -55,9 +56,9 @@ class RealDebrid:
         control.copy2clip(response['user_code'])
         control.progressDialog.create('Real-Debrid Auth')
         control.progressDialog.update(-1,
-                                      control.lang(30100).format(control.colorString('https://real-debrid.com/device')),
-                                      control.lang(30101).format(control.colorString(response['user_code'])),
-                                      control.lang(30102))
+                                      control.lang(30100).format(control.colorString('https://real-debrid.com/device')) + '[CR]'
+                                      + control.lang(30101).format(control.colorString(response['user_code'])) + '[CR]'
+                                      + control.lang(30102))
         self.OauthTimeout = int(response['expires_in'])
         self.OauthTimeStep = int(response['interval'])
         self.DeviceCode = response['device_code']
@@ -72,7 +73,7 @@ class RealDebrid:
             control.ok_dialog(control.ADDON_NAME, control.lang(30104))
 
     def token_request(self):
-        if self.ClientSecret is '':
+        if self.ClientSecret == '':
             return
 
         postData = {'client_id': self.ClientID,
@@ -91,7 +92,7 @@ class RealDebrid:
         username = self.get_url('https://api.real-debrid.com/rest/1.0/user')['username']
         control.setSetting('rd.username', username)
         control.ok_dialog(control.ADDON_NAME, 'Real Debrid ' + control.lang(30103))
-##        tools.log('Authorised Real Debrid successfully', 'info')
+        # tools.log('Authorised Real Debrid successfully', 'info')
 
     def refreshToken(self):
         postData = {'grant_type': 'http://oauth.net/grant_type/device/1.0',
@@ -111,7 +112,7 @@ class RealDebrid:
         control.setSetting('rd.auth', self.token)
         control.setSetting('rd.refresh', self.refresh)
         control.setSetting('rd.expiry', str(time.time() + int(response['expires_in'])))
-##        tools.log('Real Debrid Token Refreshed')
+        # tools.log('Real Debrid Token Refreshed')
         ###############################################
         # To be FINISHED FINISH ME
         ###############################################
@@ -119,7 +120,7 @@ class RealDebrid:
     def post_url(self, url, postData, fail_check=False):
         headers = {
             'Authorization': 'Bearer {}'.format(self.token)
-            }
+        }
         response = requests.post(url, data=postData, headers=headers, timeout=5).text
         if 'bad_token' in response or 'Bad Request' in response:
             if not fail_check:
@@ -133,7 +134,7 @@ class RealDebrid:
     def get_url(self, url, fail_check=False):
         headers = {
             'Authorization': 'Bearer {}'.format(self.token)
-            }
+        }
 
         try:
             response = requests.get(url, headers=headers, timeout=(5, None)).text
@@ -149,13 +150,12 @@ class RealDebrid:
             return json.loads(response)
         except:
             return response
-        
 
     def checkHash(self, hashList):
 
         if isinstance(hashList, list):
             cache_result = {}
-            hashList = [hashList[x:x+100] for x in range(0, len(hashList), 100)]
+            hashList = [hashList[x: x + 100] for x in range(0, len(hashList), 100)]
             threads = []
             for section in hashList:
                 threads.append(threading.Thread(target=self._check_hash_thread, args=(section,)))
@@ -205,7 +205,7 @@ class RealDebrid:
     def deleteTorrent(self, id):
         headers = {
             'Authorization': 'Bearer {}'.format(self.token)
-            }
+        }
         url = "https://api.real-debrid.com/rest/1.0/torrents/delete/%s" % (id)
         requests.delete(url, headers=headers, timeout=5)
 
@@ -218,7 +218,7 @@ class RealDebrid:
 
             for storage_variant in hashCheck[hash]['rd']:
 
-                key_list = ','.join(storage_variant.keys())
+                key_list = ','.join(list(storage_variant.keys()))
                 xbmcgui.Dialog().textviewer('sdsd', str(key_list))
 
                 torrent = self.addMagnet(magnet)
@@ -230,7 +230,6 @@ class RealDebrid:
 
                 regex = episode
                 selected_files = sorted([idx for idx, i in enumerate(selected_files) if re.search(regex, i['path'])])
-
 
                 if not selected_files:
                     continue

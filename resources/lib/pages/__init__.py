@@ -1,16 +1,17 @@
 import threading
-from . import nyaa, gogoanime, animixplay, debrid_cloudfiles
-from ..ui import control
+from resources.lib.pages import nyaa, gogoanime, animixplay, debrid_cloudfiles
+from resources.lib.ui import control
 from resources.lib.windows.get_sources_window import GetSources as DisplayWindow
 import time
+
 
 class CancelProcess(Exception):
     pass
 
 
 def getSourcesHelper(actionArgs):
-##    sources_window = Sources(*SkinManager().confirm_skin_path('get_sources.xml'),
-##                             actionArgs=actionArgs)
+    # sources_window = Sources(*SkinManager().confirm_skin_path('get_sources.xml'),
+    #                          actionArgs=actionArgs)
 
     sources_window = Sources(*('get_sources.xml', control.ADDON_PATH),
                              actionArgs=actionArgs)
@@ -21,6 +22,7 @@ def getSourcesHelper(actionArgs):
     except:
         pass
     return sources
+
 
 class Sources(DisplayWindow):
     def __init__(self, xml_file, location, actionArgs=None):
@@ -89,8 +91,8 @@ class Sources(DisplayWindow):
         self.threads.append(
             threading.Thread(target=self.gogo_worker, args=(anilist_id, episode, get_backup, rescrape,)))
 
-##        self.threads.append(
-##            threading.Thread(target=self.animixplay_worker, args=(anilist_id, episode, get_backup, rescrape,)))
+        # self.threads.append(
+        #     threading.Thread(target=self.animixplay_worker, args=(anilist_id, episode, get_backup, rescrape,)))
 
         self.threads.append(
             threading.Thread(target=self.user_cloud_inspection, args=(query, anilist_id, episode, media_type, rescrape,)))
@@ -131,7 +133,7 @@ class Sources(DisplayWindow):
             time.sleep(.200)
             runtime = time.time() - start_time
             self.progress = int(100 - float(1 - (runtime / float(timeout))) * 100)
-    
+
         if len(self.torrentCacheSources) + len(self.embedSources) + len(self.cloud_files) == 0:
             self.return_data = []
             self.close()
@@ -145,14 +147,14 @@ class Sources(DisplayWindow):
     def nyaa_worker(self, query, anilist_id, episode, status, media_type, rescrape):
         self.nyaaSources = nyaa.sources().get_sources(query, anilist_id, episode, status, media_type, rescrape)
         self.torrentCacheSources += self.nyaaSources
-        self.remainingProviders.remove('nyaa')        
+        self.remainingProviders.remove('nyaa')
 
     def gogo_worker(self, anilist_id, episode, get_backup, rescrape):
         if not rescrape:
             self.gogoSources = gogoanime.sources().get_sources(anilist_id, episode, get_backup)
             self.embedSources += self.gogoSources
 
-        self.remainingProviders.remove('gogo')        
+        self.remainingProviders.remove('gogo')
 
     def animixplay_worker(self, anilist_id, episode, get_backup, rescrape):
         if not rescrape:
@@ -166,7 +168,7 @@ class Sources(DisplayWindow):
 
         if not rescrape:
             debrid = {}
-            
+
             if control.real_debrid_enabled() and control.getSetting('rd.cloudInspection') == 'true':
                 debrid['real_debrid'] = True
 
@@ -283,20 +285,20 @@ class Sources(DisplayWindow):
     def updateProgress(self):
 
         list1 = [
-                len([i for i in self.nyaaSources if i['quality'] == '4K']),
-                len([i for i in self.nyaaSources if i['quality'] == '1080p']),
-                len([i for i in self.nyaaSources if i['quality'] == '720p']),
-                len([i for i in self.nyaaSources if i['quality'] == 'NA']),
-            ]
+            len([i for i in self.nyaaSources if i['quality'] == '4K']),
+            len([i for i in self.nyaaSources if i['quality'] == '1080p']),
+            len([i for i in self.nyaaSources if i['quality'] == '720p']),
+            len([i for i in self.nyaaSources if i['quality'] == 'NA']),
+        ]
 
         self.torrents_qual_len = list1
 
         list2 = [
-                len([i for i in self.embedSources if i['quality'] == '4K']),
-                len([i for i in self.embedSources if i['quality'] == '1080p']),
-                len([i for i in self.embedSources if i['quality'] == '720p']),
-                len([i for i in self.embedSources if i['quality'] == 'NA']),
-            ]
+            len([i for i in self.embedSources if i['quality'] == '4K']),
+            len([i for i in self.embedSources if i['quality'] == '1080p']),
+            len([i for i in self.embedSources if i['quality'] == '720p']),
+            len([i for i in self.embedSources if i['quality'] == 'NA']),
+        ]
 
         self.hosters_qual_len = list2
 

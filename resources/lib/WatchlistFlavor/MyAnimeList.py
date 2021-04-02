@@ -1,10 +1,9 @@
 import re
-import bs4 as bs
 import itertools
-import json
 import time
 import requests
-from WatchlistFlavorBase import WatchlistFlavorBase
+from resources.lib.WatchlistFlavor.WatchlistFlavorBase import WatchlistFlavorBase
+
 
 class MyAnimeListWLF(WatchlistFlavorBase):
     _URL = "https://api.myanimelist.net/v2"
@@ -14,21 +13,21 @@ class MyAnimeListWLF(WatchlistFlavorBase):
 
     def login(self):
         try:
-            import urlparse
-            parsed = urlparse.urlparse(self._auth_var)
-            params = urlparse.parse_qs(parsed.query)
+            from six.moves import urllib_parse
+            parsed = urllib_parse.urlparse(self._auth_var)
+            params = urllib_parse.parse_qs(parsed.query)
             code = params['code']
             code_verifier = params['state']
         except:
             return
-        
+
         oauth_url = 'https://myanimelist.net/v1/oauth2/token'
         data = {
             'client_id': 'a8d85a4106b259b8c9470011ce2f76bc',
             'code': code,
             'code_verifier': code_verifier,
             'grant_type': 'authorization_code'
-            }
+        }
         res = requests.post(oauth_url, data=data).json()
 
         self._token = res['access_token']
@@ -39,7 +38,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
             'refresh': res['refresh_token'],
             'expiry': str(time.time() + int(res['expires_in'])),
             'username': user['name']
-            }
+        }
 
         return login_data
 
@@ -49,7 +48,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
             'client_id': 'a8d85a4106b259b8c9470011ce2f76bc',
             'grant_type': 'refresh_token',
             'refresh_token': control.getSetting('mal.refresh')
-            }
+        }
         res = requests.post(oauth_url, data=data).json()
         control.setSetting('mal.token', res['access_token'])
         control.setSetting('mal.refresh', res['refresh_token'])
@@ -60,9 +59,9 @@ class MyAnimeListWLF(WatchlistFlavorBase):
             return []
 
         next_page = page + 1
-        name = "Next Page (%d)" %(next_page)
+        name = "Next Page (%d)" % (next_page)
         offset = (re.compile("offset=(.+?)&").findall(hasNextPage))[0]
-        return self._parse_view({'name':name, 'url': base_url % (offset, next_page), 'image': None, 'plot': None})
+        return self._parse_view({'name': name, 'url': base_url % (offset, next_page), 'image': None, 'plot': None})
 
     def watchlist(self):
         return self._process_watchlist_view('', "watchlist_page/%d", page=1)
@@ -78,7 +77,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         return self._parse_view(base)
 
     def _process_watchlist_view(self, params, base_plugin_url, page):
-        all_results = map(self._base_watchlist_view, self.__mal_statuses())
+        all_results = list(map(self._base_watchlist_view, self.__mal_statuses()))
         all_results = list(itertools.chain(*all_results))
         return all_results
 
@@ -91,10 +90,10 @@ class MyAnimeListWLF(WatchlistFlavorBase):
             ("Dropped", "dropped"),
             ("Plan to Watch", "plan_to_watch"),
             ("All Anime", ""),
-            ]
+        ]
 
         return statuses
-        
+
     def get_watchlist_status(self, status, next_up, offset=0, page=1):
         params = {
             "status": status,
@@ -102,7 +101,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
             "limit": 100,
             "offset": offset,
             "fields": 'list_status,num_episodes,synopsis,media_type,average_episode_duration',
-            }
+        }
 
         url = self._to_url("users/@me/animelist")
         return self._process_status_view(url, params, next_up, "watchlist_status_type_pages/mal/%s/%%s/%%d" % status, page)
@@ -115,7 +114,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
 
         params = {
             "fields": 'my_list_status',
-            }
+        }
 
         url = self._to_url("users/@me/animelist")
         results = self._get_request(url, headers=self.__headers(), params=params)
@@ -132,9 +131,9 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         results = (self._get_request(url, headers=self.__headers(), params=params)).json()
 
         if next_up:
-            all_results = map(self._base_next_up_view, results['data'])
+            all_results = list(map(self._base_next_up_view, results['data']))
         else:
-            all_results = map(self._base_watchlist_status_view, results['data'])
+            all_results = list(map(self._base_watchlist_status_view, results['data']))
 
         all_results = list(itertools.chain(*all_results))
 
@@ -193,7 +192,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
 
         info = {}
 
-        info['episode'] = next_up                    
+        info['episode'] = next_up
 
         info['title'] = title
 
@@ -211,7 +210,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
             "fanart": image,
             "poster": poster,
         }
-        
+
         if next_up_meta:
             base['url'] = url
             return self._parse_view(base, False)
@@ -227,7 +226,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         header = {
             'Authorization': "Bearer {}".format(self._token),
             'Content-Type': 'application/x-www-form-urlencoded'
-            }
+        }
 
         return header
 
@@ -248,12 +247,12 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         url = self._to_url("anime/%s/my_list_status" % (mal_id))
         data = {
             'num_watched_episodes': int(episode)
-            }
+        }
 
         return lambda: self.__update_watchlist(anilist_id, episode, url, data)
 
     def __update_watchlist(self, anilist_id, episode, url, data):
-        r = requests.put(url, data=data, headers=self.__headers())
+        _ = requests.put(url, data=data, headers=self.__headers())
 
     def __get_sort(self):
         sort_types = {
@@ -261,6 +260,6 @@ class MyAnimeListWLF(WatchlistFlavorBase):
             "Last Updated": "list_updated_at",
             "Anime Start Date": "anime_start_date",
             "List Score": "list_score"
-            }
+        }
 
         return sort_types[self._sort]

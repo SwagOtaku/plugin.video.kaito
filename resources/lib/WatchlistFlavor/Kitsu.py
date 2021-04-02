@@ -1,8 +1,7 @@
 import itertools
-import json
-import ast
 import time
-from WatchlistFlavorBase import WatchlistFlavorBase
+from resources.lib.WatchlistFlavor.WatchlistFlavorBase import WatchlistFlavorBase
+
 
 class KitsuWLF(WatchlistFlavorBase):
     _URL = "https://kitsu.io/api"
@@ -16,7 +15,7 @@ class KitsuWLF(WatchlistFlavorBase):
             "grant_type": "password",
             "username": self._auth_var,
             "password": self._password
-            }
+        }
         resp = self._post_request(self._to_url("oauth/token"), params=params)
 
         if resp.status_code != 200:
@@ -33,7 +32,7 @@ class KitsuWLF(WatchlistFlavorBase):
             'token': data['access_token'],
             'refresh': data['refresh_token'],
             'expiry': str(time.time() + int(data['expires_in']))
-            }
+        }
 
         return login_data
 
@@ -41,7 +40,7 @@ class KitsuWLF(WatchlistFlavorBase):
         params = {
             "grant_type": "refresh_token",
             "refresh_token": control.getSetting('kitsu.refresh'),
-            }
+        }
         resp = self._post_request(self._to_url("oauth/token"), params=params)
 
         if resp.status_code != 200:
@@ -57,7 +56,7 @@ class KitsuWLF(WatchlistFlavorBase):
             'Content-Type': 'application/vnd.api+json',
             'Accept': 'application/vnd.api+json',
             'Authorization': "Bearer {}".format(self._token),
-            }
+        }
 
         return headers
 
@@ -65,12 +64,12 @@ class KitsuWLF(WatchlistFlavorBase):
         if not hasNextPage:
             return []
 
-        import urlparse
+        from six.moves import urllib_parse
         next_page = page + 1
-        name = "Next Page (%d)" %(next_page)
-        parsed = urlparse.urlparse(hasNextPage)
-        offset = urlparse.parse_qs(parsed.query)['page[offset]'][0]
-        return self._parse_view({'name':name, 'url': base_url % (offset, next_page), 'image': None, 'plot': None})
+        name = "Next Page (%d)" % (next_page)
+        parsed = urllib_parse.urlparse(hasNextPage)
+        offset = urllib_parse.parse_qs(parsed.query)['page[offset]'][0]
+        return self._parse_view({'name': name, 'url': base_url % (offset, next_page), 'image': None, 'plot': None})
 
     def watchlist(self):
         params = {"filter[user_id]": self._user_id}
@@ -88,7 +87,7 @@ class KitsuWLF(WatchlistFlavorBase):
         return self._parse_view(base)
 
     def _process_watchlist_status_view(self, url, params, base_plugin_url, page):
-        all_results = map(self._base_watchlist_status_view, self.__kitsu_statuses())
+        all_results = list(map(self._base_watchlist_status_view, self.__kitsu_statuses()))
         all_results = list(itertools.chain(*all_results))
         return all_results
 
@@ -100,7 +99,7 @@ class KitsuWLF(WatchlistFlavorBase):
             ("Completed", "completed"),
             ("On Hold", "on_hold"),
             ("Dropped", "dropped"),
-            ]
+        ]
 
         return statuses
 
@@ -116,7 +115,7 @@ class KitsuWLF(WatchlistFlavorBase):
             "page[limit]": "50",
             "page[offset]": offset,
             "sort": self.__get_sort(),
-            }
+        }
 
         return self._process_watchlist_view(url, params, next_up, "watchlist_status_type_pages/kitsu/%s/%%s/%%d" % status, page)
 
@@ -124,12 +123,13 @@ class KitsuWLF(WatchlistFlavorBase):
         result = (self._get_request(url, headers=self.__headers(), params=params)).json()
         _list = result["data"]
         el = result["included"][:len(_list)]
-        self._mapping = filter(lambda x: x['type'] == 'mappings', result['included'])
+        # self._mapping = filter(lambda x: x['type'] == 'mappings', result['included'])
+        self._mapping = [x for x in result['included'] if x['type'] == 'mappings']
 
         if next_up:
-            all_results = map(self._base_next_up_view, _list, el)
+            all_results = list(map(self._base_next_up_view, _list, el))
         else:
-            all_results = map(self._base_watchlist_view, _list, el)
+            all_results = list(map(self._base_watchlist_view, _list, el))
 
         all_results = list(itertools.chain(*all_results))
 
@@ -139,7 +139,7 @@ class KitsuWLF(WatchlistFlavorBase):
     def _base_watchlist_view(self, res, eres):
         _id = eres['id']
         mal_id = self._mapping_mal(_id)
-##        kodi_meta = self._get_kodi_meta(mal_id, 'mal')
+        # kodi_meta = self._get_kodi_meta(mal_id, 'mal')
 
         info = {}
 
@@ -236,7 +236,7 @@ class KitsuWLF(WatchlistFlavorBase):
                     break
 
         return mal_id
-        
+
     def get_watchlist_anime_entry(self, anilist_id):
         kitsu_id = self._get_mapping_id(anilist_id, 'kitsu_id')
 
@@ -247,7 +247,7 @@ class KitsuWLF(WatchlistFlavorBase):
         params = {
             "filter[user_id]": self._user_id,
             "filter[anime_id]": kitsu_id
-            }
+        }
         result = self._get_request(url, headers=self.__headers(), params=params)
         item_dict = result.json()['data'][0]['attributes']
 
@@ -268,7 +268,7 @@ class KitsuWLF(WatchlistFlavorBase):
         params = {
             "filter[user_id]": self._user_id,
             "filter[anime_id]": kitsu_id
-            }
+        }
         scrobble = self._get_request(url, headers=self.__headers(), params=params)
         item_dict = scrobble.json()
         if len(item_dict['data']) == 0:
@@ -279,28 +279,28 @@ class KitsuWLF(WatchlistFlavorBase):
 
     def __post_params(self, url, episode, kitsu_id):
         params = {
-                "data": {
-                    "type": "libraryEntries",
-                    "attributes": {
-                        'status': 'current',
-                        'progress': int(episode)
-                        },
-                    "relationships":{
-                        "user":{
-                            "data":{
-                                "id": self._user_id,
-                                "type": "users"
-                            }
-                       },
-                      "anime":{
-                            "data":{
-                                "id": int(kitsu_id),
-                                "type": "anime"
-                            }
+            "data": {
+                "type": "libraryEntries",
+                "attributes": {
+                    'status': 'current',
+                    'progress': int(episode)
+                },
+                "relationships": {
+                    "user": {
+                        "data": {
+                            "id": self._user_id,
+                            "type": "users"
+                        }
+                    },
+                    "anime": {
+                        "data": {
+                            "id": int(kitsu_id),
+                            "type": "anime"
                         }
                     }
                 }
             }
+        }
 
         self._post_request(url, headers=self.__headers(), json=params)
 
@@ -310,19 +310,18 @@ class KitsuWLF(WatchlistFlavorBase):
                 'id': int(animeid),
                 'type': 'libraryEntries',
                 'attributes': {
-                    'progress': int(episode)
-                    }
-                }
+                    'progress': int(episode)}
             }
+        }
 
-        self._patch_request("%s/%s" %(url, animeid), headers=self.__headers(), json=params)
+        self._patch_request("%s/%s" % (url, animeid), headers=self.__headers(), json=params)
 
     def __get_sort(self):
         sort_types = {
             "Date Updated": "-progressed_at",
             "Progress": "-progress",
             "Title": "anime.titles." + self.__get_title_lang(),
-            }
+        }
 
         return sort_types[self._sort]
 
@@ -331,6 +330,6 @@ class KitsuWLF(WatchlistFlavorBase):
             "Canonical": "canonical",
             "English": "en",
             "Romanized": "en_jp",
-            }
+        }
 
         return title_langs[self._title_lang]

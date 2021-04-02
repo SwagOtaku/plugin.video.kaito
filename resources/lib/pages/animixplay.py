@@ -1,25 +1,21 @@
 import json
 import bs4 as bs
-import re
 import itertools
 from functools import partial
-from ..ui import utils, source_utils
-from ..ui.BrowserBase import BrowserBase
-from ..debrid import real_debrid, all_debrid
-from ..ui import database
+from resources.lib.ui import source_utils, database
+from resources.lib.ui.BrowserBase import BrowserBase
 import requests
-import threading
+import base64
 
-import copy
 
 class sources(BrowserBase):
     def get_sources(self, anilist_id, episode, get_backup):
         slugs = database.get(get_backup, 168, anilist_id, 'Animixplay')
         if not slugs:
             return []
-        slugs = slugs.keys()
+        slugs = list(slugs.keys())
         mapfunc = partial(self._process_animixplay, show_id=anilist_id, episode=episode)
-        all_results = map(mapfunc, slugs)
+        all_results = list(map(mapfunc, slugs))
         all_results = list(itertools.chain(*all_results))
         return all_results
 
@@ -41,7 +37,7 @@ class sources(BrowserBase):
         try:
             source = [{
                 'release_title': title,
-                'hash': episodes[int(episode)-1],
+                'hash': episodes[int(episode) - 1],
                 'type': 'embed',
                 'quality': 'NA',
                 'debrid_provider': '',
@@ -49,7 +45,7 @@ class sources(BrowserBase):
                 'size': 'NA',
                 'info': source_utils.getInfo(title),
                 'lang': source_utils.getAudio_lang(title)
-                }]
+            }]
         except:
             pass
 
@@ -64,27 +60,27 @@ class sources(BrowserBase):
             url_id = base64.b64encode(url_id).decode()
             post_id = ('NaN{}N4CP9Eb6laO9N'.format(url_id)).encode()
             post_id = base64.b64encode(post_id).decode()
-            title = soup.find('span', {'class':'animetitle'}).get_text()
+            title = soup.find('span', {'class': 'animetitle'}).get_text()
             data_id = 'id2' if '/v4/' in url else 'id'
-            try: 
+            try:
                 data = (requests.post('https://animixplay.com/raw/2ENCwGVubdvzrQ2eu4hBH',
-                                     data={data_id:post_id}).json())
+                                      data={data_id: post_id}).json())
             except:
                 if '/v4/' in url:
                     data = (requests.post('https://animixplay.com/e4/5SkyXQULLrn9OhR',
-                                         data={'id':url.split('/')[-1]}).json())['epstream']
+                                          data={'id': url.split('/')[-1]}).json())['epstream']
                 if '/v2' in url:
                     data = (requests.post('https://animixplay.com/e2/T23nBBj3NfRzTQx',
-                                         data={'id':url.split('/')[-1]}).json())['epstream']
+                                          data={'id': url.split('/')[-1]}).json())['epstream']
 
             if '/v4/' in url:
                 if int(episode) > len(data):
                     return []
                 # Has a list of mp4 links.
-##                return data
+                # return data
 
             elif '/v2/' in url:
-            # Has elaborate list for all metadata on episodes.
+                # Has elaborate list for all metadata on episodes.
                 data = []
                 for i in data:
                     info_dict = i.get('src', None)
@@ -97,8 +93,8 @@ class sources(BrowserBase):
                                 srcs.append({'file': k.get('file', ''), 'flavor': k.get('lang', ''), 'res': k.get('resolution', '')})
 
                         data.append(srcs)
-##                    else:
-##                        episodes.append('')
+                    # else:
+                    #     episodes.append('')
                 if int(episode) > len(data):
                     return []
 
@@ -106,11 +102,11 @@ class sources(BrowserBase):
 
         else:
             try:
-                ep_list = soup.find('div', {'id':'epslistplace'}).get_text()
-                title = soup.find('span', {'class':'animetitle'}).get_text()
+                ep_list = soup.find('div', {'id': 'epslistplace'}).get_text()
+                title = soup.find('span', {'class': 'animetitle'}).get_text()
                 jdata = json.loads(ep_list)
-##                keyList = list(jdata.keys())
-##                del keyList[0]
+                # keyList = list(jdata.keys())
+                # del keyList[0]
 
                 ep_total = jdata['eptotal']
                 episodes = jdata['stape']
@@ -126,7 +122,7 @@ class sources(BrowserBase):
             except:
                 # Link generation
                 jdata = (requests.post('https://animixplay.com/e5/dZ40LAuJHZjuiWX',
-                                     data={'id':url.split('/')[-1]}).json())
+                                       data={'id': url.split('/')[-1]}).json())
 
                 title = jdata['details']['title']
 
@@ -151,8 +147,8 @@ class sources(BrowserBase):
         s = requests.Session()
         for i in range(_range):
             data = (s.post('https://animixplay.com/e5/dZ40LAuJHZjuiWX',
-                                  data={'id':url.split('/')[-1], 'loadmore':loadmore}))
+                    data={'id': url.split('/')[-1], 'loadmore': loadmore}))
             loadmore += 12
-##            time.sleep(1)
+            # time.sleep(1)
 
         return data.json()['epstream']['stape']

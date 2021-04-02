@@ -3,8 +3,7 @@
 import time
 from resources.lib.ui import control
 from resources.lib.windows.base_window import BaseWindow
-from resources.lib.windows.resolver import Resolver
-from resources.lib.ui import database
+
 
 class WatchlistFlavorAuth(BaseWindow):
 
@@ -58,11 +57,12 @@ class WatchlistFlavorAuth(BaseWindow):
         else:
             res['authvar'] = self.getControl(1000).getText()
 
-        for _id, value in res.items():
+        for _id, value in list(res.items()):
             control.setSetting('%s.%s' % (self.flavor, _id), value)
 
         self.authorized = True
         self.close()
+
 
 class AltWatchlistFlavorAuth:
     def __init__(self, flavor=None):
@@ -71,25 +71,25 @@ class AltWatchlistFlavorAuth:
 
     def set_settings(self):
         res = {}
-        dialog = control.kodiGui.Dialog()
+        dialog = control.showDialog
         if self.flavor == 'anilist':
             dialog.textviewer(control.ADDON_NAME + ': AniList',
                               '{}\n{}\n{}'.format(control.lang(40105),
                                                   control.lang(40106).replace('below', 'in the input dialog that will popup once you close this'),
                                                   control.lang(40110)))
 
-            res['username'] = dialog.input('Enter AniList username', type=control.kodiGui.INPUT_ALPHANUM)
-            res['token'] = dialog.input('Enter AniList token', type=control.kodiGui.INPUT_ALPHANUM)
+            res['username'] = dialog.input('Enter AniList username', type=control.INPUT_ALPHANUM)
+            res['token'] = dialog.input('Enter AniList token', type=control.INPUT_ALPHANUM)
         else:
             dialog.textviewer(control.ADDON_NAME + ': MyAnimeList',
                               '{}\n{}\n{}'.format(control.lang(40100),
                                                   control.lang(40101).replace('below', 'in the input dialog that will popup once you close this'),
                                                   control.lang(40110)))
 
-            res['authvar'] = dialog.input('Enter MAL auth url', type=control.kodiGui.INPUT_ALPHANUM)
+            res['authvar'] = dialog.input('Enter MAL auth url', type=control.INPUT_ALPHANUM)
 
         try:
-            for _id, value in res.items():
+            for _id, value in list(res.items()):
                 if not value:
                     raise Exception
 

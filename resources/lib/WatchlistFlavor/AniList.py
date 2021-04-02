@@ -1,8 +1,7 @@
 import itertools
-import json
-import ast
-from ..ui import database
-from WatchlistFlavorBase import WatchlistFlavorBase
+from resources.lib.ui import database
+from resources.lib.WatchlistFlavor.WatchlistFlavorBase import WatchlistFlavorBase
+
 
 class AniListWLF(WatchlistFlavorBase):
     _URL = "https://graphql.anilist.co"
@@ -10,7 +9,7 @@ class AniListWLF(WatchlistFlavorBase):
     _NAME = "anilist"
     _IMAGE = "https://anilist.co/img/icons/logo_full.png"
 
-    #Not login, but retrieveing userId for watchlist
+    # Not login, but retrieveing userId for watchlist
     def login(self):
         query = '''
         query ($name: String) {
@@ -22,19 +21,19 @@ class AniListWLF(WatchlistFlavorBase):
 
         variables = {
             "name": self._username
-            }
+        }
 
         result = self._post_request(self._URL, json={'query': query, 'variables': variables})
         results = result.json()
 
-        if results.has_key("errors"):
+        if "errors" in results.keys():
             return
 
         userId = results['data']['User']['id']
 
         login_data = {
             'userid': str(userId)
-            }
+        }
 
         return login_data
 
@@ -52,7 +51,7 @@ class AniListWLF(WatchlistFlavorBase):
         return self._parse_view(base)
 
     def _process_watchlist_view(self, base_plugin_url, page):
-        all_results = map(self._base_watchlist_view, self.__anilist_statuses())
+        all_results = list(map(self._base_watchlist_view, self.__anilist_statuses()))
         all_results = list(itertools.chain(*all_results))
         return all_results
 
@@ -65,7 +64,7 @@ class AniListWLF(WatchlistFlavorBase):
             ("Paused", "PAUSED"),
             ("Completed", "COMPLETED"),
             ("Dropped", "DROPPED"),
-            ]
+        ]
 
         return statuses
 
@@ -103,9 +102,13 @@ class AniListWLF(WatchlistFlavorBase):
                     month,
                     day
                 }
+                nextAiringEpisode {
+                    episode,
+                    airingAt
+                }
                 description
                 synonyms
-                format                
+                format
                 status
                 episodes
                 genres
@@ -120,7 +123,7 @@ class AniListWLF(WatchlistFlavorBase):
             'status': status,
             'type': 'ANIME',
             'sort': [self.__get_sort()]
-            }
+        }
 
         return self._process_status_view(query, variables, next_up, "watchlist/%d", page=1)
 
@@ -146,7 +149,7 @@ class AniListWLF(WatchlistFlavorBase):
 
         variables = {
             'mediaId': anilist_id
-            }
+        }
 
         result = self._post_request(self._URL, headers=self.__headers(), json={'query': query, 'variables': variables})
         results = result.json()['data']['Media']['mediaListEntry']
@@ -162,7 +165,7 @@ class AniListWLF(WatchlistFlavorBase):
         result = self._post_request(self._URL, json={'query': query, 'variables': variables})
         results = result.json()
 
-        if results.has_key("errors"):
+        if "errors" in results.keys():
             return
 
         try:
@@ -171,10 +174,12 @@ class AniListWLF(WatchlistFlavorBase):
             entries = []
 
         if next_up:
-            all_results = map(self._base_next_up_view, reversed(entries))
+            all_results = list(map(self._base_next_up_view, reversed(entries)))
         else:
-            all_results = map(self._base_watchlist_status_view, reversed(entries))
-    
+            all_results = list(map(self._base_watchlist_status_view, reversed(entries)))
+
+        all_results = [i for i in all_results if i is not None]
+
         all_results = list(itertools.chain(*all_results))
         return all_results
 
@@ -182,7 +187,7 @@ class AniListWLF(WatchlistFlavorBase):
         progress = res['progress']
         res = res['media']
 
-        #remove cached eps for releasing shows every five days so new eps metadata can be shown
+        # remove cached eps for releasing shows every five days so new eps metadata can be shown
         if res.get('status') == 'RELEASING':
             try:
                 from datetime import datetime, timedelta
@@ -193,7 +198,7 @@ class AniListWLF(WatchlistFlavorBase):
             except:
                 pass
 
-##        kodi_meta = self._get_kodi_meta(res['id'], 'anilist')
+        # kodi_meta = self._get_kodi_meta(res['id'], 'anilist')
 
         info = {}
 
@@ -253,6 +258,12 @@ class AniListWLF(WatchlistFlavorBase):
         poster = image = res['coverImage']['extraLarge']
         plot = None
 
+        if episode_count > 0 and next_up > episode_count:
+            return None
+
+        if res['nextAiringEpisode'] is not None and next_up == res['nextAiringEpisode']['episode']:
+            return None
+
         anilist_id, next_up_meta = self._get_next_up_meta('', progress, res['id'])
         if next_up_meta:
             url = 'play/%d/%d/' % (anilist_id, next_up)
@@ -300,8 +311,9 @@ class AniListWLF(WatchlistFlavorBase):
     def _get_titles(self, res):
         titles = list(set(res['title'].values())) + res.get('synonyms', [])[:2]
         if res['format'] == 'MOVIE':
-            titles = res['title'].values()
-        titles = filter(lambda x: all(ord(char) < 128 for char in x) if x else [], titles)
+            titles = list(res['title'].values())
+        # titles = filter(lambda x: all(ord(char) < 128 for char in x) if x else [], titles)
+        titles = [x for x in titles if (all(ord(char) < 128 for char in x) if x else [])]
         titles = '|'.join(titles[:3])
         return titles
 
@@ -311,7 +323,7 @@ class AniListWLF(WatchlistFlavorBase):
             "Progress": "PROGRESS",
             "Last Updated": "UPDATED_TIME",
             "Last Added": "ADDED_TIME",
-            }
+        }
 
         return sort_types[self._sort]
 
@@ -320,7 +332,7 @@ class AniListWLF(WatchlistFlavorBase):
             'Authorization': 'Bearer ' + self._token,
             'Content-Type': 'application/json',
             'Accept': 'application/json',
-            }
+        }
 
         return headers
 
@@ -350,6 +362,6 @@ class AniListWLF(WatchlistFlavorBase):
             'mediaId': int(anilist_id),
             'progress': int(episode),
             'status': 'CURRENT'
-            }
+        }
 
         self._post_request(self._URL, headers=self.__headers(), json={'query': query, 'variables': variables})

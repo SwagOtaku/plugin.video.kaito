@@ -12,7 +12,7 @@ class Premiumize:
 
     def __init__(self):
         self.client_id = "855400527"
-##        self.client_secret = ""
+        # self.client_secret = ""
         self.headers = {
             'Authorization': 'Bearer {}'.format(control.getSetting('premiumize.token'))
         }
@@ -26,9 +26,9 @@ class Premiumize:
         success = False
         control.copy2clip(token['user_code'])
         control.progressDialog.create(control.ADDON_NAME,
-                                    line1=control.lang(30100).format(control.colorString(token['verification_uri'])),
-                                    line2=control.lang(30101).format(control.colorString(token['user_code'])),
-                                    line3=control.lang(30102))
+                                      control.lang(30100).format(control.colorString(token['verification_uri'])) + '[CR]'
+                                      + control.lang(30101).format(control.colorString(token['user_code'])) + '[CR]'
+                                      + control.lang(30102))
         control.progressDialog.update(0)
 
         while poll_again and not token_ttl <= 0 and not control.progressDialog.iscanceled():
@@ -62,7 +62,7 @@ class Premiumize:
 
     def get_url(self, url):
         if self.headers['Authorization'] == 'Bearer ':
-##            tools.log('User is not authorised to make PM requests')
+            # tools.log('User is not authorised to make PM requests')
             return None
         url = "https://www.premiumize.me/api{}".format(url)
         req = requests.get(url, timeout=10, headers=self.headers).json()
@@ -70,7 +70,7 @@ class Premiumize:
 
     def post_url(self, url, data):
         if self.headers['Authorization'] == 'Bearer ':
-##            tools.log('User is not authorised to make PM requests')
+            # tools.log('User is not authorised to make PM requests')
             return None
         url = "https://www.premiumize.me/api{}".format(url)
         req = requests.post(url, headers=self.headers, data=data, timeout=10).json()
@@ -195,7 +195,6 @@ class Premiumize:
             self._handle_add_to_cloud(magnet)
             return stream_link
 
-
     def resolve_magnet(self, magnet, args, torrent, pack_select):
 
         if 'showInfo' not in args:
@@ -232,39 +231,39 @@ class Premiumize:
 
     def _handle_add_to_cloud(self, magnet):
         pass
-##        if tools.getSetting('premiumize.addToCloud') == 'true':
-##            transfer = self.create_transfer(magnet)
-##            database.add_premiumize_transfer(transfer['id'])
+        # if tools.getSetting('premiumize.addToCloud') == 'true':
+        #     transfer = self.create_transfer(magnet)
+        #     database.add_premiumize_transfer(transfer['id'])
 
     def _fetch_transcode_or_standard(self, file_object):
-##        if tools.getSetting('premiumize.transcoded') == 'true' and \
-##                file_object['transcode_status'] == 'finished':
-##            return file_object['stream_link']
-##        else:
+        # if tools.getSetting('premiumize.transcoded') == 'true' and \
+        #         file_object['transcode_status'] == 'finished':
+        #     return file_object['stream_link']
+        # else:
         return file_object['link']
 
     def user_select(self, content):
         pass
-##        display_list = []
-##        for i in content:
-##            if any(i['path'].endswith(ext) for ext in source_utils.COMMON_VIDEO_EXTENSIONS):
-##                display_list.append(i)
-##
-##        selection = tools.showDialog.select('{}: {}'.format(tools.addonName, tools.lang(40297)),
-##                                            [i['path'] for i in display_list])
-##        if selection == -1:
-##            return None
-##
-##        selection = content[selection]
-##
-##        if tools.getSetting('premiumize.transcoded') == 'true':
-##            if selection['transcode_status'] == 'finished':
-##
-##                return selection['stream_link']
-##            else:
-##                pass
-##
-##        return selection['link']
+        # display_list = []
+        # for i in content:
+        #     if any(i['path'].endswith(ext) for ext in source_utils.COMMON_VIDEO_EXTENSIONS):
+        #         display_list.append(i)
+
+        # selection = tools.showDialog.select('{}: {}'.format(tools.addonName, tools.lang(40297)),
+        #                                     [i['path'] for i in display_list])
+        # if selection == -1:
+        #     return None
+
+        # selection = content[selection]
+
+        # if tools.getSetting('premiumize.transcoded') == 'true':
+        #     if selection['transcode_status'] == 'finished':
+
+        #         return selection['stream_link']
+        #     else:
+        #         pass
+
+        # return selection['link']
 
     def get_hosters(self, hosters):
 
