@@ -1,7 +1,7 @@
 import requests
 import json
-import copy
 import threading
+
 
 class TMDBAPI:
     def __init__(self):
@@ -119,7 +119,7 @@ class TMDBAPI:
             traceback.print_exc()
             return None
 
-        return item 
+        return item
 
     def showSeasonToListItem(self, seasonObject=None, showArgs=None):
 
@@ -175,11 +175,11 @@ class TMDBAPI:
         except:
             return None
 
-
     def parseEpisodeInfo(self, response, traktInfo, showArgs):
         try:
             if "status_code" in response:
-                if response["status_code"] == 34: return None
+                if response["status_code"] == 34:
+                    return None
 
             art = {}
 

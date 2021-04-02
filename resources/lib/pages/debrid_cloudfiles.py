@@ -1,16 +1,10 @@
-import json
-import bs4 as bs
 import re
-import itertools
-from functools import partial
-from ..ui import utils, source_utils
-from ..ui.BrowserBase import BrowserBase
-from ..debrid import real_debrid, premiumize
-from ..ui import database
+from resources.lib.ui import source_utils
+from resources.lib.ui.BrowserBase import BrowserBase
+from resources.lib.debrid import real_debrid, premiumize
 import requests
 import threading
-import copy
-import ast
+
 
 class sources(BrowserBase):
     def __init__(self):
@@ -46,7 +40,7 @@ class sources(BrowserBase):
             torrent = torrents[i]
             filename = re.sub(r'\[.*?\]', '', torrent['filename']).lower()
 
-            if source_utils.is_file_ext_valid(filename) and not episode in filename.rsplit('-', 1)[1]:
+            if source_utils.is_file_ext_valid(filename) and episode not in filename.rsplit('-', 1)[1]:
                 continue
 
             torrent_info = api.torrentInfo(torrent['id'])
@@ -105,5 +99,5 @@ class sources(BrowserBase):
             'release_title': item['name'],
             'info': source_utils.getInfo(item['name']),
             'debrid_provider': 'premiumize',
-            'size': '.%d GB' %((int(item['size']) / 1024) / 1024)
+            'size': '.%d GB' % ((int(item['size']) / 1024) / 1024)
         })

@@ -1,11 +1,9 @@
 import sys
 import os
-import urllib2
-from urllib2 import URLError
-import httplib
+from six.moves.urllib_error import URLError
 import socket
 import time
-from urlparse import urlparse
+from six.moves.urllib_parse import urlparse
 from copy import deepcopy
 import re
 

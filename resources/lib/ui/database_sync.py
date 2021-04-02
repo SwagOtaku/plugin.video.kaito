@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 
-import control
-import xbmcvfs
+from resources.lib.ui import control
+from kodi_six import xbmcvfs
 
 try:
-    from sqlite3 import dbapi2 as db, OperationalError
+    from sqlite3 import dbapi2 as db
 except ImportError:
-    from pysqlite2 import dbapi2 as db, OperationalError
+    from pysqlite2 import dbapi2 as db
 
 database_path = control.anilistSyncDB
+
 
 class AnilistSyncDatabase:
     def __init__(self):
@@ -67,7 +68,7 @@ class AnilistSyncDatabase:
     def _check_database_version(self):
         # Migrate from an old version before database migrations
         if 'kaito_version' not in self.activites:
-##            control.log('Upgrading Trakt Sync Database Version')
+            # control.log('Upgrading Trakt Sync Database Version')
             self.clear_all_meta()
             control.anilistSyncDB_lock.acquire()
             cursor = self._get_cursor()
@@ -78,7 +79,7 @@ class AnilistSyncDatabase:
             control.try_release_lock(control.anilistSyncDB_lock)
 
         if self.check_version_numbers(self.activites['kaito_version'], self.last_meta_update):
-##            control.log('Rebuilding Trakt Sync Database Version')
+            # control.log('Rebuilding Trakt Sync Database Version')
             self.re_build_database(True)
             return
 
@@ -156,7 +157,6 @@ class AnilistSyncDatabase:
         cursor.close()
         control.try_release_lock(control.anilistSyncDB_lock)
 
-
     def _build_sync_activities(self):
         control.anilistSyncDB_lock.acquire()
         cursor = self._get_cursor()
@@ -225,22 +225,24 @@ class AnilistSyncDatabase:
         self._set_base_activites()
         self._refresh_activites()
 
-##        from resources.lib.modules.trakt_sync import activities
-##        sync_errors = activities.TraktSyncDatabase().sync_activities(silent)
-##
-##        if sync_errors:
-##            control.showDialog.notification(control.addonName + ': Trakt', control.lang(40353), time=5000)
-##        elif sync_errors is None:
-##            self._refresh_activites()
-##            return
-##        else:
-##            control.showDialog.notification(control.addonName + ': Trakt', control.lang(40262), time=5000)
+        # from resources.lib.modules.trakt_sync import activities
+        # sync_errors = activities.TraktSyncDatabase().sync_activities(silent)
+
+        # if sync_errors:
+        #     control.showDialog.notification(control.addonName + ': Trakt', control.lang(40353), time=5000)
+        # elif sync_errors is None:
+        #     self._refresh_activites()
+        #     return
+        # else:
+        #     control.showDialog.notification(control.addonName + ': Trakt', control.lang(40262), time=5000)
+
 
 def _dict_factory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):
         d[col[0]] = row[idx]
     return d
+
 
 def makeFile(path):
     try:
@@ -251,6 +253,7 @@ def makeFile(path):
             file.close()
         except:
             pass
+
 
 def _get_connection():
     makeFile(control.dataPath)

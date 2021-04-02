@@ -1,21 +1,20 @@
 # -*- coding: utf-8 -*-
 
-import requests
 import sys
-
+from kodi_six import xbmc
 from resources.lib.ui import control
-from resources.lib.debrid import premiumize
-from resources.lib.debrid import real_debrid
-from resources.lib.debrid import all_debrid
+from resources.lib.debrid import premiumize, real_debrid, all_debrid
 from resources.lib.windows.base_window import BaseWindow
 
 try:
-    sysaddon = sys.argv[0] ; syshandle = int(sys.argv[1])
+    sysaddon = sys.argv[0]
+    syshandle = int(sys.argv[1])
 except:
-    #Running outside Kodi Call
+    # Running outside Kodi Call
     pass
 
 sys.path.append(control.dataPath)
+
 
 class Resolver(BaseWindow):
 
@@ -31,7 +30,7 @@ class Resolver(BaseWindow):
 
         self.pack_select = None
         self.resolvers = {'all_debrid': all_debrid.AllDebrid,
-                          'premiumize':  premiumize.Premiumize,
+                          'premiumize': premiumize.Premiumize,
                           'real_debrid': real_debrid.RealDebrid}
 
     def onInit(self):
@@ -84,7 +83,6 @@ class Resolver(BaseWindow):
 
                     elif i['type'] == 'direct':
                         stream_link = i['hash']
-                        import xbmc
                         xbmc.sleep(200)
 
                         if stream_link is None:
@@ -118,7 +116,6 @@ class Resolver(BaseWindow):
             self.close()
             return
 
-
     def resolve_source(self, api, source):
         stream_link = None
         api = api()
@@ -138,8 +135,8 @@ class Resolver(BaseWindow):
 
     def doModal(self, sources, args, pack_select):
 
-##        if tools.getSetting('general.tempSilent') == 'true':
-##            self.silent = True
+        # if tools.getSetting('general.tempSilent') == 'true':
+        #     self.silent = True
 
         if not sources:
             return None
@@ -154,9 +151,9 @@ class Resolver(BaseWindow):
         self.setProperty('source_info', " ".join(self.sources[0]['info']))
         self.setProperty('source_type', self.sources[0]['type'])
         self.setProperty('source_size', self.sources[0]['size'])
-        
-##        if 'size' in self.sources[0]:
-##            self.setProperty('source_size', control.source_size_display(self.sources[0]['size']))
+
+        # if 'size' in self.sources[0]:
+        #     self.setProperty('source_size', control.source_size_display(self.sources[0]['size']))
 
         if not self.silent:
             super(Resolver, self).doModal()
@@ -188,4 +185,3 @@ class Resolver(BaseWindow):
     def close(self):
         if not self.silent:
             control.dialogWindow.close(self)
-

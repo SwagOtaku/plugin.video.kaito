@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 __metaclass__ = type
 
-import os
 import threading
 from resources.lib.ui import control
 from resources.lib.windows.base_window import BaseWindow
-import copy
+
 
 class GetSources(BaseWindow):
 
@@ -33,19 +32,19 @@ class GetSources(BaseWindow):
 
     def doModal(self):
         try:
-##            if control.getSetting('general.tempSilent') == 'true':
-##                self.silent = True
-##            try:
-##                self.display_style = int(control.getSetting('general.scrapedisplay'))
-##            except:
-##                pass
-##
-##            if not self.silent and self.display_style == 1:
-##                self.background_dialog = control.bgProgressDialog()
-##                self.getSources(self.args)
+            # if control.getSetting('general.tempSilent') == 'true':
+            #     self.silent = True
+            # try:
+            #     self.display_style = int(control.getSetting('general.scrapedisplay'))
+            # except:
+            #     pass
+
+            # if not self.silent and self.display_style == 1:
+            #     self.background_dialog = control.bgProgressDialog()
+            #     self.getSources(self.args)
 
             self.display_style = 0
-            
+
             if self.display_style == 0:
                 super(GetSources, self).doModal()
             else:
@@ -100,32 +99,32 @@ class GetSources(BaseWindow):
 
     def update_properties(self):
 
-            # Set Resolution count properties
-            self.setProperty('4k_sources', str(self.torrents_qual_len[0] + self.hosters_qual_len[0]))
-            self.setProperty('1080p_sources', str(self.torrents_qual_len[1] + self.hosters_qual_len[1]))
-            self.setProperty('720p_sources', str(self.torrents_qual_len[2] + self.hosters_qual_len[2]))
-            self.setProperty('SD_sources', str(self.torrents_qual_len[3] + self.hosters_qual_len[3]))
+        # Set Resolution count properties
+        self.setProperty('4k_sources', str(self.torrents_qual_len[0] + self.hosters_qual_len[0]))
+        self.setProperty('1080p_sources', str(self.torrents_qual_len[1] + self.hosters_qual_len[1]))
+        self.setProperty('720p_sources', str(self.torrents_qual_len[2] + self.hosters_qual_len[2]))
+        self.setProperty('SD_sources', str(self.torrents_qual_len[3] + self.hosters_qual_len[3]))
 
-            # Set total source type counts
-            # self.setProperty('total_torrents', str(len([i for i in self.allTorrents])))
+        # Set total source type counts
+        # self.setProperty('total_torrents', str(len([i for i in self.allTorrents])))
 
-##            self.setProperty('total_torrents', str(len([i for i in self.allTorrents])))
-            self.setProperty('total_torrents', str(len([i for i in self.torrentCacheSources])))         
-            self.setProperty('cached_torrents', str(len([i for i in self.torrentCacheSources])))
-            self.setProperty('hosters_sources', str(len([i for i in self.embedSources])))
-            self.setProperty('cloud_sources', str(len([i for i in self.cloud_files])))
+        # self.setProperty('total_torrents', str(len([i for i in self.allTorrents])))
+        self.setProperty('total_torrents', str(len([i for i in self.torrentCacheSources])))
+        self.setProperty('cached_torrents', str(len([i for i in self.torrentCacheSources])))
+        self.setProperty('hosters_sources', str(len([i for i in self.embedSources])))
+        self.setProperty('cloud_sources', str(len([i for i in self.cloud_files])))
 
-            # Set remaining providers string
-            self.setProperty("remaining_providers_count", str((len(self.remainingProviders))))
+        # Set remaining providers string
+        self.setProperty("remaining_providers_count", str((len(self.remainingProviders))))
 
-            try:
-                self.remaining_providers_list = self.getControl(2000)
-                self.remaining_providers_list.reset()
-                self.remaining_providers_list.addItems(self.remainingProviders)
-                self.setProperty("remaining_providers_list", control.colorString(' | ')
-                                 .join([i.upper() for i in self.remainingProviders]))
-            except:
-                pass
+        try:
+            self.remaining_providers_list = self.getControl(2000)
+            self.remaining_providers_list.reset()
+            self.remaining_providers_list.addItems(self.remainingProviders)
+            self.setProperty("remaining_providers_list", control.colorString(' | ')
+                             .join([i.upper() for i in self.remainingProviders]))
+        except:
+            pass
 
     def setProgress(self):
         if not self.silent:

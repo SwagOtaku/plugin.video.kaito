@@ -2,11 +2,10 @@
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3 import Retry
-from urlparse import urljoin
-import re
-
+from six.moves import urllib_parse
 from resources.lib.ui import source_utils
 from resources.lib.ui import control
+
 
 def alldebird_guard_response(func):
     def wrapper(*args, **kwarg):
@@ -16,20 +15,14 @@ def alldebird_guard_response(func):
                 return response
 
             if response.status_code == 429:
-##                tools.log('Alldebrid Throttling Applied, Sleeping for {} seconds'.format(1), '')
-##                tools.kodi.sleep(1 * 1000)
-                control.kodi.sleep(1 * 1000)
+                control.sleep(1 * 1000)
                 response = func(*args, **kwarg)
 
-##            tools.log('AllDebrid returned a {} ({}): while requesting {}'.format(response.status_code,
-##                                                                                 AllDebrid.http_codes[
-##                                                                                     response.status_code],
-##                                                                                 response.url), 'warning')
             return None
         except requests.exceptions.ConnectionError:
             return None
-        except not requests.exceptions.ConnectionError:
-##            tools.showDialog.ok(tools.addonName, "Somethign wnet wrong with AllDebrid cancelling action")
+        except Exception as e:
+            control.log(e, control.LOGINFO)
             return None
 
     return wrapper
@@ -60,20 +53,16 @@ class AllDebrid:
 
     @alldebird_guard_response
     def get(self, url, **params):
-##        if not tools.getSetting('alldebrid.enabled') == 'true':
-##            return
         params.update({'agent': self.agent_identifier})
-        return self.session.get(urljoin(self.base_url, url), params=params)
+        return self.session.get(urllib_parse.urljoin(self.base_url, url), params=params)
 
     def get_json(self, url, **params):
         return self._extract_data(self.get(url, **params).json())
 
     @alldebird_guard_response
     def post(self, url, post_data=None, **params):
-##        if not tools.getSetting('alldebrid.enabled') == 'true' or self.apikey == '':
-##            return
         params.update({'agent': self.agent_identifier})
-        return self.session.post(urljoin(self.base_url, url), data=post_data, params=params)
+        return self.session.post(urllib_parse.urljoin(self.base_url, url), data=post_data, params=params)
 
     def post_json(self, url, post_data=None, **params):
         post_ = self.post(url, post_data, **params)
@@ -94,19 +83,19 @@ class AllDebrid:
         auth_complete = False
         control.copy2clip(resp['pin'])
         control.progressDialog.create(control.ADDON_NAME + ': AllDebrid Auth',
-                                    line1=control.lang(30100).format(control.colorString(resp['base_url'])),
-                                    line2=control.lang(30101).format(control.colorString(resp['pin'])),
-                                    line3=control.lang(30102))
+                                      control.lang(30100).format(control.colorString(resp['base_url'])) + '[CR]'
+                                      + control.lang(30101).format(control.colorString(resp['pin'])) + '[CR]'
+                                      + control.lang(30102))
 
         # Seems the All Debrid servers need some time do something with the pin before polling
-        # Polling to early will cause an invalid pin error
-        control.kodi.sleep(5 * 1000)
+        # Polling too early will cause an invalid pin error
+        control.sleep(5 * 1000)
         control.progressDialog.update(100)
         while not auth_complete and not expiry <= 0 and not control.progressDialog.iscanceled():
             auth_complete, expiry = self.poll_auth(check=resp['check'], pin=resp['pin'])
             progress_percent = 100 - int((float(pin_ttl - expiry) / pin_ttl) * 100)
             control.progressDialog.update(progress_percent)
-            control.kodi.sleep(1 * 1000)
+            control.sleep(1 * 1000)
         try:
             control.progressDialog.close()
         except:
@@ -137,18 +126,17 @@ class AllDebrid:
         return self.post_json('magnet/instant', {'magnets[]': hash_list}, apikey=self.apikey)
 
     def upload_magnet(self, magnet_hash):
-        return self.get_json('magnet/upload', apikey=self.apikey, magnet=magnet_hash)
+        return self.get_json('magnet/upload', apikey=self.apikey, magnets=magnet_hash)
 
     def update_relevant_hosters(self):
         return
-##        return database.get(self.get_json, 1, 'hosts')
 
     def get_hosters(self, hosters):
         host_list = self.update_relevant_hosters()
         if host_list is not None:
             hosters['premium']['all_debrid'] = \
                 [(d, d.split('.')[0])
-                 for l in host_list['hosts'].values()
+                 for l in list(host_list['hosts'].values())
                  if 'status' in l and l['status']
                  for d in l['domains']]
         else:
@@ -168,82 +156,21 @@ class AllDebrid:
 
         magnet_id = self.upload_magnet(magnet)['magnets'][0]['id']
         folder_details = self.magnet_status(magnet_id)['magnets']['links']
-
-        folder_details = [(l['link'], l['filename']) for l in folder_details]
+        folder_details = [{'link': l['link'], 'path': l['filename']} for l in folder_details]
 
         if episode:
-            selected_files = sorted([idx for idx, i in enumerate(folder_details) if source_utils.get_best_match(episode, i['path'])])[0]
-            selected_file = folder_details[selected_files][0]
+            selected_file = source_utils.get_best_match('path', folder_details, episode)
             self.delete_magnet(magnet_id)
-            return self.resolve_hoster(selected_file)
+            if selected_file is not None:
+                return self.resolve_hoster(selected_file['link'])
 
-        for torrent_file in folder_details:
-            selected_file = torrent_file[0]
-            break
+        selected_file = folder_details[0]['link']
 
         if selected_file is None:
             return
-##        if selected_file is None:
-##            folder_details = [tfile for tfile in folder_details if 'sample' not in tfile[1].lower()]
-##            folder_details = [tfile for tfile in folder_details if source_utils.cleanTitle(args['info']['title'])
-##                              in source_utils.cleanTitle(tfile[1].lower())]
-##            if len(folder_details) == 1:
-##                selected_file = folder_details[0]
-##            else:
-##                return
+
         self.delete_magnet(magnet_id)
         return self.resolve_hoster(selected_file)
-##
-##    def resolve_magnet(self, magnet, args, torrent, pack_select=False):
-##
-##        if args['info']['mediatype'] != 'episode':
-##            return self.movie_magnet_to_stream(magnet, args)
-##
-##        magnet_id = self.upload_magnet(magnet)
-##        magnet_id = magnet_id['magnets'][0]['id']
-##
-##        episode_strings, season_strings = source_utils.torrentCacheStrings(args)
-##
-##        try:
-##            folder_details = self.magnet_status(magnet_id)['magnets']
-##
-##            if folder_details['status'] != 'Ready':
-##                return
-##
-##            links = folder_details['links']
-##
-##            if 'extra' not in args['info']['title'] and 'extra' not in args['info']['tvshowtitle'] \
-##                    and int(args['info']['season']) != 0:
-##                links = [i for i in links if
-##                         'extra' not in
-##                         source_utils.cleanTitle(i['filename'].replace('&', ' ').lower())]
-##
-##            if 'special' not in args['info']['title'] and 'special' not in args['info']['tvshowtitle'] \
-##                    and int(args['info']['season']) != 0:
-##                links = [i for i in links if
-##                         'special' not in
-##                         source_utils.cleanTitle(i['filename'].replace('&', ' ').lower())]
-##
-##            stream_link = self.check_episode_string(links, episode_strings)
-##
-##            if stream_link is None:
-##                return
-##
-##            self.delete_magnet(magnet_id)
-##
-##            return self.resolve_hoster(stream_link)
-##        except:
-##            import traceback
-##            traceback.print_exc()
-##
-##    @staticmethod
-##    def check_episode_string(folder_details, episode_strings):
-##        for i in folder_details:
-##            for epstring in episode_strings:
-##                if epstring in source_utils.cleanTitle(i['filename'].replace('&', ' ').lower()) and any(
-##                        i['filename'].endswith(ext) for ext in source_utils.COMMON_VIDEO_EXTENSIONS):
-##                    return i['link']
-##        return None
 
     def delete_magnet(self, magnet_id):
-        return self.get_json('magnet/delete'.format(magnet_id), apikey=self.apikey, id=magnet_id)
+        return self.get_json('magnet/delete', apikey=self.apikey, id=magnet_id)

@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 from resources.lib.windows.base_window import BaseWindow
 from resources.lib.ui import control
-import xbmc
+from kodi_six import xbmc
+
 
 def run_once(f):
     def wrapper(*args, **kwargs):
@@ -9,6 +12,7 @@ def run_once(f):
             return f(*args, **kwargs)
     wrapper.has_run = False
     return wrapper
+
 
 class SkipIntro(BaseWindow):
 
@@ -95,4 +99,3 @@ class SkipIntro(BaseWindow):
         if action == 7:
             self.handle_action(action)
             return
-
