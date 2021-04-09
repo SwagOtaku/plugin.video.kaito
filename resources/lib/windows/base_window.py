@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from builtins import str
 __metaclass__ = type
 
 import os

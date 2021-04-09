@@ -1,15 +1,20 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from builtins import map
+from builtins import str
+from builtins import object
 import requests
 import json
 import ast
 from functools import partial
-from tmdb import TMDBAPI
+from .tmdb import TMDBAPI
 from ..ui import database, utils
 
-class SIMKLAPI:
+class SIMKLAPI(object):
     def __init__(self):
         self.ClientID = "5178a709b7942f1f5077b737b752eea0f6dee684d0e044fa5acee8822a0cbe9b"
         self.baseUrl = "https://api.simkl.com/"
-        self.imagePath = "https://simkl.net/episodes/%s_w.jpg"
+        self.imagePath = "https://simkl.in/episodes/%s_w.jpg"
         self.art = {}
         self.request_response = None
         self.threads = []
@@ -57,9 +62,9 @@ class SIMKLAPI:
         fanart = kodi_meta.get('fanart')
         poster = kodi_meta.get('poster')
         eps_watched = kodi_meta.get('eps_watched')
-        json_resp = filter(lambda x: x['type'] == 'episode', json_resp)
+        json_resp = [x for x in json_resp if x['type'] == 'episode']
         mapfunc = partial(self._parse_episode_view, anilist_id=anilist_id, poster=poster, fanart=fanart, eps_watched=eps_watched, filter_lang=filter_lang)
-        all_results = map(mapfunc, json_resp)
+        all_results = list(map(mapfunc, json_resp))
 
         return all_results
 

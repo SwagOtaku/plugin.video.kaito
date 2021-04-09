@@ -1,4 +1,5 @@
-
+# -*- coding: utf-8 -*-
+from builtins import str
 from resources.lib.ui import control
 from resources.lib.base_window import BaseWindow
 

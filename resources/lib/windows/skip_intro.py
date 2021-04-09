@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from resources.lib.windows.base_window import BaseWindow
 from resources.lib.ui import control
 import xbmc

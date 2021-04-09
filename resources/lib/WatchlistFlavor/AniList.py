@@ -1,8 +1,12 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from builtins import str
+from builtins import map
 import itertools
 import json
 import ast
 from ..ui import database
-from WatchlistFlavorBase import WatchlistFlavorBase
+from .WatchlistFlavorBase import WatchlistFlavorBase
 
 class AniListWLF(WatchlistFlavorBase):
     _URL = "https://graphql.anilist.co"
@@ -27,7 +31,7 @@ class AniListWLF(WatchlistFlavorBase):
         result = self._post_request(self._URL, json={'query': query, 'variables': variables})
         results = result.json()
 
-        if results.has_key("errors"):
+        if "errors" in results:
             return
 
         userId = results['data']['User']['id']
@@ -52,7 +56,7 @@ class AniListWLF(WatchlistFlavorBase):
         return self._parse_view(base)
 
     def _process_watchlist_view(self, base_plugin_url, page):
-        all_results = map(self._base_watchlist_view, self.__anilist_statuses())
+        all_results = list(map(self._base_watchlist_view, self.__anilist_statuses()))
         all_results = list(itertools.chain(*all_results))
         return all_results
 
@@ -162,7 +166,7 @@ class AniListWLF(WatchlistFlavorBase):
         result = self._post_request(self._URL, json={'query': query, 'variables': variables})
         results = result.json()
 
-        if results.has_key("errors"):
+        if "errors" in results:
             return
 
         try:
@@ -171,9 +175,9 @@ class AniListWLF(WatchlistFlavorBase):
             entries = []
 
         if next_up:
-            all_results = map(self._base_next_up_view, reversed(entries))
+            all_results = list(map(self._base_next_up_view, reversed(entries)))
         else:
-            all_results = map(self._base_watchlist_status_view, reversed(entries))
+            all_results = list(map(self._base_watchlist_status_view, reversed(entries)))
     
         all_results = list(itertools.chain(*all_results))
         return all_results
@@ -300,8 +304,7 @@ class AniListWLF(WatchlistFlavorBase):
     def _get_titles(self, res):
         titles = list(set(res['title'].values())) + res.get('synonyms', [])[:2]
         if res['format'] == 'MOVIE':
-            titles = res['title'].values()
-        titles = filter(lambda x: all(ord(char) < 128 for char in x) if x else [], titles)
+            titles = list(res['title'].values())
         titles = '|'.join(titles[:3])
         return titles
 

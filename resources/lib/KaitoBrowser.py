@@ -1,9 +1,13 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from builtins import map
+from builtins import str
 import json
-from ui import utils, database
-from debrid import real_debrid, premiumize
-import pages
-from ui.BrowserBase import BrowserBase
-from indexers import simkl, trakt
+from .ui import utils, database
+from .debrid import real_debrid, premiumize
+from . import pages
+from .ui.BrowserBase import BrowserBase
+from .indexers import simkl, trakt
 import ast
 import requests
 import datetime
@@ -15,8 +19,8 @@ class KaitoBrowser(BrowserBase):
         return utils.allocate_item(name, "search/" + name + "/1", True)
 
     def _parse_airing_dub_view(self, res):
-        name = res.values()[0]
-        mal_id = (res.keys()[0]).rsplit('/')[-2]
+        name = list(res.values())[0]
+        mal_id = (list(res.keys())[0]).rsplit('/')[-2]
         url = 'watchlist_to_ep/{}//0'.format(mal_id)
 
         try:
@@ -38,7 +42,7 @@ class KaitoBrowser(BrowserBase):
 
     # TODO: Not sure i want this here..
     def search_history(self,search_array):
-    	result = map(self._parse_history_view,search_array)
+    	result = list(map(self._parse_history_view,search_array))
     	result.insert(0,utils.allocate_item("New Search", "search", True))
     	result.insert(len(result),utils.allocate_item("Clear Search History...", "clear_history", True))
     	return result
@@ -49,7 +53,7 @@ class KaitoBrowser(BrowserBase):
         if not resp.ok:
             return []
 
-        all_results = map(self._parse_airing_dub_view, resp.json())
+        all_results = list(map(self._parse_airing_dub_view, resp.json()))
         return all_results
 
     def get_latest(self, real_debrid_enabled, premiumize_enabled):
@@ -120,7 +124,7 @@ class KaitoBrowser(BrowserBase):
         show_meta = database.get_show(anilist_id)
 
         if not show_meta:
-            from AniListBrowser import AniListBrowser
+            from .AniListBrowser import AniListBrowser
             show_meta = AniListBrowser().get_anilist(anilist_id)
 
         if not show_meta['meta_ids']:
@@ -135,7 +139,7 @@ class KaitoBrowser(BrowserBase):
         return self.get_anime_trakt(anilist_id, filter_lang=filter_lang)
 
     def get_episodeList(self, show_id, pass_idx, filter_lang=None, rescrape=False):
-        from ui import control
+        from .ui import control
 
         episodes = database.get_episode_list(int(show_id))
 

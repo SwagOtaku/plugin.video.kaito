@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from builtins import str
 import time
 from resources.lib.ui import control
 from resources.lib.windows.base_window import BaseWindow
@@ -30,7 +31,7 @@ class SourceSelect(BaseWindow):
                 continue
 
             menu_item = control.menuItem(label='%s' % i['release_title'])
-            for info in i.keys():
+            for info in list(i.keys()):
                 try:
                     value = i[info]
                     if type(value) == list:
@@ -107,8 +108,8 @@ class SourceSelect(BaseWindow):
 
         }
 
-        for property in info_struct.keys():
-            for codec in info_struct[property].keys():
+        for property in list(info_struct.keys()):
+            for codec in list(info_struct[property].keys()):
                 if codec in info_list:
                     info[property] = codec
                     break

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import xbmcgui
 import time
 from . import control

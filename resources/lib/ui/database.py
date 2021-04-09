@@ -1,9 +1,12 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from builtins import str
 import ast
 import hashlib
 import re
 import time
 import xbmcvfs
-import control
+from . import control
 import xbmcgui
 
 try:

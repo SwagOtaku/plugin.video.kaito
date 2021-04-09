@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from builtins import next
+from builtins import str
 import re
 import string
 import xbmc

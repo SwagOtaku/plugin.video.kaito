@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+from __future__ import division
+from builtins import object
+from past.utils import old_div
 import time
 import requests
 
@@ -8,7 +11,7 @@ from resources.lib.ui import control
 from resources.lib.ui import database
 
 
-class Premiumize:
+class Premiumize(object):
 
     def __init__(self):
         self.client_id = "855400527"
@@ -25,15 +28,23 @@ class Premiumize:
         poll_again = True
         success = False
         control.copy2clip(token['user_code'])
-        control.progressDialog.create(control.ADDON_NAME,
-                                    line1=control.lang(30100).format(control.colorString(token['verification_uri'])),
-                                    line2=control.lang(30101).format(control.colorString(token['user_code'])),
-                                    line3=control.lang(30102))
+        control.progressDialog.create(
+            control.ADDON_NAME,
+            control.create_multiline_message(
+                line1=control.lang(30100).format(
+                    control.colorString(token['verification_uri'])
+                ),
+                line2=control.lang(30101).format(
+                    control.colorString(token['user_code'])
+                ),
+                line3=control.lang(30102),
+            ),
+        )
         control.progressDialog.update(0)
 
         while poll_again and not token_ttl <= 0 and not control.progressDialog.iscanceled():
             poll_again, success = self.poll_token(token['device_code'])
-            progress_percent = 100 - int((float((expiry - token_ttl) / expiry) * 100))
+            progress_percent = 100 - int((float(old_div((expiry - token_ttl), expiry)) * 100))
             control.progressDialog.update(progress_percent)
             time.sleep(token['interval'])
             token_ttl -= int(token['interval'])
@@ -125,7 +136,7 @@ class Premiumize:
 
     def get_used_space(self):
         info = self.account_info()
-        used_space = int(((info['space_used'] / 1024) / 1024) / 1024)
+        used_space = int(old_div((old_div((old_div(info['space_used'], 1024)), 1024)), 1024))
         return used_space
 
     def hosterCacheCheck(self, source_list):

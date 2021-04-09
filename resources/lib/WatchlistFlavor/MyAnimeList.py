@@ -1,10 +1,16 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import map
 import re
 import bs4 as bs
 import itertools
 import json
 import time
 import requests
-from WatchlistFlavorBase import WatchlistFlavorBase
+from .WatchlistFlavorBase import WatchlistFlavorBase
 
 class MyAnimeListWLF(WatchlistFlavorBase):
     _URL = "https://api.myanimelist.net/v2"
@@ -14,9 +20,9 @@ class MyAnimeListWLF(WatchlistFlavorBase):
 
     def login(self):
         try:
-            import urlparse
-            parsed = urlparse.urlparse(self._auth_var)
-            params = urlparse.parse_qs(parsed.query)
+            import urllib.parse
+            parsed = urllib.parse.urlparse(self._auth_var)
+            params = urllib.parse.parse_qs(parsed.query)
             code = params['code']
             code_verifier = params['state']
         except:
@@ -78,7 +84,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         return self._parse_view(base)
 
     def _process_watchlist_view(self, params, base_plugin_url, page):
-        all_results = map(self._base_watchlist_view, self.__mal_statuses())
+        all_results = list(map(self._base_watchlist_view, self.__mal_statuses()))
         all_results = list(itertools.chain(*all_results))
         return all_results
 
@@ -132,9 +138,9 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         results = (self._get_request(url, headers=self.__headers(), params=params)).json()
 
         if next_up:
-            all_results = map(self._base_next_up_view, results['data'])
+            all_results = list(map(self._base_next_up_view, results['data']))
         else:
-            all_results = map(self._base_watchlist_status_view, results['data'])
+            all_results = list(map(self._base_watchlist_status_view, results['data']))
 
         all_results = list(itertools.chain(*all_results))
 
