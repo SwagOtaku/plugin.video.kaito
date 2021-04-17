@@ -1,3 +1,7 @@
+Changelog 0.0.9:
+- Kodi 19 compatibility
+- Updated anime season for upcoming and popular this season menu items
+
 Changelog 0.0.8:
 - Fixed movies not working in AniList watchlist
 - Fixed scrape and rescrape running twice

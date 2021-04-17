@@ -1,8 +1,14 @@
+# -*- coding: utf-8 -*-
+from __future__ import print_function
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import zip
 import re
-import urllib
-import urlparse
-import utils
-import http
+import urllib.request, urllib.parse, urllib.error
+import urllib.parse
+from . import utils
+from . import http
 import requests
 import json
 import time
@@ -17,18 +23,18 @@ def register_wonderful_subs(base_url, token):
 def load_video_from_url(in_url):
     found_extractor = None
 
-    for extractor in _EMBED_EXTRACTORS.keys():
+    for extractor in list(_EMBED_EXTRACTORS.keys()):
         if in_url.startswith(extractor):
             found_extractor = _EMBED_EXTRACTORS[extractor]
             break
 
     if found_extractor is None:
-        print "[*E*] No extractor found for %s" % in_url
+        print("[*E*] No extractor found for %s" % in_url)
         return None
 
     try:
         if found_extractor['preloader'] is not None:
-            print "Modifying Url: %s" % in_url
+            print("Modifying Url: %s" % in_url)
             in_url = found_extractor['preloader'](in_url)
 
         data = found_extractor['data']
@@ -36,7 +42,7 @@ def load_video_from_url(in_url):
             return found_extractor['parser'](in_url,
                                              data)
 
-        print "Probing source: %s" % in_url
+        print("Probing source: %s" % in_url)
         reqObj = http.send_request(in_url)
         return found_extractor['parser'](http.raw_url(reqObj.url),
                                          reqObj.text,
@@ -59,8 +65,8 @@ def __check_video_list(refer_url, vidlist, add_referer=False,
 
             temp_req = http.head_request(item_url)
             if temp_req.status_code != 200:
-                print "[*] Skiping Invalid Url: %s - status = %d" % (item[1],
-                                                             temp_req.status_code)
+                print("[*] Skiping Invalid Url: %s - status = %d" % (item[1],
+                                                             temp_req.status_code))
                 continue # Skip Item.
 
             out_url = temp_req.url
@@ -68,7 +74,7 @@ def __check_video_list(refer_url, vidlist, add_referer=False,
                 out_url = http.strip_cookie_url(out_url)
 
             nlist.append((item[0], out_url, item[2]))
-        except Exception, e:
+        except Exception as e:
             # Just don't add source.
             pass
 
@@ -96,21 +102,20 @@ def __extract_wonderfulsubs(url, content, referer=None):
     if res["status"] != 200:
         raise Exception("Failed with error code of %d" % res["status"])
 
-    if res.has_key("embed"):
+    if "embed" in res:
         embed_url = res["embed"]
         return load_video_from_url(embed_url)
 
     results = __check_video_list(url,
-                                 map(lambda x: (x['label'],
+                                 [(x['label'],
                                                 x['src'],
-                                                x['captions']['src'] if x.has_key('captions') else None), res["urls"]))
+                                                x['captions']['src'] if 'captions' in x else None) for x in res["urls"]])
 
     return results
 
 def __extract_rapidvideo(url, page_content, referer=None):
     soup = BeautifulSoup(page_content, 'html.parser')
-    results = map(lambda x: (x['label'], x['src']),
-                  soup.select('source'))
+    results = [(x['label'], x['src']) for x in soup.select('source')]
     return results
 
 def __extract_mp4upload(url, page_content, referer=None):
@@ -182,16 +187,16 @@ def __relative_url(original_url, new_url):
     if new_url.startswith("//"):
         return "http:%s" % new_url
     else:
-        return urlparse.urljoin(original_url, new_url)
+        return urllib.parse.urljoin(original_url, new_url)
 
 def __extractor_factory(regex, double_ref=False, match=0, debug=False):
     compiled_regex = re.compile(regex, re.DOTALL)
 
     def f(url, content, referer=None):
         if debug:
-            print url
-            print content
-            print compiled_regex.findall(content)
+            print(url)
+            print(content)
+            print(compiled_regex.findall(content))
             raise
 
         try:
@@ -202,8 +207,8 @@ def __extractor_factory(regex, double_ref=False, match=0, debug=False):
             else:
                 video_url = __relative_url(regex_url, regex_url)
             return video_url
-        except Exception, e:
-            print "[*E*] Failed to load link: %s: %s" % (url, e)
+        except Exception as e:
+            print("[*E*] Failed to load link: %s: %s" % (url, e))
             return None
     return f
 

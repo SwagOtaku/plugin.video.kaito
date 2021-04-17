@@ -1,5 +1,10 @@
-import urllib
-from http_imports import *
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
+import urllib.request, urllib.parse, urllib.error
+from .http_imports import *
 
 _USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
 _SESSION = None
@@ -31,7 +36,7 @@ class PrepReq(object):
 
     @property
     def cookies(self):
-        return self._cookies.keys()
+        return list(self._cookies.keys())
 
 def Session():
     global _SESSION
@@ -60,7 +65,7 @@ def send_request(url, data=None, set_request=None, head=False):
 
     refer_url = None
     out_headers = {}
-    for header, value in headers.iteritems():
+    for header, value in headers.items():
         if header == _REFERER_HEADER:
             refer_url = value
         elif header == _COOKIE_HEADER:
@@ -96,7 +101,7 @@ def add_referer_url(url, referer):
 
 def strip_cookie_url(url):
     url, headers = _strip_url(url)
-    if _COOKIE_HEADER in headers.keys():
+    if _COOKIE_HEADER in list(headers.keys()):
         del headers[_COOKIE_HEADER]
 
     return _url_with_headers(url, headers)
@@ -105,11 +110,11 @@ def head_request(url, set_request=None):
     return send_request(url, set_request=set_request, head=True)
 
 def _url_with_headers(url, headers):
-    if not len(headers.keys()):
+    if not len(list(headers.keys())):
         return url
 
-    headers_arr = ["%s=%s" % (key, urllib.quote_plus(value)) for key, value in
-                   headers.iteritems()]
+    headers_arr = ["%s=%s" % (key, urllib.parse.quote_plus(value)) for key, value in
+                   headers.items()]
 
     return "|".join([url] + headers_arr)
 
@@ -125,7 +130,7 @@ def _strip_url(url):
         if not len(m):
             continue
 
-        out_headers[m[0][0]] = urllib.unquote_plus(m[0][1])
+        out_headers[m[0][0]] = urllib.parse.unquote_plus(m[0][1])
 
     return (target_url, out_headers)
 
@@ -159,6 +164,6 @@ def __send_request(session, url, data=None, set_request=None, head=False):
         return session.head(**kargs)
 
     if data:
-        data = urllib.urlencode(data)
+        data = urllib.parse.urlencode(data)
         return session.post(data=data, **kargs)
     return session.get(**kargs)

@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import control
+from __future__ import absolute_import
+
+from builtins import object
+from . import control
 import xbmcvfs
 
 try:
@@ -10,7 +13,7 @@ except ImportError:
 
 database_path = control.anilistSyncDB
 
-class AnilistSyncDatabase:
+class AnilistSyncDatabase(object):
     def __init__(self):
 
         self.activites = {}

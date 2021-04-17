@@ -1,3 +1,6 @@
+from builtins import str
+from builtins import range
+from builtins import object
 import requests
 import re
 import threading
@@ -7,7 +10,7 @@ import time
 from resources.lib.ui import source_utils
 from resources.lib.ui import control
 
-class RealDebrid:
+class RealDebrid(object):
     def __init__(self):
         self.ClientID = control.getSetting('rd.client_id')
         if self.ClientID == '':
@@ -53,11 +56,18 @@ class RealDebrid:
         url = self.OauthUrl + self.DeviceCodeUrl % url
         response = json.loads(requests.get(url).text)
         control.copy2clip(response['user_code'])
-        control.progressDialog.create('Real-Debrid Auth')
-        control.progressDialog.update(-1,
-                                      control.lang(30100).format(control.colorString('https://real-debrid.com/device')),
-                                      control.lang(30101).format(control.colorString(response['user_code'])),
-                                      control.lang(30102))
+        control.progressDialog.create(
+            'Real-Debrid Auth',
+            control.create_multiline_message(
+                line1=control.lang(30100).format(
+                    control.colorString('https://real-debrid.com/device')
+                ),
+                line2=control.lang(30101).format(
+                    control.colorString(response['user_code'])
+                ),
+                line3=control.lang(30102),
+            ),
+        )
         self.OauthTimeout = int(response['expires_in'])
         self.OauthTimeStep = int(response['interval'])
         self.DeviceCode = response['device_code']
@@ -218,7 +228,7 @@ class RealDebrid:
 
             for storage_variant in hashCheck[hash]['rd']:
 
-                key_list = ','.join(storage_variant.keys())
+                key_list = ','.join(list(storage_variant.keys()))
                 xbmcgui.Dialog().textviewer('sdsd', str(key_list))
 
                 torrent = self.addMagnet(magnet)

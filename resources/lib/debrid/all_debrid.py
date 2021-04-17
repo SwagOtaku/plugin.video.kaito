@@ -1,8 +1,11 @@
 # -*- coding: utf-8 -*-
+from future import standard_library
+standard_library.install_aliases()
+from builtins import object
 import requests
 from requests.adapters import HTTPAdapter
 from urllib3 import Retry
-from urlparse import urljoin
+from urllib.parse import urljoin
 import re
 
 from resources.lib.ui import source_utils
@@ -35,7 +38,7 @@ def alldebird_guard_response(func):
     return wrapper
 
 
-class AllDebrid:
+class AllDebrid(object):
     session = requests.Session()
     retries = Retry(total=5,
                     backoff_factor=0.1,
@@ -148,7 +151,7 @@ class AllDebrid:
         if host_list is not None:
             hosters['premium']['all_debrid'] = \
                 [(d, d.split('.')[0])
-                 for l in host_list['hosts'].values()
+                 for l in list(host_list['hosts'].values())
                  if 'status' in l and l['status']
                  for d in l['domains']]
         else:

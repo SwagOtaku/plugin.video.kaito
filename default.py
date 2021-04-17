@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from resources.lib.ui import control
 from resources.lib.ui import player
 from resources.lib.ui import utils
@@ -39,7 +40,7 @@ def _add_last_watched():
         return
 
     MENU_ITEMS.insert(0, (
-        "%s[I]%s[/I]" % (control.lang(30000), last_watched['name'].encode('utf-8')),
+        "%s[I]%s[/I]" % (control.lang(30000), control.decode_py2(last_watched['name'])),
         "animes/%s/null/" % anilist_id,
         last_watched['poster']
     ))

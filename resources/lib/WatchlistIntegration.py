@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
 import ast
-from ui import control
-from ui.router import route
-from WatchlistFlavor import WatchlistFlavor
-from ui import database
+from .ui import control
+from .ui.router import route
+from .WatchlistFlavor import WatchlistFlavor
+from .ui import database
 
 _BROWSER = None
 def set_browser(browser):
@@ -11,7 +13,7 @@ def set_browser(browser):
 
 def get_anilist_res(mal_id):
     title_lang = control.getSetting("titlelanguage")
-    from AniListBrowser import AniListBrowser
+    from .AniListBrowser import AniListBrowser
     return AniListBrowser(title_lang).get_mal_to_anilist(mal_id)
 
 def get_auth_dialog(flavor):
@@ -62,7 +64,7 @@ def WATCHLIST_QUERY(payload, params):
     show_meta = database.get_show(anilist_id)
 
     if not show_meta:
-        from AniListBrowser import AniListBrowser
+        from .AniListBrowser import AniListBrowser
         show_meta = AniListBrowser().get_anilist(anilist_id)
 
     kodi_meta = ast.literal_eval(show_meta['kodi_meta'])
@@ -103,7 +105,7 @@ def WATCHLIST_QUERY(payload, params):
         show_meta = database.get_show(anilist_id)
 
         if not show_meta:
-            from AniListBrowser import AniListBrowser
+            from .AniListBrowser import AniListBrowser
             show_meta = AniListBrowser().get_anilist(anilist_id)
     else:
         mal_id = payload
@@ -121,7 +123,7 @@ def WATCHLIST_QUERY(payload, params):
     link = SourceSelect(*('source_select.xml', control.ADDON_PATH),
                         actionArgs=_mock_args, sources=sources).doModal()
 
-    from ui import player
+    from .ui import player
 
     player.play_source(link)
 

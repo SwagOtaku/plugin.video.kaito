@@ -1,8 +1,13 @@
+# -*- coding: utf-8 -*-
+from builtins import str
+from builtins import map
+from builtins import filter
+from builtins import object
 import json
 import bs4 as bs
 import re
 from functools import partial
-from ..ui import utils, source_utils
+from ..ui import utils, source_utils, control
 from ..ui.BrowserBase import BrowserBase
 from ..debrid import real_debrid, all_debrid, premiumize
 from ..ui import database
@@ -24,7 +29,7 @@ class sources(BrowserBase):
 
     def _parse_nyaa_episode_view(self, res, episode):
         source = {
-            'release_title': res['name'].encode('utf-8'),
+            'release_title': control.decode_py2(res['name']),
             'hash': res['hash'],
             'type': 'torrent',
             'quality': self.get_quality(res['name']),
@@ -40,7 +45,7 @@ class sources(BrowserBase):
 
     def _parse_nyaa_cached_episode_view(self, res, episode):
         source = {
-            'release_title': res['name'].encode('utf-8'),
+            'release_title': control.decode_py2(res['name']),
             'hash': res['hash'],
             'type': 'torrent',
             'quality': self.get_quality(res['name']),
@@ -102,7 +107,7 @@ class sources(BrowserBase):
             torrent['hash'] = re.findall(r'btih:(.*?)(?:&|$)', torrent['magnet'])[0]
 
         cache_list = TorrentCacheCheck().torrentCacheCheck(list_)
-        all_results = map(self._parse_anime_view, cache_list)
+        all_results = list(map(self._parse_anime_view, cache_list))
 
         return all_results
 
@@ -140,7 +145,7 @@ class sources(BrowserBase):
                 title = torrent['name'].lower()
 
                 ep_match = rex_ep.findall(title)
-                ep_match = map(int, list(itertools.ifilter(None, itertools.chain(*ep_match))))
+                ep_match = list(map(int, list(filter(None, itertools.chain(*ep_match)))))
 
                 if ep_match and ep_match[0] != int(episode):
                     regex_ep_range = r'\s\d+-\d+|\s\d+~\d+|\s\d+\s-\s\d+|\s\d+\s~\s\d+'
@@ -152,7 +157,7 @@ class sources(BrowserBase):
                         continue
                 
                 match = rex.findall(title)
-                match = map(int, list(itertools.ifilter(None, itertools.chain(*match))))
+                match = list(map(int, list(filter(None, itertools.chain(*match)))))
 
                 if not match or match[0] == int(season):
                     filtered_list.append(torrent)
@@ -163,7 +168,7 @@ class sources(BrowserBase):
         cache_list = TorrentCacheCheck().torrentCacheCheck(filtered_list)
         cache_list = sorted(cache_list, key=lambda k: k['downloads'], reverse=True)
         mapfunc = partial(self._parse_nyaa_episode_view, episode=episode)
-        all_results = map(mapfunc, cache_list)
+        all_results = list(map(mapfunc, cache_list))
         return all_results
 
     def _process_nyaa_backup(self, url, anilist_id, _zfill, episode='', rescrape=False):
@@ -196,7 +201,7 @@ class sources(BrowserBase):
         cache_list = sorted(cache_list, key=lambda k: k['downloads'], reverse=True)
 
         mapfunc = partial(self._parse_nyaa_episode_view, episode=episode)
-        all_results = map(mapfunc, cache_list)
+        all_results = list(map(mapfunc, cache_list))
         return all_results
 
     def _process_nyaa_movie(self, url, episode):
@@ -225,13 +230,13 @@ class sources(BrowserBase):
         cache_list = TorrentCacheCheck().torrentCacheCheck(list_)
         cache_list = sorted(cache_list, key=lambda k: k['downloads'], reverse=True)
         mapfunc = partial(self._parse_nyaa_episode_view, episode=episode)
-        all_results = map(mapfunc, cache_list)
+        all_results = list(map(mapfunc, cache_list))
         return all_results
 
     def _process_cached_sources(self, list_, episode):
         cache_list = TorrentCacheCheck().torrentCacheCheck(list_)
         mapfunc = partial(self._parse_nyaa_cached_episode_view, episode=episode)
-        all_results = map(mapfunc, cache_list)
+        all_results = list(map(mapfunc, cache_list))
         return all_results        
 
     def get_latest(self, page=1):
@@ -310,7 +315,7 @@ class sources(BrowserBase):
             return []
 
         if 'general_title' in show:
-            query = show['general_title'].encode('utf-8')
+            query = control.decode_py2(show['general_title'])
             _zfill = show.get('zfill', 2)
             episode = episode.zfill(_zfill)
             query = requests.utils.quote(query)
@@ -324,7 +329,7 @@ class sources(BrowserBase):
         except:
             pass
 
-        query = '%s "- %s"' % (show.encode('utf-8'), episode.zfill(2))
+        query = '%s "- %s"' % (control.decode_py2(show), episode.zfill(2))
         season = database.get_season_list(anilist_id)
         if season:
             season = str(season['season']).zfill(2)
@@ -374,7 +379,7 @@ class sources(BrowserBase):
         url = "https://nyaa.si/?f=0&c=1_2&q=%s" % query
         return self._process_nyaa_movie(url, episode)
 
-class TorrentCacheCheck:
+class TorrentCacheCheck(object):
     def __init__(self):
         self.premiumizeCached = []
         self.realdebridCached = []

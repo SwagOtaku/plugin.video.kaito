@@ -1,8 +1,14 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import map
 import itertools
 import json
 import ast
 import time
-from WatchlistFlavorBase import WatchlistFlavorBase
+from .WatchlistFlavorBase import WatchlistFlavorBase
 
 class KitsuWLF(WatchlistFlavorBase):
     _URL = "https://kitsu.io/api"
@@ -65,11 +71,11 @@ class KitsuWLF(WatchlistFlavorBase):
         if not hasNextPage:
             return []
 
-        import urlparse
+        import urllib.parse
         next_page = page + 1
         name = "Next Page (%d)" %(next_page)
-        parsed = urlparse.urlparse(hasNextPage)
-        offset = urlparse.parse_qs(parsed.query)['page[offset]'][0]
+        parsed = urllib.parse.urlparse(hasNextPage)
+        offset = urllib.parse.parse_qs(parsed.query)['page[offset]'][0]
         return self._parse_view({'name':name, 'url': base_url % (offset, next_page), 'image': None, 'plot': None})
 
     def watchlist(self):
@@ -88,7 +94,7 @@ class KitsuWLF(WatchlistFlavorBase):
         return self._parse_view(base)
 
     def _process_watchlist_status_view(self, url, params, base_plugin_url, page):
-        all_results = map(self._base_watchlist_status_view, self.__kitsu_statuses())
+        all_results = list(map(self._base_watchlist_status_view, self.__kitsu_statuses()))
         all_results = list(itertools.chain(*all_results))
         return all_results
 
@@ -124,12 +130,12 @@ class KitsuWLF(WatchlistFlavorBase):
         result = (self._get_request(url, headers=self.__headers(), params=params)).json()
         _list = result["data"]
         el = result["included"][:len(_list)]
-        self._mapping = filter(lambda x: x['type'] == 'mappings', result['included'])
+        self._mapping = [x for x in result['included'] if x['type'] == 'mappings']
 
         if next_up:
-            all_results = map(self._base_next_up_view, _list, el)
+            all_results = list(map(self._base_next_up_view, _list, el))
         else:
-            all_results = map(self._base_watchlist_view, _list, el)
+            all_results = list(map(self._base_watchlist_view, _list, el))
 
         all_results = list(itertools.chain(*all_results))
 

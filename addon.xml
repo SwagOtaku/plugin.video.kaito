@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.kaito" name="kaito" provider-name="SwagOtaku" version="0.0.8">
+<addon id="plugin.video.kaito" name="kaito" provider-name="SwagOtaku" version="0.0.9">
   <requires>
-    <import addon="xbmc.python" version="2.25.0" />
-    <import addon="script.module.requests" version="2.19.1" />
-    <import addon="script.module.beautifulsoup4" version="4.5.3" />
-    <import addon="script.common.plugin.cache" version="2.5.5" />
-    <import addon="script.module.inputstreamhelper" version="0.3.3" />
+    <import addon="xbmc.python" version="2.26.0"/>
+    <import addon="script.module.future" version="0.17.1"/>
+    <import addon="script.module.requests" version="2.22.0"/>
+    <import addon="script.module.beautifulsoup4" version="4.9.3"/>
+    <import addon="script.common.plugin.cache" version="2.5.5"/>
+    <import addon="context.kaito" version="0.0.3"/>
+    <import addon="script.module.inputstreamhelper" version="0.5.2"/>
   </requires>
   <extension library="default.py" point="xbmc.python.pluginsource">
         <provides>video</provides>
@@ -22,6 +24,10 @@
 			<fanart>fanart.jpg</fanart>
 		</assets>
     <news>
+Changelog 0.0.9:
+Kodi 19 support
+Updated anime season for upcoming and popular this season menu items
+
 Changelog 0.0.8:
 Fixed movies not working in AniList watchlist
 Fixed scrape and rescrape running twice

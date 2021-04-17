@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from builtins import str
 import time
 from resources.lib.ui import control
 from resources.lib.windows.anichart_window import BaseWindow
@@ -27,7 +28,7 @@ class Anichart(BaseWindow):
                 continue
 
             menu_item = control.menuItem(label='%s' % i['release_title'])
-            for info in i.keys():
+            for info in list(i.keys()):
                 try:
                     value = i[info]
                     if type(value) == list:

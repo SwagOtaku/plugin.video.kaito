@@ -1,9 +1,14 @@
+# -*- coding: utf-8 -*-
+from future import standard_library
+standard_library.install_aliases()
+from builtins import str
+from builtins import object
 import requests
 import json
 import copy
 import threading
 
-class TMDBAPI:
+class TMDBAPI(object):
     def __init__(self):
         self.apiKey = "6974ec27debf5cce1218136e2a36f64b"
         self.baseUrl = "https://api.themoviedb.org/3/"

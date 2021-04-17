@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+from __future__ import division
+from past.utils import old_div
 import json
 import bs4 as bs
 import re
@@ -69,7 +72,7 @@ class sources(BrowserBase):
                             'release_title': torrent['filename'],
                             'info': source_utils.getInfo(torrent['filename']),
                             'debrid_provider': 'real_debrid',
-                            'size': '.%d GB' % ((torrent_file['bytes'] / 1024) / 1024)
+                            'size': '.%d GB' % (old_div((old_div(torrent_file['bytes'], 1024)), 1024))
                         }
                     )
                     break
@@ -105,5 +108,5 @@ class sources(BrowserBase):
             'release_title': item['name'],
             'info': source_utils.getInfo(item['name']),
             'debrid_provider': 'premiumize',
-            'size': '.%d GB' %((int(item['size']) / 1024) / 1024)
+            'size': '.%d GB' %(old_div((old_div(int(item['size']), 1024)), 1024))
         })

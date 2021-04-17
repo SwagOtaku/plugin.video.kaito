@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from builtins import object
 import time
 from resources.lib.ui import control
 from resources.lib.windows.base_window import BaseWindow
@@ -58,13 +59,13 @@ class WatchlistFlavorAuth(BaseWindow):
         else:
             res['authvar'] = self.getControl(1000).getText()
 
-        for _id, value in res.items():
+        for _id, value in list(res.items()):
             control.setSetting('%s.%s' % (self.flavor, _id), value)
 
         self.authorized = True
         self.close()
 
-class AltWatchlistFlavorAuth:
+class AltWatchlistFlavorAuth(object):
     def __init__(self, flavor=None):
         self.flavor = flavor
         self.authorized = False
@@ -89,7 +90,7 @@ class AltWatchlistFlavorAuth:
             res['authvar'] = dialog.input('Enter MAL auth url', type=control.kodiGui.INPUT_ALPHANUM)
 
         try:
-            for _id, value in res.items():
+            for _id, value in list(res.items()):
                 if not value:
                     raise Exception
 

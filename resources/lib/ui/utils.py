@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 def allocate_item(name, url, is_dir=False, image='', info='', fanart=None, poster=None):
     new_res = {}
     new_res['is_dir'] = is_dir

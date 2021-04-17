@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from future import standard_library
+standard_library.install_aliases()
 import re
 import os
 import threading
@@ -6,9 +10,9 @@ import xbmc
 import xbmcaddon
 import xbmcplugin
 import xbmcgui
-import http
-import urlparse
-from urllib import quote
+from . import http
+import urllib.parse
+from urllib.parse import quote
 
 try:
     import StorageServer
@@ -19,6 +23,8 @@ try:
     HANDLE=int(sys.argv[1])
 except:
     HANDLE = '1'
+
+PYTHON3 = True if sys.version_info.major == 3 else False
 
 addonInfo = xbmcaddon.Addon().getAddonInfo
 ADDON_NAME = addonInfo('id')
@@ -66,6 +72,27 @@ kodi = xbmc
 
 playList = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
 player = xbmc.Player
+
+try:
+    basestring = basestring  # noqa # pylint: disable=undefined-variable
+    unicode = unicode  # noqa # pylint: disable=undefined-variable
+    xrange = xrange  # noqa # pylint: disable=undefined-variable
+except NameError:
+    basestring = str
+    unicode = str
+    xrange = range
+
+def decode_py2(value):
+    if not PYTHON3 and isinstance(value, basestring):
+        return encode_py2(value).decode("utf-8")
+    return value
+
+def encode_py2(value):
+    if not value:
+        return value
+    if not PYTHON3 and isinstance(value, unicode):
+        return value.encode("utf-8")
+    return value
 
 def closeBusyDialog():
     if condVisibility('Window.IsActive(busydialog)'):
@@ -150,6 +177,30 @@ def colorString(text, color=None):
 
     return '[COLOR %s]%s[/COLOR]' % (color, text)
 
+def create_multiline_message(line1=None, line2=None, line3=None, *lines):
+    """Creates a message from the supplied lines
+    :param line1:Line 1
+    :type line1:str
+    :param line2:Line 2
+    :type line2:str
+    :param line3: Line3
+    :type line3:str
+    :param lines:List of additional lines
+    :type lines:list[str]
+    :return:New message wit the combined lines
+    :rtype:str
+    """
+    result = []
+    if line1:
+        result.append(line1)
+    if line2:
+        result.append(line2)
+    if line3:
+        result.append(line3)
+    if lines:
+        result.extend(l for l in lines if l)
+    return "\n".join(result)
+
 def refresh():
     return xbmc.executebuiltin('Container.Refresh')
 
@@ -169,7 +220,8 @@ def clear_cache():
     return CACHE.delete("%")
 
 def lang(x):
-    return __language__(x).encode('utf-8')
+    text = __language__(x)
+    return decode_py2(text)
 
 def addon_url(url=''):
     return "plugin://%s/%s" % (ADDON_NAME, url)
@@ -180,7 +232,7 @@ def get_plugin_url():
     return sys.argv[0][len(addon_base):]
 
 def get_plugin_params():
-    return dict(urlparse.parse_qsl(sys.argv[2].replace('?', '')))
+    return dict(urllib.parse.parse_qsl(sys.argv[2].replace('?', '')))
 
 def keyboard(text):
     keyboard = xbmc.Keyboard("", text, False)

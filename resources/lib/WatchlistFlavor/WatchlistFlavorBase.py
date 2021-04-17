@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from builtins import object
 import requests
 import ast
 from ..ui import utils, database
