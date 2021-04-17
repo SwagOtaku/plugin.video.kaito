@@ -6,6 +6,7 @@ from resources.lib.windows.base_window import BaseWindow
 from resources.lib.windows.resolver import Resolver
 from resources.lib.ui import database
 
+
 class SourceSelect(BaseWindow):
 
     def __init__(self, xml_file, location, actionArgs=None, sources=None, anilist_id=None, rescrape=None, **kwargs):
@@ -30,14 +31,14 @@ class SourceSelect(BaseWindow):
                 continue
 
             menu_item = control.menuItem(label='%s' % i['release_title'])
-            for info in i.keys():
+            for info in list(i.keys()):
                 try:
                     value = i[info]
                     if type(value) == list:
                         value = [str(k) for k in value]
                         value = ' '.join(sorted(value))
-##                    if info == 'size':
-##                        value = control.source_size_display(value)
+                    # if info == 'size':
+                    #     value = control.source_size_display(value)
                     menu_item.setProperty(info, str(value).replace('_', ' '))
                 except UnicodeEncodeError:
                     menu_item.setProperty(info, i[info])
@@ -51,10 +52,10 @@ class SourceSelect(BaseWindow):
         super(SourceSelect, self).doModal()
         return self.stream_link
 
-##    def onClick(self, controlId):
-##
-##        if controlId == 1000:
-##            self.handle_action(7)
+    # def onClick(self, controlId):
+
+    #     if controlId == 1000:
+    #         self.handle_action(7)
 
     def handle_action(self, actionID):
         if (time.time() - self.last_action) < .5:
@@ -107,8 +108,8 @@ class SourceSelect(BaseWindow):
 
         }
 
-        for property in info_struct.keys():
-            for codec in info_struct[property].keys():
+        for property in list(info_struct.keys()):
+            for codec in list(info_struct[property].keys()):
                 if codec in info_list:
                     info[property] = codec
                     break

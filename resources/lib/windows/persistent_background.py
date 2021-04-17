@@ -2,6 +2,7 @@
 from resources.lib.ui import control
 from resources.lib.base_window import BaseWindow
 
+
 class PersistentBackground(BaseWindow):
 
     def __init__(self, xml_file, location, actionArgs=None):

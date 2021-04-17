@@ -2,16 +2,16 @@ import ast
 import hashlib
 import re
 import time
-import xbmcvfs
-import control
-import xbmcgui
+from kodi_six import xbmcvfs
+from resources.lib.ui import control
 
 try:
-    from sqlite3 import dbapi2 as db, OperationalError, IntegrityError
+    from sqlite3 import dbapi2 as db, OperationalError
 except ImportError:
-    from pysqlite2 import dbapi2 as db, OperationalError, IntegrityError
+    from pysqlite2 import dbapi2 as db, OperationalError
 
 cache_table = 'cache'
+
 
 def get(function, duration, *args, **kwargs):
     # type: (function, int, object) -> object or None
@@ -68,12 +68,14 @@ def get(function, duration, *args, **kwargs):
         traceback.print_exc()
         return None
 
+
 def _hash_function(function_instance, *args):
     return _get_function_name(function_instance) + _generate_md5(args)
 
 
 def _get_function_name(function_instance):
-    return re.sub('.+\smethod\s|.+function\s|\sat\s.+|\sof\s.+', '', repr(function_instance))
+    return re.sub(r'.+\smethod\s|.+function\s|\sat\s.+|\sof\s.+', '', repr(function_instance))
+
 
 def _generate_md5(*args):
     md5_hash = hashlib.md5()
@@ -82,6 +84,7 @@ def _generate_md5(*args):
     except:
         [md5_hash.update(str(arg).encode('utf-8')) for arg in args]
     return str(md5_hash.hexdigest())
+
 
 def cache_get(key):
     try:
@@ -95,6 +98,7 @@ def cache_get(key):
         return None
     finally:
         control.try_release_lock(control.cacheFile_lock)
+
 
 def cache_insert(key, value):
     control.cacheFile_lock.acquire()
@@ -120,6 +124,7 @@ def cache_insert(key, value):
     finally:
         control.try_release_lock(control.cacheFile_lock)
 
+
 def cache_clear():
     try:
         control.cacheFile_lock.acquire()
@@ -138,10 +143,12 @@ def cache_clear():
     finally:
         control.try_release_lock(control.cacheFile_lock)
 
+
 def _is_cache_valid(cached_time, cache_timeout):
     now = int(time.time())
     diff = now - cached_time
     return (cache_timeout * 3600) > diff
+
 
 def makeFile(path):
     try:
@@ -152,6 +159,7 @@ def makeFile(path):
             file.close()
         except:
             pass
+
 
 def _get_connection_cursor(filepath):
     conn = _get_connection(filepath)
@@ -164,11 +172,13 @@ def _get_connection(filepath):
     conn.row_factory = _dict_factory
     return conn
 
+
 def _get_db_connection():
     makeFile(control.dataPath)
     conn = db.connect(control.anilistSyncDB, timeout=60.0)
     conn.row_factory = _dict_factory
     return conn
+
 
 def _get_cursor():
     conn = _get_db_connection()
@@ -176,16 +186,17 @@ def _get_cursor():
     cursor = conn.cursor()
     return cursor
 
+
 def _build_lists_table():
     control.anilistSyncDB_lock.acquire()
     cursor = _get_connection_cursor(control.anilistSyncDB)
     cursor.execute('CREATE TABLE IF NOT EXISTS shows ('
-                       'mal_id INTEGER,'
-                       'name TEXT NOT NULL, '
-                       'image TEXT NOT NULL,'
-                       'slug TEXT NOT NULL,'
-                       'PRIMARY KEY (mal_id)) '
-                       )
+                   'mal_id INTEGER,'
+                   'name TEXT NOT NULL, '
+                   'image TEXT NOT NULL,'
+                   'slug TEXT NOT NULL,'
+                   'PRIMARY KEY (mal_id)) '
+                   )
     cursor.execute('CREATE UNIQUE INDEX IF NOT EXISTS ix_shows ON "shows" (mal_id ASC )')
     try:
         cursor.execute(
@@ -205,10 +216,12 @@ def _build_lists_table():
     finally:
         control.try_release_lock(control.anilistSyncDB_lock)
 
+
 def build_tables():
     _build_episode_table()
     _build_season_table()
     _build_show_table()
+
 
 def _build_show_table():
     control.anilistSyncDB_lock.acquire()
@@ -228,6 +241,7 @@ def _build_show_table():
     cursor.close()
     control.try_release_lock(control.anilistSyncDB_lock)
 
+
 def _build_season_table():
     control.anilistSyncDB_lock.acquire()
     cursor = _get_cursor()
@@ -241,6 +255,7 @@ def _build_season_table():
     cursor.connection.commit()
     cursor.close()
     control.try_release_lock(control.anilistSyncDB_lock)
+
 
 def _build_episode_table():
     control.anilistSyncDB_lock.acquire()
@@ -258,6 +273,7 @@ def _build_episode_table():
     cursor.connection.commit()
     cursor.close()
     control.try_release_lock(control.anilistSyncDB_lock)
+
 
 def _update_show(anilist_id, mal_id, kodi_meta, last_updated=''):
     control.anilistSyncDB_lock.acquire()
@@ -283,6 +299,7 @@ def _update_show(anilist_id, mal_id, kodi_meta, last_updated=''):
     finally:
         control.try_release_lock(control.anilistSyncDB_lock)
 
+
 def add_meta_ids(anilist_id, meta_ids):
     control.anilistSyncDB_lock.acquire()
     cursor = _get_cursor()
@@ -290,6 +307,7 @@ def add_meta_ids(anilist_id, meta_ids):
     cursor.connection.commit()
     cursor.close()
     control.try_release_lock(control.anilistSyncDB_lock)
+
 
 def add_mapping_id(anilist_id, column, value):
     control.anilistSyncDB_lock.acquire()
@@ -299,6 +317,7 @@ def add_mapping_id(anilist_id, column, value):
     cursor.close()
     control.try_release_lock(control.anilistSyncDB_lock)
 
+
 def add_fanart(anilist_id, kodi_meta):
     control.anilistSyncDB_lock.acquire()
     cursor = _get_cursor()
@@ -307,6 +326,7 @@ def add_fanart(anilist_id, kodi_meta):
     cursor.close()
     control.try_release_lock(control.anilistSyncDB_lock)
 
+
 def update_kodi_meta(anilist_id, kodi_meta):
     control.anilistSyncDB_lock.acquire()
     cursor = _get_cursor()
@@ -314,6 +334,7 @@ def update_kodi_meta(anilist_id, kodi_meta):
     cursor.connection.commit()
     cursor.close()
     control.try_release_lock(control.anilistSyncDB_lock)
+
 
 def _update_season(show_id, season):
     control.anilistSyncDB_lock.acquire()
@@ -336,6 +357,7 @@ def _update_season(show_id, season):
     finally:
         control.try_release_lock(control.anilistSyncDB_lock)
 
+
 def _update_episode(show_id, season, number, number_abs, update_time, kodi_meta):
     control.anilistSyncDB_lock.acquire()
     cursor = _get_cursor()
@@ -357,6 +379,7 @@ def _update_episode(show_id, season, number, number_abs, update_time, kodi_meta)
     finally:
         control.try_release_lock(control.anilistSyncDB_lock)
 
+
 def _get_show_list():
     control.anilistSyncDB_lock.acquire()
     cursor = _get_connection_cursor(control.anilistSyncDB)
@@ -365,6 +388,7 @@ def _get_show_list():
     cursor.close()
     control.try_release_lock(control.anilistSyncDB_lock)
     return shows
+
 
 def get_season_list(show_id):
     control.anilistSyncDB_lock.acquire()
@@ -375,6 +399,7 @@ def get_season_list(show_id):
     control.try_release_lock(control.anilistSyncDB_lock)
     return seasons
 
+
 def get_episode_list(show_id):
     control.anilistSyncDB_lock.acquire()
     cursor = _get_cursor()
@@ -383,6 +408,7 @@ def get_episode_list(show_id):
     cursor.close()
     control.try_release_lock(control.anilistSyncDB_lock)
     return episodes
+
 
 def get_show(anilist_id):
     control.anilistSyncDB_lock.acquire()
@@ -394,6 +420,7 @@ def get_show(anilist_id):
     control.try_release_lock(control.anilistSyncDB_lock)
     return shows
 
+
 def get_show_mal(mal_id):
     control.anilistSyncDB_lock.acquire()
     cursor = _get_connection_cursor(control.anilistSyncDB)
@@ -404,6 +431,7 @@ def get_show_mal(mal_id):
     control.try_release_lock(control.anilistSyncDB_lock)
     return shows
 
+
 def mark_episode_unwatched_by_id():
     control.anilistSyncDB_lock.acquire()
     cursor = _get_connection_cursor(control.anilistSyncDB)
@@ -411,6 +439,7 @@ def mark_episode_unwatched_by_id():
     cursor.connection.commit()
     cursor.close()
     control.try_release_lock(control.anilistSyncDB_lock)
+
 
 def remove_season(anilist_id):
     control.anilistSyncDB_lock.acquire()
@@ -429,6 +458,7 @@ def remove_season(anilist_id):
     finally:
         control.try_release_lock(control.anilistSyncDB_lock)
 
+
 def remove_episodes(anilist_id):
     control.anilistSyncDB_lock.acquire()
     cursor = _get_cursor()
@@ -445,6 +475,7 @@ def remove_episodes(anilist_id):
         traceback.print_exc()
     finally:
         control.try_release_lock(control.anilistSyncDB_lock)
+
 
 def getSearchHistory(media_type='show'):
     try:
@@ -477,6 +508,7 @@ def getSearchHistory(media_type='show'):
     finally:
         control.try_release_lock(control.searchHistoryDB_lock)
 
+
 def addSearchHistory(search_string, media_type):
     try:
         control.searchHistoryDB_lock.acquire()
@@ -503,6 +535,7 @@ def addSearchHistory(search_string, media_type):
         return []
     finally:
         control.try_release_lock(control.searchHistoryDB_lock)
+
 
 def getTorrentList(anilist_id):
     control.torrentScrapeCacheFile_lock.acquire()
@@ -531,6 +564,7 @@ def getTorrentList(anilist_id):
     finally:
         control.try_release_lock(control.torrentScrapeCacheFile_lock)
 
+
 def _try_create_torrent_cache(cursor):
     cursor.execute(
         "CREATE TABLE IF NOT EXISTS %s ("
@@ -541,6 +575,7 @@ def _try_create_torrent_cache(cursor):
         % cache_table
     )
     cursor.execute("CREATE UNIQUE INDEX IF NOT EXISTS ix_%s ON %s (anilist_id)" % (cache_table, cache_table))
+
 
 def addTorrentList(anilist_id, torrent_list, zfill_int):
     try:
@@ -569,6 +604,7 @@ def addTorrentList(anilist_id, torrent_list, zfill_int):
     finally:
         control.try_release_lock(control.torrentScrapeCacheFile_lock)
 
+
 def updateSlugs(anilist_id, sources):
     try:
         control.torrentScrapeCacheFile_lock.acquire()
@@ -593,6 +629,7 @@ def updateSlugs(anilist_id, sources):
         return []
     finally:
         control.try_release_lock(control.torrentScrapeCacheFile_lock)
+
 
 def torrent_cache_clear():
     confirmation = control.yesno_dialog(control.ADDON_NAME, "Are you sure you wish to clear the cache?")
@@ -619,6 +656,7 @@ def torrent_cache_clear():
         control.try_release_lock(control.torrentScrapeCacheFile_lock)
 
     control.showDialog.notification('{}: {}'.format(control.ADDON_NAME, control.lang(30200)), control.lang(30202), time=5000)
+
 
 def clearSearchHistory():
     try:
@@ -647,6 +685,7 @@ def clearSearchHistory():
         return []
     finally:
         control.try_release_lock(control.searchHistoryDB_lock)
+
 
 def _dict_factory(cursor, row):
     d = {}

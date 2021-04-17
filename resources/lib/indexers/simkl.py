@@ -1,9 +1,9 @@
 import requests
-import json
 import ast
 from functools import partial
-from tmdb import TMDBAPI
-from ..ui import database, utils
+from resources.lib.indexers.tmdb import TMDBAPI
+from resources.lib.ui import database, utils
+
 
 class SIMKLAPI:
     def __init__(self):
@@ -18,7 +18,7 @@ class SIMKLAPI:
         if url.startswith("/"):
             url = url[1:]
 
-        return "%s/%s" % (self.baseUrl, url)
+        return "%s/%s" % (self.baseUrl[:-1], url)
 
     def _json_request(self, url, data=''):
         response = requests.get(url, data)
@@ -30,9 +30,9 @@ class SIMKLAPI:
 
         if filter_lang:
             url += filter_lang
-        
+
         name = 'Ep. %d (%s)' % (res['episode'], res.get('title'))
-        image =  self.imagePath % res['img']
+        image = self.imagePath % res['img']
         info = {}
         info['plot'] = res['description']
         info['title'] = res['title']
@@ -57,9 +57,10 @@ class SIMKLAPI:
         fanart = kodi_meta.get('fanart')
         poster = kodi_meta.get('poster')
         eps_watched = kodi_meta.get('eps_watched')
-        json_resp = filter(lambda x: x['type'] == 'episode', json_resp)
+        # json_resp = filter(lambda x: x['type'] == 'episode', json_resp)
+        json_resp = [x for x in json_resp if x['type'] == 'episode']
         mapfunc = partial(self._parse_episode_view, anilist_id=anilist_id, poster=poster, fanart=fanart, eps_watched=eps_watched, filter_lang=filter_lang)
-        all_results = map(mapfunc, json_resp)
+        all_results = list(map(mapfunc, json_resp))
 
         return all_results
 
@@ -85,13 +86,12 @@ class SIMKLAPI:
                 kodi_meta['fanart'] = TMDBAPI().showFanart(show_meta).get('fanart')
                 database.update_kodi_meta(int(anilist_id), kodi_meta)
 
-
         return self.get_episodes(anilist_id, filter_lang), 'episodes'
 
     def _get_episodes(self, anilist_id):
         simkl_id = database.get_show(anilist_id)['simkl_id']
         data = {
-            "extended": 'full',
+            'extended': 'full',
         }
         url = self._to_url("anime/episodes/%s" % str(simkl_id))
         json_resp = self._json_request(url, data)

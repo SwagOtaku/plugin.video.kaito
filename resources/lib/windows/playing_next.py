@@ -1,6 +1,7 @@
 from resources.lib.windows.base_window import BaseWindow
 from resources.lib.ui import control
-import xbmc
+from kodi_six import xbmc
+
 
 class PlayingNext(BaseWindow):
 
@@ -85,4 +86,3 @@ class PlayingNext(BaseWindow):
         if action == 7:
             self.handle_action(action)
             return
-

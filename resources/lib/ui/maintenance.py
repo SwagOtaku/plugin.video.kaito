@@ -1,6 +1,6 @@
-import xbmcgui
 import time
-from . import control
+from resources.lib.ui import control
+
 
 def refresh_apis():
     rd_token = control.getSetting('rd.auth')
@@ -12,7 +12,7 @@ def refresh_apis():
         if rd_token != '':
             if time.time() > (rd_expiry - (10 * 60)):
                 from resources.lib.debrid import real_debrid
-##                tools.log('Service Refreshing Real Debrid Token')
+                # tools.log('Service Refreshing Real Debrid Token')
                 real_debrid.Debrid().refreshToken()
     except:
         pass
@@ -35,9 +35,10 @@ def refresh_apis():
     except:
         pass
 
+
 def run_maintenance():
 
-##    tools.log('Performing Maintenance')
+    # tools.log('Performing Maintenance')
     # ADD COMMON HOUSE KEEPING ITEMS HERE #
 
     # Refresh API tokens

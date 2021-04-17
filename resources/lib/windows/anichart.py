@@ -3,8 +3,7 @@
 import time
 from resources.lib.ui import control
 from resources.lib.windows.anichart_window import BaseWindow
-from resources.lib.windows.resolver import Resolver
-from resources.lib.ui import database
+
 
 class Anichart(BaseWindow):
 
@@ -27,7 +26,7 @@ class Anichart(BaseWindow):
                 continue
 
             menu_item = control.menuItem(label='%s' % i['release_title'])
-            for info in i.keys():
+            for info in list(i.keys()):
                 try:
                     value = i[info]
                     if type(value) == list:
@@ -74,7 +73,7 @@ class Anichart(BaseWindow):
     def resolve_item(self):
         anime = self.anime_items[self.position]['id']
         self.anime_item = self.get_anime(anime)
-        
+
         if self.anime_item is None:
             return
         else:

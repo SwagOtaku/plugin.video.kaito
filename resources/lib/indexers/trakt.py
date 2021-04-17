@@ -1,10 +1,10 @@
 import requests
-import json
 import ast
 import re
 from functools import partial
-from tmdb import TMDBAPI
-from ..ui import database, utils
+from resources.lib.indexers.tmdb import TMDBAPI
+from resources.lib.ui import database, utils
+
 
 class TRAKTAPI:
     def __init__(self):
@@ -34,7 +34,7 @@ class TRAKTAPI:
         return parsed
 
     def _parse_search_trakt(self, res, show_id):
-        url = '%s/%s' %(show_id, res['show']['ids'])
+        url = '%s/%s' % (show_id, res['show']['ids'])
         name = res['show']['title']
         image = TMDBAPI().showPoster(res['show']['ids'])
         if image:
@@ -46,7 +46,7 @@ class TRAKTAPI:
         return parsed
 
     def _parse_trakt_view(self, res, show_id, show_meta):
-        url = '%s/%d' % (show_id, res['number']) 
+        url = '%s/%d' % (show_id, res['number'])
         name = res['title']
         image = TMDBAPI().showSeasonToListItem(res['number'], show_meta)
         if image:
@@ -86,14 +86,14 @@ class TRAKTAPI:
 
     def _process_trakt_episodes(self, anilist_id, season, episodes, eps_watched):
         mapfunc = partial(self._parse_trakt_seasons, show_id=anilist_id, eps_watched=eps_watched)
-        all_results = map(mapfunc, episodes)
+        all_results = list(map(mapfunc, episodes))
 
         return all_results
 
     def _process_season_view(self, anilist_id, meta_ids, kodi_meta, url):
         result = self._json_request(url)
         mapfunc = partial(self._parse_trakt_view, show_id=anilist_id, show_meta=meta_ids)
-        all_results = map(mapfunc, result)
+        all_results = list(map(mapfunc, result))
         return all_results, 'seasons'
 
     def _process_direct_season_view(self, anilist_id, meta_ids, kodi_meta, url):
@@ -107,16 +107,16 @@ class TRAKTAPI:
             all_results = self.get_trakt_episodes(anilist_id, season['number']), 'episodes'
         except:
             mapfunc = partial(self._parse_trakt_view, show_id=anilist_id, show_meta=meta_ids)
-            all_results = map(mapfunc, result), 'seasons'
+            all_results = list(map(mapfunc, result))
 
-        return all_results
-    
+        return all_results, 'seasons'
+
     def _process_trakt_episode_view(self, anilist_id, show_meta, season, poster, fanart, eps_watched, url, data, base_plugin_url):
         from datetime import datetime, timedelta
         update_time = (datetime.today() + timedelta(days=5)).strftime('%Y-%m-%d')
         result = self._json_request(url)
         mapfunc = partial(self._parse_trakt_episode_view, show_id=anilist_id, show_meta=show_meta, season=season, poster=poster, fanart=fanart, eps_watched=eps_watched, update_time=update_time)
-        all_results = map(mapfunc, result)
+        all_results = list(map(mapfunc, result))
         return all_results
 
     def get_trakt_id(self, name):
@@ -125,7 +125,7 @@ class TRAKTAPI:
 
         if not result:
             name = name.replace('?', '')
-            name = re.findall('\d*\D+', name)[0]
+            name = re.findall(r'\d*\D+', name)[0]
             url = 'search/show?query=%s&genres=anime&extended=full' % name
             result = self._json_request(url)
 
@@ -140,7 +140,7 @@ class TRAKTAPI:
         result = self._json_request(url)
 
         if not result:
-            name = re.findall('\d*\D+', name)[0]
+            name = re.findall(r'\d*\D+', name)[0]
             name = name.replace('?', '')
             url = 'search/show?query=%s&genres=anime&extended=full' % name
             result = self._json_request(url)
@@ -149,7 +149,7 @@ class TRAKTAPI:
             return []
 
         mapfunc = partial(self._parse_search_trakt, show_id=anilist_id)
-        all_results = map(mapfunc, result)
+        all_results = list(map(mapfunc, result))
         return all_results
 
     def _add_fanart(self, anilist_id, meta_ids, kodi_meta):
@@ -158,7 +158,7 @@ class TRAKTAPI:
                 kodi_meta['fanart'] = TMDBAPI().showFanart(meta_ids)['fanart']
                 database.update_kodi_meta(anilist_id, kodi_meta)
         except:
-            pass        
+            pass
 
     def get_trakt_seasons(self, anilist_id, meta_ids, kodi_meta, db_correction):
         fanart = self._add_fanart(anilist_id, meta_ids, kodi_meta)
@@ -174,7 +174,7 @@ class TRAKTAPI:
     def get_anime(self, anilist_id, db_correction):
         seasons = database.get_season_list(anilist_id)
 
-        if seasons:                
+        if seasons:
             return self.get_trakt_episodes(anilist_id, seasons['season']), 'episodes'
 
         show = database.get_show(anilist_id)
