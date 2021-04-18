@@ -4,7 +4,7 @@ from builtins import map
 from builtins import str
 import json
 from .ui import utils, database
-from .debrid import real_debrid, premiumize
+from .debrid import all_debrid, real_debrid, premiumize
 from . import pages
 from .ui.BrowserBase import BrowserBase
 from .indexers import simkl, trakt
@@ -204,6 +204,7 @@ class KaitoBrowser(BrowserBase):
 
     def get_latest_sources(self, debrid_provider, hash_):
         resolvers = {'premiumize':  premiumize.Premiumize,
+                     'all_debrid': all_debrid.AllDebrid,
                      'real_debrid': real_debrid.RealDebrid}
 
         magnet = 'magnet:?xt=urn:btih:' + hash_
