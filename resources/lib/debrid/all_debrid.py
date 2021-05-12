@@ -97,9 +97,9 @@ class AllDebrid(object):
         auth_complete = False
         control.copy2clip(resp['pin'])
         control.progressDialog.create(control.ADDON_NAME + ': AllDebrid Auth',
-                                    line1=control.lang(30100).format(control.colorString(resp['base_url'])),
-                                    line2=control.lang(30101).format(control.colorString(resp['pin'])),
-                                    line3=control.lang(30102))
+                                      control.lang(30100).format(control.colorString(resp['base_url'])) + '[CR]'
+                                      + control.lang(30101).format(control.colorString(resp['pin'])) + '[CR]'
+                                      + control.lang(30102))
 
         # Seems the All Debrid servers need some time do something with the pin before polling
         # Polling to early will cause an invalid pin error
@@ -140,7 +140,7 @@ class AllDebrid(object):
         return self.post_json('magnet/instant', {'magnets[]': hash_list}, apikey=self.apikey)
 
     def upload_magnet(self, magnet_hash):
-        return self.get_json('magnet/upload', apikey=self.apikey, magnet=magnet_hash)
+        return self.get_json('magnet/upload', apikey=self.apikey, magnets=magnet_hash)
 
     def update_relevant_hosters(self):
         return
@@ -172,17 +172,15 @@ class AllDebrid(object):
         magnet_id = self.upload_magnet(magnet)['magnets'][0]['id']
         folder_details = self.magnet_status(magnet_id)['magnets']['links']
 
-        folder_details = [(l['link'], l['filename']) for l in folder_details]
+        folder_details = [{'link': l['link'], 'path': l['filename']} for l in folder_details]
 
         if episode:
-            selected_files = sorted([idx for idx, i in enumerate(folder_details) if source_utils.get_best_match(episode, i['path'])])[0]
-            selected_file = folder_details[selected_files][0]
+            selected_file = source_utils.get_best_match('path', folder_details, episode)
             self.delete_magnet(magnet_id)
-            return self.resolve_hoster(selected_file)
+            if selected_file is not None:
+                return self.resolve_hoster(selected_file['link'])
 
-        for torrent_file in folder_details:
-            selected_file = torrent_file[0]
-            break
+        selected_file = folder_details[0]['link']
 
         if selected_file is None:
             return
@@ -249,4 +247,4 @@ class AllDebrid(object):
 ##        return None
 
     def delete_magnet(self, magnet_id):
-        return self.get_json('magnet/delete'.format(magnet_id), apikey=self.apikey, id=magnet_id)
+        return self.get_json('magnet/delete', apikey=self.apikey, id=magnet_id)
