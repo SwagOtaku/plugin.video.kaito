@@ -2,11 +2,12 @@
 
 from builtins import str
 import time
-from resources.lib.ui import control
+from resources.lib.ui.globals import g
 from resources.lib.windows.base_window import BaseWindow
 from resources.lib.windows.resolver import Resolver
 from resources.lib.WatchlistFlavor import WatchlistFlavor
 from resources.lib.ui import database
+import xbmcgui
 
 class SourceSelect(BaseWindow):
 
@@ -23,29 +24,29 @@ class SourceSelect(BaseWindow):
         self.flavors_list = None
         self.anime_item = None
         self.last_action = 0
-        control.closeBusyDialog()
+        g.close_busy_dialog()
 
     def onInit(self):
         self.editor_list = self.getControl(2001)
         self.flavors_list = self.getControl(2000)
 
-        if control.anilist_enabled():
-            menu_item = control.menuItem(label='%s' % 'AniList')
-            menu_item.setProperty('username', control.getSetting('anilist.username'))
+        if g.anilist_enabled():
+            menu_item = xbmcgui.ListItem(label='%s' % 'AniList')
+            menu_item.setProperty('username', g.get_setting('anilist.username'))
             self.flavors_list.addItem(menu_item)
 
             self.anime_list_entry['anilist'] = WatchlistFlavor.watchlist_anime_entry_request('anilist', '235')
 
-        if control.kitsu_enabled():
-            menu_item = control.menuItem(label='%s' % 'Kitsu')
-            menu_item.setProperty('username', control.getSetting('kitsu.username'))
+        if g.kitsu_enabled():
+            menu_item = xbmcgui.ListItem(label='%s' % 'Kitsu')
+            menu_item.setProperty('username', g.get_setting('kitsu.username'))
             self.flavors_list.addItem(menu_item)
 
             self.anime_list_entry['kitsu'] = WatchlistFlavor.watchlist_anime_entry_request('kitsu', '235')
 
-        if control.myanimelist_enabled():
-            menu_item = control.menuItem(label='%s' % 'MyAnimeList')
-            menu_item.setProperty('username', control.getSetting('mal.username'))
+        if g.myanimelist_enabled():
+            menu_item = xbmcgui.ListItem(label='%s' % 'MyAnimeList')
+            menu_item.setProperty('username', g.get_setting('mal.username'))
             self.flavors_list.addItem(menu_item)
 
             self.anime_list_entry['myanimelist'] = WatchlistFlavor.watchlist_anime_entry_request('mal', '235')
@@ -53,7 +54,7 @@ class SourceSelect(BaseWindow):
         selected_flavor_item = self.flavors_list.getSelectedItem()
         self.selected_flavor = (selected_flavor_item.getLabel()).lower()
         for _id, value in list(self.anime_list_entry[self.selected_flavor].items()):
-            item = control.menuItem(label='%s' % _id)
+            item = xbmcgui.ListItem(label='%s' % _id)
             item.setProperty(_id, str(value))
             self.editor_list.addItem(item)
 
@@ -69,7 +70,7 @@ class SourceSelect(BaseWindow):
         selected_flavor_item = self.flavors_list.getSelectedItem()
         self.selected_flavor = (selected_flavor_item.getLabel()).lower()
         for _id, value in list(self.anime_list_entry[self.selected_flavor].items()):
-            item = control.menuItem(label='%s' % _id)
+            item = xbmcgui.ListItem(label='%s' % _id)
             item.setProperty(_id, str(value))
             self.editor_list.addItem(item)
 
@@ -129,7 +130,7 @@ class SourceSelect(BaseWindow):
             pass
 
     def edit_eps_watched(self):
-        episodes_watched = control.showDialog.numeric(0, 'Enter episodes watched')
+        episodes_watched = xbmcgui.Dialog().numeric(0, 'Enter episodes watched')
         if not episodes_watched:
             episodes_watched = '0'
         self.anime_item.setProperty('eps_watched', str(episodes_watched))

@@ -2,10 +2,11 @@
 
 from builtins import object
 import time
-from resources.lib.ui import control
+from resources.lib.ui.globals import g
 from resources.lib.windows.base_window import BaseWindow
 from resources.lib.windows.resolver import Resolver
 from resources.lib.ui import database
+import xbmcgui
 
 class WatchlistFlavorAuth(BaseWindow):
 
@@ -15,7 +16,7 @@ class WatchlistFlavorAuth(BaseWindow):
         self.sources = sources
         self.position = -1
         self.last_action = 0
-        control.closeBusyDialog()
+        g.close_busy_dialog()
         self.authorized = False
 
     def onInit(self):
@@ -60,7 +61,7 @@ class WatchlistFlavorAuth(BaseWindow):
             res['authvar'] = self.getControl(1000).getText()
 
         for _id, value in list(res.items()):
-            control.setSetting('%s.%s' % (self.flavor, _id), value)
+            g.set_setting('%s.%s' % (self.flavor, _id), value)
 
         self.authorized = True
         self.close()
@@ -72,29 +73,29 @@ class AltWatchlistFlavorAuth(object):
 
     def set_settings(self):
         res = {}
-        dialog = control.kodiGui.Dialog()
+        dialog = xbmcgui.Dialog()
         if self.flavor == 'anilist':
-            dialog.textviewer(control.ADDON_NAME + ': AniList',
-                              '{}\n{}\n{}'.format(control.lang(40105),
-                                                  control.lang(40106).replace('below', 'in the input dialog that will popup once you close this'),
-                                                  control.lang(40110)))
+            dialog.textviewer(g.ADDON_NAME + ': AniList',
+                              '{}\n{}\n{}'.format(g.lang(40105),
+                                                  g.lang(40106).replace('below', 'in the input dialog that will popup once you close this'),
+                                                  g.lang(40110)))
 
-            res['username'] = dialog.input('Enter AniList username', type=control.kodiGui.INPUT_ALPHANUM)
-            res['token'] = dialog.input('Enter AniList token', type=control.kodiGui.INPUT_ALPHANUM)
+            res['username'] = dialog.input('Enter AniList username', type=xbmcgui.INPUT_ALPHANUM)
+            res['token'] = dialog.input('Enter AniList token', type=xbmcgui.INPUT_ALPHANUM)
         else:
-            dialog.textviewer(control.ADDON_NAME + ': MyAnimeList',
-                              '{}\n{}\n{}'.format(control.lang(40100),
-                                                  control.lang(40101).replace('below', 'in the input dialog that will popup once you close this'),
-                                                  control.lang(40110)))
+            dialog.textviewer(g.ADDON_NAME + ': MyAnimeList',
+                              '{}\n{}\n{}'.format(g.lang(40100),
+                                                  g.lang(40101).replace('below', 'in the input dialog that will popup once you close this'),
+                                                  g.lang(40110)))
 
-            res['authvar'] = dialog.input('Enter MAL auth url', type=control.kodiGui.INPUT_ALPHANUM)
+            res['authvar'] = dialog.input('Enter MAL auth url', type=xbmcgui.INPUT_ALPHANUM)
 
         try:
             for _id, value in list(res.items()):
                 if not value:
                     raise Exception
 
-                control.setSetting('%s.%s' % (self.flavor, _id), value)
+                g.set_setting('%s.%s' % (self.flavor, _id), value)
                 self.authorized = True
         except:
             pass

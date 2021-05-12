@@ -1,6 +1,6 @@
 import threading
 from . import nyaa, gogoanime, animixplay, debrid_cloudfiles
-from ..ui import control
+from ..ui.globals import g
 from resources.lib.windows.get_sources_window import GetSources as DisplayWindow
 import time
 
@@ -12,7 +12,7 @@ def getSourcesHelper(actionArgs):
 ##    sources_window = Sources(*SkinManager().confirm_skin_path('get_sources.xml'),
 ##                             actionArgs=actionArgs)
 
-    sources_window = Sources(*('get_sources.xml', control.ADDON_PATH),
+    sources_window = Sources(*('get_sources.xml', g.ADDON_DATA_PATH),
                              actionArgs=actionArgs)
 
     sources = sources_window.doModal()
@@ -80,7 +80,7 @@ class Sources(DisplayWindow):
         get_backup = args['get_backup']
         self.setProperty('process_started', 'true')
 
-        if control.real_debrid_enabled() or control.all_debrid_enabled() or control.premiumize_enabled():
+        if g.real_debrid_enabled() or g.all_debrid_enabled() or g.premiumize_enabled():
             self.threads.append(
                 threading.Thread(target=self.nyaa_worker, args=(query, anilist_id, episode, status, media_type, rescrape,)))
         else:
@@ -117,10 +117,10 @@ class Sources(DisplayWindow):
             try:
                 self.setProgress()
                 self.setText("4K: %s | 1080: %s | 720: %s | SD: %s" % (
-                    control.colorString(self.torrents_qual_len[0] + self.hosters_qual_len[0]),
-                    control.colorString(self.torrents_qual_len[1] + self.hosters_qual_len[1]),
-                    control.colorString(self.torrents_qual_len[2] + self.hosters_qual_len[2]),
-                    control.colorString(self.torrents_qual_len[3] + self.hosters_qual_len[3]),
+                    g.color_string(self.torrents_qual_len[0] + self.hosters_qual_len[0]),
+                    g.color_string(self.torrents_qual_len[1] + self.hosters_qual_len[1]),
+                    g.color_string(self.torrents_qual_len[2] + self.hosters_qual_len[2]),
+                    g.color_string(self.torrents_qual_len[3] + self.hosters_qual_len[3]),
                 ))
 
             except:
@@ -167,10 +167,10 @@ class Sources(DisplayWindow):
         if not rescrape:
             debrid = {}
             
-            if control.real_debrid_enabled() and control.getSetting('rd.cloudInspection') == 'true':
+            if g.real_debrid_enabled() and g.get_setting('rd.cloudInspection') == 'true':
                 debrid['real_debrid'] = True
 
-            if control.premiumize_enabled() and control.getSetting('premiumize.cloudInspection') == 'true':
+            if g.premiumize_enabled() and g.get_setting('premiumize.cloudInspection') == 'true':
                 debrid['premiumize'] = True
 
             self.usercloudSources = debrid_cloudfiles.sources().get_sources(debrid, query, episode)
@@ -180,7 +180,7 @@ class Sources(DisplayWindow):
 
     def resolutionList(self):
         resolutions = []
-        max_res = int(control.getSetting('general.maxResolution'))
+        max_res = int(g.get_setting('general.maxResolution'))
         if max_res == 3 or max_res < 3:
             resolutions.append('NA')
         if max_res < 3:
@@ -195,12 +195,12 @@ class Sources(DisplayWindow):
     def debrid_priority(self):
         p = []
 
-        if control.getSetting('premiumize.enabled') == 'true':
-            p.append({'slug': 'premiumize', 'priority': int(control.getSetting('premiumize.priority'))})
-        if control.getSetting('realdebrid.enabled') == 'true':
-            p.append({'slug': 'real_debrid', 'priority': int(control.getSetting('rd.priority'))})
-        if control.getSetting('alldebrid.enabled') == 'true':
-            p.append({'slug': 'all_debrid', 'priority': int(control.getSetting('alldebrid.priority'))})
+        if g.get_setting('premiumize.enabled') == 'true':
+            p.append({'slug': 'premiumize', 'priority': int(g.get_setting('premiumize.priority'))})
+        if g.get_setting('realdebrid.enabled') == 'true':
+            p.append({'slug': 'real_debrid', 'priority': int(g.get_setting('rd.priority'))})
+        if g.get_setting('alldebrid.enabled') == 'true':
+            p.append({'slug': 'all_debrid', 'priority': int(g.get_setting('alldebrid.priority'))})
 
         p.append({'slug': '', 'priority': 11})
 
@@ -209,7 +209,7 @@ class Sources(DisplayWindow):
         return p
 
     def sortSources(self, torrent_list, embed_list, filter_lang):
-        sort_method = int(control.getSetting('general.sortsources'))
+        sort_method = int(g.get_setting('general.sortsources'))
 
         sortedList = []
 
@@ -228,7 +228,7 @@ class Sources(DisplayWindow):
 
             embed_list = [i for i in embed_list if i['lang'] != filter_lang]
 
-        elif control.getSetting('general.dubsort') == 'true':
+        elif g.get_setting('general.dubsort') == 'true':
             _torrent_list = torrent_list
             torrent_list = [i for i in _torrent_list if i['lang'] > 0] + \
                            [i for i in embed_list if i['lang'] > 0]
@@ -265,10 +265,10 @@ class Sources(DisplayWindow):
                     if file['quality'] == resolution:
                         sortedList.append(file)
 
-        if control.getSetting('general.disable265') == 'true':
+        if g.get_setting('general.disable265') == 'true':
             sortedList = [i for i in sortedList if 'HEVC' not in i['info']]
 
-        if control.getSetting('general.hidedub') == 'true':
+        if g.get_setting('general.hidedub') == 'true':
             sortedList = [i for i in sortedList if i['lang'] != 2]
 
         return sortedList
@@ -276,9 +276,9 @@ class Sources(DisplayWindow):
     def colorNumber(self, number):
 
         if int(number) > 0:
-            return control.colorString(number, 'green')
+            return g.color_string(number, 'green')
         else:
-            return control.colorString(number, 'red')
+            return g.color_string(number, 'red')
 
     def updateProgress(self):
 

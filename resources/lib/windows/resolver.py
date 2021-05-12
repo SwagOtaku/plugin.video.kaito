@@ -4,11 +4,12 @@ from builtins import str
 import requests
 import sys
 
-from resources.lib.ui import control
+from resources.lib.ui.globals import g
 from resources.lib.debrid import premiumize
 from resources.lib.debrid import real_debrid
 from resources.lib.debrid import all_debrid
 from resources.lib.windows.base_window import BaseWindow
+import xbmcgui
 
 try:
     sysaddon = sys.argv[0] ; syshandle = int(sys.argv[1])
@@ -16,7 +17,7 @@ except:
     #Running outside Kodi Call
     pass
 
-sys.path.append(control.dataPath)
+sys.path.append(g.ADDON_USERDATA_PATH)
 
 class Resolver(BaseWindow):
 
@@ -188,5 +189,4 @@ class Resolver(BaseWindow):
 
     def close(self):
         if not self.silent:
-            control.dialogWindow.close(self)
-
+            xbmcgui.WindowDialog.close(self)

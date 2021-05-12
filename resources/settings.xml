@@ -22,6 +22,11 @@
 		<setting id="viewtype.bool" label="Force view types" type="bool" default="false"/>
 		<setting id="viewtype.episode" type="select" label="- Episode view" values='Default|Poster|Icon Wall|Shift|Info Wall|Wide List|Wall|Banner|Fanart' default="Default" visible="eq(-1,true)"/>
 		-->
+		<setting type="lsep" label="Language Invoker Options"/>
+    		<setting type="sep"/>
+    		<setting id="reuselanguageinvoker.status" label="Re-Use Language Invoker Status" type="text" default="Disabled" enable="false"/>
+    		<setting id="reuselanguageinvoker.toggle" label="Toggle Re-Use Language Invoker" type="action" option="close" 
+			 action="RunPlugin(plugin://plugin.video.kaito/toggleLanguageInvoker)"/>
 	</category>
 
 	<!-- Playback -->

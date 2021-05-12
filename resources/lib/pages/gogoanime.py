@@ -6,7 +6,8 @@ import bs4 as bs
 import re
 import itertools
 from functools import partial
-from ..ui import utils, source_utils
+from ..ui import source_utils
+from resources.lib.ui.globals import g
 from ..ui.BrowserBase import BrowserBase
 from ..debrid import real_debrid, all_debrid
 from ..ui import database
@@ -86,4 +87,4 @@ class sources(BrowserBase):
         image = res.img['src']
         info['title'] = name
         info['mediatype'] = 'tvshow'
-        return utils.allocate_item(name, "play_gogo/" + str(url), False, image, info)
+        return g.allocate_item(name, "play_gogo/" + str(url), False, image, info, is_playable=True)

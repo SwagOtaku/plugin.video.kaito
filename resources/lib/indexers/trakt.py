@@ -10,7 +10,8 @@ import ast
 import re
 from functools import partial
 from .tmdb import TMDBAPI
-from ..ui import database, utils
+from ..ui import database
+from resources.lib.ui.globals import g
 
 class TRAKTAPI(object):
     def __init__(self):
@@ -48,7 +49,7 @@ class TRAKTAPI(object):
         info = {}
         info['plot'] = res['show']['overview']
         info['mediatype'] = 'tvshow'
-        parsed = utils.allocate_item(name, "season_correction_database/" + str(url), True, image, info)
+        parsed = g.allocate_item(name, "season_correction_database/" + str(url), True, image, info)
         return parsed
 
     def _parse_trakt_view(self, res, show_id, show_meta):
@@ -60,7 +61,7 @@ class TRAKTAPI(object):
         info = {}
         info['plot'] = res['overview']
         info['mediatype'] = 'season'
-        parsed = utils.allocate_item(name, "animes_trakt/" + str(url), True, image, info)
+        parsed = g.allocate_item(name, "animes_trakt/" + str(url), True, image, info)
         return parsed
 
     def _parse_trakt_episode_view(self, res, show_id, show_meta, season, poster, fanart, eps_watched, update_time):
@@ -86,7 +87,7 @@ class TRAKTAPI(object):
             pass
         info['tvshowtitle'] = ast.literal_eval(database.get_show(show_id)['kodi_meta'])['title_userPreferred']
         info['mediatype'] = 'episode'
-        parsed = utils.allocate_item(name, "play/" + str(url), False, image, info, fanart, poster)
+        parsed = g.allocate_item(name, "play/" + str(url), False, image, info, fanart, poster, True)
         database._update_episode(show_id, season, res['number'], res['number_abs'], update_time, parsed)
         return parsed
 

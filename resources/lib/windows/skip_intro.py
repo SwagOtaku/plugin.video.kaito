@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from resources.lib.windows.base_window import BaseWindow
-from resources.lib.ui import control
+from resources.lib.ui.globals import g
 import xbmc
 
 def run_once(f):
@@ -17,10 +17,10 @@ class SkipIntro(BaseWindow):
 
         try:
             super(SkipIntro, self).__init__(xml_file, xml_location, actionArgs=actionArgs)
-            self.player = control.player()
+            self.player = xbmc.Player()
             self.playing_file = self.player.getPlayingFile()
             self.duration = self.player.getTotalTime() - self.player.getTime()
-            self.skip = int(control.getSetting('skipintro.time'))
+            self.skip = int(g.get_setting('skipintro.time'))
             self.closed = False
             self.actioned = None
             self.default_action = '0'
@@ -69,10 +69,9 @@ class SkipIntro(BaseWindow):
         self.closed = True
         super(SkipIntro, self).close()
 
-    def onClick(self, control_id):
-        self.handle_action(7, control_id)
+    # def onClick(self, control_id):
+    #     self.handle_action(7, control_id)
 
-    @run_once
     def handle_action(self, action, control_id=None):
         if control_id is None:
             control_id = self.getFocusId()
@@ -96,4 +95,3 @@ class SkipIntro(BaseWindow):
         if action == 7:
             self.handle_action(action)
             return
-

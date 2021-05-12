@@ -3,7 +3,8 @@ from __future__ import absolute_import
 from builtins import map
 from builtins import str
 import json
-from .ui import utils, database
+from .ui import database
+from resources.lib.ui.globals import g
 from .debrid import all_debrid, real_debrid, premiumize
 from . import pages
 from .ui.BrowserBase import BrowserBase
@@ -16,7 +17,7 @@ class KaitoBrowser(BrowserBase):
 
     def _parse_history_view(self, res):
         name = res
-        return utils.allocate_item(name, "search/" + name + "/1", True)
+        return g.allocate_item(name, "search/" + name + "/1", True)
 
     def _parse_airing_dub_view(self, res):
         name = list(res.values())[0]
@@ -34,7 +35,7 @@ class KaitoBrowser(BrowserBase):
         info['plot'] = '** = Dub production suspended until further notice.\n++ = Dub is being produced from home studios with an irregular release schedule.'
         info['mediatype'] = 'tvshow'
 
-        return utils.allocate_item(name, url, True, image, info)
+        return g.allocate_item(name, url, True, image, info)
 
     def _json_request(self, url, data=''):
         response = json.loads(self._get_request(url, data))
@@ -43,8 +44,8 @@ class KaitoBrowser(BrowserBase):
     # TODO: Not sure i want this here..
     def search_history(self,search_array):
     	result = list(map(self._parse_history_view,search_array))
-    	result.insert(0,utils.allocate_item("New Search", "search", True))
-    	result.insert(len(result),utils.allocate_item("Clear Search History...", "clear_history", True))
+    	result.insert(0,g.allocate_item("New Search", "search", True))
+    	result.insert(len(result),g.allocate_item("Clear Search History...", "clear_history", False))
     	return result
 
     def get_airing_dub(self):
@@ -139,8 +140,6 @@ class KaitoBrowser(BrowserBase):
         return self.get_anime_trakt(anilist_id, filter_lang=filter_lang)
 
     def get_episodeList(self, show_id, pass_idx, filter_lang=None, rescrape=False):
-        from .ui import control
-
         episodes = database.get_episode_list(int(show_id))
 
         if episodes:
@@ -153,7 +152,7 @@ class KaitoBrowser(BrowserBase):
 
         items =  [i for i in items if self.is_aired(i['info'])]
 
-        playlist = control.bulk_draw_items(items)[pass_idx:]
+        playlist = g.bulk_draw_items(items)[pass_idx:]
 
         for i in playlist:
             url = i[0]
@@ -161,7 +160,7 @@ class KaitoBrowser(BrowserBase):
             if filter_lang:
                 url += filter_lang
 
-            control.playList.add(url=url, listitem=i[1])
+            g.PLAYLIST.add(url=url, listitem=i[1])
 
     def is_aired(self, info):
         try:

@@ -9,7 +9,7 @@ import requests
 from resources.lib.ui import source_utils
 from resources.lib.ui import control
 from resources.lib.ui import database
-
+from resources.lib.ui.globals import g
 
 class Premiumize(object):
 
@@ -17,7 +17,7 @@ class Premiumize(object):
         self.client_id = "855400527"
 ##        self.client_secret = ""
         self.headers = {
-            'Authorization': 'Bearer {}'.format(control.getSetting('premiumize.token'))
+            'Authorization': 'Bearer {}'.format(g.get_setting('premiumize.token'))
         }
 
     def auth(self):
@@ -29,15 +29,15 @@ class Premiumize(object):
         success = False
         control.copy2clip(token['user_code'])
         control.progressDialog.create(
-            control.ADDON_NAME,
+            g.ADDON_NAME,
             control.create_multiline_message(
-                line1=control.lang(30100).format(
-                    control.colorString(token['verification_uri'])
+                line1=g.lang(30100).format(
+                    g.color_string(token['verification_uri'])
                 ),
-                line2=control.lang(30101).format(
-                    control.colorString(token['user_code'])
+                line2=g.lang(30101).format(
+                    g.color_string(token['user_code'])
                 ),
-                line3=control.lang(30102),
+                line3=g.lang(30102),
             ),
         )
         control.progressDialog.update(0)
@@ -52,7 +52,7 @@ class Premiumize(object):
         control.progressDialog.close()
 
         if success:
-            control.ok_dialog(control.ADDON_NAME, 'Premiumize ' + control.lang(30103))
+            control.ok_dialog(g.ADDON_NAME, 'Premiumize ' + g.lang(30103))
 
     def poll_token(self, device_code):
         data = {'client_id': self.client_id, 'code': device_code, 'grant_type': 'device_code'}
@@ -63,11 +63,11 @@ class Premiumize(object):
                 return False, False
             return True, False
 
-        control.setSetting('premiumize.token', token['access_token'])
+        g.set_setting('premiumize.token', token['access_token'])
         self.headers['Authorization'] = 'Bearer {}'.format(token['access_token'])
 
         account_info = self.account_info()
-        control.setSetting('premiumize.username', account_info['customer_id'])
+        g.set_setting('premiumize.username', account_info['customer_id'])
 
         return False, True
 

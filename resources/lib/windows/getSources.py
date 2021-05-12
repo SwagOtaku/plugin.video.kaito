@@ -10,14 +10,14 @@ import threading
 import time
 import requests
 
-from resources.lib.ui import control
+from resources.lib.ui.globals import g
 from resources.lib.windows.get_sources_window import GetSources as DisplayWindow
 
 class CancelProcess(Exception):
     pass
 
 def getSourcesHelper(actionArgs):
-    sources_window = Sources(*('get_sources.xml', control.ADDON_PATH),
+    sources_window = Sources(*('get_sources.xml', g.ADDON_DATA_PATH),
                         actionArgs={'func': 'null'})
 
     sources = sources_window.doModal()
@@ -76,10 +76,10 @@ class Sources(DisplayWindow):
             try:
                 self.setProgress()
                 self.setText("4K: %s | 1080: %s | 720: %s | SD: %s" % (
-                    control.colorString(self.torrents_qual_len[0] + self.hosters_qual_len[0]),
-                    control.colorString(self.torrents_qual_len[1] + self.hosters_qual_len[1]),
-                    control.colorString(self.torrents_qual_len[2] + self.hosters_qual_len[2]),
-                    control.colorString(self.torrents_qual_len[3] + self.hosters_qual_len[3]),
+                    g.color_string(self.torrents_qual_len[0] + self.hosters_qual_len[0]),
+                    g.color_string(self.torrents_qual_len[1] + self.hosters_qual_len[1]),
+                    g.color_string(self.torrents_qual_len[2] + self.hosters_qual_len[2]),
+                    g.color_string(self.torrents_qual_len[3] + self.hosters_qual_len[3]),
                     ))
 
             except:

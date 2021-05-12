@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from resources.lib.windows.base_window import BaseWindow
-from resources.lib.ui import control
+from resources.lib.ui.globals import g
 import xbmc
 
 class PlayingNext(BaseWindow):
@@ -9,12 +9,12 @@ class PlayingNext(BaseWindow):
 
         try:
             super(PlayingNext, self).__init__(xml_file, xml_location, actionArgs=actionArgs)
-            self.player = control.player()
+            self.player = xbmc.Player()
             self.playing_file = self.player.getPlayingFile()
             self.duration = self.player.getTotalTime() - self.player.getTime()
             self.closed = False
             self.actioned = None
-            self.default_action = control.getSetting('playingnext.defaultaction')
+            self.default_action = g.get_setting('playingnext.defaultaction')
         except:
             import traceback
             traceback.print_exc()
@@ -86,4 +86,3 @@ class PlayingNext(BaseWindow):
         if action == 7:
             self.handle_action(action)
             return
-

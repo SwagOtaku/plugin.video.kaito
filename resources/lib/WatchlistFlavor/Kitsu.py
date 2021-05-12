@@ -8,6 +8,7 @@ import itertools
 import json
 import ast
 import time
+from resources.lib.ui.globals import g
 from .WatchlistFlavorBase import WatchlistFlavorBase
 
 class KitsuWLF(WatchlistFlavorBase):
@@ -43,10 +44,10 @@ class KitsuWLF(WatchlistFlavorBase):
 
         return login_data
 
-    def refresh_token(self, control):
+    def refresh_token(self):
         params = {
             "grant_type": "refresh_token",
-            "refresh_token": control.getSetting('kitsu.refresh'),
+            "refresh_token": g.get_setting('kitsu.refresh'),
             }
         resp = self._post_request(self._to_url("oauth/token"), params=params)
 
@@ -54,9 +55,9 @@ class KitsuWLF(WatchlistFlavorBase):
             return
 
         data = resp.json()
-        control.setSetting('kitsu.token', data['access_token'])
-        control.setSetting('kitsu.refresh', data['refresh_token'])
-        control.setSetting('kitsu.expiry', str(time.time() + int(data['expires_in'])))
+        g.set_setting('kitsu.token', data['access_token'])
+        g.set_setting('kitsu.refresh', data['refresh_token'])
+        g.set_setting('kitsu.expiry', str(time.time() + int(data['expires_in'])))
 
     def __headers(self):
         headers = {
@@ -224,12 +225,12 @@ class KitsuWLF(WatchlistFlavorBase):
 
         if next_up_meta:
             base['url'] = url
-            return self._parse_view(base, False)
+            return self._parse_view(base, False, True)
 
         if eres['attributes']['subtype'] == 'movie' and eres['attributes']['episodeCount'] == 1:
             base['url'] = "watchlist_to_movie/%s" % (mal_id)
             base['plot']['mediatype'] = 'movie'
-            return self._parse_view(base, False)
+            return self._parse_view(base, False, True)
 
         return self._parse_view(base)
 

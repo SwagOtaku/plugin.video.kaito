@@ -4,9 +4,10 @@ __metaclass__ = type
 
 import os
 import threading
-from resources.lib.ui import control
+from resources.lib.ui.globals import g
 from resources.lib.windows.base_window import BaseWindow
 import copy
+import xbmcgui
 
 class GetSources(BaseWindow):
 
@@ -25,7 +26,7 @@ class GetSources(BaseWindow):
         self.progress = 0
         self.background_dialog = None
         self.setProperty('progress', '0')
-        control.closeBusyDialog()
+        g.close_busy_dialog()
 
     def onInit(self):
         threading.Thread(target=self.getSources, args=(self.args,)).start()
@@ -85,7 +86,7 @@ class GetSources(BaseWindow):
     def close(self):
         if not self.silent:
             if self.display_style == 0:
-                control.dialogWindow.close(self)
+                xbmcgui.WindowDialog.close(self)
             elif self.display_style == 1:
                 self.background_dialog.close()
 
@@ -123,7 +124,7 @@ class GetSources(BaseWindow):
                 self.remaining_providers_list = self.getControl(2000)
                 self.remaining_providers_list.reset()
                 self.remaining_providers_list.addItems(self.remainingProviders)
-                self.setProperty("remaining_providers_list", control.colorString(' | ')
+                self.setProperty("remaining_providers_list", g.color_string(' | ')
                                  .join([i.upper() for i in self.remainingProviders]))
             except:
                 pass

@@ -4,27 +4,29 @@ __metaclass__ = type
 
 import os
 
-from resources.lib.ui import control, database
+from resources.lib.ui import database
+from resources.lib.ui.globals import g
 import ast
+import xbmcgui
 
-class BaseWindow(control.xmlWindow):
+class BaseWindow(xbmcgui.WindowXMLDialog):
 
     def __init__(self, xml_file, location, actionArgs=None):
 
         try:
             super(BaseWindow, self).__init__(xml_file, location)
         except:
-            control.xmlWindow().__init__()
+            xbmcgui.WindowXMLDialog().__init__()
 
-        control.closeBusyDialog()
+        g.close_busy_dialog()
         self.canceled = False
 
-        self.setProperty('texture.white', os.path.join(control.IMAGES_PATH, 'white.png'))
-        self.setProperty('kaito.logo', control.KAITO_LOGO_PATH)
-        self.setProperty('kaito.fanart', control.KAITO_FANART_PATH)
+        self.setProperty('texture.white', os.path.join(g.IMAGES_PATH, 'white.png'))
+        self.setProperty('kaito.logo', os.path.join(g.IMAGES_PATH, 'trans-crow.png'))
+        self.setProperty('kaito.fanart', g.DEFAULT_FANART)
         self.setProperty('settings.color', 'deepskyblue')
-        self.setProperty('test.pattern', os.path.join(control.IMAGES_PATH, 'test_pattern.png'))
-        self.setProperty('skin.dir', control.ADDON_PATH)
+        self.setProperty('test.pattern', os.path.join(g.IMAGES_PATH, 'test_pattern.png'))
+        self.setProperty('skin.dir', g.ADDON_DATA_PATH)
 
         if actionArgs is None:
             return

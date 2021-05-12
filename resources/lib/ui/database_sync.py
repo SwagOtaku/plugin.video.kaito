@@ -4,14 +4,16 @@ from __future__ import absolute_import
 
 from builtins import object
 from . import control
+from resources.lib.ui.globals import g
 import xbmcvfs
+import threading
 
 try:
     from sqlite3 import dbapi2 as db, OperationalError
 except ImportError:
     from pysqlite2 import dbapi2 as db, OperationalError
 
-database_path = control.anilistSyncDB
+migrate_db_lock = threading.Lock()
 
 class AnilistSyncDatabase(object):
     def __init__(self):
@@ -26,10 +28,10 @@ class AnilistSyncDatabase(object):
         # If you make changes to the required meta in any indexer that is cached in this database
         # You will need to update the below version number to match the new addon version
         # This will ensure that the metadata required for operations is available
-        # You may also update this version number to force a rebuild of the database after updating Seren
-        self.last_meta_update = '0.0.7'
+        # You may also update this version number to force a rebuild of the database after updating kaito
+        self.last_meta_update = '0.0.10'
 
-        control.anilistSyncDB_lock.acquire()
+        migrate_db_lock.acquire()
 
         self._refresh_activites()
 
@@ -46,7 +48,7 @@ class AnilistSyncDatabase(object):
             self.activites = cursor.fetchone()
             cursor.close()
 
-        control.try_release_lock(control.anilistSyncDB_lock)
+        control.try_release_lock(migrate_db_lock)
 
         if self.activites is not None:
             self._check_database_version()
@@ -72,13 +74,13 @@ class AnilistSyncDatabase(object):
         if 'kaito_version' not in self.activites:
 ##            control.log('Upgrading Trakt Sync Database Version')
             self.clear_all_meta()
-            control.anilistSyncDB_lock.acquire()
+            migrate_db_lock.acquire()
             cursor = self._get_cursor()
             cursor.execute('ALTER TABLE activities ADD COLUMN kaito_version TEXT')
             cursor.execute('UPDATE activities SET kaito_version = ?', (self.last_meta_update,))
             cursor.connection.commit()
             cursor.close()
-            control.try_release_lock(control.anilistSyncDB_lock)
+            control.try_release_lock(migrate_db_lock)
 
         if self.check_version_numbers(self.activites['kaito_version'], self.last_meta_update):
 ##            control.log('Rebuilding Trakt Sync Database Version')
@@ -100,7 +102,7 @@ class AnilistSyncDatabase(object):
         return False
 
     def clear_all_meta(self):
-        path = control.anilistSyncDB
+        path = g.ANILIST_SYNC_DB_PATH
         xbmcvfs.delete(path)
         file = open(path, 'a+')
         file.close()
@@ -111,7 +113,7 @@ class AnilistSyncDatabase(object):
         self._build_season_table()
 
     def _build_show_table(self):
-        control.anilistSyncDB_lock.acquire()
+        migrate_db_lock.acquire()
         cursor = self._get_cursor()
         cursor.execute('CREATE TABLE IF NOT EXISTS shows '
                        '(anilist_id INTEGER PRIMARY KEY, '
@@ -126,10 +128,10 @@ class AnilistSyncDatabase(object):
         cursor.execute('CREATE UNIQUE INDEX IF NOT EXISTS ix_shows ON "shows" (anilist_id ASC )')
         cursor.connection.commit()
         cursor.close()
-        control.try_release_lock(control.anilistSyncDB_lock)
+        control.try_release_lock(migrate_db_lock)
 
     def _build_season_table(self):
-        control.anilistSyncDB_lock.acquire()
+        migrate_db_lock.acquire()
         cursor = self._get_cursor()
         cursor.execute('CREATE TABLE IF NOT EXISTS seasons ('
                        'anilist_id INTEGER NOT NULL, '
@@ -140,10 +142,10 @@ class AnilistSyncDatabase(object):
         cursor.execute('CREATE UNIQUE INDEX IF NOT EXISTS ix_season ON seasons (anilist_id ASC, season ASC)')
         cursor.connection.commit()
         cursor.close()
-        control.try_release_lock(control.anilistSyncDB_lock)
+        control.try_release_lock(migrate_db_lock)
 
     def _build_episode_table(self):
-        control.anilistSyncDB_lock.acquire()
+        migrate_db_lock.acquire()
         cursor = self._get_cursor()
         cursor.execute('CREATE TABLE IF NOT EXISTS episodes ('
                        'anilist_id INTEGER NOT NULL, '
@@ -157,11 +159,11 @@ class AnilistSyncDatabase(object):
         cursor.execute('CREATE UNIQUE INDEX IF NOT EXISTS ix_episodes ON episodes (anilist_id ASC, season ASC, number ASC)')
         cursor.connection.commit()
         cursor.close()
-        control.try_release_lock(control.anilistSyncDB_lock)
+        control.try_release_lock(migrate_db_lock)
 
 
     def _build_sync_activities(self):
-        control.anilistSyncDB_lock.acquire()
+        migrate_db_lock.acquire()
         cursor = self._get_cursor()
         cursor.execute('CREATE TABLE IF NOT EXISTS activities ('
                        'sync_id INTEGER PRIMARY KEY, '
@@ -169,10 +171,10 @@ class AnilistSyncDatabase(object):
                        )
         cursor.connection.commit()
         cursor.close()
-        control.try_release_lock(control.anilistSyncDB_lock)
+        control.try_release_lock(migrate_db_lock)
 
     def _build_lists_table(self):
-        control.anilistSyncDB_lock.acquire()
+        migrate_db_lock.acquire()
         cursor = self._get_cursor()
         cursor.execute('CREATE TABLE IF NOT EXISTS lists ('
                        'trakt_id INTEGER NOT NULL, '
@@ -191,7 +193,7 @@ class AnilistSyncDatabase(object):
 
         cursor.connection.commit()
         cursor.close()
-        control.try_release_lock(control.anilistSyncDB_lock)
+        control.try_release_lock(migrate_db_lock)
 
     def _get_cursor(self):
         conn = _get_connection()
@@ -202,20 +204,20 @@ class AnilistSyncDatabase(object):
     def flush_activities(self, clear_meta=False):
         if clear_meta:
             self.clear_all_meta()
-        control.anilistSyncDB_lock.acquire()
+        migrate_db_lock.acquire()
         cursor = self._get_cursor()
         cursor.execute('DROP TABLE activities')
         cursor.connection.commit()
         cursor.close()
-        control.try_release_lock(control.anilistSyncDB_lock)
+        control.try_release_lock(migrate_db_lock)
 
     def re_build_database(self, silent=False):
         if not silent:
-            confirm = control.yesno_dialog(control.ADDON_NAME, control.lang(30203))
+            confirm = control.yesno_dialog(g.ADDON_NAME, g.lang(30203))
             if confirm == 0:
                 return
 
-        path = control.anilistSyncDB
+        path = g.ANILIST_SYNC_DB_PATH
         xbmcvfs.delete(path)
         file = open(path, 'a+')
         file.close()
@@ -227,6 +229,9 @@ class AnilistSyncDatabase(object):
 
         self._set_base_activites()
         self._refresh_activites()
+
+        g.close_busy_dialog()
+        control.showDialog.notification(g.ADDON_NAME, "Database rebuilt", time=5000)
 
 ##        from resources.lib.modules.trakt_sync import activities
 ##        sync_errors = activities.TraktSyncDatabase().sync_activities(silent)
@@ -256,7 +261,7 @@ def makeFile(path):
             pass
 
 def _get_connection():
-    makeFile(control.dataPath)
-    conn = db.connect(database_path, timeout=60.0)
+    makeFile(g.ADDON_USERDATA_PATH)
+    conn = db.connect(g.ANILIST_SYNC_DB_PATH, timeout=60.0)
     conn.row_factory = _dict_factory
     return conn

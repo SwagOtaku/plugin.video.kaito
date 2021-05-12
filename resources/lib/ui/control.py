@@ -7,6 +7,7 @@ import os
 import threading
 import sys
 import xbmc
+import xbmcvfs
 import xbmcaddon
 import xbmcplugin
 import xbmcgui
@@ -32,38 +33,13 @@ __settings__ = xbmcaddon.Addon(ADDON_NAME)
 __language__ = __settings__.getLocalizedString
 CACHE = StorageServer.StorageServer("%s.animeinfo" % ADDON_NAME, 24)
 addonInfo = __settings__.getAddonInfo
-try:
-    dataPath = xbmc.translatePath(addonInfo('profile')).decode('utf-8')
-except:
-    dataPath = xbmc.translatePath(addonInfo('profile'))
 
-try:
-    ADDON_PATH = __settings__.getAddonInfo('path').decode('utf-8')
-except:
-    ADDON_PATH = __settings__.getAddonInfo('path')
-
-
-cacheFile = os.path.join(dataPath, 'cache.db')
-cacheFile_lock = threading.Lock()
-
-searchHistoryDB = os.path.join(dataPath, 'search.db')
-searchHistoryDB_lock = threading.Lock()
-anilistSyncDB = os.path.join(dataPath, 'anilistSync.db')
-anilistSyncDB_lock = threading.Lock()
-torrentScrapeCacheFile = os.path.join(dataPath, 'torrentScrape.db')
-torrentScrapeCacheFile_lock = threading.Lock()
-
-maldubFile = os.path.join(dataPath, 'mal_dub.json')
 
 kodiGui = xbmcgui
 showDialog = xbmcgui.Dialog()
 dialogWindow = kodiGui.WindowDialog
 xmlWindow = kodiGui.WindowXMLDialog
 condVisibility = xbmc.getCondVisibility
-fanart_ = ADDON_PATH + "/fanart.jpg"
-IMAGES_PATH = os.path.join(ADDON_PATH, 'resources', 'images')
-KAITO_LOGO_PATH = os.path.join(IMAGES_PATH, 'trans-crow.png')
-KAITO_FANART_PATH = ADDON_PATH + "/fanart.jpg"
 menuItem = xbmcgui.ListItem
 execute = xbmc.executebuiltin
 
@@ -72,6 +48,31 @@ kodi = xbmc
 
 playList = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
 player = xbmc.Player
+
+try:
+    # Try to get Python 3 versions
+    from urllib.parse import (
+        parse_qsl,
+        urlencode,
+        quote_plus,
+        parse_qs,
+        quote,
+        unquote,
+        urlparse,
+        urljoin,
+    )
+except ImportError:
+    # Fall back on future.backports to ensure we get unicode compatible PY3 versions in PY2
+    from future.backports.urllib.parse import (
+        parse_qsl,
+        urlencode,
+        quote_plus,
+        parse_qs,
+        quote,
+        unquote,
+        urlparse,
+        urljoin,
+    )
 
 try:
     basestring = basestring  # noqa # pylint: disable=undefined-variable
@@ -122,32 +123,6 @@ def premiumize_enabled():
     else:
         return False
 
-def myanimelist_enabled():
-    if getSetting('mal.token') != '' and getSetting('mal.enabled') == 'true':
-        return True
-    else:
-        return False
-
-def kitsu_enabled():
-    if getSetting('kitsu.token') != '' and getSetting('kitsu.enabled') == 'true':
-        return True
-    else:
-        return False
-
-def anilist_enabled():
-    if getSetting('anilist.token') != '' and getSetting('anilist.enabled') == 'true':
-        return True
-    else:
-        return False
-
-def watchlist_to_update():
-    if getSetting('watchlist.update.enabled') == 'true':
-        flavor = getSetting('watchlist.update.flavor').lower()
-        if getSetting('%s.enabled' % flavor) == 'true':
-            return flavor
-    else:
-        return
-
 def copy2clip(txt):
     import subprocess
     platform = sys.platform
@@ -171,11 +146,31 @@ def copy2clip(txt):
         pass
     pass
 
-def colorString(text, color=None):
-    if color is 'default' or color is '' or color is None:
-        color = 'deepskyblue'
+def validate_path(path):
+    """Returns the translated path.
+    :param path:Path to format
+    :type path:str
+    :return:Translated path
+    :rtype:str
+    """
+    if hasattr(xbmcvfs, "validatePath"):
+        path = xbmcvfs.validatePath(path)  # pylint: disable=no-member
+    else:
+        path = xbmc.validatePath(path)  # pylint: disable=no-member
+    return path
 
-    return '[COLOR %s]%s[/COLOR]' % (color, text)
+def translate_path(path):
+    """Validates the path against the running platform and ouputs the clean path.
+    :param path:Path to be verified
+    :type path:str
+    :return:Verified and cleaned path
+    :rtype:str
+    """
+    if hasattr(xbmcvfs, "translatePath"):
+        path = xbmcvfs.translatePath(path)  # pylint: disable=no-member
+    else:
+        path = xbmc.translatePath(path)  # pylint: disable=no-member
+    return path
 
 def create_multiline_message(line1=None, line2=None, line3=None, *lines):
     """Creates a message from the supplied lines
@@ -254,109 +249,3 @@ def multiselect_dialog(title, _list):
     if isinstance(_list, list):
         return xbmcgui.Dialog().multiselect(title, _list)
     return None
-
-def clear_settings(dialog):
-    confirm = dialog
-    if confirm == 0:
-        return
-
-    addonInfo = __settings__.getAddonInfo
-    try:
-        dataPath = xbmc.translatePath(addonInfo('profile')).decode('utf-8')
-    except:
-        dataPath = xbmc.translatePath(addonInfo('profile'))
-
-    import shutil
-    import os
-
-    if os.path.exists(dataPath):
-        shutil.rmtree(dataPath)
-
-    os.mkdir(dataPath)
-    refresh()
-
-def _get_view_type(viewType):
-    viewTypes = {
-        'Default': 50,
-        'Poster': 51,
-        'Icon Wall': 52,
-        'Shift': 53,
-        'Info Wall': 54,
-        'Wide List': 55,
-        'Wall': 500,
-        'Banner': 501,
-        'Fanart': 502,
-    }
-    return viewTypes[viewType]
-
-def xbmc_add_player_item(name, url, art='', info='', draw_cm=None, bulk_add=False):
-    ok=True
-    u=addon_url(url)
-    cm = draw_cm(addon_url, name) if draw_cm is not None else []
-
-    liz=xbmcgui.ListItem(name)
-    liz.setInfo('video', info)
-
-    if art is None or type(art) is not dict:
-        art = {}
-
-    if art.get('fanart') is None:
-        art['fanart'] = KAITO_FANART_PATH
-    
-    liz.setArt(art)
-
-    liz.setProperty("Video", "true")
-    liz.setProperty("IsPlayable", "true")
-    liz.addContextMenuItems(cm)
-    if bulk_add:
-        return (u, liz, False)
-    else:
-        ok=xbmcplugin.addDirectoryItem(handle=HANDLE,url=u,listitem=liz, isFolder=False)
-        return ok
-
-def xbmc_add_dir(name, url, art='', info='', draw_cm=None):
-    ok=True
-    u=addon_url(url)
-    cm = draw_cm(addon_url, name) if draw_cm is not None else []
-
-    liz=xbmcgui.ListItem(name)
-    liz.setInfo('video', info)
-
-    if art is None or type(art) is not dict:
-        art = {}
-
-    if art.get('fanart') is None:
-        art['fanart'] = KAITO_FANART_PATH
-    
-    liz.setArt(art)
-
-    liz.addContextMenuItems(cm)
-    ok=xbmcplugin.addDirectoryItem(handle=HANDLE,url=u,listitem=liz,isFolder=True)
-    return ok
-
-def draw_items(video_data, contentType="tvshows", viewType=None, draw_cm=None, bulk_add=False):
-    for vid in video_data:
-        if vid['is_dir']:
-            xbmc_add_dir(vid['name'], vid['url'], vid['image'], vid['info'], draw_cm)
-        else:
-            xbmc_add_player_item(vid['name'], vid['url'], vid['image'],
-                                 vid['info'], draw_cm, bulk_add)
-
-    xbmcplugin.setContent(HANDLE, contentType)
-    if contentType == 'episodes': 
-        xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_EPISODE)
-    xbmcplugin.endOfDirectory(HANDLE, succeeded=True, updateListing=False, cacheToDisc=True)
-
-    if viewType:
-        xbmc.executebuiltin('Container.SetViewMode(%d)' % _get_view_type(viewType))
-
-    return True
-
-def bulk_draw_items(video_data, draw_cm=None, bulk_add=True):
-    item_list = []
-    for vid in video_data:
-        item = xbmc_add_player_item(vid['name'], vid['url'], vid['image'],
-                                    vid['info'], draw_cm, bulk_add)
-        item_list.append(item)
-
-    return item_list

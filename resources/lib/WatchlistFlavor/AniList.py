@@ -292,12 +292,12 @@ class AniListWLF(WatchlistFlavorBase):
 
         if next_up_meta:
             base['url'] = url
-            return self._parse_view(base, False)
+            return self._parse_view(base, False, True)
 
         if res['format'] == 'MOVIE' and res['episodes'] == 1:
             base['url'] = "watchlist_to_movie/?anilist_id=%s" % (res['id'])
             base['plot']['mediatype'] = 'movie'
-            return self._parse_view(base, False)
+            return self._parse_view(base, False, True)
 
         return self._parse_view(base)
 

@@ -9,22 +9,7 @@ import xbmcplugin
 import xbmcgui
 from . import http
 
-from . import control
-
-try:
-    HANDLE=int(sys.argv[1])
-except:
-    HANDLE = '1'
-
-addonInfo = xbmcaddon.Addon().getAddonInfo
-ADDON_NAME = addonInfo('id')
-__settings__ = xbmcaddon.Addon(ADDON_NAME)
-addonInfo = __settings__.getAddonInfo
-
-try:
-    ADDON_PATH = __settings__.getAddonInfo('path').decode('utf-8')
-except:
-    ADDON_PATH = __settings__.getAddonInfo('path')
+from resources.lib.ui.globals import g
 
 kodiGui = xbmcgui
 execute = xbmc.executebuiltin
@@ -79,12 +64,12 @@ class watchlistPlayer(xbmc.Player):
         self.keepAlive()
         
     def onPlayBackStarted(self):
-        if self._build_playlist and playList.size() == 1:
+        if self._build_playlist and g.PLAYLIST.size() == 1:
             self._build_playlist(self._anilist_id, self._episode, self._filter_lang)
 
-        current_ = playList.getposition()
-        self.media_type = playList[current_].getVideoInfoTag().getMediaType()
-        control.setSetting('addon.last_watched', self._anilist_id)
+        current_ = g.PLAYLIST.getposition()
+        self.media_type = g.PLAYLIST[current_].getVideoInfoTag().getMediaType()
+        g.set_setting('addon.last_watched', self._anilist_id)
         pass
 
 ##    def onAVStarted(self):
@@ -94,13 +79,13 @@ class watchlistPlayer(xbmc.Player):
 ##        self.AVStarted = True
 
     def onPlayBackStopped(self):
-        playList.clear()
+        g.PLAYLIST.clear()
 
 ##    def onPlayBackEnded(self):
 ##        pass
 
     def onPlayBackError(self):
-        playList.clear()
+        g.PLAYLIST.clear()
         sys.exit(1)
 
     def getWatchedPercent(self):
@@ -112,7 +97,7 @@ class watchlistPlayer(xbmc.Player):
         media_length = self.getTotalTime()
         watched_percent = 0
 
-        if int(media_length) is not 0:
+        if int(media_length) != 0:
             watched_percent = float(current_position) / float(media_length) * 100
 
         return watched_percent
@@ -159,14 +144,14 @@ class watchlistPlayer(xbmc.Player):
 ##            if self.AVStarted:
 ##                break
 
-        control.closeAllDialogs()
+        g.close_all_dialogs()
 
         try:
             audio_lang = self.getAvailableAudioStreams()
             if len(audio_lang) > 1:
                 try:
-                    preferred_audio = int(control.getSetting('general.audio'))
-                    audio_int = audio_lang.index(control.lang(preferred_audio))
+                    preferred_audio = int(g.get_setting('general.audio'))
+                    audio_int = audio_lang.index(g.lang(preferred_audio))
                     self.setAudioStream(audio_int)
                 except:
                     pass
@@ -181,7 +166,7 @@ class watchlistPlayer(xbmc.Player):
         if self.media_type == 'movie':
             return self.onWatchedPercent()
 
-        if control.getSetting('smartplay.skipintrodialog') == 'true':
+        if g.get_setting('smartplay.skipintrodialog') == 'true':
             while self.isPlaying():
                 time_ = int(self.getTime())
                 if time_ > 240:
@@ -194,8 +179,8 @@ class watchlistPlayer(xbmc.Player):
 
         scrobble = self.onWatchedPercent()
 
-        if control.getSetting('smartplay.playingnextdialog') == 'true':
-            endpoint = int(control.getSetting('playingnext.time'))
+        if g.get_setting('smartplay.playingnextdialog') == 'true':
+            endpoint = int(g.get_setting('playingnext.time'))
         else:
             endpoint = False
 
@@ -216,7 +201,7 @@ class PlayerDialogs(xbmc.Player):
 
     def display_dialog(self):
 
-        if playList.size() == 0 or playList.getposition() == (playList.size() - 1):
+        if g.PLAYLIST.size() == 0 or g.PLAYLIST.getposition() == (g.PLAYLIST.size() - 1):
             return
 
         target = self._show_playing_next
@@ -239,13 +224,13 @@ class PlayerDialogs(xbmc.Player):
     def _show_playing_next(self):
         from resources.lib.windows.playing_next import PlayingNext
 
-        PlayingNext(*('playing_next.xml', ADDON_PATH),
+        PlayingNext(*('playing_next.xml', g.ADDON_DATA_PATH),
                     actionArgs=self._get_next_item_args()).doModal()
 
     def _show_skip_intro(self):
         from resources.lib.windows.skip_intro import SkipIntro
 
-        SkipIntro(*('skip_intro.xml', ADDON_PATH),
+        SkipIntro(*('skip_intro.xml', g.ADDON_DATA_PATH),
                     actionArgs={'item_type': 'skip_intro'}).doModal()
 
     def _show_still_watching(self):
@@ -253,8 +238,8 @@ class PlayerDialogs(xbmc.Player):
 
     @staticmethod
     def _get_next_item_args():
-        current_position = playList.getposition()
-        _next_info = playList[current_position + 1]
+        current_position = g.PLAYLIST.getposition()
+        _next_info = g.PLAYLIST[current_position + 1]
         next_info = {}
         next_info['thumb'] = _next_info.getArt('thumb')
         next_info['name'] = _next_info.getLabel()
@@ -269,8 +254,8 @@ class PlayerDialogs(xbmc.Player):
         return True
 
 def cancelPlayback():
-    playList.clear()
-    xbmcplugin.setResolvedUrl(HANDLE, False, xbmcgui.ListItem())
+    g.PLAYLIST.clear()
+    xbmcplugin.setResolvedUrl(g.PLUGIN_HANDLE, False, xbmcgui.ListItem())
 
 def _prefetch_play_link(link):
     if callable(link):
@@ -306,7 +291,7 @@ def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=Non
 
     # Run any mimetype hook
     item = hook_mimetype.trigger(linkInfo['headers']['Content-Type'], item)
-    xbmcplugin.setResolvedUrl(HANDLE, True, item)
+    xbmcplugin.setResolvedUrl(g.PLUGIN_HANDLE, True, item)
     watchlistPlayer().handle_player(anilist_id, watchlist_update, build_playlist, episode, filter_lang)
 
 @hook_mimetype('application/dash+xml')

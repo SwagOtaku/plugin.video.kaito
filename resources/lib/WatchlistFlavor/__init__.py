@@ -3,6 +3,7 @@ from builtins import str
 from builtins import object
 from time import time
 from ..ui import control
+from resources.lib.ui.globals import g
 from .WatchlistFlavorBase import WatchlistFlavorBase
 
 from . import MyAnimeList
@@ -21,18 +22,18 @@ class WatchlistFlavor(object):
     @staticmethod
     def get_enabled_watchlists():
         enabled_watchlists = []
-        if control.myanimelist_enabled():
+        if g.myanimelist_enabled():
             enabled_watchlists.append(WatchlistFlavor.__instance_flavor('mal'))
-        if control.kitsu_enabled():
+        if g.kitsu_enabled():
             enabled_watchlists.append(WatchlistFlavor.__instance_flavor('kitsu'))
-        if control.anilist_enabled():
+        if g.anilist_enabled():
             enabled_watchlists.append(WatchlistFlavor.__instance_flavor('anilist'))
 
         return enabled_watchlists
 
     @staticmethod
     def get_update_flavor():
-        selected = control.watchlist_to_update()
+        selected = g.watchlist_to_update()
         if not selected:
             return None
 
@@ -44,7 +45,7 @@ class WatchlistFlavor(object):
 
     @staticmethod
     def get_active_flavor():
-        selected = control.getSetting(WatchlistFlavor.__LOGIN_FLAVOR_KEY)
+        selected = g.get_setting(WatchlistFlavor.__LOGIN_FLAVOR_KEY)
         if not selected:
             return None
 
@@ -89,15 +90,15 @@ class WatchlistFlavor(object):
 
     @staticmethod
     def logout_request(flavor):
-        control.setSetting('%s.userid' % flavor, '')
-        control.setSetting('%s.authvar' % flavor, '')
-        control.setSetting('%s.token' % flavor, '')
-        control.setSetting('%s.refresh' % flavor, '')
-        control.setSetting('%s.username' % flavor, '')
-        control.setSetting('%s.password' % flavor, '')
-        control.setSetting('%s.sort' % flavor, '')
-        control.setSetting('%s.titles' % flavor, '')
-        return control.refresh()
+        g.set_setting('%s.userid' % flavor, '')
+        g.set_setting('%s.authvar' % flavor, '')
+        g.set_setting('%s.token' % flavor, '')
+        g.set_setting('%s.refresh' % flavor, '')
+        g.set_setting('%s.username' % flavor, '')
+        g.set_setting('%s.password' % flavor, '')
+        g.set_setting('%s.sort' % flavor, '')
+        g.set_setting('%s.titles' % flavor, '')
+        return g.container_refresh()
 
     @staticmethod
     def __get_flavor_class(name):
@@ -112,14 +113,14 @@ class WatchlistFlavor(object):
 
     @staticmethod
     def __instance_flavor(name):
-        user_id = control.getSetting('%s.userid' % name)
-        auth_var = control.getSetting('%s.authvar' % name)
-        token = control.getSetting('%s.token' % name)
-        refresh = control.getSetting('%s.refresh' % name)
-        username = control.getSetting('%s.username' % name)
-        password = control.getSetting('%s.password' % name)
-        sort = control.getSetting('%s.sort' % name)
-        title_lang = control.getSetting('%s.titles' % name)
+        user_id = g.get_setting('%s.userid' % name)
+        auth_var = g.get_setting('%s.authvar' % name)
+        token = g.get_setting('%s.token' % name)
+        refresh = g.get_setting('%s.refresh' % name)
+        username = g.get_setting('%s.username' % name)
+        password = g.get_setting('%s.password' % name)
+        sort = g.get_setting('%s.sort' % name)
+        title_lang = g.get_setting('%s.titles' % name)
 
         flavor_class = WatchlistFlavor.__get_flavor_class(name)
         return flavor_class(auth_var, username, password, user_id, token, refresh, sort, title_lang)
@@ -130,7 +131,7 @@ class WatchlistFlavor(object):
             return control.ok_dialog('Login', 'Incorrect username or password')
 
         for _id, value in list(res.items()):
-            control.setSetting('%s.%s' % (flavor, _id), value)
+            g.set_setting('%s.%s' % (flavor, _id), value)
 
-        control.refresh()
+        g.container_refresh()
         return control.ok_dialog('Login', 'Success')

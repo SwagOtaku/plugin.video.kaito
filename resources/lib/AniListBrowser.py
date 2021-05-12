@@ -13,7 +13,7 @@ import time
 import datetime
 import ast
 from functools import partial
-from .ui import utils
+from .ui.globals import g
 from .ui import database
 from .ui.divide_flavors import div_flavor
 
@@ -42,7 +42,7 @@ class AniListBrowser(object):
 
         next_page = page + 1
         name = "Next Page (%d)" %(next_page)
-        return [utils.allocate_item(name, base_url % next_page, True, None)]
+        return [g.allocate_item(name, base_url % next_page, True, None)]
 
     def get_popular(self, page=1, format_in=''):
         #TASK: update season, year
@@ -589,7 +589,7 @@ class AniListBrowser(object):
         if res['format'] == 'MOVIE' and res['episodes'] == 1:
             base['url'] = "play_movie/%s/1/" % (res['id'])
             base['info']['mediatype'] = 'movie'
-            return self._parse_view(base, False, dub=dub)
+            return self._parse_view(base, False, dub=dub, is_playable=True)
 
         return self._parse_view(base, dub=dub)
 
@@ -662,33 +662,35 @@ class AniListBrowser(object):
 
         return start_date
 
-    def _parse_view(self, base, is_dir=True, dub=False):
+    def _parse_view(self, base, is_dir=True, dub=False, is_playable=False):
         if dub:
-            return self._parse_div_view(base, is_dir)
+            return self._parse_div_view(base, is_dir, is_playable)
 
         return [
-            utils.allocate_item("%s" % base["name"],
+            g.allocate_item("%s" % base["name"],
                                 base["url"],
                                 is_dir,
                                 base["image"],
                                 base["info"],
                                 base["fanart"],
-                                base["image"])
+                                base["image"],
+                                is_playable)
             ]
 
-    def _parse_div_view(self, base, is_dir):
+    def _parse_div_view(self, base, is_dir, is_playable):
         parsed_view = [
-            utils.allocate_item("%s" % base["name"],
+            g.allocate_item("%s" % base["name"],
                                 base["url"] + '2',
                                 is_dir,
                                 base["image"],
                                 base["info"],
                                 base["fanart"],
-                                base["image"])
+                                base["image"],
+                                is_playable)
             ]
 
         parsed_view.append(
-            utils.allocate_item("%s (Dub)" % base["name"],
+            g.allocate_item("%s (Dub)" % base["name"],
                                 base["url"] + '0',
                                 is_dir,
                                 base["image"],

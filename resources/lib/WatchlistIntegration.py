@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 import ast
-from .ui import control
+from resources.lib.ui.globals import g
 from .ui.router import route
 from .WatchlistFlavor import WatchlistFlavor
 from .ui import database
@@ -12,7 +12,7 @@ def set_browser(browser):
     _BROWSER = browser
 
 def get_anilist_res(mal_id):
-    title_lang = control.getSetting("titlelanguage")
+    title_lang = g.get_setting("titlelanguage")
     from .AniListBrowser import AniListBrowser
     return AniListBrowser(title_lang).get_mal_to_anilist(mal_id)
 
@@ -25,7 +25,7 @@ def get_auth_dialog(flavor):
     if 'linux' in platform:
         auth = wlf_auth.AltWatchlistFlavorAuth(flavor).set_settings()
     else:
-        auth = wlf_auth.WatchlistFlavorAuth(*('wlf_auth_%s.xml' % flavor, control.ADDON_PATH),
+        auth = wlf_auth.WatchlistFlavorAuth(*('wlf_auth_%s.xml' % flavor, g.ADDON_DATA_PATH),
                                         flavor=flavor).doModal()
 
     if auth:
@@ -46,17 +46,17 @@ def WL_LOGOUT(payload, params):
 
 @route('watchlist/*')
 def WATCHLIST(payload, params):
-    return control.draw_items(WatchlistFlavor.watchlist_request(payload), contentType=control.getSetting("contenttype.menu"))
+    return g.draw_items(WatchlistFlavor.watchlist_request(payload), contentType=g.get_setting("contenttype.menu"))
 
 @route('watchlist_status_type/*')
 def WATCHLIST_STATUS_TYPE(payload, params):
     flavor, status = payload.rsplit("/")
-    return control.draw_items(WatchlistFlavor.watchlist_status_request(flavor, status, params))
+    return g.draw_items(WatchlistFlavor.watchlist_status_request(flavor, status, params))
 
 @route('watchlist_status_type_pages/*')
 def WATCHLIST_STATUS_TYPE_PAGES(payload, params):
     flavor, status, offset, page = payload.rsplit("/")
-    return control.draw_items(WatchlistFlavor.watchlist_status_request_pages(flavor, status, params, offset, int(page)))
+    return g.draw_items(WatchlistFlavor.watchlist_status_request_pages(flavor, status, params, offset, int(page)))
 
 @route('watchlist_query/*')
 def WATCHLIST_QUERY(payload, params):
@@ -72,7 +72,7 @@ def WATCHLIST_QUERY(payload, params):
     database.update_kodi_meta(anilist_id, kodi_meta)
 
     anime_general, content_type = _BROWSER.get_anime_init(anilist_id)
-    return control.draw_items(anime_general, content_type)
+    return g.draw_items(anime_general, content_type)
 
 @route('watchlist_to_ep/*')
 def WATCHLIST_TO_EP(payload, params):
@@ -96,7 +96,7 @@ def WATCHLIST_TO_EP(payload, params):
             database.add_mapping_id(anilist_id, 'kitsu_id', kitsu_id)
 
     anime_general, content_type = _BROWSER.get_anime_init(anilist_id)
-    return control.draw_items(anime_general, content_type)
+    return g.draw_items(anime_general, content_type)
 
 @route('watchlist_to_movie/*')
 def WATCHLIST_QUERY(payload, params):
@@ -120,7 +120,7 @@ def WATCHLIST_QUERY(payload, params):
     _mock_args = {'anilist_id': anilist_id}
     from resources.lib.windows.source_select import SourceSelect
 
-    link = SourceSelect(*('source_select.xml', control.ADDON_PATH),
+    link = SourceSelect(*('source_select.xml', g.ADDON_DATA_PATH),
                         actionArgs=_mock_args, sources=sources).doModal()
 
     from .ui import player
@@ -145,4 +145,3 @@ def add_watchlist(items):
             "watchlist/%s" % flavor.flavor_name,
             flavor.image,
         ))
-

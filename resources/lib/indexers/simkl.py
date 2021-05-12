@@ -8,7 +8,8 @@ import json
 import ast
 from functools import partial
 from .tmdb import TMDBAPI
-from ..ui import database, utils
+from ..ui import database
+from resources.lib.ui.globals import g
 
 class SIMKLAPI(object):
     def __init__(self):
@@ -54,7 +55,7 @@ class SIMKLAPI(object):
             pass
         info['tvshowtitle'] = ast.literal_eval(database.get_show(anilist_id)['kodi_meta'])['title_userPreferred']
         info['mediatype'] = 'episode'
-        parsed = utils.allocate_item(name, "play/" + str(url), False, image, info, fanart, poster)
+        parsed = g.allocate_item(name, "play/" + str(url), False, image, info, fanart, poster, True)
         return parsed
 
     def _process_episode_view(self, anilist_id, json_resp, filter_lang, base_plugin_url, page):

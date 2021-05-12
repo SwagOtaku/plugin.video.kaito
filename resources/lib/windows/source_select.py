@@ -2,10 +2,11 @@
 
 from builtins import str
 import time
-from resources.lib.ui import control
+from resources.lib.ui.globals import g
 from resources.lib.windows.base_window import BaseWindow
 from resources.lib.windows.resolver import Resolver
 from resources.lib.ui import database
+import xbmcgui
 
 class SourceSelect(BaseWindow):
 
@@ -19,7 +20,7 @@ class SourceSelect(BaseWindow):
         self.canceled = False
         self.display_list = None
         self.last_action = 0
-        control.closeBusyDialog()
+        g.close_busy_dialog()
         self.stream_link = None
 
     def onInit(self):
@@ -30,7 +31,7 @@ class SourceSelect(BaseWindow):
             if not i:
                 continue
 
-            menu_item = control.menuItem(label='%s' % i['release_title'])
+            menu_item = xbmcgui.ListItem(label='%s' % i['release_title'])
             for info in list(i.keys()):
                 try:
                     value = i[info]
@@ -116,7 +117,7 @@ class SourceSelect(BaseWindow):
         return info
 
     def resolve_item(self):
-        if control.getSetting('general.autotrynext') == 'true':
+        if g.get_setting('general.autotrynext') == 'true':
             sources = self.sources[self.position:]
         else:
             sources = [self.sources[self.position]]
@@ -126,7 +127,7 @@ class SourceSelect(BaseWindow):
             selected_source['name'] = selected_source['release_title']
             database.addTorrentList(self.anilist_id, [selected_source], 2)
 
-        resolver = Resolver(*('resolver.xml', control.ADDON_PATH), actionArgs=self.actionArgs)
+        resolver = Resolver(*('resolver.xml', g.ADDON_DATA_PATH), actionArgs=self.actionArgs)
 
         self.stream_link = resolver.doModal(sources, {}, False)
 

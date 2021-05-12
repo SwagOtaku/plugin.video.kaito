@@ -8,6 +8,7 @@ import bs4 as bs
 import re
 from functools import partial
 from ..ui import utils, source_utils, control
+from resources.lib.ui.globals import g
 from ..ui.BrowserBase import BrowserBase
 from ..debrid import real_debrid, all_debrid, premiumize
 from ..ui import database
@@ -25,7 +26,7 @@ class sources(BrowserBase):
         image = 'DefaultVideo.png'
         info['title'] = name
         info['mediatype'] = 'tvshow'
-        return utils.allocate_item(name, "play_latest/" + str(url), False, image, info)
+        return g.allocate_item(name, "play_latest/" + str(url), False, image, info, is_playable=True)
 
     def _parse_nyaa_episode_view(self, res, episode):
         source = {
@@ -390,16 +391,16 @@ class TorrentCacheCheck(object):
         self.seasonStrings = None
 
     def torrentCacheCheck(self, torrent_list):
-        from ..ui import control
+        from ..ui.globals import g
 
-        if control.real_debrid_enabled():
+        if g.real_debrid_enabled():
             self.threads.append(
                 threading.Thread(target=self.realdebridWorker, args=(copy.deepcopy(torrent_list),)))
 
-        if control.premiumize_enabled():
+        if g.premiumize_enabled():
             self.threads.append(threading.Thread(target=self.premiumizeWorker, args=(copy.deepcopy(torrent_list),)))
 
-        if control.all_debrid_enabled():
+        if g.all_debrid_enabled():
             self.threads.append(
                 threading.Thread(target=self.all_debrid_worker, args=(copy.deepcopy(torrent_list),)))
 

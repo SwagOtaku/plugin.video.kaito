@@ -10,6 +10,7 @@ import itertools
 import json
 import time
 import requests
+from resources.lib.ui.globals import g
 from .WatchlistFlavorBase import WatchlistFlavorBase
 
 class MyAnimeListWLF(WatchlistFlavorBase):
@@ -49,17 +50,17 @@ class MyAnimeListWLF(WatchlistFlavorBase):
 
         return login_data
 
-    def refresh_token(self, control):
+    def refresh_token(self):
         oauth_url = 'https://myanimelist.net/v1/oauth2/token'
         data = {
             'client_id': 'a8d85a4106b259b8c9470011ce2f76bc',
             'grant_type': 'refresh_token',
-            'refresh_token': control.getSetting('mal.refresh')
+            'refresh_token': g.get_setting('mal.refresh')
             }
         res = requests.post(oauth_url, data=data).json()
-        control.setSetting('mal.token', res['access_token'])
-        control.setSetting('mal.refresh', res['refresh_token'])
-        control.setSetting('mal.expiry', str(time.time() + int(res['expires_in'])))
+        g.set_setting('mal.token', res['access_token'])
+        g.set_setting('mal.refresh', res['refresh_token'])
+        g.set_setting('mal.expiry', str(time.time() + int(res['expires_in'])))
 
     def _handle_paging(self, hasNextPage, base_url, page):
         if not hasNextPage:
@@ -220,12 +221,12 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         
         if next_up_meta:
             base['url'] = url
-            return self._parse_view(base, False)
+            return self._parse_view(base, False, True)
 
         if res['node']['media_type'] == 'movie' and res['node']["num_episodes"] == 1:
             base['url'] = "watchlist_to_movie/%s" % (res['node']['id'])
             base['plot']['mediatype'] = 'movie'
-            return self._parse_view(base, False)
+            return self._parse_view(base, False, True)
 
         return self._parse_view(base)
 

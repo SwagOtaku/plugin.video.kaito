@@ -2,7 +2,8 @@
 from builtins import object
 import requests
 import ast
-from ..ui import utils, database
+from ..ui import database
+from resources.lib.ui.globals import g
 
 class WatchlistFlavorBase(object):
     _URL = None
@@ -129,15 +130,16 @@ class WatchlistFlavorBase(object):
 
         return login_data
 
-    def _parse_view(self, base, is_dir=True):
+    def _parse_view(self, base, is_dir=True, is_playable=False):
         return [
-            utils.allocate_item("%s" % base["name"],
+            g.allocate_item("%s" % base["name"],
                                 base["url"],
                                 is_dir,
                                 base["image"],
                                 base["plot"],
                                 base.get("fanart"),
-                                base.get("poster"))
+                                base.get("poster"),
+                                is_playable)
             ]
 
     def _to_url(self, url=''):

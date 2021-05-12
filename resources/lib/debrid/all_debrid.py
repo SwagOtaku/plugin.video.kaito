@@ -10,6 +10,7 @@ import re
 
 from resources.lib.ui import source_utils
 from resources.lib.ui import control
+from resources.lib.ui.globals import g
 
 def alldebird_guard_response(func):
     def wrapper(*args, **kwarg):
@@ -59,7 +60,7 @@ class AllDebrid(object):
 
     def __init__(self):
         self.agent_identifier = 'test'
-        self.apikey = control.getSetting('alldebrid.apikey')
+        self.apikey = g.get_setting('alldebrid.apikey')
 
     @alldebird_guard_response
     def get(self, url, **params):
@@ -96,10 +97,18 @@ class AllDebrid(object):
         expiry = pin_ttl = int(resp['expires_in'])
         auth_complete = False
         control.copy2clip(resp['pin'])
-        control.progressDialog.create(control.ADDON_NAME + ': AllDebrid Auth',
-                                      control.lang(30100).format(control.colorString(resp['base_url'])) + '[CR]'
-                                      + control.lang(30101).format(control.colorString(resp['pin'])) + '[CR]'
-                                      + control.lang(30102))
+        control.progressDialog.create(
+            g.ADDON_NAME + ': AllDebrid Auth',
+            control.create_multiline_message(
+                line1=g.lang(30100).format(
+                    g.color_string(resp['base_url'])
+                ),
+                line2=g.lang(30101).format(
+                    g.color_string(resp['pin'])
+                ),
+                line3=g.lang(30102),
+            ),
+        )
 
         # Seems the All Debrid servers need some time do something with the pin before polling
         # Polling to early will cause an invalid pin error
@@ -118,14 +127,14 @@ class AllDebrid(object):
         self.store_user_info()
 
         if auth_complete:
-            control.ok_dialog(control.ADDON_NAME, 'AllDebrid {}'.format(control.lang(30103)))
+            control.ok_dialog(g.ADDON_NAME, 'AllDebrid {}'.format(g.lang(30103)))
         else:
             return
 
     def poll_auth(self, **params):
         resp = self.get_json('pin/check', **params)
         if resp['activated']:
-            control.setSetting('alldebrid.apikey', resp['apikey'])
+            g.set_setting('alldebrid.apikey', resp['apikey'])
             self.apikey = resp['apikey']
             return True, 0
 
@@ -134,7 +143,7 @@ class AllDebrid(object):
     def store_user_info(self):
         user_information = self.get_json('user', apikey=self.apikey)
         if user_information is not None:
-            control.setSetting('alldebrid.username', user_information['user']['username'])
+            g.set_setting('alldebrid.username', user_information['user']['username'])
 
     def check_hash(self, hash_list):
         return self.post_json('magnet/instant', {'magnets[]': hash_list}, apikey=self.apikey)
@@ -184,67 +193,9 @@ class AllDebrid(object):
 
         if selected_file is None:
             return
-##        if selected_file is None:
-##            folder_details = [tfile for tfile in folder_details if 'sample' not in tfile[1].lower()]
-##            folder_details = [tfile for tfile in folder_details if source_utils.cleanTitle(args['info']['title'])
-##                              in source_utils.cleanTitle(tfile[1].lower())]
-##            if len(folder_details) == 1:
-##                selected_file = folder_details[0]
-##            else:
-##                return
+
         self.delete_magnet(magnet_id)
         return self.resolve_hoster(selected_file)
-##
-##    def resolve_magnet(self, magnet, args, torrent, pack_select=False):
-##
-##        if args['info']['mediatype'] != 'episode':
-##            return self.movie_magnet_to_stream(magnet, args)
-##
-##        magnet_id = self.upload_magnet(magnet)
-##        magnet_id = magnet_id['magnets'][0]['id']
-##
-##        episode_strings, season_strings = source_utils.torrentCacheStrings(args)
-##
-##        try:
-##            folder_details = self.magnet_status(magnet_id)['magnets']
-##
-##            if folder_details['status'] != 'Ready':
-##                return
-##
-##            links = folder_details['links']
-##
-##            if 'extra' not in args['info']['title'] and 'extra' not in args['info']['tvshowtitle'] \
-##                    and int(args['info']['season']) != 0:
-##                links = [i for i in links if
-##                         'extra' not in
-##                         source_utils.cleanTitle(i['filename'].replace('&', ' ').lower())]
-##
-##            if 'special' not in args['info']['title'] and 'special' not in args['info']['tvshowtitle'] \
-##                    and int(args['info']['season']) != 0:
-##                links = [i for i in links if
-##                         'special' not in
-##                         source_utils.cleanTitle(i['filename'].replace('&', ' ').lower())]
-##
-##            stream_link = self.check_episode_string(links, episode_strings)
-##
-##            if stream_link is None:
-##                return
-##
-##            self.delete_magnet(magnet_id)
-##
-##            return self.resolve_hoster(stream_link)
-##        except:
-##            import traceback
-##            traceback.print_exc()
-##
-##    @staticmethod
-##    def check_episode_string(folder_details, episode_strings):
-##        for i in folder_details:
-##            for epstring in episode_strings:
-##                if epstring in source_utils.cleanTitle(i['filename'].replace('&', ' ').lower()) and any(
-##                        i['filename'].endswith(ext) for ext in source_utils.COMMON_VIDEO_EXTENSIONS):
-##                    return i['link']
-##        return None
 
     def delete_magnet(self, magnet_id):
         return self.get_json('magnet/delete', apikey=self.apikey, id=magnet_id)
