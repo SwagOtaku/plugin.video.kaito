@@ -649,7 +649,7 @@ class AniListBrowser(object):
         titles = list(set(res['title'].values()))
         if res['format'] == 'MOVIE':
             titles = list(res['title'].values())
-        titles = list(filter(lambda x: all(ord(char) < 128 for char in x) if x else [], titles))[:3]
+        titles = list(map(lambda x: x.encode('ascii','ignore') if x else [], titles))[:3]
         query_titles = '({})'.format(')|('.join(map(str, titles)))
         return query_titles
 
