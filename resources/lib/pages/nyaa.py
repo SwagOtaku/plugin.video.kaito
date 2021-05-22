@@ -288,24 +288,13 @@ class sources(BrowserBase):
         if season:
             season = str(season['season']).zfill(2)
             query += '|"S%sE%s "' %(season, episode.zfill(2))
+            query += '|"S%s - %s "' %(season[1], episode.zfill(2))
+            query += '|"S%s - %s "' %(season[1], episode)
 
         url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % query            
 
-
         if status == 'FINISHED':
-            query = '%s "Batch"|"Complete Series"' % (show)
-
-            episodes = ast.literal_eval(database.get_show(anilist_id)['kodi_meta'])['episodes']
-            if episodes:
-                query += '|"01-{0}"|"01~{0}"|"01 - {0}"|"01 ~ {0}"'.format(episodes)
-
-            if season:
-                query += '|"S{0}"|"Season {0}"'.format(season)
-                query += '|"S%sE%s "' %(season, episode.zfill(2))
-
-            query += '|"- %s"' % (episode.zfill(2))
-
-            url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=seeders&&o=desc" % query
+            return self._get_episode_sources_pack(show,anilist_id,episode)
 
         return self._process_nyaa_episodes(url, episode.zfill(2), season)
 
@@ -350,6 +339,10 @@ class sources(BrowserBase):
         if season:
             season = season['season']
             query += '|"S{0}"|"Season {0}"'.format(season)
+            query += '|"S{0}"|"Season {0}"'.format(str(season).zfill(2))
+            query += '|"S%sE%s"' %(season, episode.zfill(2))
+            
+        query += '|"- %s"' % (episode.zfill(2))
 
         url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=seeders&&o=desc" % query
         return self._process_nyaa_backup(url, anilist_id, 2, episode.zfill(2), True)
