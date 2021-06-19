@@ -107,9 +107,13 @@ class AniListWLF(WatchlistFlavorBase):
                     month,
                     day
                 }
+                nextAiringEpisode {
+                    episode,
+                    airingAt
+                }
                 description
                 synonyms
-                format                
+                format
                 status
                 episodes
                 genres
@@ -178,7 +182,9 @@ class AniListWLF(WatchlistFlavorBase):
             all_results = list(map(self._base_next_up_view, reversed(entries)))
         else:
             all_results = list(map(self._base_watchlist_status_view, reversed(entries)))
-    
+
+        all_results = [i for i in all_results if i is not None]
+
         all_results = list(itertools.chain(*all_results))
         return all_results
 
@@ -256,6 +262,12 @@ class AniListWLF(WatchlistFlavorBase):
         title = '%s - %s/%s' % (res['title']['userPreferred'], next_up, episode_count)
         poster = image = res['coverImage']['extraLarge']
         plot = None
+
+        if next_up > episode_count:
+            return None
+
+        if res['nextAiringEpisode'] is not None and next_up == res['nextAiringEpisode']['episode']:
+            return None
 
         anilist_id, next_up_meta = self._get_next_up_meta('', progress, res['id'])
         if next_up_meta:
