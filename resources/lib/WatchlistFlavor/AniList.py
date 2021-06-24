@@ -263,7 +263,7 @@ class AniListWLF(WatchlistFlavorBase):
         poster = image = res['coverImage']['extraLarge']
         plot = None
 
-        if next_up > episode_count:
+        if episode_count > 0 and next_up > episode_count:
             return None
 
         if res['nextAiringEpisode'] is not None and next_up == res['nextAiringEpisode']['episode']:
