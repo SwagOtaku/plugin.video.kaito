@@ -86,9 +86,11 @@ class Sources(DisplayWindow):
         else:
             self.remainingProviders.remove('nyaa')
 
-        self.threads.append(
-            threading.Thread(target=self.gogo_worker, args=(anilist_id, episode, get_backup, rescrape,)))
-
+        if g.get_setting("general.enablegogo"):
+            self.threads.append(
+                threading.Thread(target=self.gogo_worker, args=(anilist_id, episode, get_backup, rescrape,)))
+        else:
+            self.remainingProviders.remove('gogo')
 ##        self.threads.append(
 ##            threading.Thread(target=self.animixplay_worker, args=(anilist_id, episode, get_backup, rescrape,)))
 
