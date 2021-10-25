@@ -72,6 +72,11 @@
 		<setting type="sep" />
 		<setting id="general.sortsources" type="enum" label="40332" values="Torrents|Embeds" default="0" />
 		<setting id="general.dubsort" type="bool" label="40333" default="false" />
+
+		<!-- Enable/Disable Sources -->
+		<setting type="lsep" label="40374"/>
+		<setting type="sep" />
+		<setting id="general.enablegogo" type="bool" label="40373" default="true" />
 	</category>
 
 	<!-- Accounts -->

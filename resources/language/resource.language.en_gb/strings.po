@@ -508,3 +508,11 @@ msgstr ""
 msgctxt "#40372"
 msgid "Inspect Cloud Files on Scrape"
 msgstr ""
+
+msgctxt "#40373"
+msgid "Enable Gogo Scraping"
+msgstr ""
+
+msgctxt "#40374"
+msgid "Enable Source Scraping"
+msgstr ""
