@@ -45,8 +45,21 @@ class AniListBrowser(object):
         return [g.allocate_item(name, base_url % next_page, True, None)]
 
     def get_popular(self, page=1, format_in=''):
-        #TASK: update season, year
-        season, year = ["SPRING", 2021]
+        # using https://manga.tokyo/columns/what-is-a-cour-and-a-season-in-anime/ to define seasons
+        
+        # Get current season
+        year = datetime.date.today().year
+        month = datetime.date.today().month
+        season = ''
+        if month <= 3:
+            season = 'WINTER'
+        elif month <= 6:
+            season = 'SPRING'
+        elif month <= 9:
+            season = 'SUMMER'
+        elif month <= 12:
+            season = 'FALL'
+        
         variables = {
             'page': page,
             'type': "ANIME",
@@ -75,8 +88,26 @@ class AniListBrowser(object):
         return self._process_anilist_view(trending, "anilist_trending/%d", page)
 
     def get_upcoming(self, page=1, format_in=''):
-        #TASK: update season, year
-        season, year = ["SUMMER", 2021]
+        # using https://manga.tokyo/columns/what-is-a-cour-and-a-season-in-anime/ to define seasons
+        
+        # Get next season
+        year = datetime.date.today().year
+        month = datetime.date.today().month
+        if month <= 9:
+            next_month = month+3
+        else:
+            next_month = 1
+
+        season = ''
+        if next_month <= 3:
+            season = 'WINTER'
+        elif next_month <= 6:
+            season = 'SPRING'
+        elif next_month <= 9:
+            season = 'SUMMER'
+        elif next_month <= 12:
+            season = 'FALL'
+
         variables = {
             'page': page,
             'type': "ANIME",
