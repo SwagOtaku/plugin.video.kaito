@@ -4,12 +4,12 @@ from resources.lib.ui import control
 
 def refresh_apis():
     rd_token = control.getSetting('rd.auth')
-    rd_expiry = int(float(control.getSetting('rd.expiry')))
     kitsu_token = control.getSetting('kitsu.token')
     mal_token = control.getSetting('mal.token')
 
     try:
         if rd_token != '':
+            rd_expiry = int(float(control.getSetting('rd.expiry')))
             if time.time() > (rd_expiry - (10 * 60)):
                 from resources.lib.debrid import real_debrid
                 # tools.log('Service Refreshing Real Debrid Token')
@@ -42,7 +42,4 @@ def run_maintenance():
     # ADD COMMON HOUSE KEEPING ITEMS HERE #
 
     # Refresh API tokens
-    try:
-        refresh_apis()
-    except:
-        pass
+    refresh_apis()

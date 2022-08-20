@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="context.otaku" version="0.0.6" name="otaku - Global Context Menu Items" provider-name="SwagOtaku">
+<addon id="context.otaku" version="0.0.6" name="otaku - Global Context Menu Items" provider-name="TeamOtaku">
   <requires>
-    <!-- <import addon="xbmc.python" version="3.0.0" /> -->
+    <!-- <import addon="xbmc.python" version="2.24.0" /> -->
   </requires>
   <extension point="kodi.context.item">
     <menu id="kodi.core.main">
@@ -32,7 +32,7 @@
     <description lang="en">Adds Global Contextual Menu Items for otaku menu items throughout Kodi
     </description>
     <platform>all</platform>
-    <license>GNU GENERAL PUBLIC LICENSE. Version 3, 29 June 2007</license>
+    <license>GPL-3.0</license>
     <forum></forum>
     <website></website>
     <source></source>

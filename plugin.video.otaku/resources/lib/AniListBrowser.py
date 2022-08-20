@@ -34,7 +34,7 @@ class AniListBrowser():
 
         next_page = page + 1
         name = "Next Page (%d)" % (next_page)
-        return [utils.allocate_item(name, base_url % next_page, True, None)]
+        return [utils.allocate_item(name, base_url % next_page, True, 'next.png')]
 
     def get_popular(self, page=1, format_in=''):
         # TASK: update season, year
@@ -529,21 +529,20 @@ class AniListBrowser():
 
         kodi_meta = ast.literal_eval(database.get_show(str(res['id']))['kodi_meta'])
 
-        title = res['title'][self._TITLE_LANG]
+        title = res.get('title').get(self._TITLE_LANG)
         if not title:
-            title = res['title']['userPreferred']
+            title = res.get('title').get('userPreferred')
 
         info = {}
 
-        try:
-            info['genre'] = res.get('genres')
-        except:
-            pass
+        info['genre'] = res.get('genres')
 
-        try:
-            info['plot'] = res['description']
-        except:
-            pass
+        desc = res.get('description')
+        if desc:
+            desc = desc.replace('<i>', '[I]').replace('</i>', '[/I]')
+            desc = desc.replace('<b>', '[B]').replace('</b>', '[/B]')
+            desc = desc.replace('<br>', '[CR]')
+            info['plot'] = desc
 
         try:
             info['title'] = title

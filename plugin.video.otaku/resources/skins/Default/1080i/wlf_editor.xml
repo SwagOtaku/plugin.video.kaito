@@ -167,8 +167,9 @@
             <control type="list" id="2001">
                 <top>60</top>
                 <width>700</width>
-                <height>840</height>
+                <height>400</height>
                 <onleft>2000</onleft>
+                <ondown>2002</ondown>
                 <itemlayout height="120">
                     <control type="label">
                         <width>100%</width>
@@ -257,6 +258,32 @@
                         </control>
                     </control>
                 </focusedlayout>
+            </control>
+            <control type="grouplist" id="2002">
+                <top>450</top>
+                <left>50</left>
+                <height>75</height>
+                <onleft>2000</onleft>
+                <onup>2001</onup>
+                <orientation>horizontal</orientation>
+                <visible>Control.HasFocus(2001)|Control.HasFocus(1002)|Control.HasFocus(1003)</visible>
+                <control type="button" id="1002">
+                    <width>300</width>
+                    <align>center</align>
+                    <height>100</height>
+                    <font>font12</font>
+                    <focuscolor>deepskyblue</focuscolor>
+                    <label>Update</label>
+                </control>
+                <control type="button" id="1003">
+                    <top>450</top>
+                    <width>300</width>
+                    <align>center</align>
+                    <height>100</height>
+                    <font>font12</font>
+                    <focuscolor>deepskyblue</focuscolor>
+                    <label>Cancel</label>
+                </control>
             </control>
         </control>
 

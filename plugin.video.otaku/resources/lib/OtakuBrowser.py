@@ -40,8 +40,8 @@ class OtakuBrowser(BrowserBase):
     # TODO: Not sure i want this here..
     def search_history(self, search_array):
         result = list(map(self._parse_history_view, search_array))
-        result.insert(0, utils.allocate_item("New Search", "search", True))
-        result.insert(len(result), utils.allocate_item("Clear Search History...", "clear_history", True))
+        result.insert(0, utils.allocate_item("New Search", "search", True, 'new search.png'))
+        result.insert(len(result), utils.allocate_item("Clear Search History...", "clear_history", True, 'clear search history.png'))
         return result
 
     def get_airing_dub(self):

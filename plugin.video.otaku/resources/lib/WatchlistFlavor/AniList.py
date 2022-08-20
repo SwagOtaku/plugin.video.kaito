@@ -7,7 +7,7 @@ class AniListWLF(WatchlistFlavorBase):
     _URL = "https://graphql.anilist.co"
     _TITLE = "AniList"
     _NAME = "anilist"
-    _IMAGE = "https://anilist.co/img/icons/logo_full.png"
+    _IMAGE = "anilist.png"
 
     # Not login, but retrieveing userId for watchlist
     def login(self):
@@ -44,7 +44,7 @@ class AniListWLF(WatchlistFlavorBase):
         base = {
             "name": res[0],
             "url": 'watchlist_status_type/%s/%s' % (self._NAME, res[1]),
-            "image": '',
+            "image": res[0].lower() + '.png',
             "plot": '',
         }
 
@@ -202,15 +202,14 @@ class AniListWLF(WatchlistFlavorBase):
 
         info = {}
 
-        try:
-            info['genre'] = res.get('genres')
-        except:
-            pass
+        info['genre'] = res.get('genres')
 
-        try:
-            info['plot'] = res['description']
-        except:
-            pass
+        desc = res.get('description')
+        if desc:
+            desc = desc.replace('<i>', '[I]').replace('</i>', '[/I]')
+            desc = desc.replace('<b>', '[B]').replace('</b>', '[/B]')
+            desc = desc.replace('<br>', '[CR]')
+            info['plot'] = desc
 
         try:
             info['title'] = res['title']['userPreferred']

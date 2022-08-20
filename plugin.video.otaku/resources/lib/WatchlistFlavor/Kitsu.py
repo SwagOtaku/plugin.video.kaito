@@ -7,7 +7,7 @@ class KitsuWLF(WatchlistFlavorBase):
     _URL = "https://kitsu.io/api"
     _TITLE = "Kitsu"
     _NAME = "kitsu"
-    _IMAGE = "https://canny.io/images/13895523beb5ed9287424264980221d4.png"
+    _IMAGE = "kitsu.png"
     _mapping = None
 
     def login(self):
@@ -80,7 +80,7 @@ class KitsuWLF(WatchlistFlavorBase):
         base = {
             "name": res[0],
             "url": 'watchlist_status_type/%s/%s' % (self._NAME, res[1]),
-            "image": '',
+            "image": res[0].lower() + '.png',
             "plot": '',
         }
 

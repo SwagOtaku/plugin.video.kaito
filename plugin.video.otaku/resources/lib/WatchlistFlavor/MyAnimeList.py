@@ -9,7 +9,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
     _URL = "https://api.myanimelist.net/v2"
     _TITLE = "MyAnimeList"
     _NAME = "mal"
-    _IMAGE = "https://cdn.myanimelist.net/images/mal-logo-xsmall@2x.png?v=160803001"
+    _IMAGE = "myanimelist.png"
 
     def login(self):
         try:
@@ -70,7 +70,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         base = {
             "name": res[0],
             "url": 'watchlist_status_type/%s/%s' % (self._NAME, res[1]),
-            "image": '',
+            "image": res[0].lower() + '.png',
             "plot": '',
         }
 
