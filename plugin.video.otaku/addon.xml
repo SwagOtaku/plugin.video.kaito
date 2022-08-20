@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.kaito" name="kaito" provider-name="SwagOtaku" version="0.0.10">
+<addon id="plugin.video.otaku" name="otaku" provider-name="SwagOtaku" version="0.0.10">
   <requires>
     <import addon="xbmc.python" version="2.26.0" />
     <import addon="script.module.future" version="0.17.1"/>
@@ -7,7 +7,7 @@
     <import addon="script.module.beautifulsoup4" version="4.9.3" />
     <import addon="script.common.plugin.cache" version="2.5.5" />
     <import addon="script.module.inputstreamhelper" version="0.5.2" />
-    <import addon="context.kaito" version="0.0.3"/>	  
+    <import addon="context.otaku" version="0.0.3"/>	  
   </requires>
   <extension library="default.py" point="xbmc.python.pluginsource">
         <provides>video</provides>
@@ -15,7 +15,7 @@
   <extension point="xbmc.service" library="service.py" />
   <extension point="xbmc.addon.metadata">
     <reuselanguageinvoker>false</reuselanguageinvoker>
-    <summary lang="en">kaito video plugin</summary>
+    <summary lang="en">otaku video plugin</summary>
     <description lang="en">HD Animes</description>
     <platform>all</platform>
     <license>GNU GENERAL PUBLIC LICENSE. Version 3, 29 June 2007</license>
