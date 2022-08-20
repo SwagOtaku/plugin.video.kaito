@@ -7,7 +7,7 @@ class AniListWLF(WatchlistFlavorBase):
     _URL = "https://graphql.anilist.co"
     _TITLE = "AniList"
     _NAME = "anilist"
-    _IMAGE = "https://anilist.co/img/icons/logo_full.png"
+    _IMAGE = "anilist.png"
 
     # Not login, but retrieveing userId for watchlist
     def login(self):

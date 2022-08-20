@@ -34,7 +34,7 @@ class AniListBrowser():
 
         next_page = page + 1
         name = "Next Page (%d)" % (next_page)
-        return [utils.allocate_item(name, base_url % next_page, True, None)]
+        return [utils.allocate_item(name, base_url % next_page, True, 'next.png')]
 
     def get_popular(self, page=1, format_in=''):
         # TASK: update season, year

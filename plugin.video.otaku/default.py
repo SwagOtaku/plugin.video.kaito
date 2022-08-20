@@ -7,17 +7,17 @@ import ast
 import six
 
 MENU_ITEMS = [
-    (control.lang(30001), "anilist_airing", ''),
-    (control.lang(30002), "airing_dub", ''),
-    (control.lang(30003), "latest", ''),
-    (control.lang(30004), "latest_dub", ''),
-    (control.lang(30005), "anilist_trending", ''),
-    (control.lang(30006), "anilist_popular", ''),
-    (control.lang(30007), "anilist_upcoming", ''),
-    (control.lang(30008), 'anilist_all_time_popular', ''),
-    (control.lang(30009), "anilist_genres", ''),
-    (control.lang(30010), "search_history", ''),
-    (control.lang(30011), "tools", ''),
+    (control.lang(30001), "anilist_airing", 'airing anime calendar.png'),
+    (control.lang(30002), "airing_dub", 'airing dubbed anime.png'),
+    (control.lang(30003), "latest", 'latest.png'),
+    (control.lang(30004), "latest_dub", 'latest - english dubbed.png'),
+    (control.lang(30005), "anilist_trending", 'trending now.png'),
+    (control.lang(30006), "anilist_popular", 'popular this season.png'),
+    (control.lang(30007), "anilist_upcoming", 'upcoming next season.png'),
+    (control.lang(30008), 'anilist_all_time_popular', 'all time popular.png'),
+    (control.lang(30009), "anilist_genres", 'genres & tags.png'),
+    (control.lang(30010), "search_history", 'search.png'),
+    (control.lang(30011), "tools", 'tools.png'),
 ]
 
 _TITLE_LANG = control.getSetting("titlelanguage")
@@ -249,7 +249,7 @@ def ANILIST_GENRES_PAGES(payload, params):
 def SEARCH_HISTORY(payload, params):
     history = database.getSearchHistory('show')
     if "Yes" in control.getSetting('searchhistory'):
-        return control.draw_items(_BROWSER.search_history(history), contentType=control.getSetting("contenttype.menu"))
+        return control.draw_items(_BROWSER.search_history(history), contentType="addons")
     else:
         return SEARCH(payload, params)
 
@@ -381,17 +381,17 @@ def RESCRAPE_PLAY(payload, params):
 @route('tools')
 def TOOLS_MENU(payload, params):
     TOOLS_ITEMS = [
-        (control.lang(30020), "settings", ''),
-        (control.lang(30021), "clear_cache", ''),
-        (control.lang(30022), "clear_torrent_cache", ''),
-        (control.lang(30023), "clear_history", ''),
-        (control.lang(30026), "rebuild_database", ''),
-        (control.lang(30024), "wipe_addon_data", ''),
+        (control.lang(30020), "settings", 'open settings menu.png'),
+        (control.lang(30021), "clear_cache", 'clear cache.png'),
+        (control.lang(30022), "clear_torrent_cache", 'clear local torrent cache.png'),
+        (control.lang(30023), "clear_history", 'clear search history.png'),
+        (control.lang(30026), "rebuild_database", 'rebuild database.png'),
+        (control.lang(30024), "wipe_addon_data", 'wipe addon data.png'),
     ]
 
     return control.draw_items(
         [utils.allocate_item(name, url, True, image) for name, url, image in TOOLS_ITEMS],
-        contentType=control.getSetting("contenttype.menu"),
+        contentType="addons",
     )
 
 
@@ -399,7 +399,7 @@ def TOOLS_MENU(payload, params):
 def LIST_MENU(payload, params):
     return control.draw_items(
         [utils.allocate_item(name, url, True, image) for name, url, image in MENU_ITEMS],
-        contentType=control.getSetting("contenttype.menu"),
+        contentType="addons",
     )
 
 
