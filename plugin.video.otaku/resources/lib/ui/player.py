@@ -191,7 +191,7 @@ class watchlistPlayer(xbmc.Player):
         if endpoint:
             while self.isPlaying():
                 if int(self.getTotalTime()) - int(self.getTime()) <= endpoint:
-                    xbmc.executebuiltin('RunPlugin("plugin://plugin.video.kaito/run_player_dialogs")')
+                    xbmc.executebuiltin('RunPlugin("plugin://plugin.video.otaku/run_player_dialogs")')
                     break
                 else:
                     xbmc.sleep(1000)

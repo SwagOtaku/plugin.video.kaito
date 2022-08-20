@@ -29,13 +29,13 @@
             <colordiffuse>CC000000</colordiffuse>
         </control>
 
-        <!-- kaito Ico -->
+        <!-- otaku Ico -->
         <control type="image" id="1001">
             <top>-50</top>
             <left>880</left>
             <width>150</width>
             <aspectratio>keep</aspectratio>
-            <texture>$INFO[Window().Property(kaito.logo)]</texture>
+            <texture>$INFO[Window().Property(otaku.logo)]</texture>
         </control>
 
         <control type="label">

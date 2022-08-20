@@ -9,7 +9,7 @@ import requests
 import datetime
 
 
-class KaitoBrowser(BrowserBase):
+class OtakuBrowser(BrowserBase):
 
     def _parse_history_view(self, res):
         name = res

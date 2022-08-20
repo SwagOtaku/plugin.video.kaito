@@ -47,7 +47,7 @@ condVisibility = xbmc.getCondVisibility
 sleep = xbmc.sleep
 fanart_ = ADDON_PATH + "/fanart.jpg"
 IMAGES_PATH = os.path.join(ADDON_PATH, 'resources', 'images')
-KAITO_LOGO_PATH = os.path.join(IMAGES_PATH, 'trans-crow.png')
+KAITO_LOGO_PATH = os.path.join(IMAGES_PATH, 'trans-goku.png')
 KAITO_FANART_PATH = ADDON_PATH + "/fanart.jpg"
 menuItem = xbmcgui.ListItem
 execute = xbmc.executebuiltin
@@ -66,7 +66,7 @@ def closeBusyDialog():
 
 
 def log(msg, level=xbmc.LOGDEBUG):
-    xbmc.log('@@@@Kaito log:\n{0}'.format(msg), level)
+    xbmc.log('@@@@Otaku log:\n{0}'.format(msg), level)
 
 
 def try_release_lock(lock):

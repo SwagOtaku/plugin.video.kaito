@@ -18,21 +18,21 @@
               <height>100</height>
               <width>1800</width>
               <font>font12</font>
-              <label>$ADDON[plugin.video.kaito 40105]</label>
+              <label>$ADDON[plugin.video.otaku 40105]</label>
            </control>
            <control type="label">
               <top>50</top>
               <height>100</height>
               <width>1800</width>
               <font>font12</font>
-              <label>$ADDON[plugin.video.kaito 40106]</label>
+              <label>$ADDON[plugin.video.otaku 40106]</label>
            </control>
            <control type="label">
               <top>100</top>
               <height>100</height>
               <width>1800</width>
               <font>font12</font>
-              <label>$ADDON[plugin.video.kaito 40110]</label>
+              <label>$ADDON[plugin.video.otaku 40110]</label>
            </control>
         </control>
 

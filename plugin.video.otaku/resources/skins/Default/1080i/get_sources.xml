@@ -32,13 +32,13 @@
             <colordiffuse>CC000000</colordiffuse>
         </control>
 
-        <!-- kaito Ico -->
+        <!-- otaku Ico -->
         <control type="image" id="1001">
             <top>-50</top>
             <left>880</left>
             <width>150</width>
             <aspectratio>keep</aspectratio>
-            <texture>$INFO[Window().Property(kaito.logo)]</texture>
+            <texture>$INFO[Window().Property(otaku.logo)]</texture>
         </control>
 
         <control type="label">
@@ -240,7 +240,7 @@
                 <aligny>center</aligny>
                 <width>auto</width>
                 <textcolor>FFDDDDDD</textcolor>
-                <label>$ADDON[plugin.video.kaito 40221]: [COLOR$INFO[Window().Property(settings.color)]]$INFO[Window().Property(total_torrents)][/COLOR] | $ADDON[plugin.video.kaito 40222]: [COLOR $INFO[Window().Property(settings.color)]]$INFO[Window().Property(cached_torrents)][/COLOR] | $ADDON[plugin.video.kaito 40223]: [COLOR$INFO[Window().Property(settings.color)]]$INFO[Window().Property(hosters_sources)][/COLOR] | $ADDON[plugin.video.kaito 40224]: [COLOR$INFO[Window().Property(settings.color)]]$INFO[Window().Property(cloud_sources)][/COLOR]</label>
+                <label>$ADDON[plugin.video.otaku 40221]: [COLOR$INFO[Window().Property(settings.color)]]$INFO[Window().Property(total_torrents)][/COLOR] | $ADDON[plugin.video.otaku 40222]: [COLOR $INFO[Window().Property(settings.color)]]$INFO[Window().Property(cached_torrents)][/COLOR] | $ADDON[plugin.video.otaku 40223]: [COLOR$INFO[Window().Property(settings.color)]]$INFO[Window().Property(hosters_sources)][/COLOR] | $ADDON[plugin.video.otaku 40224]: [COLOR$INFO[Window().Property(settings.color)]]$INFO[Window().Property(cloud_sources)][/COLOR]</label>
             </control>
 
             <control type="label">
@@ -264,7 +264,7 @@
                 <aligny>center</aligny>
                 <width>auto</width>
                 <textcolor>FFDDDDDD</textcolor>
-                <label>$ADDON[plugin.video.kaito 40225]: $INFO[Window().Property(remaining_providers_count)]</label>
+                <label>$ADDON[plugin.video.otaku 40225]: $INFO[Window().Property(remaining_providers_count)]</label>
                 <visible>Integer.IsGreaterOrEqual(Window().Property(remaining_providers_count),10)</visible>
             </control>
 

@@ -16,7 +16,7 @@
             <left>0</left>
             <width>1920</width>
             <height>1080</height>
-            <texture background="true">$INFO[Window().Property(kaito.fanart)]</texture>
+            <texture background="true">$INFO[Window().Property(otaku.fanart)]</texture>
         </control>
 
         <control type="image">
@@ -36,13 +36,13 @@
             <!--<colordiffuse>8936353b</colordiffuse>-->
         <!--</control>-->
 
-        <!-- kaito Logo -->
+        <!-- otaku Logo -->
         <control type="image" id="1001">
             <top>-990</top>
             <left>913</left>
             <width>75</width>
             <aspectratio>keep</aspectratio>
-            <texture>$INFO[Window().Property(kaito.logo)]</texture>
+            <texture>$INFO[Window().Property(otaku.logo)]</texture>
         </control>
 
         <!-- Grouplist Texture -->

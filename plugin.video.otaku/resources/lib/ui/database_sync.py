@@ -57,7 +57,7 @@ class AnilistSyncDatabase:
 
     def _set_base_activites(self):
         cursor = self._get_cursor()
-        cursor.execute('INSERT INTO activities(sync_id, kaito_version)'
+        cursor.execute('INSERT INTO activities(sync_id, otaku_version)'
                        'VALUES(1, ?)',
                        (self.last_meta_update,))
 
@@ -67,18 +67,18 @@ class AnilistSyncDatabase:
 
     def _check_database_version(self):
         # Migrate from an old version before database migrations
-        if 'kaito_version' not in self.activites:
+        if 'otaku_version' not in self.activites:
             # control.log('Upgrading Trakt Sync Database Version')
             self.clear_all_meta()
             control.anilistSyncDB_lock.acquire()
             cursor = self._get_cursor()
-            cursor.execute('ALTER TABLE activities ADD COLUMN kaito_version TEXT')
-            cursor.execute('UPDATE activities SET kaito_version = ?', (self.last_meta_update,))
+            cursor.execute('ALTER TABLE activities ADD COLUMN otaku_version TEXT')
+            cursor.execute('UPDATE activities SET otaku_version = ?', (self.last_meta_update,))
             cursor.connection.commit()
             cursor.close()
             control.try_release_lock(control.anilistSyncDB_lock)
 
-        if self.check_version_numbers(self.activites['kaito_version'], self.last_meta_update):
+        if self.check_version_numbers(self.activites['otaku_version'], self.last_meta_update):
             # control.log('Rebuilding Trakt Sync Database Version')
             self.re_build_database(True)
             return
@@ -162,7 +162,7 @@ class AnilistSyncDatabase:
         cursor = self._get_cursor()
         cursor.execute('CREATE TABLE IF NOT EXISTS activities ('
                        'sync_id INTEGER PRIMARY KEY, '
-                       'kaito_version TEXT NOT NULL) '
+                       'otaku_version TEXT NOT NULL) '
                        )
         cursor.connection.commit()
         cursor.close()

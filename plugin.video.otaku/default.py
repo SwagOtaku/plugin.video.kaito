@@ -1,6 +1,6 @@
 from resources.lib.ui import control, player, utils, database
 from resources.lib.ui.router import route, router_process
-from resources.lib.KaitoBrowser import KaitoBrowser
+from resources.lib.OtakuBrowser import OtakuBrowser
 from resources.lib.AniListBrowser import AniListBrowser
 from resources.lib.WatchlistIntegration import set_browser, add_watchlist, watchlist_update
 import ast
@@ -22,7 +22,7 @@ MENU_ITEMS = [
 
 _TITLE_LANG = control.getSetting("titlelanguage")
 
-_BROWSER = KaitoBrowser()
+_BROWSER = OtakuBrowser()
 
 _ANILIST_BROWSER = AniListBrowser(_TITLE_LANG)
 

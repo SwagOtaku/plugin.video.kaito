@@ -1,6 +1,6 @@
 # Kodi Media Center language file
-# Addon Name: kaito
-# Addon id: plugin.video.kaito
+# Addon Name: otaku
+# Addon id: plugin.video.otaku
 # Addon Provider: SwagOtaku
 msgid ""
 msgstr ""
