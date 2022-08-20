@@ -18,8 +18,8 @@ class BaseWindow(control.xmlWindow):
         self.canceled = False
 
         self.setProperty('texture.white', os.path.join(control.IMAGES_PATH, 'white.png'))
-        self.setProperty('otaku.logo', control.KAITO_LOGO_PATH)
-        self.setProperty('otaku.fanart', control.KAITO_FANART_PATH)
+        self.setProperty('otaku.logo', control.OTAKU_LOGO_PATH)
+        self.setProperty('otaku.fanart', control.OTAKU_FANART_PATH)
         self.setProperty('settings.color', 'deepskyblue')
         self.setProperty('test.pattern', os.path.join(control.IMAGES_PATH, 'test_pattern.png'))
         self.setProperty('skin.dir', control.ADDON_PATH)

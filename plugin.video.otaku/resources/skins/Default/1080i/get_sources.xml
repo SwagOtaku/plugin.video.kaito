@@ -35,8 +35,8 @@
         <!-- otaku Ico -->
         <control type="image" id="1001">
             <top>-50</top>
-            <left>880</left>
-            <width>150</width>
+            <left>830</left>
+            <width>250</width>
             <aspectratio>keep</aspectratio>
             <texture>$INFO[Window().Property(otaku.logo)]</texture>
         </control>

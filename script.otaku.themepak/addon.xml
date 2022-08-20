@@ -11,6 +11,7 @@
         <license>GPL-2.0</license>
         <assets>
             <icon>icon.png</icon>
+            <fanart>fanart.jpg</fanart>
         </assets>
     </extension>
 </addon>

@@ -47,8 +47,8 @@ condVisibility = xbmc.getCondVisibility
 sleep = xbmc.sleep
 fanart_ = ADDON_PATH + "/fanart.jpg"
 IMAGES_PATH = os.path.join(ADDON_PATH, 'resources', 'images')
-KAITO_LOGO_PATH = os.path.join(IMAGES_PATH, 'trans-goku.png')
-KAITO_FANART_PATH = ADDON_PATH + "/fanart.jpg"
+OTAKU_LOGO_PATH = os.path.join(IMAGES_PATH, 'trans-goku.png')
+OTAKU_FANART_PATH = ADDON_PATH + "/fanart.jpg"
 menuItem = xbmcgui.ListItem
 execute = xbmc.executebuiltin
 
@@ -269,7 +269,7 @@ def xbmc_add_player_item(name, url, art='', info='', draw_cm=None, bulk_add=Fals
         art = {}
 
     if art.get('fanart') is None:
-        art['fanart'] = KAITO_FANART_PATH
+        art['fanart'] = OTAKU_FANART_PATH
 
     liz.setArt(art)
 
@@ -295,7 +295,7 @@ def xbmc_add_dir(name, url, art='', info='', draw_cm=None):
         art = {}
 
     if art.get('fanart') is None:
-        art['fanart'] = KAITO_FANART_PATH
+        art['fanart'] = OTAKU_FANART_PATH
 
     liz.setArt(art)
 
