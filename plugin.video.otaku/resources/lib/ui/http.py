@@ -1,23 +1,21 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import
-from future import standard_library
-standard_library.install_aliases()
-from builtins import object
-import urllib.request, urllib.parse, urllib.error
-from .http_imports import *
+from six.moves import urllib_parse
+from resources.lib.ui.http_imports import *
+import six
 
 _USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
 _SESSION = None
 _REFERER_HEADER = "Referer"
 _COOKIE_HEADER = "Cookie"
-_HEADER_RE = re.compile("^([\w\d-]+?)=(.*?)$")
+_HEADER_RE = re.compile(r"^([\w\d-]+?)=(.*?)$")
+
 
 class SSLAdapter(HTTPAdapter):
     '''An HTTPS Transport Adapter that uses an arbitrary SSL version.'''
     def init_poolmanager(self, connections, maxsize, block=False):
         self.poolmanager = PoolManager(num_pools=connections,
-                              maxsize=maxsize,
-                              block=block)
+                                       maxsize=maxsize,
+                                       block=block)
+
 
 class PrepReq(object):
     def __init__(self, session):
@@ -28,7 +26,7 @@ class PrepReq(object):
         self._dict[key] = value
 
     def add_cookie(self, key, value):
-        self._cookies.update({ key: value })
+        self._cookies.update({key: value})
 
     @property
     def headers(self):
@@ -37,6 +35,7 @@ class PrepReq(object):
     @property
     def cookies(self):
         return list(self._cookies.keys())
+
 
 def Session():
     global _SESSION
@@ -50,8 +49,10 @@ def Session():
 
     return _SESSION
 
+
 def raw_url(url):
     return _strip_url(url)[0]
+
 
 def get_referer(url):
     url, headers = _strip_url(url)
@@ -59,13 +60,14 @@ def get_referer(url):
         return headers[_REFERER_HEADER]
     return None
 
+
 def send_request(url, data=None, set_request=None, head=False):
     session = Session()
     target_url, headers = _strip_url(url)
 
     refer_url = None
     out_headers = {}
-    for header, value in headers.items():
+    for header, value in six.iteritems(headers):
         if header == _REFERER_HEADER:
             refer_url = value
         elif header == _COOKIE_HEADER:
@@ -94,29 +96,34 @@ def send_request(url, data=None, set_request=None, head=False):
     # Otherwise, no Cloudflare anti-bot detected
     return resp
 
+
 def add_referer_url(url, referer):
     url, headers = _strip_url(url)
     headers[_REFERER_HEADER] = referer
     return _url_with_headers(url, headers)
 
+
 def strip_cookie_url(url):
     url, headers = _strip_url(url)
-    if _COOKIE_HEADER in list(headers.keys()):
+    if _COOKIE_HEADER in headers.keys():
         del headers[_COOKIE_HEADER]
 
     return _url_with_headers(url, headers)
 
+
 def head_request(url, set_request=None):
     return send_request(url, set_request=set_request, head=True)
 
+
 def _url_with_headers(url, headers):
-    if not len(list(headers.keys())):
+    if not len(headers.keys()):
         return url
 
-    headers_arr = ["%s=%s" % (key, urllib.parse.quote_plus(value)) for key, value in
-                   headers.items()]
+    headers_arr = ["%s=%s" % (key, urllib_parse.quote_plus(value)) for key, value in
+                   six.iteritems(headers)]
 
     return "|".join([url] + headers_arr)
+
 
 def _strip_url(url):
     if url.find('|') == -1:
@@ -130,9 +137,10 @@ def _strip_url(url):
         if not len(m):
             continue
 
-        out_headers[m[0][0]] = urllib.parse.unquote_plus(m[0][1])
+        out_headers[m[0][0]] = urllib_parse.unquote_plus(m[0][1])
 
     return (target_url, out_headers)
+
 
 def __set_header(set_request, header_name, header_value):
     def f(req):
@@ -142,11 +150,14 @@ def __set_header(set_request, header_name, header_value):
         return req
     return f
 
+
 def __set_referer(set_request, url):
     return __set_header(set_request, _REFERER_HEADER, url)
 
+
 def __set_cookie(set_request, c):
     return __set_header(set_request, _COOKIE_HEADER, c)
+
 
 def __send_request(session, url, data=None, set_request=None, head=False):
     r = PrepReq(session)
@@ -164,6 +175,6 @@ def __send_request(session, url, data=None, set_request=None, head=False):
         return session.head(**kargs)
 
     if data:
-        data = urllib.parse.urlencode(data)
+        data = urllib_parse.urlencode(data)
         return session.post(data=data, **kargs)
     return session.get(**kargs)

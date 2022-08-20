@@ -1,27 +1,23 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import
-from builtins import map
-from builtins import str
 import json
-from .ui import database
-from resources.lib.ui.globals import g
-from .debrid import all_debrid, real_debrid, premiumize
-from . import pages
-from .ui.BrowserBase import BrowserBase
-from .indexers import simkl, trakt
+from resources.lib.ui import utils, database
+from resources.lib.debrid import all_debrid, real_debrid, premiumize
+from resources.lib import pages
+from resources.lib.ui.BrowserBase import BrowserBase
+from resources.lib.indexers import simkl, trakt
 import ast
 import requests
 import datetime
+
 
 class KaitoBrowser(BrowserBase):
 
     def _parse_history_view(self, res):
         name = res
-        return g.allocate_item(name, "search/" + name + "/1", True)
+        return utils.allocate_item(name, "search/" + name + "/1", True)
 
     def _parse_airing_dub_view(self, res):
-        name = list(res.values())[0]
-        mal_id = (list(res.keys())[0]).rsplit('/')[-2]
+        name = res.values()[0]
+        mal_id = (res.keys()[0]).rsplit('/')[-2]
         url = 'watchlist_to_ep/{}//0'.format(mal_id)
 
         try:
@@ -35,18 +31,18 @@ class KaitoBrowser(BrowserBase):
         info['plot'] = '** = Dub production suspended until further notice.\n++ = Dub is being produced from home studios with an irregular release schedule.'
         info['mediatype'] = 'tvshow'
 
-        return g.allocate_item(name, url, True, image, info)
+        return utils.allocate_item(name, url, True, image, info)
 
     def _json_request(self, url, data=''):
         response = json.loads(self._get_request(url, data))
         return response
 
     # TODO: Not sure i want this here..
-    def search_history(self,search_array):
-    	result = list(map(self._parse_history_view,search_array))
-    	result.insert(0,g.allocate_item("New Search", "search", True))
-    	result.insert(len(result),g.allocate_item("Clear Search History...", "clear_history", False))
-    	return result
+    def search_history(self, search_array):
+        result = list(map(self._parse_history_view, search_array))
+        result.insert(0, utils.allocate_item("New Search", "search", True))
+        result.insert(len(result), utils.allocate_item("Clear Search History...", "clear_history", True))
+        return result
 
     def get_airing_dub(self):
         resp = requests.get('https://armkai.vercel.app/api/airingdub')
@@ -125,7 +121,7 @@ class KaitoBrowser(BrowserBase):
         show_meta = database.get_show(anilist_id)
 
         if not show_meta:
-            from .AniListBrowser import AniListBrowser
+            from resources.lib.AniListBrowser import AniListBrowser
             show_meta = AniListBrowser().get_anilist(anilist_id)
 
         if not show_meta['meta_ids']:
@@ -140,6 +136,8 @@ class KaitoBrowser(BrowserBase):
         return self.get_anime_trakt(anilist_id, filter_lang=filter_lang)
 
     def get_episodeList(self, show_id, pass_idx, filter_lang=None, rescrape=False):
+        from resources.lib.ui import control
+
         episodes = database.get_episode_list(int(show_id))
 
         if episodes:
@@ -150,9 +148,9 @@ class KaitoBrowser(BrowserBase):
         if rescrape:
             return items
 
-        items =  [i for i in items if self.is_aired(i['info'])]
+        items = [i for i in items if self.is_aired(i['info'])]
 
-        playlist = g.bulk_draw_items(items)[pass_idx:]
+        playlist = control.bulk_draw_items(items)[pass_idx:]
 
         for i in playlist:
             url = i[0]
@@ -160,12 +158,12 @@ class KaitoBrowser(BrowserBase):
             if filter_lang:
                 url += filter_lang
 
-            g.PLAYLIST.add(url=url, listitem=i[1])
+            control.playList.add(url=url, listitem=i[1])
 
     def is_aired(self, info):
         try:
             try:
-                air_date = info['aired']               
+                air_date = info['aired']
             except:
                 air_date = info.get('premiered')
             if not air_date:
@@ -197,12 +195,12 @@ class KaitoBrowser(BrowserBase):
             'media_type': media_type,
             'rescrape': rescrape,
             'get_backup': self.get_backup
-            }
+        }
         sources = pages.getSourcesHelper(actionArgs)
         return sources
 
     def get_latest_sources(self, debrid_provider, hash_):
-        resolvers = {'premiumize':  premiumize.Premiumize,
+        resolvers = {'premiumize': premiumize.Premiumize,
                      'all_debrid': all_debrid.AllDebrid,
                      'real_debrid': real_debrid.RealDebrid}
 

@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from builtins import str
 import time
-from resources.lib.ui.globals import g
+from resources.lib.ui import control
 from resources.lib.windows.base_window import BaseWindow
 from resources.lib.windows.resolver import Resolver
 from resources.lib.ui import database
-import xbmcgui
+
 
 class SourceSelect(BaseWindow):
 
@@ -20,7 +19,7 @@ class SourceSelect(BaseWindow):
         self.canceled = False
         self.display_list = None
         self.last_action = 0
-        g.close_busy_dialog()
+        control.closeBusyDialog()
         self.stream_link = None
 
     def onInit(self):
@@ -31,15 +30,15 @@ class SourceSelect(BaseWindow):
             if not i:
                 continue
 
-            menu_item = xbmcgui.ListItem(label='%s' % i['release_title'])
+            menu_item = control.menuItem(label='%s' % i['release_title'])
             for info in list(i.keys()):
                 try:
                     value = i[info]
                     if type(value) == list:
                         value = [str(k) for k in value]
                         value = ' '.join(sorted(value))
-##                    if info == 'size':
-##                        value = control.source_size_display(value)
+                    # if info == 'size':
+                    #     value = control.source_size_display(value)
                     menu_item.setProperty(info, str(value).replace('_', ' '))
                 except UnicodeEncodeError:
                     menu_item.setProperty(info, i[info])
@@ -53,10 +52,10 @@ class SourceSelect(BaseWindow):
         super(SourceSelect, self).doModal()
         return self.stream_link
 
-##    def onClick(self, controlId):
-##
-##        if controlId == 1000:
-##            self.handle_action(7)
+    # def onClick(self, controlId):
+
+    #     if controlId == 1000:
+    #         self.handle_action(7)
 
     def handle_action(self, actionID):
         if (time.time() - self.last_action) < .5:
@@ -117,7 +116,7 @@ class SourceSelect(BaseWindow):
         return info
 
     def resolve_item(self):
-        if g.get_setting('general.autotrynext') == 'true':
+        if control.getSetting('general.autotrynext') == 'true':
             sources = self.sources[self.position:]
         else:
             sources = [self.sources[self.position]]
@@ -127,7 +126,7 @@ class SourceSelect(BaseWindow):
             selected_source['name'] = selected_source['release_title']
             database.addTorrentList(self.anilist_id, [selected_source], 2)
 
-        resolver = Resolver(*('resolver.xml', g.ADDON_DATA_PATH), actionArgs=self.actionArgs)
+        resolver = Resolver(*('resolver.xml', control.ADDON_PATH), actionArgs=self.actionArgs)
 
         self.stream_link = resolver.doModal(sources, {}, False)
 

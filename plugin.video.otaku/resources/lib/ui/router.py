@@ -1,9 +1,7 @@
-#!/usr/bin/env python2
-# -*- coding: utf-8 -*-
 
-from builtins import object
 _REGISTERED_ROUTES = []
 _REGISTERED_PARAM_HOOKS = []
+
 
 class on_param(object):
     def __init__(self, key, value):
@@ -29,8 +27,9 @@ class on_param(object):
     def func(self):
         return self._func
 
+
 class route(object):
-    def __init__(self,route_path):
+    def __init__(self, route_path):
         self._path = route_path
         self._is_wildcard = False
         if route_path.endswith("*"):
@@ -57,11 +56,12 @@ class route(object):
     def func(self):
         return self._func
 
+
 def router_process(url, params={}):
     payload = "/".join(url.split("/")[1:])
 
     for param in _REGISTERED_PARAM_HOOKS:
-        if param.key in list(params.keys()):
+        if param.key in params.keys():
             if param.value == params[param.key]:
                 param.func(payload, params)
 

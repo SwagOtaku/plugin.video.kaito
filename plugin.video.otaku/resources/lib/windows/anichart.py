@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from builtins import str
 import time
-from resources.lib.ui.globals import g
+from resources.lib.ui import control
 from resources.lib.windows.anichart_window import BaseWindow
-from resources.lib.windows.resolver import Resolver
-from resources.lib.ui import database
-import xbmcgui
+
 
 class Anichart(BaseWindow):
 
@@ -17,7 +14,7 @@ class Anichart(BaseWindow):
         self.position = -1
         self.display_list = None
         self.last_action = 0
-        g.close_busy_dialog()
+        control.closeBusyDialog()
         self.anime_item = None
 
     def onInit(self):
@@ -28,7 +25,7 @@ class Anichart(BaseWindow):
             if not i:
                 continue
 
-            menu_item = xbmcgui.ListItem(label='%s' % i['release_title'])
+            menu_item = control.menuItem(label='%s' % i['release_title'])
             for info in list(i.keys()):
                 try:
                     value = i[info]
@@ -76,7 +73,7 @@ class Anichart(BaseWindow):
     def resolve_item(self):
         anime = self.anime_items[self.position]['id']
         self.anime_item = self.get_anime(anime)
-        
+
         if self.anime_item is None:
             return
         else:

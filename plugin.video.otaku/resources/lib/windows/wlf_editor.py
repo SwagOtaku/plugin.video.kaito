@@ -1,13 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from builtins import str
-import time
-from resources.lib.ui.globals import g
+from resources.lib.ui import control
 from resources.lib.windows.base_window import BaseWindow
-from resources.lib.windows.resolver import Resolver
 from resources.lib.WatchlistFlavor import WatchlistFlavor
-from resources.lib.ui import database
-import xbmcgui
+
 
 class SourceSelect(BaseWindow):
 
@@ -24,29 +20,29 @@ class SourceSelect(BaseWindow):
         self.flavors_list = None
         self.anime_item = None
         self.last_action = 0
-        g.close_busy_dialog()
+        control.closeBusyDialog()
 
     def onInit(self):
         self.editor_list = self.getControl(2001)
         self.flavors_list = self.getControl(2000)
 
-        if g.anilist_enabled():
-            menu_item = xbmcgui.ListItem(label='%s' % 'AniList')
-            menu_item.setProperty('username', g.get_setting('anilist.username'))
+        if control.anilist_enabled():
+            menu_item = control.menuItem(label='%s' % 'AniList')
+            menu_item.setProperty('username', control.getSetting('anilist.username'))
             self.flavors_list.addItem(menu_item)
 
             self.anime_list_entry['anilist'] = WatchlistFlavor.watchlist_anime_entry_request('anilist', '235')
 
-        if g.kitsu_enabled():
-            menu_item = xbmcgui.ListItem(label='%s' % 'Kitsu')
-            menu_item.setProperty('username', g.get_setting('kitsu.username'))
+        if control.kitsu_enabled():
+            menu_item = control.menuItem(label='%s' % 'Kitsu')
+            menu_item.setProperty('username', control.getSetting('kitsu.username'))
             self.flavors_list.addItem(menu_item)
 
             self.anime_list_entry['kitsu'] = WatchlistFlavor.watchlist_anime_entry_request('kitsu', '235')
 
-        if g.myanimelist_enabled():
-            menu_item = xbmcgui.ListItem(label='%s' % 'MyAnimeList')
-            menu_item.setProperty('username', g.get_setting('mal.username'))
+        if control.myanimelist_enabled():
+            menu_item = control.menuItem(label='%s' % 'MyAnimeList')
+            menu_item.setProperty('username', control.getSetting('mal.username'))
             self.flavors_list.addItem(menu_item)
 
             self.anime_list_entry['myanimelist'] = WatchlistFlavor.watchlist_anime_entry_request('mal', '235')
@@ -54,7 +50,7 @@ class SourceSelect(BaseWindow):
         selected_flavor_item = self.flavors_list.getSelectedItem()
         self.selected_flavor = (selected_flavor_item.getLabel()).lower()
         for _id, value in list(self.anime_list_entry[self.selected_flavor].items()):
-            item = xbmcgui.ListItem(label='%s' % _id)
+            item = control.menuItem(label='%s' % _id)
             item.setProperty(_id, str(value))
             self.editor_list.addItem(item)
 
@@ -64,13 +60,13 @@ class SourceSelect(BaseWindow):
         super(SourceSelect, self).doModal()
         self.clearProperties()
         return
-  
+
     def flip_flavor(self):
         self.editor_list.reset()
         selected_flavor_item = self.flavors_list.getSelectedItem()
         self.selected_flavor = (selected_flavor_item.getLabel()).lower()
         for _id, value in list(self.anime_list_entry[self.selected_flavor].items()):
-            item = xbmcgui.ListItem(label='%s' % _id)
+            item = control.menuItem(label='%s' % _id)
             item.setProperty(_id, str(value))
             self.editor_list.addItem(item)
 
@@ -98,30 +94,30 @@ class SourceSelect(BaseWindow):
                 'Rewatching': 'Paused',
                 'Paused': 'Dropped',
                 'Dropped': 'Planning'
-                },
+            },
             'myanimelist': {
                 'Plan_To_Watch': 'Watching',
                 'Watching': 'Completed',
                 'Completed': 'On_Hold',
                 'On_Hold': 'Dropped',
                 'Dropped': 'Plan_To_Watch'
-                }
             }
+        }
 
-##        if status == 'Plan to Watch':
-##            new_status = 'Watching'
-##
-##        if status == 'Watching':
-##            new_status = 'Completed'
-##
-##        if status == 'Completed':
-##            new_status = 'On-Hold'
-##
-##        if status =='On-Hold':
-##            new_status = 'Dropped'
-##
-##        if status == 'Dropped':
-##            new_status = 'Plan to Watch'
+        # if status == 'Plan to Watch':
+        #     new_status = 'Watching'
+
+        # if status == 'Watching':
+        #     new_status = 'Completed'
+
+        # if status == 'Completed':
+        #     new_status = 'On-Hold'
+
+        # if status =='On-Hold':
+        #     new_status = 'Dropped'
+
+        # if status == 'Dropped':
+        #     new_status = 'Plan to Watch'
 
         try:
             new_status = status_dict[self.selected_flavor][status]
@@ -130,7 +126,7 @@ class SourceSelect(BaseWindow):
             pass
 
     def edit_eps_watched(self):
-        episodes_watched = xbmcgui.Dialog().numeric(0, 'Enter episodes watched')
+        episodes_watched = control.showDialog.numeric(0, 'Enter episodes watched')
         if not episodes_watched:
             episodes_watched = '0'
         self.anime_item.setProperty('eps_watched', str(episodes_watched))
@@ -167,53 +163,53 @@ class SourceSelect(BaseWindow):
         if action == 7:
             if focus_id == 2001:
                 self.edit_anime()
-##            if focus_id == 3001:
-##                self.flip_mutliple_providers('enabled', provider_type='hosters')
-##            if focus_id == 3002:
-##                self.flip_mutliple_providers('enabled', provider_type='torrent')
-##            if focus_id == 3003:
-##                self.flip_mutliple_providers('disabled', provider_type='hosters')
-##            if focus_id == 3004:
-##                self.flip_mutliple_providers('disabled', provider_type='torrent')
-##            if focus_id == 3005:
-##                self.flip_mutliple_providers('enabled')
-##            if focus_id == 3006:
-##                self.flip_mutliple_providers('disabled')
-##            if focus_id == 3007:
-##                self.flip_mutliple_providers('enabled', package_name=self.package_list.getSelectedItem().getLabel())
-##            if focus_id == 3008:
-##                self.flip_mutliple_providers('disabled', package_name=self.package_list.getSelectedItem().getLabel())
-##            if focus_id == 3009:
-##                tools.showBusyDialog()
-##
-##                self.providers_class.install_package(None)
-##                self.packages = database.get_provider_packages()
-##                self.fill_packages()
-##                try:
-##                    current_package = self.package_list.getSelectedItem().getLabel()
-##                    self.fill_providers(current_package)
-##                except:
-##                    self.provider_list.reset()
-##                    pass
-##                tools.closeBusyDialog()
-##                self.setFocus(self.package_list)
-##            if focus_id == 3010:
-##                try: package = self.package_list.getSelectedItem().getLabel()
-##                except:
-##                    return
-##                tools.showBusyDialog()
-##                confirm = tools.showDialog.yesno(tools.addonName, tools.lang(40255) % package)
-##                if not confirm:
-##                    tools.closeBusyDialog()
-##                    return
-##
-##                self.providers_class.uninstall_package(package=self.package_list.getSelectedItem().getLabel(),
-##                                                       silent=True)
-##                self.packages = database.get_provider_packages()
-##                self.fill_packages()
-##                self.fill_providers()
-##                tools.closeBusyDialog()
-##                self.setFocus(self.package_list)
+            # if focus_id == 3001:
+            #     self.flip_mutliple_providers('enabled', provider_type='hosters')
+            # if focus_id == 3002:
+            #     self.flip_mutliple_providers('enabled', provider_type='torrent')
+            # if focus_id == 3003:
+            #     self.flip_mutliple_providers('disabled', provider_type='hosters')
+            # if focus_id == 3004:
+            #     self.flip_mutliple_providers('disabled', provider_type='torrent')
+            # if focus_id == 3005:
+            #     self.flip_mutliple_providers('enabled')
+            # if focus_id == 3006:
+            #     self.flip_mutliple_providers('disabled')
+            # if focus_id == 3007:
+            #     self.flip_mutliple_providers('enabled', package_name=self.package_list.getSelectedItem().getLabel())
+            # if focus_id == 3008:
+            #     self.flip_mutliple_providers('disabled', package_name=self.package_list.getSelectedItem().getLabel())
+            # if focus_id == 3009:
+            #     tools.showBusyDialog()
+
+            #     self.providers_class.install_package(None)
+            #     self.packages = database.get_provider_packages()
+            #     self.fill_packages()
+            #     try:
+            #         current_package = self.package_list.getSelectedItem().getLabel()
+            #         self.fill_providers(current_package)
+            #     except:
+            #         self.provider_list.reset()
+            #         pass
+            #     tools.closeBusyDialog()
+            #     self.setFocus(self.package_list)
+            # if focus_id == 3010:
+            #     try: package = self.package_list.getSelectedItem().getLabel()
+            #     except:
+            #         return
+            #     tools.showBusyDialog()
+            #     confirm = tools.showDialog.yesno(tools.addonName, tools.lang(40255) % package)
+            #     if not confirm:
+            #         tools.closeBusyDialog()
+            #         return
+
+            #     self.providers_class.uninstall_package(package=self.package_list.getSelectedItem().getLabel(),
+            #                                            silent=True)
+            #     self.packages = database.get_provider_packages()
+            #     self.fill_packages()
+            #     self.fill_providers()
+            #     tools.closeBusyDialog()
+            #     self.setFocus(self.package_list)
             pass
 
         if action == 0:

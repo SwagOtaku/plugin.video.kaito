@@ -22,11 +22,6 @@
 		<setting id="viewtype.bool" label="Force view types" type="bool" default="false"/>
 		<setting id="viewtype.episode" type="select" label="- Episode view" values='Default|Poster|Icon Wall|Shift|Info Wall|Wide List|Wall|Banner|Fanart' default="Default" visible="eq(-1,true)"/>
 		-->
-		<setting type="lsep" label="Language Invoker Options"/>
-    		<setting type="sep"/>
-    		<setting id="reuselanguageinvoker.status" label="Re-Use Language Invoker Status" type="text" default="Disabled" enable="false"/>
-    		<setting id="reuselanguageinvoker.toggle" label="Toggle Re-Use Language Invoker" type="action" option="close" 
-			 action="RunPlugin(plugin://plugin.video.kaito/toggleLanguageInvoker)"/>
 	</category>
 
 	<!-- Playback -->
@@ -125,9 +120,9 @@
 		<setting type="lsep" label="40355"/>
 		<setting id="sep"/>
 		<setting id="kitsu.enabled" label="40356" type="bool" default="false"/>
-    <setting id="kitsu.username" type="text" subsetting="true" label="40350" default="" enable="false" visible="eq(-1,true)" />
+    	<setting id="kitsu.username" type="text" subsetting="true" label="40350" default="" enable="false" visible="eq(-1,true)" />
 		<setting id="kitsu.authvar" type="text" subsetting="true" label="40357" default="" visible="eq(-2,true)"/>
-    <setting id="kitsu.password" type="text" subsetting="true" option="hidden" label="40358" default="" visible="eq(-3,true)"/>
+    	<setting id="kitsu.password" type="text" subsetting="true" option="hidden" label="40358" default="" visible="eq(-3,true)"/>
 		<setting id="kitsu.login" type="action" subsetting="true" label="40359" option="close" action="RunPlugin(plugin://plugin.video.kaito/watchlist_login/kitsu)" visible="eq(-4,true)"/>
 		<setting id="kitsu.listsettings" type="action" label="40353" option="close" visible="eq(-5,true)"/>
 		<setting id="kitsu.sort" type="labelenum" subsetting="true" label="40354" values="Date Updated|Progress|Title" default="Title" visible="eq(-6,true)"/>
@@ -137,9 +132,15 @@
 		<setting type="lsep" label="40361"/>
 		<setting id="sep"/>
 		<setting id="mal.enabled" label="40362" type="bool" default="false"/>
-    <setting id="mal.username" type="text" subsetting="true" label="40350" default="" enable="false" visible="eq(-1,true)"/>
+    	<setting id="mal.username" type="text" subsetting="true" label="40350" default="" enable="false" visible="eq(-1,true)"/>
 		<setting id="mal.login" type="action" subsetting="true" label="40352" option="close" action="RunPlugin(plugin://plugin.video.kaito/watchlist_login/mal?auth_dialog=true)" visible="eq(-2,true)"/>
 		<setting id="mal.listsettings" type="action" label="40353" option="close" visible="eq(-3,true)"/>
 		<setting id="mal.sort" type="labelenum" subsetting="true" label="40354" values="List Score|Last Updated|Anime Start Date|Anime Title" default="Anime Title" visible="eq(-4,true)"/>
+		<setting id="mal.userid" type="text"  default="" visible="false"/>
+		<setting id="mal.authvar" type="text"  default="" visible="false"/>
+		<setting id="mal.token" type="text"  default="" visible="false"/>
+		<setting id="mal.refresh" type="text"  default="" visible="false"/>
+		<setting id="mal.password" type="text"  default="" visible="false"/>
+		<setting id="mal.titles" type="text"  default="" visible="false"/>
 	</category>
 </settings>

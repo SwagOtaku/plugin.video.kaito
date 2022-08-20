@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
-from builtins import str
-from resources.lib.ui.globals import g
+
+from resources.lib.ui import control
 from resources.lib.base_window import BaseWindow
+
 
 class PersistentBackground(BaseWindow):
 
@@ -12,7 +12,7 @@ class PersistentBackground(BaseWindow):
         if actionArgs is None:
             return
 
-        g.close_busy_dialog()
+        control.closeBusyDialog()
 
     def setText(self, text):
         self.setProperty('notification_text', str(text))

@@ -1,29 +1,26 @@
-from builtins import str
-from builtins import range
-from builtins import object
 import requests
 import re
 import threading
 import json
 import time
-
+from kodi_six import xbmcgui
 from resources.lib.ui import source_utils
 from resources.lib.ui import control
-from resources.lib.ui.globals import g
 
-class RealDebrid(object):
+
+class RealDebrid:
     def __init__(self):
-        self.ClientID = g.get_setting('rd.client_id')
+        self.ClientID = control.getSetting('rd.client_id')
         if self.ClientID == '':
             self.ClientID = 'X245A4XAIBGVM'
         self.OauthUrl = 'https://api.real-debrid.com/oauth/v2/'
         self.DeviceCodeUrl = "device/code?%s"
         self.DeviceCredUrl = "device/credentials?%s"
         self.TokenUrl = "token"
-        self.token = g.get_setting('rd.auth')
-        self.refresh = g.get_setting('rd.refresh')
+        self.token = control.getSetting('rd.auth')
+        self.refresh = control.getSetting('rd.refresh')
         self.DeviceCode = ''
-        self.ClientSecret = g.get_setting('rd.secret')
+        self.ClientSecret = control.getSetting('rd.secret')
         self.OauthTimeout = 0
         self.OauthTimeStep = 0
         self.BaseUrl = "https://api.real-debrid.com/rest/1.0/"
@@ -42,12 +39,12 @@ class RealDebrid(object):
         else:
             try:
                 control.progressDialog.close()
-                g.set_setting('rd.client_id', response['client_id'])
-                g.set_setting('rd.secret', response['client_secret'])
+                control.setSetting('rd.client_id', response['client_id'])
+                control.setSetting('rd.secret', response['client_secret'])
                 self.ClientSecret = response['client_secret']
                 self.ClientID = response['client_id']
             except:
-                control.ok_dialog(g.ADDON_NAME, g.lang(30105))
+                control.ok_dialog(control.ADDON_NAME, control.lang(30105))
             return
 
     def auth(self):
@@ -57,18 +54,11 @@ class RealDebrid(object):
         url = self.OauthUrl + self.DeviceCodeUrl % url
         response = json.loads(requests.get(url).text)
         control.copy2clip(response['user_code'])
-        control.progressDialog.create(
-            'Real-Debrid Auth',
-            control.create_multiline_message(
-                line1=g.lang(30100).format(
-                    g.color_string('https://real-debrid.com/device')
-                ),
-                line2=g.lang(30101).format(
-                    g.color_string(response['user_code'])
-                ),
-                line3=g.lang(30102),
-            ),
-        )
+        control.progressDialog.create('Real-Debrid Auth')
+        control.progressDialog.update(-1,
+                                      control.lang(30100).format(control.colorString('https://real-debrid.com/device')) + '[CR]'
+                                      + control.lang(30101).format(control.colorString(response['user_code'])) + '[CR]'
+                                      + control.lang(30102))
         self.OauthTimeout = int(response['expires_in'])
         self.OauthTimeStep = int(response['interval'])
         self.DeviceCode = response['device_code']
@@ -80,10 +70,10 @@ class RealDebrid(object):
 
         user_information = self.get_url('https://api.real-debrid.com/rest/1.0/user')
         if user_information['type'] != 'premium':
-            control.ok_dialog(g.ADDON_NAME, g.lang(30104))
+            control.ok_dialog(control.ADDON_NAME, control.lang(30104))
 
     def token_request(self):
-        if self.ClientSecret is '':
+        if self.ClientSecret == '':
             return
 
         postData = {'client_id': self.ClientID,
@@ -94,15 +84,15 @@ class RealDebrid(object):
         url = self.OauthUrl + self.TokenUrl
         response = requests.post(url, data=postData).text
         response = json.loads(response)
-        g.set_setting('rd.auth', response['access_token'])
-        g.set_setting('rd.refresh', response['refresh_token'])
+        control.setSetting('rd.auth', response['access_token'])
+        control.setSetting('rd.refresh', response['refresh_token'])
         self.token = response['access_token']
         self.refresh = response['refresh_token']
-        g.set_setting('rd.expiry', str(time.time() + int(response['expires_in'])))
+        control.setSetting('rd.expiry', str(time.time() + int(response['expires_in'])))
         username = self.get_url('https://api.real-debrid.com/rest/1.0/user')['username']
-        g.set_setting('rd.username', username)
-        control.ok_dialog(g.ADDON_NAME, 'Real Debrid ' + g.lang(30103))
-##        tools.log('Authorised Real Debrid successfully', 'info')
+        control.setSetting('rd.username', username)
+        control.ok_dialog(control.ADDON_NAME, 'Real Debrid ' + control.lang(30103))
+        # tools.log('Authorised Real Debrid successfully', 'info')
 
     def refreshToken(self):
         postData = {'grant_type': 'http://oauth.net/grant_type/device/1.0',
@@ -119,10 +109,10 @@ class RealDebrid(object):
             pass
         if 'refresh_token' in response:
             self.refresh = response['refresh_token']
-        g.set_setting('rd.auth', self.token)
-        g.set_setting('rd.refresh', self.refresh)
-        g.set_setting('rd.expiry', str(time.time() + int(response['expires_in'])))
-##        tools.log('Real Debrid Token Refreshed')
+        control.setSetting('rd.auth', self.token)
+        control.setSetting('rd.refresh', self.refresh)
+        control.setSetting('rd.expiry', str(time.time() + int(response['expires_in'])))
+        # tools.log('Real Debrid Token Refreshed')
         ###############################################
         # To be FINISHED FINISH ME
         ###############################################
@@ -130,7 +120,7 @@ class RealDebrid(object):
     def post_url(self, url, postData, fail_check=False):
         headers = {
             'Authorization': 'Bearer {}'.format(self.token)
-            }
+        }
         response = requests.post(url, data=postData, headers=headers, timeout=5).text
         if 'bad_token' in response or 'Bad Request' in response:
             if not fail_check:
@@ -144,7 +134,7 @@ class RealDebrid(object):
     def get_url(self, url, fail_check=False):
         headers = {
             'Authorization': 'Bearer {}'.format(self.token)
-            }
+        }
 
         try:
             response = requests.get(url, headers=headers, timeout=(5, None)).text
@@ -160,13 +150,12 @@ class RealDebrid(object):
             return json.loads(response)
         except:
             return response
-        
 
     def checkHash(self, hashList):
 
         if isinstance(hashList, list):
             cache_result = {}
-            hashList = [hashList[x:x+100] for x in range(0, len(hashList), 100)]
+            hashList = [hashList[x: x + 100] for x in range(0, len(hashList), 100)]
             threads = []
             for section in hashList:
                 threads.append(threading.Thread(target=self._check_hash_thread, args=(section,)))
@@ -216,7 +205,7 @@ class RealDebrid(object):
     def deleteTorrent(self, id):
         headers = {
             'Authorization': 'Bearer {}'.format(self.token)
-            }
+        }
         url = "https://api.real-debrid.com/rest/1.0/torrents/delete/%s" % (id)
         requests.delete(url, headers=headers, timeout=5)
 
@@ -241,7 +230,6 @@ class RealDebrid(object):
 
                 regex = episode
                 selected_files = sorted([idx for idx, i in enumerate(selected_files) if re.search(regex, i['path'])])
-
 
                 if not selected_files:
                     continue

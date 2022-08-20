@@ -1,13 +1,9 @@
-# -*- coding: utf-8 -*-
-from future import standard_library
-standard_library.install_aliases()
 import sys
 import os
-import urllib.request, urllib.error, urllib.parse
-from urllib.error import URLError
+from six.moves.urllib_error import URLError
 import socket
 import time
-from urllib.parse import urlparse
+from six.moves.urllib_parse import urlparse
 from copy import deepcopy
 import re
 

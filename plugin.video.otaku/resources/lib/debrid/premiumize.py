@@ -1,23 +1,20 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import division
-from builtins import object
-from past.utils import old_div
 import time
 import requests
 
 from resources.lib.ui import source_utils
 from resources.lib.ui import control
 from resources.lib.ui import database
-from resources.lib.ui.globals import g
 
-class Premiumize(object):
+
+class Premiumize:
 
     def __init__(self):
         self.client_id = "855400527"
-##        self.client_secret = ""
+        # self.client_secret = ""
         self.headers = {
-            'Authorization': 'Bearer {}'.format(g.get_setting('premiumize.token'))
+            'Authorization': 'Bearer {}'.format(control.getSetting('premiumize.token'))
         }
 
     def auth(self):
@@ -28,23 +25,15 @@ class Premiumize(object):
         poll_again = True
         success = False
         control.copy2clip(token['user_code'])
-        control.progressDialog.create(
-            g.ADDON_NAME,
-            control.create_multiline_message(
-                line1=g.lang(30100).format(
-                    g.color_string(token['verification_uri'])
-                ),
-                line2=g.lang(30101).format(
-                    g.color_string(token['user_code'])
-                ),
-                line3=g.lang(30102),
-            ),
-        )
+        control.progressDialog.create(control.ADDON_NAME,
+                                      control.lang(30100).format(control.colorString(token['verification_uri'])) + '[CR]'
+                                      + control.lang(30101).format(control.colorString(token['user_code'])) + '[CR]'
+                                      + control.lang(30102))
         control.progressDialog.update(0)
 
         while poll_again and not token_ttl <= 0 and not control.progressDialog.iscanceled():
             poll_again, success = self.poll_token(token['device_code'])
-            progress_percent = 100 - int((float(old_div((expiry - token_ttl), expiry)) * 100))
+            progress_percent = 100 - int((float((expiry - token_ttl) / expiry) * 100))
             control.progressDialog.update(progress_percent)
             time.sleep(token['interval'])
             token_ttl -= int(token['interval'])
@@ -52,7 +41,7 @@ class Premiumize(object):
         control.progressDialog.close()
 
         if success:
-            control.ok_dialog(g.ADDON_NAME, 'Premiumize ' + g.lang(30103))
+            control.ok_dialog(control.ADDON_NAME, 'Premiumize ' + control.lang(30103))
 
     def poll_token(self, device_code):
         data = {'client_id': self.client_id, 'code': device_code, 'grant_type': 'device_code'}
@@ -63,17 +52,17 @@ class Premiumize(object):
                 return False, False
             return True, False
 
-        g.set_setting('premiumize.token', token['access_token'])
+        control.setSetting('premiumize.token', token['access_token'])
         self.headers['Authorization'] = 'Bearer {}'.format(token['access_token'])
 
         account_info = self.account_info()
-        g.set_setting('premiumize.username', account_info['customer_id'])
+        control.setSetting('premiumize.username', account_info['customer_id'])
 
         return False, True
 
     def get_url(self, url):
         if self.headers['Authorization'] == 'Bearer ':
-##            tools.log('User is not authorised to make PM requests')
+            # tools.log('User is not authorised to make PM requests')
             return None
         url = "https://www.premiumize.me/api{}".format(url)
         req = requests.get(url, timeout=10, headers=self.headers).json()
@@ -81,7 +70,7 @@ class Premiumize(object):
 
     def post_url(self, url, data):
         if self.headers['Authorization'] == 'Bearer ':
-##            tools.log('User is not authorised to make PM requests')
+            # tools.log('User is not authorised to make PM requests')
             return None
         url = "https://www.premiumize.me/api{}".format(url)
         req = requests.post(url, headers=self.headers, data=data, timeout=10).json()
@@ -136,7 +125,7 @@ class Premiumize(object):
 
     def get_used_space(self):
         info = self.account_info()
-        used_space = int(old_div((old_div((old_div(info['space_used'], 1024)), 1024)), 1024))
+        used_space = int(((info['space_used'] / 1024) / 1024) / 1024)
         return used_space
 
     def hosterCacheCheck(self, source_list):
@@ -206,7 +195,6 @@ class Premiumize(object):
             self._handle_add_to_cloud(magnet)
             return stream_link
 
-
     def resolve_magnet(self, magnet, args, torrent, pack_select):
 
         if 'showInfo' not in args:
@@ -243,39 +231,39 @@ class Premiumize(object):
 
     def _handle_add_to_cloud(self, magnet):
         pass
-##        if tools.getSetting('premiumize.addToCloud') == 'true':
-##            transfer = self.create_transfer(magnet)
-##            database.add_premiumize_transfer(transfer['id'])
+        # if tools.getSetting('premiumize.addToCloud') == 'true':
+        #     transfer = self.create_transfer(magnet)
+        #     database.add_premiumize_transfer(transfer['id'])
 
     def _fetch_transcode_or_standard(self, file_object):
-##        if tools.getSetting('premiumize.transcoded') == 'true' and \
-##                file_object['transcode_status'] == 'finished':
-##            return file_object['stream_link']
-##        else:
+        # if tools.getSetting('premiumize.transcoded') == 'true' and \
+        #         file_object['transcode_status'] == 'finished':
+        #     return file_object['stream_link']
+        # else:
         return file_object['link']
 
     def user_select(self, content):
         pass
-##        display_list = []
-##        for i in content:
-##            if any(i['path'].endswith(ext) for ext in source_utils.COMMON_VIDEO_EXTENSIONS):
-##                display_list.append(i)
-##
-##        selection = tools.showDialog.select('{}: {}'.format(tools.addonName, tools.lang(40297)),
-##                                            [i['path'] for i in display_list])
-##        if selection == -1:
-##            return None
-##
-##        selection = content[selection]
-##
-##        if tools.getSetting('premiumize.transcoded') == 'true':
-##            if selection['transcode_status'] == 'finished':
-##
-##                return selection['stream_link']
-##            else:
-##                pass
-##
-##        return selection['link']
+        # display_list = []
+        # for i in content:
+        #     if any(i['path'].endswith(ext) for ext in source_utils.COMMON_VIDEO_EXTENSIONS):
+        #         display_list.append(i)
+
+        # selection = tools.showDialog.select('{}: {}'.format(tools.addonName, tools.lang(40297)),
+        #                                     [i['path'] for i in display_list])
+        # if selection == -1:
+        #     return None
+
+        # selection = content[selection]
+
+        # if tools.getSetting('premiumize.transcoded') == 'true':
+        #     if selection['transcode_status'] == 'finished':
+
+        #         return selection['stream_link']
+        #     else:
+        #         pass
+
+        # return selection['link']
 
     def get_hosters(self, hosters):
 

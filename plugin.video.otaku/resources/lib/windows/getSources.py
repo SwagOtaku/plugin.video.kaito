@@ -1,24 +1,18 @@
 # -*- coding: utf-8 -*-
 __metaclass__ = type
 
-import copy
-import json
-import random
-import re
-import sys
-import threading
-import time
-import requests
-
-from resources.lib.ui.globals import g
+from kodi_six import xbmc
+from resources.lib.ui import control
 from resources.lib.windows.get_sources_window import GetSources as DisplayWindow
+
 
 class CancelProcess(Exception):
     pass
 
+
 def getSourcesHelper(actionArgs):
-    sources_window = Sources(*('get_sources.xml', g.ADDON_DATA_PATH),
-                        actionArgs={'func': 'null'})
+    sources_window = Sources(*('get_sources.xml', control.ADDON_PATH),
+                             actionArgs={'func': 'null'})
 
     sources = sources_window.doModal()
     try:
@@ -26,6 +20,7 @@ def getSourcesHelper(actionArgs):
     except:
         pass
     return sources
+
 
 class Sources(DisplayWindow):
     def __init__(self, xml_file, location, actionArgs=None):
@@ -76,17 +71,16 @@ class Sources(DisplayWindow):
             try:
                 self.setProgress()
                 self.setText("4K: %s | 1080: %s | 720: %s | SD: %s" % (
-                    g.color_string(self.torrents_qual_len[0] + self.hosters_qual_len[0]),
-                    g.color_string(self.torrents_qual_len[1] + self.hosters_qual_len[1]),
-                    g.color_string(self.torrents_qual_len[2] + self.hosters_qual_len[2]),
-                    g.color_string(self.torrents_qual_len[3] + self.hosters_qual_len[3]),
-                    ))
+                    control.colorString(self.torrents_qual_len[0] + self.hosters_qual_len[0]),
+                    control.colorString(self.torrents_qual_len[1] + self.hosters_qual_len[1]),
+                    control.colorString(self.torrents_qual_len[2] + self.hosters_qual_len[2]),
+                    control.colorString(self.torrents_qual_len[3] + self.hosters_qual_len[3]),
+                ))
 
             except:
                 import traceback
                 traceback.print_exc()
 
-            import xbmc
             xbmc.sleep(5000)
             self.close()
 

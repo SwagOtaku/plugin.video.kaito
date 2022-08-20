@@ -1,21 +1,15 @@
-# -*- coding: utf-8 -*-
-from __future__ import absolute_import
-from builtins import map
-from builtins import str
-from builtins import object
 import requests
-import json
 import ast
 from functools import partial
-from .tmdb import TMDBAPI
-from ..ui import database
-from resources.lib.ui.globals import g
+from resources.lib.indexers.tmdb import TMDBAPI
+from resources.lib.ui import database, utils
 
-class SIMKLAPI(object):
+
+class SIMKLAPI:
     def __init__(self):
         self.ClientID = "5178a709b7942f1f5077b737b752eea0f6dee684d0e044fa5acee8822a0cbe9b"
         self.baseUrl = "https://api.simkl.com/"
-        self.imagePath = "https://simkl.in/episodes/%s_w.jpg"
+        self.imagePath = "https://simkl.net/episodes/%s_w.jpg"
         self.art = {}
         self.request_response = None
         self.threads = []
@@ -24,7 +18,7 @@ class SIMKLAPI(object):
         if url.startswith("/"):
             url = url[1:]
 
-        return "%s/%s" % (self.baseUrl, url)
+        return "%s/%s" % (self.baseUrl[:-1], url)
 
     def _json_request(self, url, data=''):
         response = requests.get(url, data)
@@ -36,9 +30,9 @@ class SIMKLAPI(object):
 
         if filter_lang:
             url += filter_lang
-        
+
         name = 'Ep. %d (%s)' % (res['episode'], res.get('title'))
-        image =  self.imagePath % res['img']
+        image = self.imagePath % res['img']
         info = {}
         info['plot'] = res['description']
         info['title'] = res['title']
@@ -55,7 +49,7 @@ class SIMKLAPI(object):
             pass
         info['tvshowtitle'] = ast.literal_eval(database.get_show(anilist_id)['kodi_meta'])['title_userPreferred']
         info['mediatype'] = 'episode'
-        parsed = g.allocate_item(name, "play/" + str(url), False, image, info, fanart, poster, True)
+        parsed = utils.allocate_item(name, "play/" + str(url), False, image, info, fanart, poster)
         return parsed
 
     def _process_episode_view(self, anilist_id, json_resp, filter_lang, base_plugin_url, page):
@@ -63,6 +57,7 @@ class SIMKLAPI(object):
         fanart = kodi_meta.get('fanart')
         poster = kodi_meta.get('poster')
         eps_watched = kodi_meta.get('eps_watched')
+        # json_resp = filter(lambda x: x['type'] == 'episode', json_resp)
         json_resp = [x for x in json_resp if x['type'] == 'episode']
         mapfunc = partial(self._parse_episode_view, anilist_id=anilist_id, poster=poster, fanart=fanart, eps_watched=eps_watched, filter_lang=filter_lang)
         all_results = list(map(mapfunc, json_resp))
@@ -91,13 +86,12 @@ class SIMKLAPI(object):
                 kodi_meta['fanart'] = TMDBAPI().showFanart(show_meta).get('fanart')
                 database.update_kodi_meta(int(anilist_id), kodi_meta)
 
-
         return self.get_episodes(anilist_id, filter_lang), 'episodes'
 
     def _get_episodes(self, anilist_id):
         simkl_id = database.get_show(anilist_id)['simkl_id']
         data = {
-            "extended": 'full',
+            'extended': 'full',
         }
         url = self._to_url("anime/episodes/%s" % str(simkl_id))
         json_resp = self._json_request(url, data)

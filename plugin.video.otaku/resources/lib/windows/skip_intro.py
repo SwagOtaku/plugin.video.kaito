@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+
 from resources.lib.windows.base_window import BaseWindow
-from resources.lib.ui.globals import g
-import xbmc
+from resources.lib.ui import control
+from kodi_six import xbmc
+
 
 def run_once(f):
     def wrapper(*args, **kwargs):
@@ -11,16 +13,17 @@ def run_once(f):
     wrapper.has_run = False
     return wrapper
 
+
 class SkipIntro(BaseWindow):
 
     def __init__(self, xml_file, xml_location, actionArgs=None):
 
         try:
             super(SkipIntro, self).__init__(xml_file, xml_location, actionArgs=actionArgs)
-            self.player = xbmc.Player()
+            self.player = control.player()
             self.playing_file = self.player.getPlayingFile()
             self.duration = self.player.getTotalTime() - self.player.getTime()
-            self.skip = int(g.get_setting('skipintro.time'))
+            self.skip = int(control.getSetting('skipintro.time'))
             self.closed = False
             self.actioned = None
             self.default_action = '0'
@@ -69,9 +72,10 @@ class SkipIntro(BaseWindow):
         self.closed = True
         super(SkipIntro, self).close()
 
-    # def onClick(self, control_id):
-    #     self.handle_action(7, control_id)
+    def onClick(self, control_id):
+        self.handle_action(7, control_id)
 
+    @run_once
     def handle_action(self, action, control_id=None):
         if control_id is None:
             control_id = self.getFocusId()

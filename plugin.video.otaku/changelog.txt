@@ -1,13 +1,3 @@
-Changelog 0.0.10:
-- Refactor code for Kodi 19 support
-- Add setting to toggle reuselanguageinvoker (If enabled, expect some instability but much faster menu speeds)
-- Fix MyAnimeList sortby [Prometheusx-git]
-- Fix AllDebrid playback [Gujal00]
-
-Changelog 0.0.9:
-- Kodi 19 support
-- Updated anime season for upcoming and popular this season menu items
-
 Changelog 0.0.8:
 - Fixed movies not working in AniList watchlist
 - Fixed scrape and rescrape running twice

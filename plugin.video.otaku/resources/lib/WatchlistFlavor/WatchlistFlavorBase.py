@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
-from builtins import object
 import requests
 import ast
-from ..ui import database
-from resources.lib.ui.globals import g
+from resources.lib.ui import utils, database
+
 
 class WatchlistFlavorBase(object):
     _URL = None
@@ -102,7 +100,7 @@ class WatchlistFlavorBase(object):
                     next_up_meta['image'] = 'https://simkl.net/episodes/%s_w.jpg' % episode_meta['img']
                     next_up_meta['plot'] = episode_meta['description']
                 except:
-                    pass                
+                    pass
 
         return anilist_id, next_up_meta
 
@@ -119,28 +117,27 @@ class WatchlistFlavorBase(object):
     def _get_flavor_id(self, anilist_id, flavor):
         arm_resp = requests.get("https://armkai.vercel.app/api/search?type=anilist&id={}".format(anilist_id)).json()
         flavor_id = arm_resp.get(flavor[:-3])
-        return flavor_id  
+        return flavor_id
 
     def _format_login_data(self, name, image, token):
         login_data = {
             "name": name,
             "image": image,
             "token": token,
-            }
+        }
 
         return login_data
 
-    def _parse_view(self, base, is_dir=True, is_playable=False):
+    def _parse_view(self, base, is_dir=True):
         return [
-            g.allocate_item("%s" % base["name"],
+            utils.allocate_item("%s" % base["name"],
                                 base["url"],
                                 is_dir,
                                 base["image"],
                                 base["plot"],
                                 base.get("fanart"),
-                                base.get("poster"),
-                                is_playable)
-            ]
+                                base.get("poster"))
+        ]
 
     def _to_url(self, url=''):
         if url.startswith("/"):

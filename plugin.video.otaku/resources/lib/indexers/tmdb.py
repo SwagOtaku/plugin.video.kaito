@@ -1,14 +1,9 @@
-# -*- coding: utf-8 -*-
-from future import standard_library
-standard_library.install_aliases()
-from builtins import str
-from builtins import object
 import requests
 import json
-import copy
 import threading
 
-class TMDBAPI(object):
+
+class TMDBAPI:
     def __init__(self):
         self.apiKey = "6974ec27debf5cce1218136e2a36f64b"
         self.baseUrl = "https://api.themoviedb.org/3/"
@@ -124,7 +119,7 @@ class TMDBAPI(object):
             traceback.print_exc()
             return None
 
-        return item 
+        return item
 
     def showSeasonToListItem(self, seasonObject=None, showArgs=None):
 
@@ -180,11 +175,11 @@ class TMDBAPI(object):
         except:
             return None
 
-
     def parseEpisodeInfo(self, response, traktInfo, showArgs):
         try:
             if "status_code" in response:
-                if response["status_code"] == 34: return None
+                if response["status_code"] == 34:
+                    return None
 
             art = {}
 
