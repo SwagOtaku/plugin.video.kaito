@@ -14,6 +14,9 @@
 		<setting id="sep"/>
 		<setting id="contenttype.bool" label="40303" type="bool" default="false"/>
 		<setting id="contenttype.menu" type="labelenum" subsetting="true" label="40304" lvalues="40305|40306|40368" default="40305" visible="eq(-1,true)"/>
+
+		<setting id="sep"/>
+		<setting id="general.icons" type="enum" label="40388" lvalues="40389|40390" default="0"/>
 		<!--
 		<setting id="contenttype.seasons" type="labelenum" label="- Seasons content type" values="seasons|tvshows" default="tvshows" visible="eq(-2,true)"/>
 		<setting id="contenttype.episodes" type="labelenum" label="- Episodes content type" values="episodes|tvshows" default="tvshows" visible="eq(-3,true)"/>

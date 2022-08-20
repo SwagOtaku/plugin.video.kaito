@@ -19,13 +19,13 @@ Addon currently in devlopment, so not in any repository yet
 
 ### _or install it manually (updates should be installed manually)_
 
-- [plugin.video.kaito.beta](https://github.com/Goldenfreddy0703/plugin.video.kaito.beta/archive/refs/heads/main.zip)
+- [plugin.video.otaku](https://github.com/Goldenfreddy0703/plugin.video.otaku/archive/refs/heads/main.zip)
 
-After each update, it is recommended that you clear cache/rebuild database to make sure changes take effect. -->
+After each update, it is recommended that you clear cache/rebuild database to make sure changes take effect.
 
-## Kaito Updated Context Menu
+## Otaku Updated Context Menu
 
-[context.kaito.zip](https://github.com/Goldenfreddy0703/context.kaito/archive/refs/heads/main.zip) by @jkaw
+[context.otaku.zip](https://github.com/Goldenfreddy0703/context.otaku/archive/refs/heads/main.zip) by @jkaw -->
 
 ## Todo List
 

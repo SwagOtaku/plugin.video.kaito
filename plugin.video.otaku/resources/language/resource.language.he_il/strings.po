@@ -1,7 +1,7 @@
 # Kodi Media Center language file
 # Addon Name: otaku
 # Addon id: plugin.video.otaku
-# Addon Provider: SwagOtaku
+# Addon Provider: TeamOtaku
 msgid ""
 msgstr ""
 
@@ -507,4 +507,76 @@ msgstr ""
 
 msgctxt "#40372"
 msgid "Inspect Cloud Files on Scrape"
+msgstr ""
+
+msgctxt "#40373"
+msgid "Language Invoker Options"
+msgstr ""
+
+msgctxt "#40374"
+msgid "Re-Use Language Invoker Status"
+msgstr ""
+
+msgctxt "#40375"
+msgid "Toggle Re-Use Language Invoker"
+msgstr ""
+
+msgctxt "#40376"
+msgid "Auto close dialog"
+msgstr ""
+
+msgctxt "#40377"
+msgid "Seconds before closing"
+msgstr ""
+
+msgctxt "#40378"
+msgid "Enable Gogo Scraping"
+msgstr ""
+
+msgctxt "#40379"
+msgid "Enable Source Scraping"
+msgstr ""
+
+msgctxt "#40380"
+msgid "Enable Season Parsing (Disable if Performance Issues)"
+msgstr ""
+
+msgctxt "#40381"
+msgid "Enable Season Part Scraping"
+msgstr ""
+
+msgctxt "#40382"
+msgid "Manual Watchlist Update"
+msgstr ""
+
+msgctxt "#40383"
+msgid "seconds"
+msgstr ""
+
+msgctxt "#40384"
+msgid "Playing in"
+msgstr ""
+
+msgctxt "#40385"
+msgid "Next Up"
+msgstr ""
+
+msgctxt "#40386"
+msgid "Play now"
+msgstr ""
+
+msgctxt "#40387"
+msgid "Search Subs For Language Other Than English"
+msgstr ""
+
+msgctxt "#40388"
+msgid "Theme"
+msgstr ""
+
+msgctxt "#40389"
+msgid "Coloured"
+msgstr ""
+
+msgctxt "#40390"
+msgid "White"
 msgstr ""

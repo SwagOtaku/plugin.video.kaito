@@ -70,7 +70,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         base = {
             "name": res[0],
             "url": 'watchlist_status_type/%s/%s' % (self._NAME, res[1]),
-            "image": '',
+            "image": res[0].lower() + '.png',
             "plot": '',
         }
 

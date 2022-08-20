@@ -337,10 +337,11 @@ def bulk_draw_items(video_data, draw_cm=None, bulk_add=True):
 
 
 def artPath():
+    THEMES = ['coloured', 'white']
     if condVisibility('System.HasAddon(script.otaku.themepak)'):
         return os.path.join(
             xbmcaddon.Addon('script.otaku.themepak').getAddonInfo('path'),
             'art',
             'themes',
-            'coloured'
+            THEMES[int(getSetting("general.icons"))]
         )
