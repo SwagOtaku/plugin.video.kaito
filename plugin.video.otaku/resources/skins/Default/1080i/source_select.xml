@@ -153,10 +153,10 @@
         <!-- Top Logo/picture  -->
         <control type="image" id="1001">
             <top>-935</top>
-            <left>550</left>
-            <width>400</width>
+            <left>600</left>
+            <width>150</width>
             <aspectratio>keep</aspectratio>
-            <texture background="true">$INFO[Window().Property(item.art.clearlogo)]</texture>
+            <texture background="true">$INFO[Window().Property(otaku.logo)]</texture>
         </control>
 
         <!-- Scrollbar  -->
