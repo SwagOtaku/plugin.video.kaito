@@ -36,9 +36,21 @@ class AniListBrowser():
         name = "Next Page (%d)" % (next_page)
         return [utils.allocate_item(name, base_url % next_page, True, 'next.png')]
 
+    def get_season_year(self, period='current'):
+        date = datetime.datetime.today()
+        year = date.year
+        month = date.month
+        seasons = ['WINTER', 'SPRING', 'SUMMER', 'FALL']
+        if period == "next":
+            season = seasons[int((month - 1) / 3 + 1) % 4]
+            if season == 'WINTER':
+                year += 1
+        else:
+            season = seasons[int((month - 1) / 3)]
+        return [season, year]
+
     def get_popular(self, page=1, format_in=''):
-        # TASK: update season, year
-        season, year = ["WINTER", 2021]
+        season, year = self.get_season_year()
         variables = {
             'page': page,
             'type': "ANIME",
@@ -67,8 +79,7 @@ class AniListBrowser():
         return self._process_anilist_view(trending, "anilist_trending/%d", page)
 
     def get_upcoming(self, page=1, format_in=''):
-        # TASK: update season, year
-        season, year = ["SPRING", 2021]
+        season, year = self.get_season_year('next')
         variables = {
             'page': page,
             'type': "ANIME",

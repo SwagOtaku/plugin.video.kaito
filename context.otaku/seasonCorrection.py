@@ -1,4 +1,5 @@
-import sys, xbmc
+import sys
+import xbmc
 
 if __name__ == '__main__':
 

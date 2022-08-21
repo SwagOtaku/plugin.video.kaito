@@ -69,7 +69,7 @@ class KitsuWLF(WatchlistFlavorBase):
         name = "Next Page (%d)" % (next_page)
         parsed = urllib_parse.urlparse(hasNextPage)
         offset = urllib_parse.parse_qs(parsed.query)['page[offset]'][0]
-        return self._parse_view({'name': name, 'url': base_url % (offset, next_page), 'image': None, 'plot': None})
+        return self._parse_view({'name': name, 'url': base_url % (offset, next_page), 'image': 'next.png', 'plot': None})
 
     def watchlist(self):
         params = {"filter[user_id]": self._user_id}
