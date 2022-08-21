@@ -2,6 +2,7 @@
 <addon id="context.otaku" version="0.0.6" name="otaku - Global Context Menu Items" provider-name="TeamOtaku">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0" /> -->
+		 <import addon="xbmc.python" version="3.0.0" />
   </requires>
   <extension point="kodi.context.item">
     <menu id="kodi.core.main">

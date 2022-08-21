@@ -6,9 +6,9 @@ if __name__ == '__main__':
     message = item.getLabel()
     path = item.getPath()
 
-    matches = ['play/', 'play_movie', 'play_gogo', 'get_sources']
+    matches = ['play/', 'play_movie/', 'play_gogo/']
 
     if any(x in path for x in matches):
-        path = path + '&source_select=true'
+        path = path + '?source_select=true'
 
     xbmc.executebuiltin('PlayMedia(%s)' % path)
