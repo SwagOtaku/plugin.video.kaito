@@ -1,5 +1,5 @@
 import json
-from resources.lib.ui import utils, database
+from resources.lib.ui import utils, database, control
 from resources.lib.debrid import all_debrid, real_debrid, premiumize
 from resources.lib import pages
 from resources.lib.ui.BrowserBase import BrowserBase
@@ -16,8 +16,8 @@ class OtakuBrowser(BrowserBase):
         return utils.allocate_item(name, "search/" + name + "/1", True)
 
     def _parse_airing_dub_view(self, res):
-        name = res.values()[0]
-        mal_id = (res.keys()[0]).rsplit('/')[-2]
+        name = list(res.values())[0]
+        mal_id = (list(res.keys())[0]).rsplit('/')[-2]
         url = 'watchlist_to_ep/{}//0'.format(mal_id)
 
         try:
@@ -136,8 +136,6 @@ class OtakuBrowser(BrowserBase):
         return self.get_anime_trakt(anilist_id, filter_lang=filter_lang)
 
     def get_episodeList(self, show_id, pass_idx, filter_lang=None, rescrape=False):
-        from resources.lib.ui import control
-
         episodes = database.get_episode_list(int(show_id))
 
         if episodes:

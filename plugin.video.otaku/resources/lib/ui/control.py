@@ -65,7 +65,11 @@ def closeBusyDialog():
         execute('Dialog.Close(busydialognocancel)')
 
 
-def log(msg, level=xbmc.LOGDEBUG):
+def log(msg, level="debug"):
+    if level == "info":
+        level = xbmc.LOGNOTICE if PY2 else xbmc.LOGINFO
+    else:
+        level = xbmc.LOGDEBUG
     xbmc.log('@@@@Otaku log:\n{0}'.format(msg), level)
 
 
