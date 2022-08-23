@@ -39,7 +39,7 @@ class SourceSelect(BaseWindow):
                 year, month, day = anime_init[0][episode-1].get('info').get('aired', '0000-00-00').split('-')
             except:
                 year =''
-            self.setProperty('item.info.start_date', year)
+            self.setProperty('item.info.year', year)
 
     def onInit(self):
         
