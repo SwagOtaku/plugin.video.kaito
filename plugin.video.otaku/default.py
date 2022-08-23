@@ -262,7 +262,11 @@ def CLEAR_HISTORY(payload, params):
 
 @route('search')
 def SEARCH(payload, params):
-    query = control.keyboard(control.lang(30010))
+    action_args = params.get('action_args')
+    if isinstance(action_args, dict):
+        query = action_args.get('query')
+    else:
+        query = control.keyboard(control.lang(30010))
     if not query:
         return False
 
@@ -271,13 +275,26 @@ def SEARCH(payload, params):
         database.addSearchHistory(query, 'show')
         history = database.getSearchHistory('show')
 
-    return control.draw_items(_ANILIST_BROWSER.get_search(query))
+    if isinstance(action_args, dict):
+        control.draw_items(_ANILIST_BROWSER.get_search(query, (int(action_args.get('page', '1')))))
+    else:
+        control.draw_items(_ANILIST_BROWSER.get_search(query))
+
+    return
 
 
 @route('search/*')
 def SEARCH_PAGES(payload, params):
     query, page = payload.rsplit("/", 1)
     return control.draw_items(_ANILIST_BROWSER.get_search(query, int(page)))
+
+
+@route('search_results/*')
+def SEARCH_RESULTS(payload, params):
+    control.log(repr(params), "info")
+    query = params.get('query')
+    items = _ANILIST_BROWSER.get_search(query, 1)
+    return control.draw_items(items)
 
 
 @route('play_latest/*')
