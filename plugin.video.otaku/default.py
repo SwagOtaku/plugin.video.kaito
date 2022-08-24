@@ -291,7 +291,6 @@ def SEARCH_PAGES(payload, params):
 
 @route('search_results/*')
 def SEARCH_RESULTS(payload, params):
-    control.log(repr(params), "info")
     query = params.get('query')
     items = _ANILIST_BROWSER.get_search(query, 1)
     return control.draw_items(items)
