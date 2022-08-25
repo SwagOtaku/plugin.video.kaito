@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.1.1">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.1.2">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.requests" version="2.19.1" />
@@ -26,10 +26,8 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.1.1 [20220823]:
-Add info meta for episodes
-Add search plugin path for AH2 skin
-plugin://plugin.video.otaku/search_results/?query=
+Changelog 0.1.1 [20220824]:
+- Quick Fix for the Anilist login
     </news>
   </extension>
 </addon>
