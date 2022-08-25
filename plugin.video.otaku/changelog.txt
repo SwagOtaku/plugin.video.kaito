@@ -1,8 +1,10 @@
-Changelog 0.1.1 [20220823]:
-Add info meta for episodes
-Add search plugin path for AH2 skin
-plugin://plugin.video.otaku/search_results/?query=
+Changelog 0.1.1 [20220824]:
+- Quick Fix for the Anilist login
 
+Changelog 0.1.1 [20220823]:
+- Add info meta for episodes
+- Add search plugin path for AH2 skin
+plugin://plugin.video.otaku/search_results/?query=
 
 Changelog 0.1.0 [20220820]:
 - Matrix Compatible
