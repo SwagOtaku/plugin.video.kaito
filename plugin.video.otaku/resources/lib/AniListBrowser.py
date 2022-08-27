@@ -104,7 +104,7 @@ class AniListBrowser():
         if format_in:
             variables['format'] = [format_in.upper()]
 
-        all_time_popular = database.get(self.get_base_res, 0.125, variables, page)
+        all_time_popular = database.get(self.get_base_res, 24, variables, page)
         return self._process_anilist_view(all_time_popular, "anilist_all_time_popular/%d", page)
 
     def get_airing(self, page=1, format_in=''):
@@ -280,6 +280,36 @@ class AniListBrowser():
                     status
                     genres
                     duration
+                    countryOfOrigin
+                    averageScore
+                    characters(page: 1, perPage: 10) {
+                        edges {
+                            node {
+                                name {
+                                    userPreferred
+                                }
+                            }
+                            voiceActors (language: JAPANESE) {
+                                name {
+                                    userPreferred
+                                }
+                                image {
+                                    large
+                                }
+                            }
+                        }
+                    }
+                    studios {
+                        edges {
+                            node {
+                                name
+                            }
+                        }
+                    }
+                    trailer {
+                        id
+                        site
+                    }
                 }
             }
         }
@@ -335,6 +365,36 @@ class AniListBrowser():
                     status
                     genres
                     duration
+                    countryOfOrigin
+                    averageScore
+                    characters(page: 1, perPage: 10) {
+                        edges {
+                            node {
+                                name {
+                                    userPreferred
+                                }
+                            }
+                            voiceActors (language: JAPANESE) {
+                                name {
+                                    userPreferred
+                                }
+                                image {
+                                    large
+                                }
+                            }
+                        }
+                    }
+                    studios {
+                        edges {
+                            node {
+                                name
+                            }
+                        }
+                    }
+                    trailer {
+                        id
+                        site
+                    }
                 }
             }
         }
@@ -567,7 +627,8 @@ class AniListBrowser():
 
         try:
             start_date = res.get('startDate')
-            info['aired'] = '{}-{:02}-{:02}'.format(start_date['year'], start_date['month'], start_date['day'])
+            info['premiered'] = '{}-{:02}-{:02}'.format(start_date['year'], start_date['month'], start_date['day'])
+            info['year'] = start_date['year']
         except:
             pass
 
@@ -577,6 +638,39 @@ class AniListBrowser():
             pass
 
         info['mediatype'] = 'tvshow'
+
+        info['country'] = res.get('countryOfOrigin', '')
+
+        try:
+            cast = []
+            cast2 = []
+            for x in res.get('characters').get('edges'):
+                role = x.get('node').get('name').get('userPreferred')
+                actor = x.get('voiceActors')[0].get('name').get('userPreferred')
+                actor_hs = x.get('voiceActors')[0].get('image').get('large')
+                cast.append((actor, role))
+                cast2.append({'name': actor, 'role': role, 'thumbnail': actor_hs})
+            info['cast'] = cast
+        except:
+            pass
+
+        try:
+            info['studio'] = [x.get('node').get('name') for x in res.get('studios').get('edges')]
+        except:
+            pass
+
+        try:
+            info['rating'] = res.get('averageScore') / 10.0
+        except:
+            pass
+
+        try:
+            if res.get('trailer').get('site') == 'youtube':
+                info['trailer'] = 'plugin://plugin.video.youtube/play/?video_id={0}'.format(res.get('trailer').get('id'))
+            else:
+                info['trailer'] = 'plugin://plugin.video.dailymotion_com/?url={0}&mode=playVideo'.format(res.get('trailer').get('id'))
+        except:
+            pass
 
         dub = False
         mal_id = str(res.get('idMal', 0))
@@ -588,7 +682,8 @@ class AniListBrowser():
             "url": "animes/%s/%s/" % (res['id'], res.get('idMal')),
             "image": res['coverImage']['extraLarge'],
             "fanart": kodi_meta.get('fanart', res['coverImage']['extraLarge']),
-            "info": info
+            "info": info,
+            "cast2": cast2
         }
 
         if res['format'] == 'MOVIE' and res['episodes'] == 1:
@@ -673,13 +768,14 @@ class AniListBrowser():
             return self._parse_div_view(base, is_dir)
 
         return [
-            utils.allocate_item("%s" % base["name"],
+            utils.allocate_item(base["name"],
                                 base["url"],
                                 is_dir,
                                 base["image"],
                                 base["info"],
                                 base["fanart"],
-                                base["image"])
+                                base["image"],
+                                base["cast2"])
         ]
 
     def _parse_div_view(self, base, is_dir):

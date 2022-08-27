@@ -266,8 +266,10 @@ class AniListWLF(WatchlistFlavorBase):
         anilist_id, next_up_meta = self._get_next_up_meta('', progress, res['id'])
         if next_up_meta:
             url = 'play/%d/%d/' % (anilist_id, next_up)
-            title = '%d/%d - %s' % (next_up, episode_count, next_up_meta.get('title', 'Episode {}'.format(next_up)))
-            image = next_up_meta.get('image', poster)
+            if next_up_meta.get('title'):
+                title = '%s - %s' % (title, next_up_meta.get('title'))
+            if next_up_meta.get('image'):
+                image = next_up_meta.get('image')
             plot = next_up_meta.get('plot')
 
         info = {}

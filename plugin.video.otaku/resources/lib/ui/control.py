@@ -287,7 +287,7 @@ def xbmc_add_player_item(name, url, art='', info='', draw_cm=None, bulk_add=Fals
         return ok
 
 
-def xbmc_add_dir(name, url, art='', info='', draw_cm=None):
+def xbmc_add_dir(name, url, art='', info='', draw_cm=None, cast=[]):
     ok = True
     u = addon_url(url)
     cm = draw_cm(addon_url, name) if draw_cm is not None else []
@@ -302,6 +302,8 @@ def xbmc_add_dir(name, url, art='', info='', draw_cm=None):
         art['fanart'] = OTAKU_FANART_PATH
 
     liz.setArt(art)
+    if cast:
+        liz.setCast(cast)
 
     liz.addContextMenuItems(cm)
     ok = xbmcplugin.addDirectoryItem(handle=HANDLE, url=u, listitem=liz, isFolder=True)
@@ -314,7 +316,7 @@ def draw_items(video_data, contentType="tvshows", viewType=None, draw_cm=None, b
 
     for vid in video_data:
         if vid['is_dir']:
-            xbmc_add_dir(vid['name'], vid['url'], vid['image'], vid['info'], draw_cm)
+            xbmc_add_dir(vid['name'], vid['url'], vid['image'], vid['info'], draw_cm, vid.get('cast2'))
         else:
             xbmc_add_player_item(vid['name'], vid['url'], vid['image'],
                                  vid['info'], draw_cm, bulk_add)
