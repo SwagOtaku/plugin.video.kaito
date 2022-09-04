@@ -113,6 +113,40 @@ class AniListWLF(WatchlistFlavorBase):
                 episodes
                 genres
                 duration
+                countryOfOrigin
+                averageScore
+                characters (
+                    page: 1,
+                    sort: ROLE,
+                    perPage: 10,
+                ) {
+                    edges {
+                        node {
+                            name {
+                                userPreferred
+                            }
+                        }
+                        voiceActors (language: JAPANESE) {
+                            name {
+                                userPreferred
+                            }
+                            image {
+                                large
+                            }
+                        }
+                    }
+                }
+                studios {
+                    edges {
+                        node {
+                            name
+                        }
+                    }
+                }
+                trailer {
+                    id
+                    site
+                }
             }
         }
         '''
@@ -209,6 +243,7 @@ class AniListWLF(WatchlistFlavorBase):
             desc = desc.replace('<i>', '[I]').replace('</i>', '[/I]')
             desc = desc.replace('<b>', '[B]').replace('</b>', '[/B]')
             desc = desc.replace('<br>', '[CR]')
+            desc = desc.replace('\n', '')
             info['plot'] = desc
 
         try:
@@ -233,6 +268,40 @@ class AniListWLF(WatchlistFlavorBase):
             pass
 
         info['mediatype'] = 'tvshow'
+
+        info['country'] = res.get('countryOfOrigin', '')
+
+        try:
+            cast = []
+            cast2 = []
+            for x in res.get('characters').get('edges'):
+                role = x.get('node').get('name').get('userPreferred')
+                actor = x.get('voiceActors')[0].get('name').get('userPreferred')
+                actor_hs = x.get('voiceActors')[0].get('image').get('large')
+                cast.append((actor, role))
+                cast2.append({'name': actor, 'role': role, 'thumbnail': actor_hs})
+            info['cast'] = cast
+            info['cast2'] = cast2
+        except:
+            pass
+
+        try:
+            info['studio'] = [x.get('node').get('name') for x in res.get('studios').get('edges')]
+        except:
+            pass
+
+        try:
+            info['rating'] = res.get('averageScore') / 10.0
+        except:
+            pass
+
+        try:
+            if res.get('trailer').get('site') == 'youtube':
+                info['trailer'] = 'plugin://plugin.video.youtube/play/?video_id={0}'.format(res.get('trailer').get('id'))
+            else:
+                info['trailer'] = 'plugin://plugin.video.dailymotion_com/?url={0}&mode=playVideo'.format(res.get('trailer').get('id'))
+        except:
+            pass
 
         base = {
             "name": '%s - %d/%d' % (res["title"]["userPreferred"], progress, res['episodes'] if res['episodes'] is not None else 0),

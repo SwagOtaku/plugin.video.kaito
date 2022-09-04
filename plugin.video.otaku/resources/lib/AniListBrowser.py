@@ -187,42 +187,41 @@ class AniListBrowser():
                 $weekEnd: Int,
                 $page: Int,
         ){
-                Page(page: $page) {
-                        pageInfo {
-                                hasNextPage
-                                total
-                        }
-                        airingSchedules(
-                                airingAt_greater: $weekStart
-                                airingAt_lesser: $weekEnd
-                        ) {
-                                id
-                                episode
-                                airingAt
-                                media {
-
-        id
-        idMal
-        title {
-                romaji
-                userPreferred
-                english
-        }
-        description
-        genres
-        averageScore
-        isAdult
-        rankings {
-                rank
-                type
-                season
-        }
-        coverImage {
-                extraLarge
-        }
-                                }
-                        }
+            Page(page: $page) {
+                pageInfo {
+                        hasNextPage
+                        total
                 }
+                airingSchedules(
+                        airingAt_greater: $weekStart
+                        airingAt_lesser: $weekEnd
+                ) {
+                    id
+                    episode
+                    airingAt
+                    media {
+                        id
+                        idMal
+                        title {
+                                romaji
+                                userPreferred
+                                english
+                        }
+                        description
+                        genres
+                        averageScore
+                        isAdult
+                        rankings {
+                                rank
+                                type
+                                season
+                        }
+                        coverImage {
+                                extraLarge
+                        }
+                    }
+                }
+            }
         }
         '''
 
@@ -450,6 +449,40 @@ class AniListBrowser():
                         genres
                         synonyms
                         episodes
+                        countryOfOrigin
+                        averageScore
+                        characters (
+                            page: 1,
+                            sort: ROLE,
+                            perPage: 10,
+                        ) {
+                            edges {
+                                node {
+                                    name {
+                                        userPreferred
+                                    }
+                                }
+                                voiceActors (language: JAPANESE) {
+                                    name {
+                                        userPreferred
+                                    }
+                                    image {
+                                        large
+                                    }
+                                }
+                            }
+                        }
+                        studios {
+                            edges {
+                                node {
+                                    name
+                                }
+                            }
+                        }
+                        trailer {
+                            id
+                            site
+                        }
                     }
                 }
             }
@@ -468,29 +501,64 @@ class AniListBrowser():
 
     def get_anilist_res(self, variables):
         query = '''
-        query($id: Int, $type: MediaType){Media(id: $id, type: $type) {
-            id
-            idMal
-            title {
-                userPreferred,
-                romaji,
-                english
-            }
-            coverImage {
-                extraLarge
-            }
-            startDate {
-                year,
-                month,
-                day
-            }
-            description
-            synonyms
-            format
-            episodes
-            status
-            genres
-            duration
+        query($id: Int, $type: MediaType){
+            Media(id: $id, type: $type) {
+                id
+                idMal
+                title {
+                    userPreferred,
+                    romaji,
+                    english
+                }
+                coverImage {
+                    extraLarge
+                }
+                startDate {
+                    year,
+                    month,
+                    day
+                }
+                description
+                synonyms
+                format
+                episodes
+                status
+                genres
+                duration
+                countryOfOrigin
+                averageScore
+                characters (
+                    page: 1,
+                    sort: ROLE,
+                    perPage: 10,
+                ) {
+                    edges {
+                        node {
+                            name {
+                                userPreferred
+                            }
+                        }
+                        voiceActors (language: JAPANESE) {
+                            name {
+                                userPreferred
+                            }
+                            image {
+                                large
+                            }
+                        }
+                    }
+                }
+                studios {
+                    edges {
+                        node {
+                            name
+                        }
+                    }
+                }
+                trailer {
+                    id
+                    site
+                }
             }
         }
         '''
@@ -529,6 +597,40 @@ class AniListBrowser():
             status
             genres
             duration
+            countryOfOrigin
+            averageScore
+            characters (
+                page: 1,
+                sort: ROLE,
+                perPage: 10,
+            ) {
+                edges {
+                    node {
+                        name {
+                            userPreferred
+                        }
+                    }
+                    voiceActors (language: JAPANESE) {
+                        name {
+                            userPreferred
+                        }
+                        image {
+                            large
+                        }
+                    }
+                }
+            }
+            studios {
+                edges {
+                    node {
+                        name
+                    }
+                }
+            }
+            trailer {
+                id
+                site
+            }
             }
         }
         '''
