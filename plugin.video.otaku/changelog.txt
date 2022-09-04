@@ -1,4 +1,4 @@
-Changelog 0.1.2 [20220904]:
+Changelog 0.1.3 [20220904]:
 - Add meta to anilist watchlist flavour
 - Fix headshots not showing even when available
 
