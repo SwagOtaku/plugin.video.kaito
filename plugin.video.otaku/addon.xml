@@ -26,8 +26,9 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.1.1 [20220824]:
-- Quick Fix for the Anilist login
+Changelog 0.1.2 [20220904]:
+- Add meta to anilist watchlist flavour
+- Fix headshots not showing even when available
     </news>
   </extension>
 </addon>
