@@ -13,6 +13,8 @@ class MALAPI:
         self.request_response = None
         self.threads = []
 
+
+"""
     def _to_url(self, url=''):
         if url.startswith("/"):
             url = url[1:]
@@ -129,3 +131,4 @@ class MALAPI:
         arm_resp = self._json_request("https://arm2.vercel.app/api/search?type=anilist&id={}".format(anilist_id))
         mal_id = arm_resp["mal"]
         return mal_id
+"""

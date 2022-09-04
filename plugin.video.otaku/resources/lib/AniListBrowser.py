@@ -282,7 +282,11 @@ class AniListBrowser():
                     duration
                     countryOfOrigin
                     averageScore
-                    characters(page: 1, perPage: 10) {
+                    characters (
+                        page: 1,
+                        sort: ROLE,
+                        perPage: 10,
+                    ) {
                         edges {
                             node {
                                 name {
@@ -367,7 +371,11 @@ class AniListBrowser():
                     duration
                     countryOfOrigin
                     averageScore
-                    characters(page: 1, perPage: 10) {
+                    characters (
+                        page: 1,
+                        sort: ROLE,
+                        perPage: 10,
+                    ) {
                         edges {
                             node {
                                 name {
@@ -543,7 +551,7 @@ class AniListBrowser():
         else:
             mapfunc = self._base_anilist_view
 
-        all_results = list(map(mapfunc, json_res['ANIME']))
+        all_results = map(mapfunc, json_res['ANIME'])
         all_results = list(itertools.chain(*all_results))
 
         all_results += self._handle_paging(hasNextPage, base_plugin_url, page)
@@ -613,6 +621,7 @@ class AniListBrowser():
             desc = desc.replace('<i>', '[I]').replace('</i>', '[/I]')
             desc = desc.replace('<b>', '[B]').replace('</b>', '[/B]')
             desc = desc.replace('<br>', '[CR]')
+            desc = desc.replace('\n', '')
             info['plot'] = desc
 
         try:
@@ -651,6 +660,7 @@ class AniListBrowser():
                 cast.append((actor, role))
                 cast2.append({'name': actor, 'role': role, 'thumbnail': actor_hs})
             info['cast'] = cast
+            info['cast2'] = cast2
         except:
             pass
 
@@ -683,7 +693,6 @@ class AniListBrowser():
             "image": res['coverImage']['extraLarge'],
             "fanart": kodi_meta.get('fanart', res['coverImage']['extraLarge']),
             "info": info,
-            "cast2": cast2
         }
 
         if res['format'] == 'MOVIE' and res['episodes'] == 1:
@@ -766,16 +775,16 @@ class AniListBrowser():
     def _parse_view(self, base, is_dir=True, dub=False):
         if dub:
             return self._parse_div_view(base, is_dir)
-
         return [
-            utils.allocate_item(base["name"],
-                                base["url"],
-                                is_dir,
-                                base["image"],
-                                base["info"],
-                                base["fanart"],
-                                base["image"],
-                                base["cast2"])
+            utils.allocate_item(
+                base["name"],
+                base["url"],
+                is_dir=is_dir,
+                image=base["image"],
+                info=base["info"],
+                fanart=base["fanart"],
+                poster=base["image"],
+            )
         ]
 
     def _parse_div_view(self, base, is_dir):
@@ -889,9 +898,43 @@ class AniListBrowser():
                     genres
                     duration
                     isAdult
+                    countryOfOrigin
+                    averageScore
+                    characters (
+                        page: 1,
+                        sort: ROLE,
+                        perPage: 10,
+                    ) {
+                        edges {
+                            node {
+                                name {
+                                    userPreferred
+                                }
+                            }
+                            voiceActors (language: JAPANESE) {
+                                name {
+                                    userPreferred
+                                }
+                                image {
+                                    large
+                                }
+                            }
+                        }
+                    }
+                    studios {
+                        edges {
+                            node {
+                                name
+                            }
+                        }
+                    }
+                    trailer {
+                        id
+                        site
                     }
                 }
             }
+        }
         '''
 
         variables = {

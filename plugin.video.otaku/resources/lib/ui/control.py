@@ -67,7 +67,7 @@ def closeBusyDialog():
 
 def log(msg, level="debug"):
     if level == "info":
-        level = xbmc.LOGNOTICE if PY2 else xbmc.LOGINFO
+        level = LOGINFO
     else:
         level = xbmc.LOGDEBUG
     xbmc.log('@@@@Otaku log:\n{0}'.format(msg), level)
@@ -261,12 +261,13 @@ def _get_view_type(viewType):
     return viewTypes[viewType]
 
 
-def xbmc_add_player_item(name, url, art='', info='', draw_cm=None, bulk_add=False):
+def xbmc_add_player_item(name, url, art={}, info={}, draw_cm=None, bulk_add=False):
     ok = True
     u = addon_url(url)
     cm = draw_cm(addon_url, name) if draw_cm is not None else []
 
     liz = xbmcgui.ListItem(name)
+    cast = info.pop('cast2') if isinstance(info, dict) and 'cast2' in info.keys() else []
     liz.setInfo('video', info)
 
     if art is None or type(art) is not dict:
@@ -276,7 +277,8 @@ def xbmc_add_player_item(name, url, art='', info='', draw_cm=None, bulk_add=Fals
         art['fanart'] = OTAKU_FANART_PATH
 
     liz.setArt(art)
-
+    if cast:
+        liz.setCast(cast)
     liz.setProperty("Video", "true")
     liz.setProperty("IsPlayable", "true")
     liz.addContextMenuItems(cm)
@@ -287,12 +289,13 @@ def xbmc_add_player_item(name, url, art='', info='', draw_cm=None, bulk_add=Fals
         return ok
 
 
-def xbmc_add_dir(name, url, art='', info='', draw_cm=None, cast=[]):
+def xbmc_add_dir(name, url, art={}, info={}, draw_cm=None):
     ok = True
     u = addon_url(url)
     cm = draw_cm(addon_url, name) if draw_cm is not None else []
 
     liz = xbmcgui.ListItem(name)
+    cast = info.pop('cast2') if isinstance(info, dict) and 'cast2' in info.keys() else []
     liz.setInfo('video', info)
 
     if art is None or type(art) is not dict:
@@ -316,7 +319,7 @@ def draw_items(video_data, contentType="tvshows", viewType=None, draw_cm=None, b
 
     for vid in video_data:
         if vid['is_dir']:
-            xbmc_add_dir(vid['name'], vid['url'], vid['image'], vid['info'], draw_cm, vid.get('cast2'))
+            xbmc_add_dir(vid['name'], vid['url'], vid['image'], vid['info'], draw_cm)
         else:
             xbmc_add_player_item(vid['name'], vid['url'], vid['image'],
                                  vid['info'], draw_cm, bulk_add)

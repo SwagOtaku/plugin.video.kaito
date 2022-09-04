@@ -22,7 +22,7 @@ def alldebird_guard_response(func):
         except requests.exceptions.ConnectionError:
             return None
         except Exception as e:
-            control.log(e, control.LOGINFO)
+            control.log(e, 'info')
             return None
 
     return wrapper
