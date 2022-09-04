@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.1.2">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.1.3">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.requests" version="2.19.1" />
@@ -26,7 +26,7 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.1.2 [20220904]:
+Changelog 0.1.3 [20220904]:
 - Add meta to anilist watchlist flavour
 - Fix headshots not showing even when available
     </news>
