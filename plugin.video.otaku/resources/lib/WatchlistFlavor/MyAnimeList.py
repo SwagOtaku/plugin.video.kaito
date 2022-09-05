@@ -95,12 +95,26 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         return statuses
 
     def get_watchlist_status(self, status, next_up, offset=0, page=1):
+        fields = [
+            'list_status',
+            'num_episodes',
+            'synopsis',
+            'mean',
+            'rating',
+            'genres',
+            'studios',
+            'start_date',
+            'average_episode_duration',
+            'media_type',
+            'status',
+            'videos'
+        ]
         params = {
             "status": status,
             "sort": self.__get_sort(),
             "limit": 100,
             "offset": offset,
-            "fields": 'list_status,num_episodes,synopsis,media_type,average_episode_duration',
+            "fields": ','.join(fields),
         }
 
         url = self._to_url("users/@me/animelist")
@@ -158,6 +172,38 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         except:
             pass
 
+        try:
+            info['genre'] = [x.get('name') for x in res['node']['genres']]
+        except:
+            pass
+
+        try:
+            info['status'] = res['node']['status']
+        except:
+            pass
+
+        try:
+            start_date = res['node']['start_date']
+            info['premiered'] = start_date
+            info['year'] = start_date[:4]
+        except:
+            pass
+
+        try:
+            info['studio'] = [x.get('name') for x in res['node']['studios']]
+        except:
+            pass
+
+        try:
+            info['rating'] = res['node']['mean']
+        except:
+            pass
+
+        try:
+            info['mpaa'] = res['node']['rating']
+        except:
+            pass
+
         info['mediatype'] = 'tvshow'
 
         base = {
@@ -199,6 +245,8 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         info['title'] = title
 
         info['tvshowtitle'] = res['node']['title']
+
+        info['duration'] = res['node']['average_episode_duration']
 
         info['plot'] = plot
 
