@@ -276,7 +276,7 @@ def _prefetch_play_link(link):
         raise Exception('could not resolve %s. status_code=%d' %
                         (link, linkInfo.status_code))
     return {
-        "url": linkInfo.url,
+        "url": link if 'verifypeer' in link else linkInfo.url,
         "headers": linkInfo.headers,
     }
 
