@@ -26,8 +26,8 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.1.4 [20220905]:
-- Add rating and meta for MAL watchlists
+Changelog 0.1.5 [20220907]:
+- Improve gogo scraping and playback
     </news>
   </extension>
 </addon>
