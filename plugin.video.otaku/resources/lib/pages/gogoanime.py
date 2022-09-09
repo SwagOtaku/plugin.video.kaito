@@ -48,17 +48,17 @@ class sources(BrowserBase):
             html = requests.get(url, headers=hdrs).text
             mid = re.findall(r'value="([^"]+)"\s*id="movie_id"', html)
             if mid:
-                params = {'ep_start': 0,
+                params = {'ep_start': episode,
                           'ep_end': episode,
                           'id': mid[0],
                           'alias': slug}
                 eurl = 'https://ajax.gogo-load.com/ajax/load-list-episode'
                 r2 = requests.get(eurl, headers=hdrs, params=params)
                 soup2 = BeautifulSoup(r2.text, 'html.parser')
-                eslug = soup2.find('a', {'class': 'active'})
+                eslug = soup2.find('a')
                 if eslug:
                     eslug = eslug.get('href').strip()
-                    url = "https://gogoanime.tel{0}-episode-{1}".format(eslug, episode)
+                    url = "https://gogoanime.tel{0}".format(eslug)
                     r = requests.get(url, headers=hdrs)
 
         soup = BeautifulSoup(r.text, 'html.parser')
