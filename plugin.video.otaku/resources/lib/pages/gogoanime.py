@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import itertools
 from functools import partial
-from resources.lib.ui import utils, source_utils, database
+from resources.lib.ui import utils, source_utils, database, control
 from resources.lib.ui.BrowserBase import BrowserBase
 import re
 import requests
@@ -71,15 +71,15 @@ class sources(BrowserBase):
             quality = 'NA'
 
             if server == 'xstreamcdn':
-                type_ = server
+                type_ = 'embed'
                 quality = '1080p'
             elif server == 'vidcdn':
-                type_ = server
+                type_ = 'embed'
                 link = 'https:' + link
             elif server == 'mp4upload':
-                type_ = server
+                type_ = 'embed'
             elif server == 'doodstream':
-                type_ = server
+                type_ = 'embed'
                 quality = '1080p'
 
             if not type_:
@@ -93,7 +93,7 @@ class sources(BrowserBase):
                 'debrid_provider': '',
                 'provider': 'gogo',
                 'size': 'NA',
-                'info': source_utils.getInfo(slug),
+                'info': source_utils.getInfo(slug) + [server],
                 'lang': source_utils.getAudio_lang(title)
             }
             sources.append(source)
