@@ -71,15 +71,16 @@ class sources(BrowserBase):
             quality = 'NA'
 
             if server == 'xstreamcdn':
-                type_ = 'embed'
+                type_ = server
                 quality = '1080p'
             elif server == 'vidcdn':
-                type_ = 'embed'
+                type_ = server
                 link = 'https:' + link
             elif server == 'mp4upload':
-                type_ = 'embed'
-            # elif server == 'doodstream':
-            #     type_ = 'embed'
+                type_ = server
+            elif server == 'doodstream':
+                type_ = server
+                quality = '1080p'
 
             if not type_:
                 continue
