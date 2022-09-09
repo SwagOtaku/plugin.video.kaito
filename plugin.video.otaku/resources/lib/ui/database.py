@@ -25,12 +25,12 @@ def get(function, duration, *args, **kwargs):
         sources = False
         reload = False
         if 'animepahe_reload' in kwargs:
-            reload = kwargs['seren_reload']
-            kwargs.pop('seren_reload')
+            reload = kwargs['otaku_reload']
+            kwargs.pop('otaku_reload')
 
         if 'animepahe_sources' in kwargs:
             sources = True
-            kwargs.pop('seren_sources')
+            kwargs.pop('otaku_sources')
 
         key = _hash_function(function, args, kwargs)
         cache_result = cache_get(key)

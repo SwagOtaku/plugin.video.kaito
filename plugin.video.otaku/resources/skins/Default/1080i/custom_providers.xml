@@ -11,7 +11,7 @@
             <left>0</left>
             <width>100%</width>
             <height>100%</height>
-            <texture background="true">$INFO[Window().Property(seren.fanart)]</texture>
+            <texture background="true">$INFO[Window().Property(otaku.fanart)]</texture>
         </control>
 
         <control type="image">
@@ -27,7 +27,7 @@
             <font>font32</font>
             <width>100%</width>
             <height>100</height>
-            <label>$ADDON[plugin.video.seren 40205]</label>
+            <label>$ADDON[plugin.video.otaku 40205]</label>
             <top>20</top>
             <align>center</align>
         </control>
@@ -50,7 +50,7 @@
                 <top>100</top>
                 <height>100</height>
                 <width>350</width>
-                <label>[B]$ADDON[plugin.video.seren 40206][/B]</label>
+                <label>[B]$ADDON[plugin.video.otaku 40206][/B]</label>
             </control>
             <control type="grouplist">
                 <onup>4000</onup>
@@ -64,70 +64,70 @@
                     <width>350</width>
                     <height>100</height>
                     <focuscolor>$INFO[Window.Property(settings.color)]</focuscolor>
-                    <label>$ADDON[plugin.video.seren 40207]</label>
+                    <label>$ADDON[plugin.video.otaku 40207]</label>
                 </control>
                 <control type="button" id="3010">
                     <top>0</top>
                     <width>350</width>
                     <height>100</height>
                     <focuscolor>$INFO[Window.Property(settings.color)]</focuscolor>
-                    <label>$ADDON[plugin.video.seren 40208]</label>
+                    <label>$ADDON[plugin.video.otaku 40208]</label>
                 </control>
                 <control type="button" id="3007">
                     <top>0</top>
                     <width>350</width>
                     <height>100</height>
                     <focuscolor>$INFO[Window.Property(settings.color)]</focuscolor>
-                    <label>$ADDON[plugin.video.seren 40209]</label>
+                    <label>$ADDON[plugin.video.otaku 40209]</label>
                 </control>
                 <control type="button" id="3008">
                     <top>0</top>
                     <width>350</width>
                     <height>100</height>
                     <focuscolor>$INFO[Window.Property(settings.color)]</focuscolor>
-                    <label>$ADDON[plugin.video.seren 40210]</label>
+                    <label>$ADDON[plugin.video.otaku 40210]</label>
                 </control>
                 <control type="button" id="3001">
                     <top>0</top>
                     <width>350</width>
                     <height>100</height>
                     <focuscolor>$INFO[Window.Property(settings.color)]</focuscolor>
-                    <label>$ADDON[plugin.video.seren 40211]</label>
+                    <label>$ADDON[plugin.video.otaku 40211]</label>
                 </control>
                 <control type="button" id="3002">
                     <top>100</top>
                     <width>350</width>
                     <height>100</height>
                     <focuscolor>$INFO[Window.Property(settings.color)]</focuscolor>
-                    <label>$ADDON[plugin.video.seren 40212]</label>
+                    <label>$ADDON[plugin.video.otaku 40212]</label>
                 </control>
                 <control type="button" id="3003">
                     <top>200</top>
                     <width>350</width>
                     <height>100</height>
                     <focuscolor>$INFO[Window.Property(settings.color)]</focuscolor>
-                    <label>$ADDON[plugin.video.seren 40213]</label>
+                    <label>$ADDON[plugin.video.otaku 40213]</label>
                 </control>
                 <control type="button" id="3004">
                     <top>300</top>
                     <width>350</width>
                     <height>100</height>
                     <focuscolor>$INFO[Window.Property(settings.color)]</focuscolor>
-                    <label>$ADDON[plugin.video.seren 40214]</label>
+                    <label>$ADDON[plugin.video.otaku 40214]</label>
                 </control>
                 <control type="button" id="3005">
                     <top>400</top>
                     <width>350</width>
                     <height>100</height>
                     <focuscolor>$INFO[Window.Property(settings.color)]</focuscolor>
-                    <label>$ADDON[plugin.video.seren 40215]</label>
+                    <label>$ADDON[plugin.video.otaku 40215]</label>
                 </control>
                 <control type="button" id="3006">
                     <top>500</top>
                     <width>350</width>
                     <height>100</height>
                     <focuscolor>$INFO[Window.Property(settings.color)]</focuscolor>
-                    <label>$ADDON[plugin.video.seren 40216]</label>
+                    <label>$ADDON[plugin.video.otaku 40216]</label>
                 </control>
             </control>
 
@@ -141,7 +141,7 @@
             <control type="label">
                 <height>100</height>
                 <width>780</width>
-                <label>[B]$ADDON[plugin.video.seren 40217][/B]</label>
+                <label>[B]$ADDON[plugin.video.otaku 40217][/B]</label>
             </control>
 
             <control type="image">
@@ -230,7 +230,7 @@
                 <top>-100</top>
                 <height>100</height>
                 <width>780</width>
-                <label>[B]$ADDON[plugin.video.seren 40218][/B]</label>
+                <label>[B]$ADDON[plugin.video.otaku 40218][/B]</label>
             </control>
 
             <!-- Texture -->
@@ -263,20 +263,20 @@
                             <left>10</left>
                             <height>100%</height>
                             <aligny>center</aligny>
-                            <label>$ADDON[plugin.video.seren 40219]: [COLOR $INFO[Window.Property(settings.color)]][CAPITALIZE]$INFO[ListItem.Property(provider_type)][/CAPITALIZE][/COLOR]</label>
+                            <label>$ADDON[plugin.video.otaku 40219]: [COLOR $INFO[Window.Property(settings.color)]][CAPITALIZE]$INFO[ListItem.Property(provider_type)][/CAPITALIZE][/COLOR]</label>
                         </control>
                         <control type="label">
                             <left>65%</left>
                             <height>100%</height>
                             <aligny>center</aligny>
-                            <label>$ADDON[plugin.video.seren 40220]: [COLOR $INFO[Window.Property(settings.color)]][CAPITALIZE]$INFO[ListItem.Property(status)][/CAPITALIZE][/COLOR]</label>
+                            <label>$ADDON[plugin.video.otaku 40220]: [COLOR $INFO[Window.Property(settings.color)]][CAPITALIZE]$INFO[ListItem.Property(status)][/CAPITALIZE][/COLOR]</label>
                             <visible>String.IsEqual(ListItem.Property(status),enabled)</visible>
                         </control>
                         <control type="label">
                             <left>65%</left>
                             <height>100%</height>
                             <aligny>center</aligny>
-                            <label>$ADDON[plugin.video.seren 40220]: [COLOR indianred][CAPITALIZE]$INFO[ListItem.Property(status)][/CAPITALIZE][/COLOR]</label>
+                            <label>$ADDON[plugin.video.otaku 40220]: [COLOR indianred][CAPITALIZE]$INFO[ListItem.Property(status)][/CAPITALIZE][/COLOR]</label>
                             <visible>String.IsEqual(ListItem.Property(status),disabled)</visible>
                         </control>
                         <control type="image">
@@ -308,20 +308,20 @@
                         <control type="label">
                             <width>50%</width>
                             <left>10</left>
-                            <label>$ADDON[plugin.video.seren 40219]: [COLOR $INFO[Window.Property(settings.color)]][CAPITALIZE]$INFO[ListItem.Property(provider_type)][/CAPITALIZE][/COLOR]</label>
+                            <label>$ADDON[plugin.video.otaku 40219]: [COLOR $INFO[Window.Property(settings.color)]][CAPITALIZE]$INFO[ListItem.Property(provider_type)][/CAPITALIZE][/COLOR]</label>
                         </control>
                         <control type="label">
                             <left>65%</left>
                             <height>100%</height>
                             <aligny>center</aligny>
-                            <label>$ADDON[plugin.video.seren 40220]: [COLOR $INFO[Window.Property(settings.color)]][CAPITALIZE]$INFO[ListItem.Property(status)][/CAPITALIZE][/COLOR]</label>
+                            <label>$ADDON[plugin.video.otaku 40220]: [COLOR $INFO[Window.Property(settings.color)]][CAPITALIZE]$INFO[ListItem.Property(status)][/CAPITALIZE][/COLOR]</label>
                             <visible>String.IsEqual(ListItem.Property(status),enabled)</visible>
                         </control>
                         <control type="label">
                             <left>65%</left>
                             <height>100%</height>
                             <aligny>center</aligny>
-                            <label>$ADDON[plugin.video.seren 40220]: [COLOR indianred][CAPITALIZE]$INFO[ListItem.Property(status)][/CAPITALIZE][/COLOR]</label>
+                            <label>$ADDON[plugin.video.otaku 40220]: [COLOR indianred][CAPITALIZE]$INFO[ListItem.Property(status)][/CAPITALIZE][/COLOR]</label>
                             <visible>String.IsEqual(ListItem.Property(status),disabled)</visible>
                         </control>
                         <control type="image">
