@@ -35,20 +35,17 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 - Watchlist: We Need to copy jkaws code over Watchlist from Kaito Beta in order to have fixed indicators.
 - Watchlist: Need the Manual Watchlist Update Option.
 - Scrapping: We need to improve the crap out of scrapping like jkaw did on Kaito Beta.
-- Scrapping: Remove nonalphanumeric characters from anime title on scraping.
 - Sources: Having the option to enable/disable Gogo sources.
 - Firebase: Needs a recode or alternative way.
 
 **_Quality_**:
 
 - Artwork: Need Fanart TV in order to cover more clear logos for anime titles and anime fanart.
-- Armkai: "Airing Dubbed Anime" needs poster artwork and description from either Simkl, Anilist.
 
 **_Optional_**:
 
 - Ratings: We need star ratings like Tmdb Helper addon has.
 - Ratings: We need trakt ratings in episodes.
-- Genres & Tags: Needs to have "Multi Select"
 
 ## Help needed with maintaining
 
