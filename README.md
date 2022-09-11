@@ -10,7 +10,7 @@ All credit goes to SwagOtaku.
 ## Requires
 
 Kodi 18 Leia or later versions.
-Works fine on Kodi 20 Nexus Alpha 2
+Works fine on Kodi 20 Nexus Alpha 3
 
 # Installation & Updates
 
@@ -24,7 +24,7 @@ _or install it manually in the following order (future updates should be install
 
 - [context.otaku](https://github.com/Goldenfreddy0703/repository.hooty/raw/master/repo/zips/context.otaku/context.otaku-0.0.6.zip)
 - [script.otaku.themepak](https://github.com/Goldenfreddy0703/repository.hooty/raw/master/repo/zips/script.otaku.themepak/script.otaku.themepak-0.0.1.zip)
-- [plugin.video.otaku](https://github.com/Goldenfreddy0703/Otaku/archive/refs/heads/main.zip)
+- [plugin.video.otaku](https://github.com/Goldenfreddy0703/repository.hooty/raw/master/repo/zips/plugin.video.otaku/plugin.video.otaku-0.1.8.zip)
 
 After each update, it is recommended that you clear cache/rebuild database to make sure changes take effect.
 
