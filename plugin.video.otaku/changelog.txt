@@ -1,3 +1,14 @@
+Changelog 0.2.0 [20220922]:
+- Fixed Gogoanime
+- Added Embed Quality (EQ)
+- Used urllib instead of requests
+- Added New Menu Items
+- Added New Art
+- Removed items without art
+- Improved Last Watched
+- Better results from Trakt
+- Add rating and meta for Kitsu watchlists
+
 Changelog 0.1.8 [20220909]:
 - Fix embedder info
 
