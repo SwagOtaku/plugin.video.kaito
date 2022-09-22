@@ -1,5 +1,5 @@
 from six.moves import urllib_parse
-from resources.lib.ui import http
+from resources.lib.ui import client
 
 
 class BrowserBase(object):
@@ -13,7 +13,7 @@ class BrowserBase(object):
         return "%s/%s" % (self._BASE_URL, url)
 
     def _send_request(self, url, data=None, set_request=None):
-        return http.send_request(url, data, set_request).text
+        return client.request(url, post=data, headers=set_request)
 
     def _post_request(self, url, data={}, set_request=None):
         return self._send_request(url, data, set_request)

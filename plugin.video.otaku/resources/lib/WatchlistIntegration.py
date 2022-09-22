@@ -1,4 +1,4 @@
-import ast
+import pickle
 from resources.lib.ui import control
 from resources.lib.ui.router import route
 from resources.lib.WatchlistFlavor import WatchlistFlavor
@@ -76,7 +76,7 @@ def WATCHLIST_QUERY(payload, params):
         from resources.lib.AniListBrowser import AniListBrowser
         show_meta = AniListBrowser().get_anilist(anilist_id)
 
-    kodi_meta = ast.literal_eval(show_meta['kodi_meta'])
+    kodi_meta = pickle.loads(show_meta['kodi_meta'])
     kodi_meta['eps_watched'] = eps_watched
     database.update_kodi_meta(anilist_id, kodi_meta)
 
@@ -97,7 +97,7 @@ def WATCHLIST_TO_EP(payload, params):
         show_meta = get_anilist_res(mal_id)
 
     anilist_id = show_meta['anilist_id']
-    kodi_meta = ast.literal_eval(show_meta['kodi_meta'])
+    kodi_meta = pickle.loads(show_meta['kodi_meta'])
     kodi_meta['eps_watched'] = eps_watched
     database.update_kodi_meta(anilist_id, kodi_meta)
 

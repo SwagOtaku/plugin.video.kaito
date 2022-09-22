@@ -1,4 +1,4 @@
-import requests
+from resources.lib.ui import client
 import json
 import threading
 
@@ -15,41 +15,25 @@ class TMDBAPI:
         self.threads = []
 
     def get_request(self, url):
-        try:
-            if '?' not in url:
-                url += "?"
-            else:
-                url += "&"
+        if '?' not in url:
+            url += "?"
+        else:
+            url += "&"
 
-            if 'api_key' not in url:
-                url += "api_key=%s" % self.apiKey
-                url = self.baseUrl + url
+        if 'api_key' not in url:
+            url += "api_key=%s" % self.apiKey
+            url = self.baseUrl + url
 
-            try:
-                try:
-                    response = requests.get(url)
-                except requests.exceptions.SSLError:
-                    response = requests.get(url, verify=False)
-            except requests.exceptions.ConnectionError:
-                return
+        response = client.request(url)
+        if not response:
+            response = client.request(url, verify=False)
 
-            if '200' in str(response):
-                response = json.loads(response.text)
-                self.request_response = response
-                return response
-            # This code is now deprecated as the throttling has been removed,
-            # We will leave it here though in case they decide to use it later
-            # elif 'Retry-After' in response.headers:
-            #     # API REQUESTS ARE BEING THROTTLED, INTRODUCE WAIT TIME
-            #     throttleTime = response.headers['Retry-After']
-            #     tools.log('TMDB Throttling Applied, Sleeping for %s seconds' % throttleTime, '')
-            #     sleep(int(throttleTime) + 1)
-            #     return self.get_request(url)
-            else:
-                return None
-        except:
-            import traceback
-            traceback.print_exc()
+        if response:
+            response = json.loads(response)
+            self.request_response = response
+            return response
+        else:
+            return None
 
     def get_TMDB_Fanart_Threaded(self, tmdb_url, fanart_args):
 
@@ -154,7 +138,7 @@ class TMDBAPI:
             if showArgs['tmdb'] is None:
                 return None
 
-            url = 'tv/%s/season/%s/episode/%s?&append_to_response=credits,videos,images&language=en-US' % (
+            url = 'tv/%s/season/%s/episode/%s?&append_to_response=images&language=en-US' % (
                 showArgs['tmdb'],
                 season,
                 number)

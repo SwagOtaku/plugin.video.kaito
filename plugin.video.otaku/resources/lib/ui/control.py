@@ -6,11 +6,6 @@ import xbmcgui
 from six.moves import urllib_parse
 
 try:
-    import StorageServer
-except:
-    import storageserverdummy as StorageServer
-
-try:
     HANDLE = int(sys.argv[1])
 except:
     HANDLE = '1'
@@ -19,7 +14,6 @@ addonInfo = xbmcaddon.Addon().getAddonInfo
 ADDON_NAME = addonInfo('id')
 __settings__ = xbmcaddon.Addon(ADDON_NAME)
 __language__ = __settings__.getLocalizedString
-CACHE = StorageServer.StorageServer("%s.animeinfo" % ADDON_NAME, 24)
 addonInfo = __settings__.getAddonInfo
 PY2 = sys.version_info[0] == 2
 TRANSLATEPATH = xbmc.translatePath if PY2 else xbmcvfs.translatePath
@@ -174,14 +168,6 @@ def getSetting(key):
 
 def setSetting(id, value):
     return __settings__.setSetting(id=id, value=value)
-
-
-def cache(funct, *args):
-    return CACHE.cacheFunction(funct, *args)
-
-
-def clear_cache():
-    return CACHE.delete("%")
 
 
 def lang(x):
@@ -354,3 +340,7 @@ def artPath():
             'themes',
             THEMES[int(getSetting("general.icons"))]
         )
+
+
+def getKodiVersion():
+    return int(xbmc.getInfoLabel("System.BuildVersion").split(".")[0])

@@ -2,9 +2,7 @@
 <addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.1.8">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
-    <import addon="script.module.requests" version="2.19.1" />
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
-    <import addon="script.common.plugin.cache" version="2.5.5" />
     <import addon="script.module.inputstreamhelper" version="0.3.3" />
     <import addon="script.module.six" version="1.15.0"/>
     <import addon="script.module.kodi-six" version="0.1.3"/>

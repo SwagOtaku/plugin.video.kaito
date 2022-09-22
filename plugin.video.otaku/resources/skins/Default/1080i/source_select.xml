@@ -297,6 +297,15 @@
                 </control>
 
                 <control type="image">
+                    <centertop>50%</centertop>
+                    <left>1010</left>
+                    <width>128.8</width>
+                    <height>87.2</height>
+                    <texture background="true">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualityeq.png</texture>
+                    <visible>String.Contains(ListItem.Property(quality),EQ)</visible>
+                </control>
+
+                <control type="image">
                     <width>100%</width>
                     <height>3</height>
                     <bottom>-1</bottom>
@@ -414,6 +423,14 @@
                     <height>87.2</height>
                     <texture background="true">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualityhd4k.png</texture>
                     <visible>String.Contains(ListItem.Property(quality),4k)</visible>
+                </control>
+                <control type="image">
+                    <centertop>50%</centertop>
+                    <left>1010</left>
+                    <width>128.8</width>
+                    <height>87.2</height>
+                    <texture background="true">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualityeq.png</texture>
+                    <visible>String.Contains(ListItem.Property(quality),EQ)</visible>
                 </control>
 
             </focusedlayout>

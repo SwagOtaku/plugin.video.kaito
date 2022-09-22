@@ -1,8 +1,8 @@
-import requests
-import ast
+import pickle
+import json
 from functools import partial
 from resources.lib.indexers.tmdb import TMDBAPI
-from resources.lib.ui import database, utils
+from resources.lib.ui import database, utils, client, cache
 
 
 class SIMKLAPI:
@@ -21,8 +21,8 @@ class SIMKLAPI:
         return "%s/%s" % (self.baseUrl[:-1], url)
 
     def _json_request(self, url, data=''):
-        response = requests.get(url, data)
-        response = response.json()
+        response = cache.get(client.request, 4, url, params=data)
+        response = json.loads(response)
         return response
 
     def _parse_episode_view(self, res, anilist_id, poster, fanart, eps_watched, filter_lang):
@@ -32,7 +32,9 @@ class SIMKLAPI:
             url += filter_lang
 
         name = 'Ep. %d (%s)' % (res['episode'], res.get('title'))
-        image = self.imagePath % res['img']
+        image = fanart or poster
+        if res['img'] is not None:
+            image = self.imagePath % res['img']
         info = {}
         info['plot'] = res['description']
         info['title'] = res['title']
@@ -47,17 +49,16 @@ class SIMKLAPI:
             info['aired'] = res['date'][:10]
         except:
             pass
-        info['tvshowtitle'] = ast.literal_eval(database.get_show(anilist_id)['kodi_meta'])['title_userPreferred']
+        info['tvshowtitle'] = pickle.loads(database.get_show(anilist_id)['kodi_meta'])['title_userPreferred']
         info['mediatype'] = 'episode'
         parsed = utils.allocate_item(name, "play/" + str(url), False, image, info, fanart, poster)
         return parsed
 
     def _process_episode_view(self, anilist_id, json_resp, filter_lang, base_plugin_url, page):
-        kodi_meta = ast.literal_eval(database.get_show(anilist_id)['kodi_meta'])
+        kodi_meta = pickle.loads(database.get_show(anilist_id)['kodi_meta'])
         fanart = kodi_meta.get('fanart')
         poster = kodi_meta.get('poster')
         eps_watched = kodi_meta.get('eps_watched')
-        # json_resp = filter(lambda x: x['type'] == 'episode', json_resp)
         json_resp = [x for x in json_resp if x['type'] == 'episode']
         mapfunc = partial(self._parse_episode_view, anilist_id=anilist_id, poster=poster, fanart=fanart, eps_watched=eps_watched, filter_lang=filter_lang)
         all_results = list(map(mapfunc, json_resp))
@@ -71,7 +72,7 @@ class SIMKLAPI:
             return self.get_episodes(anilist_id, filter_lang), 'episodes'
 
         show_meta = show['meta_ids']
-        kodi_meta = ast.literal_eval(show['kodi_meta'])
+        kodi_meta = pickle.loads(show['kodi_meta'])
         mal_id = show['mal_id']
 
         if not mal_id:
@@ -81,7 +82,7 @@ class SIMKLAPI:
         simkl_id = str(self.get_anime_id(mal_id))
         database.add_mapping_id(anilist_id, 'simkl_id', simkl_id)
         if show_meta:
-            show_meta = ast.literal_eval(show['meta_ids'])
+            show_meta = pickle.loads(show['meta_ids'])
             if not kodi_meta.get('fanart'):
                 kodi_meta['fanart'] = TMDBAPI().showFanart(show_meta).get('fanart')
                 database.update_kodi_meta(int(anilist_id), kodi_meta)

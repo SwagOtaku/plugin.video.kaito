@@ -1,4 +1,5 @@
 import ast
+import pickle
 import hashlib
 import re
 import time
@@ -231,8 +232,8 @@ def _build_show_table():
                    'mal_id INTEGER,'
                    'simkl_id INTEGER,'
                    'kitsu_id INTEGER,'
-                   'meta_ids TEXT,'
-                   'kodi_meta TEXT NOT NULL, '
+                   'meta_ids BLOB,'
+                   'kodi_meta BLOB NOT NULL, '
                    'last_updated TEXT NOT NULL, '
                    'air_date TEXT, '
                    'UNIQUE(anilist_id))')
@@ -248,7 +249,7 @@ def _build_season_table():
     cursor.execute('CREATE TABLE IF NOT EXISTS seasons ('
                    'anilist_id INTEGER NOT NULL, '
                    'season INTEGER NOT NULL, '
-                   'kodi_meta TEXT NOT NULL, '
+                   'kodi_meta BLOB NOT NULL, '
                    'air_date TEXT, '
                    'FOREIGN KEY(anilist_id) REFERENCES shows(anilist_id) ON DELETE CASCADE)')
     cursor.execute('CREATE UNIQUE INDEX IF NOT EXISTS ix_season ON seasons (anilist_id ASC, season ASC)')
@@ -263,7 +264,7 @@ def _build_episode_table():
     cursor.execute('CREATE TABLE IF NOT EXISTS episodes ('
                    'anilist_id INTEGER NOT NULL, '
                    'season INTEGER NOT NULL, '
-                   'kodi_meta TEXT NOT NULL, '
+                   'kodi_meta BLOB NOT NULL, '
                    'last_updated TEXT NOT NULL, '
                    'number INTEGER NOT NULL, '
                    'number_abs INTEGER,'
@@ -278,6 +279,8 @@ def _build_episode_table():
 def _update_show(anilist_id, mal_id, kodi_meta, last_updated=''):
     control.anilistSyncDB_lock.acquire()
     cursor = _get_cursor()
+    if isinstance(kodi_meta, dict):
+        kodi_meta = pickle.dumps(kodi_meta)
     try:
         cursor.execute('PRAGMA foreign_keys=OFF')
         cursor.execute(
@@ -303,6 +306,8 @@ def _update_show(anilist_id, mal_id, kodi_meta, last_updated=''):
 def add_meta_ids(anilist_id, meta_ids):
     control.anilistSyncDB_lock.acquire()
     cursor = _get_cursor()
+    if isinstance(meta_ids, dict):
+        meta_ids = pickle.dumps(meta_ids)
     cursor.execute('UPDATE shows SET meta_ids=? WHERE anilist_id=?', (meta_ids, anilist_id))
     cursor.connection.commit()
     cursor.close()
@@ -321,7 +326,9 @@ def add_mapping_id(anilist_id, column, value):
 def add_fanart(anilist_id, kodi_meta):
     control.anilistSyncDB_lock.acquire()
     cursor = _get_cursor()
-    cursor.execute('UPDATE shows SET kodi_meta=? WHERE anilist_id=?', (str(kodi_meta), anilist_id))
+    if isinstance(kodi_meta, dict):
+        kodi_meta = pickle.dumps(kodi_meta)
+    cursor.execute('UPDATE shows SET kodi_meta=? WHERE anilist_id=?', (kodi_meta, anilist_id))
     cursor.connection.commit()
     cursor.close()
     control.try_release_lock(control.anilistSyncDB_lock)
@@ -330,7 +337,9 @@ def add_fanart(anilist_id, kodi_meta):
 def update_kodi_meta(anilist_id, kodi_meta):
     control.anilistSyncDB_lock.acquire()
     cursor = _get_cursor()
-    cursor.execute('UPDATE shows SET kodi_meta=? WHERE anilist_id=?', (str(kodi_meta), anilist_id))
+    if isinstance(kodi_meta, dict):
+        kodi_meta = pickle.dumps(kodi_meta)
+    cursor.execute('UPDATE shows SET kodi_meta=? WHERE anilist_id=?', (kodi_meta, anilist_id))
     cursor.connection.commit()
     cursor.close()
     control.try_release_lock(control.anilistSyncDB_lock)
@@ -361,13 +370,15 @@ def _update_season(show_id, season):
 def _update_episode(show_id, season, number, number_abs, update_time, kodi_meta):
     control.anilistSyncDB_lock.acquire()
     cursor = _get_cursor()
+    if isinstance(kodi_meta, dict):
+        kodi_meta = pickle.dumps(kodi_meta)
     try:
         cursor.execute(
             "REPLACE INTO episodes ("
             "anilist_id, season, kodi_meta, last_updated, number, number_abs, air_date)"
             "VALUES "
             "(?, ?, ?, ?, ?, ?, ?)",
-            (show_id, season, str(kodi_meta), update_time, number, number_abs, ''))
+            (show_id, season, kodi_meta, update_time, number, number_abs, ''))
         cursor.connection.commit()
         cursor.close()
 
@@ -549,7 +560,7 @@ def getTorrentList(anilist_id):
 
         if torrent_list:
             zfill_int = torrent_list['zfill']
-            torrent_list = ast.literal_eval(torrent_list['sources'])
+            torrent_list = pickle.loads(torrent_list['sources'])
 
         return [torrent_list, zfill_int]
 
@@ -569,7 +580,7 @@ def _try_create_torrent_cache(cursor):
     cursor.execute(
         "CREATE TABLE IF NOT EXISTS %s ("
         "anilist_id INTEGER NOT NULL, "
-        "sources TEXT, "
+        "sources BLOB, "
         "zfill INTEGER,"
         "UNIQUE(anilist_id))"
         % cache_table
@@ -583,13 +594,17 @@ def addTorrentList(anilist_id, torrent_list, zfill_int):
         cursor = _get_connection_cursor(control.torrentScrapeCacheFile)
         _try_create_torrent_cache(cursor)
 
+        if isinstance(torrent_list, list):
+            torrent_list = pickle.dumps(torrent_list)
+
         try:
             cursor.execute("REPLACE INTO %s (anilist_id, sources, zfill) "
                            "VALUES (?, ?, ?)" % cache_table,
-                           (anilist_id, str(torrent_list), int(zfill_int)))
+                           (anilist_id, torrent_list, int(zfill_int)))
         except:
             import traceback
             traceback.print_exc()
+            pass
 
         cursor.connection.commit()
         cursor.close()
@@ -616,6 +631,7 @@ def updateSlugs(anilist_id, sources):
         except:
             import traceback
             traceback.print_exc()
+            pass
 
         cursor.connection.commit()
         cursor.close()

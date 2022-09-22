@@ -1,12 +1,13 @@
 import itertools
-import requests
 import time
 import datetime
 import ast
+import json
 from functools import partial
-from resources.lib.ui import utils, database
+from resources.lib.ui import utils, database, client
 from resources.lib.ui.divide_flavors import div_flavor
 import six
+import pickle
 
 
 class AniListBrowser():
@@ -49,6 +50,36 @@ class AniListBrowser():
             season = seasons[int((month - 1) / 3)]
         return [season, year]
 
+    def get_airing_anime(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'status': "RELEASING",
+            'sort': "POPULARITY_DESC"
+        }
+
+        if format_in:
+            variables['format'] = [format_in.upper()]
+
+        airing_anime = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(airing_anime, "anilist_airing_anime/%d", page)
+
+    def get_trending(self, page=1, format_in=''):
+        season, year = self.get_season_year()
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'season': season,
+            'year': str(year) + '%',
+            'sort': "TRENDING_DESC"
+        }
+
+        if format_in:
+            variables['format'] = [format_in.upper()]
+
+        trending = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(trending, "anilist_trending/%d", page)
+
     def get_popular(self, page=1, format_in=''):
         season, year = self.get_season_year()
         variables = {
@@ -65,18 +96,21 @@ class AniListBrowser():
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_popular/%d", page)
 
-    def get_trending(self, page=1, format_in=''):
+    def get_voted(self, page=1, format_in=''):
+        season, year = self.get_season_year()
         variables = {
             'page': page,
             'type': "ANIME",
-            'sort': ["TRENDING_DESC"]
+            'season': season,
+            'year': str(year) + '%',
+            'sort': "FAVOURITES_DESC"
         }
 
         if format_in:
             variables['format'] = [format_in.upper()]
 
-        trending = database.get(self.get_base_res, 0.125, variables, page)
-        return self._process_anilist_view(trending, "anilist_trending/%d", page)
+        voted = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(voted, "anilist_voted/%d", page)
 
     def get_upcoming(self, page=1, format_in=''):
         season, year = self.get_season_year('next')
@@ -94,6 +128,19 @@ class AniListBrowser():
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming/%d", page)
 
+    def get_all_time_trending(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "TRENDING_DESC"
+        }
+
+        if format_in:
+            variables['format'] = [format_in.upper()]
+
+        all_time_trending = database.get(self.get_base_res, 24, variables, page)
+        return self._process_anilist_view(all_time_trending, "anilist_all_time_trending/%d", page)
+
     def get_all_time_popular(self, page=1, format_in=''):
         variables = {
             'page': page,
@@ -106,6 +153,32 @@ class AniListBrowser():
 
         all_time_popular = database.get(self.get_base_res, 24, variables, page)
         return self._process_anilist_view(all_time_popular, "anilist_all_time_popular/%d", page)
+
+    def get_all_time_voted(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "FAVOURITES_DESC"
+        }
+
+        if format_in:
+            variables['format'] = [format_in.upper()]
+
+        all_time_voted = database.get(self.get_base_res, 24, variables, page)
+        return self._process_anilist_view(all_time_voted, "anilist_all_time_voted/%d", page)
+
+    def get_top_100_anime(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC"
+        }
+
+        if format_in:
+            variables['format'] = [format_in.upper()]
+
+        top_100_anime = database.get(self.get_base_res, 24, variables, page)
+        return self._process_anilist_view(top_100_anime, "anilist_top_100_anime/%d", page)
 
     def get_airing(self, page=1, format_in=''):
         airing = database.get(self._get_airing, 12, page, format_in)
@@ -225,8 +298,8 @@ class AniListBrowser():
         }
         '''
 
-        result = requests.post(self._URL, json={'query': query, 'variables': variables})
-        results = result.json()
+        result = client.request(self._URL, post={'query': query, 'variables': variables}, jpost=True)
+        results = json.loads(result)
 
         if "errors" in results.keys():
             return
@@ -243,6 +316,7 @@ class AniListBrowser():
             $format:[MediaFormat],
             $season: MediaSeason,
             $year: String,
+            $status: MediaStatus,
             $sort: [MediaSort] = [POPULARITY_DESC, SCORE_DESC]
         ) {
             Page (page: $page, perPage: 20) {
@@ -255,6 +329,7 @@ class AniListBrowser():
                     season: $season,
                     startDate_like: $year,
                     sort: $sort,
+                    status: $status
                     isAdult: $isAdult
                 ) {
                     id
@@ -318,8 +393,8 @@ class AniListBrowser():
         }
         '''
 
-        result = requests.post(self._URL, json={'query': query, 'variables': variables})
-        results = result.json()
+        result = client.request(self._URL, post={'query': query, 'variables': variables}, jpost=True)
+        results = json.loads(result)
 
         if "errors" in results.keys():
             return
@@ -407,8 +482,8 @@ class AniListBrowser():
         }
         '''
 
-        result = requests.post(self._URL, json={'query': query, 'variables': variables})
-        results = result.json()
+        result = client.request(self._URL, post={'query': query, 'variables': variables}, jpost=True)
+        results = json.loads(result)
 
         if "errors" in results.keys():
             return
@@ -490,8 +565,8 @@ class AniListBrowser():
                                        }
         '''
 
-        result = requests.post(self._URL, json={'query': query, 'variables': variables})
-        results = result.json()
+        result = client.request(self._URL, post={'query': query, 'variables': variables}, jpost=True)
+        results = json.loads(result)
 
         if "errors" in results.keys():
             return
@@ -563,8 +638,8 @@ class AniListBrowser():
         }
         '''
 
-        result = requests.post(self._URL, json={'query': query, 'variables': variables})
-        results = result.json()
+        result = client.request(self._URL, post={'query': query, 'variables': variables}, jpost=True)
+        results = json.loads(result)
 
         if "errors" in results.keys():
             return
@@ -635,8 +710,8 @@ class AniListBrowser():
         }
         '''
 
-        result = requests.post(self._URL, json={'query': query, 'variables': variables})
-        results = result.json()
+        result = client.request(self._URL, post={'query': query, 'variables': variables}, jpost=True)
+        results = json.loads(result)
 
         if "errors" in results.keys():
             return
@@ -708,7 +783,7 @@ class AniListBrowser():
             except:
                 pass
 
-        kodi_meta = ast.literal_eval(database.get_show(str(res['id']))['kodi_meta'])
+        kodi_meta = pickle.loads(database.get_show(str(res['id']))['kodi_meta'])
 
         title = res.get('title').get(self._TITLE_LANG)
         if not title:
@@ -842,7 +917,8 @@ class AniListBrowser():
             title_userPreferred = res['title']['userPreferred']
 
         kodi_meta = {}
-        kodi_meta['name'] = res['title']['userPreferred']
+        kodi_meta['name'] = res['title']['romaji']
+        kodi_meta['ename'] = res['title']['english']
         kodi_meta['title_userPreferred'] = title_userPreferred
         kodi_meta['start_date'] = start_date
         kodi_meta['query'] = titles
@@ -853,16 +929,17 @@ class AniListBrowser():
         database._update_show(
             res['id'],
             res.get('idMal'),
-            str(kodi_meta)
+            pickle.dumps(kodi_meta)
         )
 
     def _get_titles(self, res):
-        titles = list(set(res['title'].values()))
-        if res['format'] == 'MOVIE':
-            titles = list(res['title'].values())
-        # titles = [x for x in titles if (all(ord(char) < 128 for char in x) if x else [])][:3]
-        titles = [x.encode('utf-8') if six.PY2 else x for x in titles if x][:3]
-        query_titles = '({})'.format(')|('.join(map(str, titles)))
+        # titles = list(set(res['title'].values()))
+        # if res['format'] == 'MOVIE':
+        #     titles = list(res['title'].values())
+        # # titles = [x for x in titles if (all(ord(char) < 128 for char in x) if x else [])][:3]
+        # titles = [x.encode('utf-8') if six.PY2 else x for x in titles if x][:3]
+        # query_titles = '({})'.format(')|('.join(map(str, titles)))
+        query_titles = '({0})|({1})'.format(res['title']['romaji'], res['title']['english'])
         return query_titles
 
     def _get_start_date(self, res):
@@ -923,8 +1000,8 @@ class AniListBrowser():
         }
         '''
 
-        result = requests.post(self._URL, json={'query': query})
-        results = result.json()['data']
+        result = client.request(self._URL, post={'query': query}, jpost=True)
+        results = json.loads(result)['data']
         genres_list = results['genres']
 
         del genres_list[6]
@@ -1054,8 +1131,8 @@ class AniListBrowser():
 
     @div_flavor
     def _process_genre_view(self, query, variables, base_plugin_url, page, dub=False):
-        result = requests.post(self._URL, json={'query': query, 'variables': variables})
-        results = result.json()
+        result = client.request(self._URL, post={'query': query, 'variables': variables}, jpost=True)
+        results = json.loads(result)
 
         if "errors" in results.keys():
             return

@@ -4,8 +4,8 @@ import itertools
 from functools import partial
 from resources.lib.ui import source_utils, database
 from resources.lib.ui.BrowserBase import BrowserBase
-import requests
 import base64
+from six.moves import urllib_parse
 
 
 class sources(BrowserBase):
@@ -20,7 +20,7 @@ class sources(BrowserBase):
         return all_results
 
     def _process_animixplay(self, slug, show_id, episode):
-        url = "https://animixplay.com/%s" % (requests.utils.unquote(slug))
+        url = "https://animixplay.com/%s" % (urllib_parse.unquote(slug))
         url = str(url)
         result = database.get(self._get_animixplay_link, 12, url)
         if not result:
@@ -52,7 +52,7 @@ class sources(BrowserBase):
         return source
 
     def _get_animixplay_link(self, url):
-        result = requests.get(url).text
+        result = self._get_request(url)
         soup = bs.BeautifulSoup(result, 'html.parser')
 
         if '/v2/' in url or '/v4/' in url:
@@ -63,15 +63,18 @@ class sources(BrowserBase):
             title = soup.find('span', {'class': 'animetitle'}).get_text()
             data_id = 'id2' if '/v4/' in url else 'id'
             try:
-                data = (requests.post('https://animixplay.com/raw/2ENCwGVubdvzrQ2eu4hBH',
-                                      data={data_id: post_id}).json())
+                durl = 'https://animixplay.com/raw/2ENCwGVubdvzrQ2eu4hBH'
+                data = self._post_request(durl, data={data_id: post_id})
+                data = json.loads(data)
             except:
                 if '/v4/' in url:
-                    data = (requests.post('https://animixplay.com/e4/5SkyXQULLrn9OhR',
-                                          data={'id': url.split('/')[-1]}).json())['epstream']
-                if '/v2' in url:
-                    data = (requests.post('https://animixplay.com/e2/T23nBBj3NfRzTQx',
-                                          data={'id': url.split('/')[-1]}).json())['epstream']
+                    durl = 'https://animixplay.com/e4/5SkyXQULLrn9OhR'
+                    data = self._post_request(durl, data={'id': url.split('/')[-1]})
+                    data = json.loads(data)['epstream']
+                elif '/v2' in url:
+                    durl = 'https://animixplay.com/e2/T23nBBj3NfRzTQx'
+                    data = self._post_request(durl, data={'id': url.split('/')[-1]})
+                    data = json.loads(data)['epstream']
 
             if '/v4/' in url:
                 if int(episode) > len(data):
@@ -121,8 +124,9 @@ class sources(BrowserBase):
                 return {'title': title, 'episodes': episodes}
             except:
                 # Link generation
-                jdata = (requests.post('https://animixplay.com/e5/dZ40LAuJHZjuiWX',
-                                       data={'id': url.split('/')[-1]}).json())
+                durl = 'https://animixplay.com/e5/dZ40LAuJHZjuiWX'
+                jdata = self._post_request(durl, data={'id': url.split('/')[-1]})
+                jdata = json.loads(data)
 
                 title = jdata['details']['title']
 
@@ -144,11 +148,11 @@ class sources(BrowserBase):
         if _range > 3:
             return {'episodes': None}
         loadmore = episodes_total
-        s = requests.Session()
         for i in range(_range):
-            data = (s.post('https://animixplay.com/e5/dZ40LAuJHZjuiWX',
-                    data={'id': url.split('/')[-1], 'loadmore': loadmore}))
+            durl = 'https://animixplay.com/e5/dZ40LAuJHZjuiWX'
+            data = self._post_request(durl, data={'id': url.split('/')[-1], 'loadmore': loadmore})
+            data = json.loads(data)
             loadmore += 12
             # time.sleep(1)
 
-        return data.json()['epstream']['stape']
+        return json.loads(data)['epstream']['stape']

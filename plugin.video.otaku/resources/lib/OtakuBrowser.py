@@ -1,11 +1,10 @@
 import json
-from resources.lib.ui import utils, database, control
+from resources.lib.ui import utils, database, control, client
 from resources.lib.debrid import all_debrid, real_debrid, premiumize
 from resources.lib import pages
 from resources.lib.ui.BrowserBase import BrowserBase
 from resources.lib.indexers import simkl, trakt
-import ast
-import requests
+import pickle
 import datetime
 
 
@@ -21,7 +20,7 @@ class OtakuBrowser(BrowserBase):
         url = 'watchlist_to_ep/{}//0'.format(mal_id)
 
         try:
-            image = ast.literal_eval(database.get_show_mal(mal_id)['kodi_meta'])['poster']
+            image = pickle.loads(database.get_show_mal(mal_id)['kodi_meta'])['poster']
         except:
             image = 'DefaultVideo.png'
 
@@ -33,10 +32,6 @@ class OtakuBrowser(BrowserBase):
 
         return utils.allocate_item(name, url, True, image, info)
 
-    def _json_request(self, url, data=''):
-        response = json.loads(self._get_request(url, data))
-        return response
-
     # TODO: Not sure i want this here..
     def search_history(self, search_array):
         result = list(map(self._parse_history_view, search_array))
@@ -45,12 +40,12 @@ class OtakuBrowser(BrowserBase):
         return result
 
     def get_airing_dub(self):
-        resp = requests.get('https://armkai.vercel.app/api/airingdub')
+        resp = client.request('https://armkai.vercel.app/api/airingdub', output='extended')
 
-        if not resp.ok:
+        if resp[1] != '200':
             return []
 
-        all_results = list(map(self._parse_airing_dub_view, resp.json()))
+        all_results = list(map(self._parse_airing_dub_view, json.loads(resp[0])))
         return all_results
 
     def get_latest(self, real_debrid_enabled, premiumize_enabled):
@@ -79,14 +74,14 @@ class OtakuBrowser(BrowserBase):
             mal_id = self.get_mal_id(anilist_id)
             database.add_mapping_id(anilist_id, 'mal_id', str(mal_id))
 
-        # result = requests.get("https://kaito-b.firebaseio.com/%s/Pages/%s.json" % (mal_id, source))
-        # return result.json()
-        result = requests.get("https://arm2.vercel.app/api/kaito-b?type=myanimelist&id={}".format(mal_id)).json()
+        result = client.request("https://arm2.vercel.app/api/kaito-b?type=myanimelist&id={}".format(mal_id))
+        result = json.loads(result)
         result = result.get('Pages', {}).get(source, {})
         return result
 
     def get_mal_id(self, anilist_id):
-        arm_resp = self._json_request("https://armkai.vercel.app/api/search?type=anilist&id={}".format(anilist_id))
+        arm_resp = client.request("https://armkai.vercel.app/api/search?type=anilist&id={}".format(anilist_id))
+        arm_resp = json.loads(arm_resp)
         mal_id = arm_resp["mal"]
         return mal_id
 
@@ -94,7 +89,7 @@ class OtakuBrowser(BrowserBase):
         database.add_meta_ids(show_id, meta_ids)
         database.remove_season(show_id)
         database.remove_episodes(show_id)
-        name = ast.literal_eval(database.get_show(show_id)['kodi_meta'])
+        name = pickle.loads(database.get_show(show_id)['kodi_meta'])
         name.pop('fanart', None)
         database.add_fanart(show_id, name)
 
@@ -128,13 +123,13 @@ class OtakuBrowser(BrowserBase):
             show_meta = AniListBrowser().get_anilist(anilist_id)
 
         if not show_meta['meta_ids']:
-            name = ast.literal_eval(show_meta['kodi_meta'])['name']
+            name = pickle.loads(show_meta['kodi_meta'])['ename']
             trakt_id = trakt.TRAKTAPI().get_trakt_id(name)
 
             if not trakt_id:
                 return self.get_anime_simkl(anilist_id, filter_lang)
 
-            database.add_meta_ids(anilist_id, str(trakt_id))
+            database.add_meta_ids(anilist_id, trakt_id)
 
         return self.get_anime_trakt(anilist_id, filter_lang=filter_lang)
 
@@ -186,7 +181,7 @@ class OtakuBrowser(BrowserBase):
 
     def get_sources(self, anilist_id, episode, filter_lang, media_type, rescrape=False):
         show = database.get_show(anilist_id)
-        kodi_meta = ast.literal_eval(show['kodi_meta'])
+        kodi_meta = pickle.loads(show['kodi_meta'])
         actionArgs = {
             'query': kodi_meta['query'],
             'anilist_id': anilist_id,

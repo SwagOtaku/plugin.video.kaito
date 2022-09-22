@@ -1,6 +1,5 @@
 import json
-import requests
-from resources.lib.ui import control
+from resources.lib.ui import control, client
 
 
 def div_flavor(f):
@@ -21,7 +20,8 @@ def _get_mal_dub():
         mal_dub = json.load(mal_dub)
     except:
         file_to_dump = open(control.maldubFile, 'a+')
-        mal_dub = requests.get('https://armkai.vercel.app/api/maldub').json()
+        mal_dub = client.request('https://armkai.vercel.app/api/maldub')
+        mal_dub = json.loads(mal_dub)
         json.dump(mal_dub, file_to_dump, indent=4)
 
     return mal_dub

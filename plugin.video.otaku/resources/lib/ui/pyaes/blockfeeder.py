@@ -22,8 +22,8 @@
 # THE SOFTWARE.
 
 
-from resources.lib.pyaes.aes import AESBlockModeOfOperation, AESSegmentModeOfOperation, AESStreamModeOfOperation
-from resources.lib.pyaes.util import append_PKCS7_padding, strip_PKCS7_padding, to_bufferable
+from resources.lib.ui.pyaes.aes import AESBlockModeOfOperation, AESSegmentModeOfOperation, AESStreamModeOfOperation
+from resources.lib.ui.pyaes.util import append_PKCS7_padding, strip_PKCS7_padding, to_bufferable
 
 
 # First we inject three functions to each of the modes of operations

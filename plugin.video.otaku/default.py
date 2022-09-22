@@ -3,21 +3,23 @@ from resources.lib.ui.router import route, router_process
 from resources.lib.OtakuBrowser import OtakuBrowser
 from resources.lib.AniListBrowser import AniListBrowser
 from resources.lib.WatchlistIntegration import set_browser, add_watchlist, watchlist_update
-import ast
 import six
+import pickle
 
 MENU_ITEMS = [
     (control.lang(30001), "anilist_airing", 'airing anime calendar.png'),
-    (control.lang(30002), "airing_dub", 'airing dubbed anime.png'),
-    (control.lang(30003), "latest", 'latest.png'),
-    (control.lang(30004), "latest_dub", 'latest - english dubbed.png'),
-    (control.lang(30005), "anilist_trending", 'trending now.png'),
-    (control.lang(30006), "anilist_popular", 'popular this season.png'),
-    (control.lang(30007), "anilist_upcoming", 'upcoming next season.png'),
+    (control.lang(30002), "anilist_airing_anime", 'airing anime.png'),
+    (control.lang(30003), "anilist_trending", 'trending this season.png'),
+    (control.lang(30004), "anilist_popular", 'popular this season.png'),
+    (control.lang(30005), "anilist_voted", 'voted this season.png'),
+    (control.lang(30006), "anilist_upcoming", 'upcoming next season.png'),
+    (control.lang(30007), 'anilist_all_time_trending', 'all time trending.png'),
     (control.lang(30008), 'anilist_all_time_popular', 'all time popular.png'),
-    (control.lang(30009), "anilist_genres", 'genres & tags.png'),
-    (control.lang(30010), "search_history", 'search.png'),
-    (control.lang(30011), "tools", 'tools.png'),
+    (control.lang(30009), 'anilist_all_time_voted', 'all time voted.png'),
+    (control.lang(30010), 'anilist_top_100_anime', 'top 100 anime.png'),
+    (control.lang(30011), "anilist_genres", 'genres & tags.png'),
+    (control.lang(30012), "search_history", 'search.png'),
+    (control.lang(30013), "tools", 'tools.png'),
 ]
 
 _TITLE_LANG = control.getSetting("titlelanguage")
@@ -33,15 +35,15 @@ def _add_last_watched():
         return
 
     try:
-        last_watched = ast.literal_eval(database.get_show(anilist_id)['kodi_meta'])
+        kodi_meta = pickle.loads(database.get_show(anilist_id)['kodi_meta'])
+        last_watched = kodi_meta.get('title_userPreferred')
+        MENU_ITEMS.insert(0, (
+            "%s[I]%s[/I]" % (control.lang(30000), last_watched.encode('utf-8') if six.PY2 else last_watched),
+            "animes/%s/null/" % anilist_id,
+            kodi_meta['poster']
+        ))
     except:
         return
-
-    MENU_ITEMS.insert(0, (
-        "%s[I]%s[/I]" % (control.lang(30000), last_watched['name'].encode('utf-8') if six.PY2 else last_watched['name']),
-        "animes/%s/null/" % anilist_id,
-        last_watched['poster']
-    ))
 
 
 def get_animes_contentType(seasons=None):
@@ -113,8 +115,8 @@ def SETTINGS(payload, params):
 
 @route('clear_cache')
 def CLEAR_CACHE(payload, params):
-    database.cache_clear()
-    return control.clear_cache()
+    # control.clear_cache()
+    return database.cache_clear()
 
 
 @route('clear_torrent_cache')
@@ -179,19 +181,14 @@ def ANILIST_AIRING(payload, params):
     return control.draw_items(anime, content_type)
 
 
-@route('airing_dub')
-def AIRING_DUB(payload, params):
-    return control.draw_items(_BROWSER.get_airing_dub())
+@route('anilist_airing_anime')
+def ANILIST_AIRING_ANIME(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_airing_anime())
 
 
-@route('latest')
-def LATEST(payload, params):
-    return control.draw_items(_BROWSER.get_latest(control.real_debrid_enabled(), control.premiumize_enabled()), 'episodes')
-
-
-@route('latest_dub')
-def LATEST_DUB(payload, params):
-    return control.draw_items(_BROWSER.get_latest_dub(control.real_debrid_enabled(), control.premiumize_enabled()), 'episodes')
+@route('anilist_airing_anime/*')
+def ANILIST_AIRING_ANIME_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_airing_anime(int(payload)))
 
 
 @route('anilist_trending')
@@ -214,6 +211,16 @@ def ANILIST_POPULAR_PAGES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_popular(int(payload)))
 
 
+@route('anilist_voted')
+def ANILIST_VOTED(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted())
+
+
+@route('anilist_voted/*')
+def ANILIST_VOTED_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted(int(payload)))
+
+
 @route('anilist_upcoming')
 def ANILIST_UPCOMING(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_upcoming())
@@ -224,6 +231,16 @@ def ANILIST_UPCOMING_PAGES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_upcoming(int(payload)))
 
 
+@route('anilist_all_time_trending')
+def ANILIST_ALL_TIME_TRENDING(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_all_time_trending())
+
+
+@route('anilist_all_time_trending/*')
+def ANILIST_ALL_TIME_TRENDING_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_all_time_trending(int(payload)))
+
+
 @route('anilist_all_time_popular')
 def ANILIST_ALL_TIME_POPULAR(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_all_time_popular())
@@ -232,6 +249,26 @@ def ANILIST_ALL_TIME_POPULAR(payload, params):
 @route('anilist_all_time_popular/*')
 def ANILIST_ALL_TIME_POPULAR_PAGES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_all_time_popular(int(payload)))
+
+
+@route('anilist_all_time_voted')
+def ANILIST_ALL_TIME_VOTED(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_all_time_voted())
+
+
+@route('anilist_all_time_voted/*')
+def ANILIST_ALL_TIME_VOTED_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_all_time_voted(int(payload)))
+
+
+@route('anilist_top_100_anime')
+def ANILIST_TOP_100_ANIME(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_top_100_anime())
+
+
+@route('anilist_top_100_anime/*')
+def ANILIST_TOP_100_ANIME_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_top_100_anime(int(payload)))
 
 
 @route('anilist_genres')

@@ -1,8 +1,8 @@
 __metaclass__ = type
 
 import os
+import pickle
 from resources.lib.ui import control, database
-import ast
 
 
 class BaseWindow(control.xmlWindow):
@@ -28,7 +28,7 @@ class BaseWindow(control.xmlWindow):
             return
 
         if actionArgs.get('anilist_id'):
-            self.item_information = ast.literal_eval(database.get_show(actionArgs['anilist_id'])['kodi_meta'])
+            self.item_information = pickle.loads(database.get_show(actionArgs['anilist_id'])['kodi_meta'])
         elif actionArgs.get('playnext'):
             self.item_information = actionArgs
         else:

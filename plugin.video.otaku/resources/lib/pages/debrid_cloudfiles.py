@@ -1,8 +1,8 @@
 import re
-from resources.lib.ui import source_utils
+import json
+from resources.lib.ui import source_utils, client
 from resources.lib.ui.BrowserBase import BrowserBase
 from resources.lib.debrid import real_debrid, premiumize
-import requests
 import threading
 
 
@@ -34,7 +34,8 @@ class sources(BrowserBase):
 
         filenames = [re.sub(r'\[.*?\]\s*', '', i['filename']) for i in torrents]
         filenames_query = ','.join(filenames)
-        resp = requests.get('https://armkai.vercel.app/api/fuzzypacks?dict={}&match={}'.format(filenames_query, query)).json()
+        resp = client.request('https://armkai.vercel.app/api/fuzzypacks?dict={}&match={}'.format(filenames_query, query))
+        resp = json.loads(resp)
 
         for i in resp:
             torrent = torrents[i]
@@ -73,7 +74,8 @@ class sources(BrowserBase):
 
         filenames = [re.sub(r'\[.*?\]\s*', '', i['name']) for i in cloud_items]
         filenames_query = ','.join(filenames)
-        resp = requests.get('https://armkai.vercel.app/api/fuzzypacks?dict={}&match={}'.format(filenames_query, query)).json()
+        resp = client.request('https://armkai.vercel.app/api/fuzzypacks?dict={}&match={}'.format(filenames_query, query))
+        resp = json.loads(resp)
 
         for i in resp:
             torrent = cloud_items[i]

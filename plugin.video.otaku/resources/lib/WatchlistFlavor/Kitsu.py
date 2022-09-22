@@ -1,5 +1,7 @@
 import itertools
 import time
+import json
+from six.moves import urllib_parse
 from resources.lib.WatchlistFlavor.WatchlistFlavorBase import WatchlistFlavorBase
 
 
@@ -16,15 +18,15 @@ class KitsuWLF(WatchlistFlavorBase):
             "username": self._auth_var,
             "password": self._password
         }
-        resp = self._post_request(self._to_url("oauth/token"), params=params)
+        resp = self._post_request(self._to_url("oauth/token"), params=params, json='')
 
-        if resp.status_code != 200:
+        if not resp:
             return
 
-        data = resp.json()
+        data = json.loads(resp)
         self._token = data['access_token']
         resp2 = self._get_request(self._to_url("edge/users"), headers=self.__headers(), params={'filter[self]': True})
-        data2 = resp2.json()["data"][0]
+        data2 = json.loads(resp2)["data"][0]
 
         login_data = {
             'username': data2["attributes"]["name"],
@@ -41,12 +43,12 @@ class KitsuWLF(WatchlistFlavorBase):
             "grant_type": "refresh_token",
             "refresh_token": control.getSetting('kitsu.refresh'),
         }
-        resp = self._post_request(self._to_url("oauth/token"), params=params)
+        resp = self._post_request(self._to_url("oauth/token"), params=params, json='')
 
-        if resp.status_code != 200:
+        if not resp:
             return
 
-        data = resp.json()
+        data = json.loads(resp)
         control.setSetting('kitsu.token', data['access_token'])
         control.setSetting('kitsu.refresh', data['refresh_token'])
         control.setSetting('kitsu.expiry', str(time.time() + int(data['expires_in'])))
@@ -63,8 +65,6 @@ class KitsuWLF(WatchlistFlavorBase):
     def _handle_paging(self, hasNextPage, base_url, page):
         if not hasNextPage:
             return []
-
-        from six.moves import urllib_parse
         next_page = page + 1
         name = "Next Page (%d)" % (next_page)
         parsed = urllib_parse.urlparse(hasNextPage)
@@ -100,14 +100,13 @@ class KitsuWLF(WatchlistFlavorBase):
             ("On Hold", "on_hold"),
             ("Dropped", "dropped"),
         ]
-
         return statuses
 
     def get_watchlist_status(self, status, next_up, offset=0, page=1):
         url = self._to_url("edge/library-entries")
 
         params = {
-            "fields[anime]": "titles,canonicalTitle,posterImage,episodeCount,synopsis,episodeLength,subtype",
+            "fields[anime]": "titles,canonicalTitle,posterImage,episodeCount,synopsis,episodeLength,subtype,averageRating,ageRating,youtubeVideoId",
             "filter[user_id]": self._user_id,
             "filter[kind]": "anime",
             "filter[status]": status,
@@ -120,7 +119,8 @@ class KitsuWLF(WatchlistFlavorBase):
         return self._process_watchlist_view(url, params, next_up, "watchlist_status_type_pages/kitsu/%s/%%s/%%d" % status, page)
 
     def _process_watchlist_view(self, url, params, next_up, base_plugin_url, page):
-        result = (self._get_request(url, headers=self.__headers(), params=params)).json()
+        result = self._get_request(url, headers=self.__headers(), params=params)
+        result = json.loads(result)
         _list = result["data"]
         el = result["included"][:len(_list)]
         # self._mapping = filter(lambda x: x['type'] == 'mappings', result['included'])
@@ -139,8 +139,6 @@ class KitsuWLF(WatchlistFlavorBase):
     def _base_watchlist_view(self, res, eres):
         _id = eres['id']
         mal_id = self._mapping_mal(_id)
-        # kodi_meta = self._get_kodi_meta(mal_id, 'mal')
-
         info = {}
 
         try:
@@ -155,6 +153,21 @@ class KitsuWLF(WatchlistFlavorBase):
 
         try:
             info['duration'] = eres['attributes']['episodeLength'] * 60
+        except:
+            pass
+
+        try:
+            info['rating'] = float(eres['attributes']['averageRating']) / 10
+        except:
+            pass
+
+        try:
+            info['mpaa'] = eres['attributes']['ageRating']
+        except:
+            pass
+
+        try:
+            info['trailer'] = 'plugin://plugin.video.youtube/play/?video_id={0}'.format(eres['attributes']['youtubeVideoId'])
         except:
             pass
 
@@ -251,7 +264,8 @@ class KitsuWLF(WatchlistFlavorBase):
             "filter[anime_id]": kitsu_id
         }
         result = self._get_request(url, headers=self.__headers(), params=params)
-        item_dict = result.json()['data'][0]['attributes']
+        result = json.loads(result)
+        item_dict = result['data'][0]['attributes']
 
         anime_entry = {}
         anime_entry['eps_watched'] = item_dict['progress']
@@ -272,7 +286,7 @@ class KitsuWLF(WatchlistFlavorBase):
             "filter[anime_id]": kitsu_id
         }
         scrobble = self._get_request(url, headers=self.__headers(), params=params)
-        item_dict = scrobble.json()
+        item_dict = json.loads(scrobble)
         if len(item_dict['data']) == 0:
             return lambda: self.__post_params(url, episode, kitsu_id)
 

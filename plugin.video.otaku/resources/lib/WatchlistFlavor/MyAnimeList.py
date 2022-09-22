@@ -1,7 +1,7 @@
 import re
 import itertools
 import time
-import requests
+import json
 from resources.lib.WatchlistFlavor.WatchlistFlavorBase import WatchlistFlavorBase
 
 
@@ -15,7 +15,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         try:
             from six.moves import urllib_parse
             parsed = urllib_parse.urlparse(self._auth_var)
-            params = urllib_parse.parse_qs(parsed.query)
+            params = dict(urllib_parse.parse_qsl(parsed.query))
             code = params['code']
             code_verifier = params['state']
         except:
@@ -28,10 +28,12 @@ class MyAnimeListWLF(WatchlistFlavorBase):
             'code_verifier': code_verifier,
             'grant_type': 'authorization_code'
         }
-        res = requests.post(oauth_url, data=data).json()
+        res = self._get_request(oauth_url, data=data)
+        res = json.loads(res)
 
         self._token = res['access_token']
-        user = requests.get('https://api.myanimelist.net/v2/users/@me?fields=name', headers=self.__headers()).json()
+        user = self._get_request('https://api.myanimelist.net/v2/users/@me?fields=name', headers=self.__headers())
+        user = json.loads(user)
 
         login_data = {
             'token': res['access_token'],
@@ -49,7 +51,8 @@ class MyAnimeListWLF(WatchlistFlavorBase):
             'grant_type': 'refresh_token',
             'refresh_token': control.getSetting('mal.refresh')
         }
-        res = requests.post(oauth_url, data=data).json()
+        res = self._get_request(oauth_url, data=data)
+        res = json.loads(res)
         control.setSetting('mal.token', res['access_token'])
         control.setSetting('mal.refresh', res['refresh_token'])
         control.setSetting('mal.expiry', str(time.time() + int(res['expires_in'])))
@@ -132,7 +135,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
 
         url = self._to_url("users/@me/animelist")
         results = self._get_request(url, headers=self.__headers(), params=params)
-        results = results.json()['data'][0]['node']['my_list_status']
+        results = json.loads(results)['data'][0]['node']['my_list_status']
 
         anime_entry = {}
         anime_entry['eps_watched'] = results['num_episodes_watched']
@@ -142,7 +145,8 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         return anime_entry
 
     def _process_status_view(self, url, params, next_up, base_plugin_url, page):
-        results = (self._get_request(url, headers=self.__headers(), params=params)).json()
+        results = self._get_request(url, headers=self.__headers(), params=params)
+        results = json.loads(results)
 
         if next_up:
             all_results = list(map(self._base_next_up_view, results['data']))
@@ -282,10 +286,10 @@ class MyAnimeListWLF(WatchlistFlavorBase):
 
     def _kitsu_to_mal_id(self, kitsu_id):
         arm_resp = self._get_request("https://arm.now.sh/api/v1/search?type=kitsu&id=" + kitsu_id)
-        if arm_resp.status_code != 200:
+        if not arm_resp:
             raise Exception("AnimeID not found")
 
-        mal_id = arm_resp.json()["services"]["mal"]
+        mal_id = json.loads(arm_resp)["services"]["mal"]
         return mal_id
 
     def watchlist_update(self, anilist_id, episode):
@@ -302,7 +306,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         return lambda: self.__update_watchlist(anilist_id, episode, url, data)
 
     def __update_watchlist(self, anilist_id, episode, url, data):
-        _ = requests.put(url, data=data, headers=self.__headers())
+        _ = self._put_request(url, data=data, headers=self.__headers())
 
     def __get_sort(self):
         sort_types = {

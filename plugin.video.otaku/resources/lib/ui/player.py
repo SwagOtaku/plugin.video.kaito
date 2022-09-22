@@ -1,7 +1,7 @@
 import sys
 from kodi_six import xbmc, xbmcaddon, xbmcplugin, xbmcgui
-from resources.lib.ui import http, control
-import six
+from six.moves import urllib_parse
+from resources.lib.ui import control, client
 
 try:
     HANDLE = int(sys.argv[1])
@@ -181,7 +181,7 @@ class watchlistPlayer(xbmc.Player):
                 else:
                     xbmc.sleep(250)
 
-        scrobble = self.onWatchedPercent()
+        _ = self.onWatchedPercent()
 
         if control.getSetting('smartplay.playingnextdialog') == 'true':
             endpoint = int(control.getSetting('playingnext.time'))
@@ -270,14 +270,25 @@ def _prefetch_play_link(link):
 
     if not link:
         return None
+    url = link
+    headers = {}
+    vfy = True
+    if '|' in url:
+        url, hdrs = link.split('|')
+        headers = dict([item.split('=') for item in hdrs.split('&')])
+        for header in headers:
+            headers[header] = urllib_parse.unquote_plus(headers[header])
+        if 'verifypeer' in headers.keys():
+            headers.pop('verifypeer')
+            vfy = False
 
-    linkInfo = http.head_request(link)
-    if linkInfo.status_code != 200:
+    linkInfo = client.request(url, limit='0', headers=headers, verify=vfy, output='extended')
+    if linkInfo[1] != '200':
         raise Exception('could not resolve %s. status_code=%d' %
                         (link, linkInfo.status_code))
     return {
-        "url": link if 'verifypeer' in link else linkInfo.url,
-        "headers": linkInfo.headers,
+        "url": link if '|' in link else linkInfo[5],
+        "headers": linkInfo[2],
     }
 
 
@@ -294,11 +305,11 @@ def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=Non
         item.setInfo('video', infoLabels=episode_info['info'])
         item.setArt(episode_info['image'])
 
-    if 'Content-Type' in linkInfo['headers']:
-        item.setProperty('mimetype', linkInfo['headers']['Content-Type'])
+    if 'Content-Type' in linkInfo['headers'].keys():
+        item.setProperty('MimeType', linkInfo['headers']['Content-Type'])
+        # Run any mimetype hook
+        item = hook_mimetype.trigger(linkInfo['headers']['Content-Type'], item)
 
-    # Run any mimetype hook
-    item = hook_mimetype.trigger(linkInfo['headers']['Content-Type'], item)
     xbmcplugin.setResolvedUrl(HANDLE, True, item)
     watchlistPlayer().handle_player(anilist_id, watchlist_update, build_playlist, episode, filter_lang)
 
@@ -308,7 +319,7 @@ def _DASH_HOOK(item):
     import inputstreamhelper
     is_helper = inputstreamhelper.Helper('mpd')
     if is_helper.check_inputstream():
-        if six.PY2:
+        if control.getKodiVersion() < 19:
             item.setProperty('inputstreamaddon', is_helper.inputstream_addon)
         else:
             item.setProperty('inputstream', is_helper.inputstream_addon)
@@ -322,14 +333,21 @@ def _DASH_HOOK(item):
 
 @hook_mimetype('application/vnd.apple.mpegurl')
 def _HLS_HOOK(item):
+    stream_url = item.getPath()
     import inputstreamhelper
     is_helper = inputstreamhelper.Helper('hls')
     if is_helper.check_inputstream():
-        if six.PY2:
+        if control.getKodiVersion() < 19:
             item.setProperty('inputstreamaddon', is_helper.inputstream_addon)
         else:
             item.setProperty('inputstream', is_helper.inputstream_addon)
+        if '|' in stream_url:
+            stream_url, strhdr = stream_url.split('|')
+            item.setProperty('inputstream.adaptive.stream_headers', strhdr)
+            item.setPath(stream_url)
         item.setProperty('inputstream.adaptive.manifest_type', 'hls')
+        item.setProperty('MimeType', 'application/vnd.apple.mpegurl')
+        item.setMimeType('application/vnd.apple.mpegstream_url')
         item.setContentLookup(False)
     else:
         raise Exception("InputStream Adaptive is not supported.")

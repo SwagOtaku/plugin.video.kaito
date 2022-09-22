@@ -6,12 +6,11 @@ from functools import partial
 from resources.lib.ui import utils, source_utils, database
 from resources.lib.ui.BrowserBase import BrowserBase
 from resources.lib.debrid import real_debrid, all_debrid, premiumize
-import requests
 import threading
 import copy
-import ast
+import pickle
 import itertools
-from six.moves import filter
+from six.moves import filter, urllib_parse
 
 
 class sources(BrowserBase):
@@ -109,7 +108,7 @@ class sources(BrowserBase):
         return all_results
 
     def _process_nyaa_episodes(self, url, episode, season=None):
-        json_resp = requests.get(url).text
+        json_resp = self._get_request(url)
         results = bs.BeautifulSoup(json_resp, 'html.parser')
         rex = r'(magnet:)+[^"]*'
         search_results = [
@@ -169,7 +168,7 @@ class sources(BrowserBase):
         return all_results
 
     def _process_nyaa_backup(self, url, anilist_id, _zfill, episode='', rescrape=False):
-        json_resp = requests.get(url).text
+        json_resp = self._get_request(url)
         results = bs.BeautifulSoup(json_resp, 'html.parser')
         rex = r'(magnet:)+[^"]*'
         search_results = [
@@ -202,7 +201,7 @@ class sources(BrowserBase):
         return all_results
 
     def _process_nyaa_movie(self, url, episode):
-        json_resp = requests.get(url).text
+        json_resp = self._get_request(url)
         results = bs.BeautifulSoup(json_resp, 'html.parser')
         rex = r'(magnet:)+[^"]*'
         search_results = [
@@ -290,7 +289,7 @@ class sources(BrowserBase):
         if status == 'FINISHED':
             query = '%s "Batch"|"Complete Series"' % (show)
 
-            episodes = ast.literal_eval(database.get_show(anilist_id)['kodi_meta'])['episodes']
+            episodes = pickle.loads(database.get_show(anilist_id)['kodi_meta'])['episodes']
             if episodes:
                 query += '|"01-{0}"|"01~{0}"|"01 - {0}"|"01 ~ {0}"'.format(episodes)
 
@@ -305,22 +304,23 @@ class sources(BrowserBase):
         return self._process_nyaa_episodes(url, episode.zfill(2), season)
 
     def _get_episode_sources_backup(self, db_query, anilist_id, episode):
-        show = requests.get("https://kaito-title.firebaseio.com/%s.json" % anilist_id).json()
+        show = self._get_request('https://kaito-title.firebaseio.com/%s.json' % anilist_id)
 
         if not show:
             return []
+        show = json.loads(show)
 
         if 'general_title' in show:
             query = show['general_title'].encode('utf-8') if six.PY2 else show['general_title']
             _zfill = show.get('zfill', 2)
             episode = episode.zfill(_zfill)
-            query = requests.utils.quote(query)
+            query = urllib_parse.quote(query)
             url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % query
             return self._process_nyaa_backup(url, anilist_id, _zfill, episode)
 
         try:
-            kodi_meta = ast.literal_eval(database.get_show(anilist_id)['kodi_meta'])
-            kodi_meta['query'] = db_query + '|{}'.format(show)
+            kodi_meta = pickle.loads(database.get_show(anilist_id)['kodi_meta'])
+            kodi_meta['query'] = db_query + '|{}'.format(show['general_title'])
             database.update_kodi_meta(anilist_id, kodi_meta)
         except:
             pass
@@ -337,7 +337,7 @@ class sources(BrowserBase):
     def _get_episode_sources_pack(self, show, anilist_id, episode):
         query = '%s "Batch"|"Complete Series"' % (show)
 
-        episodes = ast.literal_eval(database.get_show(anilist_id)['kodi_meta'])['episodes']
+        episodes = pickle.loads(database.get_show(anilist_id)['kodi_meta'])['episodes']
         if episodes:
             query += '|"01-{0}"|"01~{0}"|"01 - {0}"|"01 ~ {0}"'.format(episodes)
 
@@ -350,7 +350,7 @@ class sources(BrowserBase):
         return self._process_nyaa_backup(url, anilist_id, 2, episode.zfill(2), True)
 
     def _get_movie_sources(self, query, anilist_id, episode):
-        query = requests.utils.quote(query)
+        query = urllib_parse.quote(query)
         url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % query
         sources = self._process_nyaa_movie(url, '1')
 
@@ -360,18 +360,19 @@ class sources(BrowserBase):
         return sources
 
     def _get_movie_sources_backup(self, anilist_id, episode='1'):
-        show = requests.get("https://kimetsu-title.firebaseio.com/%s.json" % anilist_id).json()
+        show = self._get_request("https://kimetsu-title.firebaseio.com/%s.json" % anilist_id)
 
         if not show:
             return []
+        show = json.loads(show)
 
         if 'general_title' in show:
             query = show['general_title']
-            query = requests.utils.quote(query)
+            query = urllib_parse.quote(query)
             url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % query
             return self._process_nyaa_backup(url, episode)
 
-        query = requests.utils.quote(show)
+        query = urllib_parse.quote(show)
         url = "https://nyaa.si/?f=0&c=1_2&q=%s" % query
         return self._process_nyaa_movie(url, episode)
 

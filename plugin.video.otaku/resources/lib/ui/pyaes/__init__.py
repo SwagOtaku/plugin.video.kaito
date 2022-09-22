@@ -48,5 +48,5 @@
 
 VERSION = [1, 3, 0]
 
-from resources.lib.pyaes.aes import AES, AESModeOfOperationCTR, AESModeOfOperationCBC, AESModeOfOperationCFB, AESModeOfOperationECB, AESModeOfOperationOFB, AESModesOfOperation, Counter  # NOQA
-from resources.lib.pyaes.blockfeeder import decrypt_stream, Decrypter, encrypt_stream, Encrypter  # NOQA
+from resources.lib.ui.pyaes.aes import AES, AESModeOfOperationCTR, AESModeOfOperationCBC, AESModeOfOperationCFB, AESModeOfOperationECB, AESModeOfOperationOFB, AESModesOfOperation, Counter  # NOQA
+from resources.lib.ui.pyaes.blockfeeder import decrypt_stream, Decrypter, encrypt_stream, Encrypter  # NOQA

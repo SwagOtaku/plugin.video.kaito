@@ -84,18 +84,18 @@ class Sources(DisplayWindow):
 
         if control.real_debrid_enabled() or control.all_debrid_enabled() or control.premiumize_enabled():
             self.threads.append(
-                threading.Thread(target=self.nyaa_worker, args=(query, anilist_id, episode, status, media_type, rescrape,)))
+                threading.Thread(target=self.nyaa_worker, args=(query, anilist_id, episode, status, media_type, rescrape)))
         else:
             self.remainingProviders.remove('nyaa')
 
         self.threads.append(
-            threading.Thread(target=self.gogo_worker, args=(anilist_id, episode, get_backup, rescrape,)))
+            threading.Thread(target=self.gogo_worker, args=(anilist_id, episode, get_backup, rescrape)))
 
         # self.threads.append(
         #     threading.Thread(target=self.animixplay_worker, args=(anilist_id, episode, get_backup, rescrape,)))
 
         self.threads.append(
-            threading.Thread(target=self.user_cloud_inspection, args=(query, anilist_id, episode, media_type, rescrape,)))
+            threading.Thread(target=self.user_cloud_inspection, args=(query, anilist_id, episode, media_type, rescrape)))
 
         for i in self.threads:
             i.start()
@@ -185,6 +185,7 @@ class Sources(DisplayWindow):
         max_res = int(control.getSetting('general.maxResolution'))
         if max_res == 3 or max_res < 3:
             resolutions.append('NA')
+            resolutions.append('EQ')
         if max_res < 3:
             resolutions.append('720p')
         if max_res < 2:

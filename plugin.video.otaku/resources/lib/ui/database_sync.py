@@ -25,7 +25,7 @@ class AnilistSyncDatabase:
         # You will need to update the below version number to match the new addon version
         # This will ensure that the metadata required for operations is available
         # You may also update this version number to force a rebuild of the database after updating Otaku
-        self.last_meta_update = '0.1.0'
+        self.last_meta_update = '0.1.1'
 
         control.anilistSyncDB_lock.acquire()
 
@@ -116,8 +116,8 @@ class AnilistSyncDatabase:
                        'mal_id INTEGER,'
                        'simkl_id INTEGER,'
                        'kitsu_id INTEGER,'
-                       'meta_ids TEXT,'
-                       'kodi_meta TEXT NOT NULL, '
+                       'meta_ids BLOB,'
+                       'kodi_meta BLOB NOT NULL, '
                        'last_updated TEXT NOT NULL, '
                        'air_date TEXT, '
                        'UNIQUE(anilist_id))')
@@ -132,7 +132,7 @@ class AnilistSyncDatabase:
         cursor.execute('CREATE TABLE IF NOT EXISTS seasons ('
                        'anilist_id INTEGER NOT NULL, '
                        'season INTEGER NOT NULL, '
-                       'kodi_meta TEXT NOT NULL, '
+                       'kodi_meta BLOB NOT NULL, '
                        'air_date TEXT, '
                        'FOREIGN KEY(anilist_id) REFERENCES shows(anilist_id) ON DELETE CASCADE)')
         cursor.execute('CREATE UNIQUE INDEX IF NOT EXISTS ix_season ON seasons (anilist_id ASC, season ASC)')
@@ -146,7 +146,7 @@ class AnilistSyncDatabase:
         cursor.execute('CREATE TABLE IF NOT EXISTS episodes ('
                        'anilist_id INTEGER NOT NULL, '
                        'season INTEGER NOT NULL, '
-                       'kodi_meta TEXT NOT NULL, '
+                       'kodi_meta BLOB NOT NULL, '
                        'last_updated TEXT NOT NULL, '
                        'number INTEGER NOT NULL, '
                        'number_abs INTEGER,'
@@ -176,7 +176,7 @@ class AnilistSyncDatabase:
                        'media_type TEXT NOT NULL,'
                        'name TEXT NOT NULL, '
                        'username TEXT NOT NULL, '
-                       'kodi_meta TEXT NOT NULL, '
+                       'kodi_meta BLOB NOT NULL, '
                        'updated_at TEXT NOT NULL,'
                        'list_type TEXT NOT NULL,'
                        'item_count INT NOT NULL,'

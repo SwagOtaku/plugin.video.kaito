@@ -1,4 +1,5 @@
 import itertools
+import json
 from resources.lib.ui import database
 from resources.lib.WatchlistFlavor.WatchlistFlavorBase import WatchlistFlavorBase
 
@@ -24,7 +25,7 @@ class AniListWLF(WatchlistFlavorBase):
         }
 
         result = self._post_request(self._URL, json={'query': query, 'variables': variables})
-        results = result.json()
+        results = json.loads(result)
 
         if "errors" in results.keys():
             return
@@ -186,7 +187,7 @@ class AniListWLF(WatchlistFlavorBase):
         }
 
         result = self._post_request(self._URL, headers=self.__headers(), json={'query': query, 'variables': variables})
-        results = result.json()['data']['Media']['mediaListEntry']
+        results = json.loads(result)['data']['Media']['mediaListEntry']
 
         anime_entry = {}
         anime_entry['eps_watched'] = results['progress']
@@ -197,7 +198,7 @@ class AniListWLF(WatchlistFlavorBase):
 
     def _process_status_view(self, query, variables, next_up, base_plugin_url, page):
         result = self._post_request(self._URL, json={'query': query, 'variables': variables})
-        results = result.json()
+        results = json.loads(result)
 
         if "errors" in results.keys():
             return
@@ -408,10 +409,10 @@ class AniListWLF(WatchlistFlavorBase):
 
     def _kitsu_to_anilist_id(self, kitsu_id):
         arm_resp = self._get_request("https://arm.now.sh/api/v1/search?type=kitsu&id=" + kitsu_id)
-        if arm_resp.status_code != 200:
+        if not arm_resp:
             raise Exception("AnimeID not found")
 
-        anilist_id = arm_resp.json()["services"]["anilist"]
+        anilist_id = json.loads(arm_resp)["services"]["anilist"]
         return anilist_id
 
     def watchlist_update(self, anilist_id, episode):

@@ -1,6 +1,6 @@
-import requests
-import ast
-from resources.lib.ui import utils, database
+import pickle
+from resources.lib.ui import utils, database, client, cache
+import json
 
 
 class WatchlistFlavorBase(object):
@@ -79,13 +79,13 @@ class WatchlistFlavorBase(object):
             show = database.get_show_mal(mal_id)
 
         if show:
-            show_meta = ast.literal_eval(show['kodi_meta'])
+            show_meta = pickle.loads(show['kodi_meta'])
             next_up_meta['image'] = show_meta.get('fanart')
             anilist_id = show['anilist_id']
             episodes = database.get_episode_list(show['anilist_id'])
             if episodes:
                 try:
-                    episode_meta = ast.literal_eval(episodes[next_up]['kodi_meta'])
+                    episode_meta = pickle.loads(episodes[next_up]['kodi_meta'])
                     next_up_meta['title'] = episode_meta['info']['title']
                     next_up_meta['image'] = episode_meta['image']['thumb']
                     next_up_meta['plot'] = episode_meta['info']['plot']
@@ -94,10 +94,12 @@ class WatchlistFlavorBase(object):
 
             elif show['simkl_id']:
                 try:
-                    resp = requests.get('https://api.simkl.com/anime/episodes/%s?extended=full' % show['simkl_id']).json()
+                    resp = cache.get(client.request, 4, 'https://api.simkl.com/anime/episodes/%s?extended=full' % show['simkl_id'])
+                    resp = json.loads(resp)
                     episode_meta = resp[next_up]
                     next_up_meta['title'] = episode_meta['title']
-                    next_up_meta['image'] = 'https://simkl.net/episodes/%s_w.jpg' % episode_meta['img']
+                    if episode_meta['img'] is not None:
+                        next_up_meta['image'] = 'https://simkl.net/episodes/%s_w.jpg' % episode_meta['img']
                     next_up_meta['plot'] = episode_meta['description']
                 except:
                     pass
@@ -115,7 +117,8 @@ class WatchlistFlavorBase(object):
         return mapping_id
 
     def _get_flavor_id(self, anilist_id, flavor):
-        arm_resp = requests.get("https://armkai.vercel.app/api/search?type=anilist&id={}".format(anilist_id)).json()
+        arm_resp = cache.get(client.request, 4, 'https://armkai.vercel.app/api/search?type=anilist&id={0}'.format(anilist_id))
+        arm_resp = json.loads(arm_resp)
         flavor_id = arm_resp.get(flavor[:-3])
         return flavor_id
 
@@ -145,10 +148,13 @@ class WatchlistFlavorBase(object):
         return "%s/%s" % (self._URL, url)
 
     def _get_request(self, url, headers=None, cookies=None, data=None, params=None):
-        return requests.get(url, headers=headers, cookies=cookies, data=data, params=params)
+        return client.request(url, headers=headers, cookie=cookies, post=data, params=params)
 
     def _post_request(self, url, headers=None, cookies=None, params=None, json=None):
-        return requests.post(url, headers=headers, cookies=cookies, params=params, json=json)
+        return client.request(url, headers=headers, cookie=cookies, post=json, jpost=True, params=params)
 
     def _patch_request(self, url, headers=None, cookies=None, params=None, json=None):
-        return requests.patch(url, headers=headers, cookies=cookies, params=params, json=json)
+        return client.request(url, headers=headers, cookie=cookies, post=json, jpost=True, params=params, method='PATCH')
+
+    def _put_request(self, url, headers=None, cookies=None, data=None, params=None):
+        return client.request(url, headers=headers, cookie=cookies, post=data, params=params, method='PUT')

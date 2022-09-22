@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import time
-import requests
-
-from resources.lib.ui import source_utils
-from resources.lib.ui import control
-from resources.lib.ui import database
+import json
+from six.moves import urllib_parse
+from resources.lib.ui import source_utils, control, database, client
 
 
 class Premiumize:
@@ -19,16 +17,19 @@ class Premiumize:
 
     def auth(self):
         data = {'client_id': self.client_id, 'response_type': 'device_code'}
-        token = requests.post('https://www.premiumize.me/token', data=data).json()
+        token = client.request('https://www.premiumize.me/token', post=data)
+        token = json.loads(token)
         expiry = token['expires_in']
         token_ttl = token['expires_in']
         poll_again = True
         success = False
         control.copy2clip(token['user_code'])
-        control.progressDialog.create(control.ADDON_NAME,
-                                      control.lang(30100).format(control.colorString(token['verification_uri'])) + '[CR]'
-                                      + control.lang(30101).format(control.colorString(token['user_code'])) + '[CR]'
-                                      + control.lang(30102))
+        control.progressDialog.create(
+            control.ADDON_NAME,
+            control.lang(30100).format(control.colorString(token['verification_uri'])) + '[CR]'
+            + control.lang(30101).format(control.colorString(token['user_code'])) + '[CR]'
+            + control.lang(30102)
+        )
         control.progressDialog.update(0)
 
         while poll_again and not token_ttl <= 0 and not control.progressDialog.iscanceled():
@@ -45,7 +46,8 @@ class Premiumize:
 
     def poll_token(self, device_code):
         data = {'client_id': self.client_id, 'code': device_code, 'grant_type': 'device_code'}
-        token = requests.post('https://www.premiumize.me/token', data=data).json()
+        token = client.request('https://www.premiumize.me/token', post=data, error=True)
+        token = json.loads(token)
 
         if 'error' in token:
             if token['error'] == "access_denied":
@@ -62,19 +64,17 @@ class Premiumize:
 
     def get_url(self, url):
         if self.headers['Authorization'] == 'Bearer ':
-            # tools.log('User is not authorised to make PM requests')
             return None
         url = "https://www.premiumize.me/api{}".format(url)
-        req = requests.get(url, timeout=10, headers=self.headers).json()
-        return req
+        req = client.request(url, timeout=10, headers=self.headers, error=True)
+        return json.loads(req)
 
     def post_url(self, url, data):
         if self.headers['Authorization'] == 'Bearer ':
-            # tools.log('User is not authorised to make PM requests')
             return None
         url = "https://www.premiumize.me/api{}".format(url)
-        req = requests.post(url, headers=self.headers, data=data, timeout=10).json()
-        return req
+        req = client.request(url, headers=self.headers, post=data, timeout=10, error=True)
+        return json.loads(req)
 
     def account_info(self):
         url = "/account/info"
@@ -94,8 +94,10 @@ class Premiumize:
 
     def hash_check(self, hashList):
         url = '/cache/check'
-        postData = {'items[]': hashList}
-        response = self.post_url(url, postData)
+        # postData = {'items[]': hashList}
+        hashString = '&'.join(['items[]=' + x for x in hashList])
+        # response = self.post_url(url, postData)
+        response = self.get_url('{0}?{1}'.format(url, urllib_parse.quote(hashString, '=&')))
         return response
 
     def item_details(self, itemID):
