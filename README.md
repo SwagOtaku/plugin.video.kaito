@@ -42,11 +42,6 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 
 - Artwork: Need Fanart TV in order to cover more clear logos for anime titles and anime fanart.
 
-**_Optional_**:
-
-- Ratings: We need star ratings like Tmdb Helper addon has.
-- Ratings: We need trakt ratings in episodes.
-
 ## Help needed with maintaining
 
 I am very clueless on this project currently cause this addon was made by SwagOtaku who has done a very great job creating this addon. Be aware that this is a community driven project, so feel free to submit PR's yourself to improve the code and/or help others with support on the issues etc. If you're willing to really participate in the development, please contact me so I can give you write access to the repo. I will do my best to maintain the project for SwagOtaku. Thanks for understanding!
