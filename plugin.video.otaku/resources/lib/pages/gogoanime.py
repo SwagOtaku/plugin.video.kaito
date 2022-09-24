@@ -48,7 +48,7 @@ class sources(BrowserBase):
     def _process_gogo(self, slug, show_id, episode):
         url = "https://gogoanime.tel/{0}-episode-{1}".format(slug, episode)
         title = (slug.replace('-', ' ')).title() + '  Episode-{0}'.format(episode)
-        r = client.request(url, referer='https://gogoanime.tel/', output='extended')
+        r = client.request(url, referer='https://gogoanime.tel/')
 
         if not r:
             url = 'https://gogoanime.tel/category/{0}'.format(slug)
@@ -67,8 +67,6 @@ class sources(BrowserBase):
                     eslug = eslug.get('href').strip()
                     url = "https://gogoanime.tel{0}".format(eslug)
                     r = client.request(url, referer='https://gogoanime.tel/')
-        else:
-            r = r[0]
 
         soup = BeautifulSoup(r, 'html.parser')
         sources = []
