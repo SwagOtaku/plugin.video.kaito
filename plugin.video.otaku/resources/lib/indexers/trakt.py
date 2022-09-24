@@ -3,7 +3,8 @@ import re
 import json
 from functools import partial
 from resources.lib.indexers.tmdb import TMDBAPI
-from resources.lib.ui import database, utils, client, cache
+from resources.lib.indexers.fanart import FANARTAPI
+from resources.lib.ui import database, utils, client
 from six.moves import urllib_parse
 
 
@@ -49,20 +50,22 @@ class TRAKTAPI:
     def _parse_trakt_view(self, res, show_id, show_meta):
         url = '%s/%d' % (show_id, res['number'])
         name = res['title']
-        image = TMDBAPI().showSeasonToListItem(res['number'], show_meta)
-        if image:
-            image = image['poster']
+        meta = TMDBAPI().showSeasonToListItem(res['number'], show_meta)
+        if meta:
+            image = meta.get('poster')
+            fanart = meta.get('fanart')
+            poster = meta.get('poster')
         info = {}
         info['plot'] = res['overview']
         info['mediatype'] = 'season'
-        parsed = utils.allocate_item(name, "animes_trakt/" + str(url), True, image, info)
+        parsed = utils.allocate_item(name, "animes_trakt/" + str(url), True, image, info, fanart=fanart, poster=poster)
         return parsed
 
     def _parse_trakt_episode_view(self, res, show_id, show_meta, season, poster, fanart, eps_watched, update_time):
         url = "%s/%s/" % (show_id, res['number'])
         name = 'Ep. %d (%s)' % (res['number'], res.get('title', ''))
         try:
-            image = TMDBAPI().episodeIDToListItem(season, str(res['number']), show_meta)['thumb']
+            image = TMDBAPI().episodeIDToListItem(season, res['number'], show_meta)['thumb']
         except:
             image = 'DefaultVideo.png'
         info = {}
@@ -122,15 +125,16 @@ class TRAKTAPI:
 
     def get_trakt_id(self, name):
         url = 'search/show?query=%s&genres=anime&extended=full' % urllib_parse.quote(name)
-        result = cache.get(self._json_request, 4, url)
+        result = database.get(self._json_request, 4, url)
 
         if not result:
+            name = re.sub(r'(?i)(?:season)?\s\d+', '', name)
             name = name.replace('?', '')
-            name = re.findall(r'\d*\D+', name)[0]
+
             roman = r'(X{1,3}(IX|IV|V?I{0,3})|X{0,3}(IX|I?V|V?I{1,3}))$'
             name = re.sub(roman, '', name)
             url = 'search/show?query=%s&genres=anime&extended=full' % urllib_parse.quote(name)
-            result = cache.get(self._json_request, 4, url)
+            result = database.get(self._json_request, 4, url)
 
         if not result:
             return
@@ -138,12 +142,13 @@ class TRAKTAPI:
         return result[0]['show']['ids']
 
     def search_trakt_shows(self, anilist_id):
-        name = pickle.loads(database.get_show(anilist_id)['kodi_meta'])['ename']
+        kodi_meta = pickle.loads(database.get_show(anilist_id)['kodi_meta'])
+        name = kodi_meta['ename'] or kodi_meta['name']
         url = 'search/show?query=%s&genres=anime&extended=full' % urllib_parse.quote(name)
         result = self._json_request(url)
 
         if not result:
-            name = re.findall(r'\d*\D+', name)[0]
+            name = re.sub(r'(?i)(?:season)?\s\d+', '', name)
             name = name.replace('?', '')
             url = 'search/show?query=%s&genres=anime&extended=full' % urllib_parse.quote(name)
             result = self._json_request(url)
@@ -156,12 +161,20 @@ class TRAKTAPI:
         return all_results
 
     def _add_fanart(self, anilist_id, meta_ids, kodi_meta):
-        try:
-            if not kodi_meta.get('fanart'):
-                kodi_meta['fanart'] = TMDBAPI().showFanart(meta_ids)['fanart']
+        if not kodi_meta.get('fanart'):
+            mtype = 'tv'
+            if kodi_meta.get('episodes') == 1 and kodi_meta.get('status') == 'FINISHED':
+                mtype = 'movies'
+            meta = FANARTAPI().getArt(meta_ids, mtype)
+            if meta:
+                kodi_meta.update(meta)
                 database.update_kodi_meta(anilist_id, kodi_meta)
-        except:
-            pass
+            else:
+                try:
+                    kodi_meta['fanart'] = TMDBAPI().showFanart(meta_ids)['fanart']
+                    database.update_kodi_meta(anilist_id, kodi_meta)
+                except:
+                    pass
 
     def get_trakt_seasons(self, anilist_id, meta_ids, kodi_meta, db_correction):
         _ = self._add_fanart(anilist_id, meta_ids, kodi_meta)

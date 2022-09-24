@@ -1,5 +1,5 @@
 import pickle
-from resources.lib.ui import utils, database, client, cache
+from resources.lib.ui import utils, database, client
 import json
 
 
@@ -94,7 +94,7 @@ class WatchlistFlavorBase(object):
 
             elif show['simkl_id']:
                 try:
-                    resp = cache.get(client.request, 4, 'https://api.simkl.com/anime/episodes/%s?extended=full' % show['simkl_id'])
+                    resp = database.get(client.request, 4, 'https://api.simkl.com/anime/episodes/%s?extended=full' % show['simkl_id'])
                     resp = json.loads(resp)
                     episode_meta = resp[next_up]
                     next_up_meta['title'] = episode_meta['title']
@@ -117,7 +117,7 @@ class WatchlistFlavorBase(object):
         return mapping_id
 
     def _get_flavor_id(self, anilist_id, flavor):
-        arm_resp = cache.get(client.request, 4, 'https://armkai.vercel.app/api/search?type=anilist&id={0}'.format(anilist_id))
+        arm_resp = database.get(client.request, 4, 'https://armkai.vercel.app/api/search?type=anilist&id={0}'.format(anilist_id))
         arm_resp = json.loads(arm_resp)
         flavor_id = arm_resp.get(flavor[:-3])
         return flavor_id

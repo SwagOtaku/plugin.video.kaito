@@ -27,7 +27,7 @@ import time
 import random
 import json
 from kodi_six import xbmc, xbmcvfs
-from resources.lib.ui import control, cache
+from resources.lib.ui import control, database
 
 TRANSLATEPATH = xbmcvfs.translatePath if six.PY3 else xbmc.translatePath
 CERT_FILE = TRANSLATEPATH('special://xbmc/system/certs/cacert.pem')
@@ -138,9 +138,9 @@ def request(
         if 'User-Agent' in _headers:
             pass
         elif mobile:
-            _headers['User-Agent'] = cache.get(randommobileagent, 1)
+            _headers['User-Agent'] = database.get(randommobileagent, 1)
         else:
-            _headers['User-Agent'] = cache.get(randomagent, 1)
+            _headers['User-Agent'] = database.get(randomagent, 1)
 
         if 'Referer' in _headers:
             pass

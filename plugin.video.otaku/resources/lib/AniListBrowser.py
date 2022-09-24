@@ -6,7 +6,6 @@ import json
 from functools import partial
 from resources.lib.ui import utils, database, client
 from resources.lib.ui.divide_flavors import div_flavor
-import six
 import pickle
 
 
@@ -868,9 +867,16 @@ class AniListBrowser():
             "name": title,
             "url": "animes/%s/%s/" % (res['id'], res.get('idMal')),
             "image": res['coverImage']['extraLarge'],
-            "fanart": kodi_meta.get('fanart', res['coverImage']['extraLarge']),
+            "fanart": res['coverImage']['extraLarge'],
             "info": info,
         }
+
+        if kodi_meta.get('fanart'):
+            base['fanart'] = kodi_meta.get('fanart')
+        if kodi_meta.get('poster'):
+            base['poster'] = kodi_meta.get('poster')
+        if kodi_meta.get('thumb'):
+            base['image'] = kodi_meta.get('thumb')
 
         if res['format'] == 'MOVIE' and res['episodes'] == 1:
             base['url'] = "play_movie/%s/1/" % (res['id'])

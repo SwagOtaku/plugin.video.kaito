@@ -1,5 +1,6 @@
 import itertools
 import json
+import pickle
 from resources.lib.ui import database
 from resources.lib.WatchlistFlavor.WatchlistFlavorBase import WatchlistFlavorBase
 
@@ -233,8 +234,6 @@ class AniListWLF(WatchlistFlavorBase):
             except:
                 pass
 
-        # kodi_meta = self._get_kodi_meta(res['id'], 'anilist')
-
         info = {}
 
         info['genre'] = res.get('genres')
@@ -310,6 +309,16 @@ class AniListWLF(WatchlistFlavorBase):
             "image": res['coverImage']['extraLarge'],
             "plot": info,
         }
+
+        show_meta = database.get_show(res['id'])
+        if show_meta:
+            kodi_meta = pickle.loads(show_meta['kodi_meta'])
+            if kodi_meta.get('fanart'):
+                base['fanart'] = kodi_meta.get('fanart')
+            if kodi_meta.get('poster'):
+                base['poster'] = kodi_meta.get('poster')
+            if kodi_meta.get('thumb'):
+                base['image'] = kodi_meta.get('thumb')
 
         if res['format'] == 'MOVIE' and res['episodes'] == 1:
             base['url'] = "watchlist_to_movie/?anilist_id=%s" % (res['id'])

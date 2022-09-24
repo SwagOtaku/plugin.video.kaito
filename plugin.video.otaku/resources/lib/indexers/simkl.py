@@ -2,7 +2,7 @@ import pickle
 import json
 from functools import partial
 from resources.lib.indexers.tmdb import TMDBAPI
-from resources.lib.ui import database, utils, client, cache
+from resources.lib.ui import database, utils, client
 
 
 class SIMKLAPI:
@@ -21,7 +21,7 @@ class SIMKLAPI:
         return "%s/%s" % (self.baseUrl[:-1], url)
 
     def _json_request(self, url, data=''):
-        response = cache.get(client.request, 4, url, params=data)
+        response = database.get(client.request, 4, url, params=data)
         response = json.loads(response)
         return response
 
@@ -32,7 +32,7 @@ class SIMKLAPI:
             url += filter_lang
 
         name = 'Ep. %d (%s)' % (res['episode'], res.get('title'))
-        image = fanart or poster
+        image = poster or fanart
         if res['img'] is not None:
             image = self.imagePath % res['img']
         info = {}
@@ -84,7 +84,9 @@ class SIMKLAPI:
         if show_meta:
             show_meta = pickle.loads(show['meta_ids'])
             if not kodi_meta.get('fanart'):
-                kodi_meta['fanart'] = TMDBAPI().showFanart(show_meta).get('fanart')
+                fanart = TMDBAPI().showFanart(show_meta)
+                if fanart:
+                    kodi_meta['fanart'] = fanart.get('fanart')
                 database.update_kodi_meta(int(anilist_id), kodi_meta)
 
         return self.get_episodes(anilist_id, filter_lang), 'episodes'

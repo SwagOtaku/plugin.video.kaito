@@ -2,7 +2,7 @@
 from bs4 import BeautifulSoup
 import itertools
 from functools import partial
-from resources.lib.ui import utils, source_utils, database, client, cache
+from resources.lib.ui import utils, source_utils, database, client
 from resources.lib.ui.BrowserBase import BrowserBase
 import re
 import pickle
@@ -19,7 +19,7 @@ class sources(BrowserBase):
         params = {'keyword': title,
                   'id': -1,
                   'link_web': 'https://gogoanime.tel/'}
-        r = cache.get(
+        r = database.get(
             client.request,
             4,
             'https://ajax.gogo-load.com/site/loadAjaxSearch',
@@ -52,7 +52,7 @@ class sources(BrowserBase):
 
         if not r:
             url = 'https://gogoanime.tel/category/{0}'.format(slug)
-            html = cache.get(client.request, 4, url, referer='https://gogoanime.tel/')
+            html = database.get(client.request, 4, url, referer='https://gogoanime.tel/')
             mid = re.findall(r'value="([^"]+)"\s*id="movie_id"', html)
             if mid:
                 params = {'ep_start': episode,

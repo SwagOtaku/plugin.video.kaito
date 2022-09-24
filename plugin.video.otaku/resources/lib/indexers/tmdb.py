@@ -1,4 +1,4 @@
-from resources.lib.ui import client
+from resources.lib.ui import client, database
 import json
 import threading
 
@@ -51,7 +51,7 @@ class TMDBAPI:
             if traktItem['tmdb'] is None:
                 return None
 
-            url = 'tv/%s?&append_to_response=credits,alternative_titles,videos,content_ratings,images&language=en-US' % \
+            url = 'tv/%s?append_to_response=images&language=en-US' % \
                   traktItem['tmdb']
 
             self.get_TMDB_Fanart_Threaded(url, (traktItem['tvdb'], 'tv'))
@@ -81,7 +81,7 @@ class TMDBAPI:
             if traktItem['tmdb'] is None:
                 return None
 
-            url = 'tv/%s?&append_to_response=credits,alternative_titles,videos,content_ratings,images&language=en-US' % \
+            url = 'tv/%s?append_to_response=images&language=en-US' % \
                   traktItem['tmdb']
 
             self.get_TMDB_Fanart_Threaded(url, (traktItem['tvdb'], 'tv'))
@@ -108,7 +108,7 @@ class TMDBAPI:
     def showSeasonToListItem(self, seasonObject=None, showArgs=None):
 
         try:
-            url = 'tv/%s/season/%s?&append_to_response=credits,videos,images&language=en-US' % (
+            url = 'tv/%s/season/%s?append_to_response=images&language=en-US' % (
                 str(showArgs['tmdb']), str(seasonObject))
 
             self.get_TMDB_Fanart_Threaded(url, (83121, 'season'))
@@ -134,30 +134,22 @@ class TMDBAPI:
         return item
 
     def episodeIDToListItem(self, season=None, number=None, showArgs=None):
-        try:
-            if showArgs['tmdb'] is None:
-                return None
-
-            url = 'tv/%s/season/%s/episode/%s?&append_to_response=images&language=en-US' % (
-                showArgs['tmdb'],
-                season,
-                number)
-            response = self.get_request(url)
-
-            if response.get('status_code') == 34:
-                return None
-
-            try:
-                self.art['landscape'] = self.backgroundPath + response.get('still_path', '')
-                self.art['thumb'] = self.thumbPath + response.get('still_path', '')
-            except:
-                pass
-
-            item = self.art
-
-            return item
-        except:
+        if showArgs['tmdb'] is None:
             return None
+
+        url = 'tv/%s/season/%s?language=en-US' % (
+            showArgs['tmdb'],
+            season)
+        response = database.get(self.get_request, 1, url)
+
+        if response:
+            ep = [x for x in response.get('episodes') if x.get('episode_number') == number][0]
+            self.art['landscape'] = self.backgroundPath + ep.get('still_path', '')
+            self.art['thumb'] = self.thumbPath + ep.get('still_path', '')
+
+        item = self.art
+
+        return item
 
     def parseEpisodeInfo(self, response, traktInfo, showArgs):
         try:

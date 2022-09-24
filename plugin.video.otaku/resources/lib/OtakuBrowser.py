@@ -123,7 +123,8 @@ class OtakuBrowser(BrowserBase):
             show_meta = AniListBrowser().get_anilist(anilist_id)
 
         if not show_meta['meta_ids']:
-            name = pickle.loads(show_meta['kodi_meta'])['ename']
+            kodi_meta = pickle.loads(show_meta['kodi_meta'])
+            name = kodi_meta['ename'] or kodi_meta['name']
             trakt_id = trakt.TRAKTAPI().get_trakt_id(name)
 
             if not trakt_id:
