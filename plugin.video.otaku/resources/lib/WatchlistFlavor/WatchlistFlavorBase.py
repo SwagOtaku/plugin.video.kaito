@@ -1,5 +1,5 @@
 import pickle
-from resources.lib.ui import utils, database, client
+from resources.lib.ui import utils, database, client, control
 import json
 
 
@@ -20,7 +20,19 @@ class WatchlistFlavorBase(object):
         self._token = token
         self._refresh = refresh
         self._sort = sort
-        self._title_lang = title_lang
+        if title_lang:
+            self._title_lang = title_lang
+        else:
+            self._title_lang = self._get_title_lang(control.getSetting("titlelanguage"))
+
+    def _get_title_lang(self, title_key):
+        title_lang = {
+            "40370": "userPreferred",
+            "Romaji (Shingeki no Kyojin)": "userPreferred",
+            "40371": "english",
+            "English (Attack on Titan)": "english"
+        }
+        return title_lang[title_key]
 
     @classmethod
     def name(cls):

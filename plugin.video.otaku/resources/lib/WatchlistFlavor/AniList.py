@@ -246,10 +246,8 @@ class AniListWLF(WatchlistFlavorBase):
             desc = desc.replace('\n', '')
             info['plot'] = desc
 
-        try:
-            info['title'] = res['title']['userPreferred']
-        except:
-            pass
+        title = res['title'].get(self._title_lang) or res['title'].get('userPreferred')
+        info['title'] = title
 
         try:
             info['duration'] = res.get('duration') * 60
@@ -304,7 +302,7 @@ class AniListWLF(WatchlistFlavorBase):
             pass
 
         base = {
-            "name": '%s - %d/%d' % (res["title"]["userPreferred"], progress, res['episodes'] if res['episodes'] is not None else 0),
+            "name": '%s - %d/%d' % (title, progress, res['episodes'] if res['episodes'] is not None else 0),
             "url": "watchlist_query/%s/%s/%d" % (res['id'], res.get('idMal'), progress),
             "image": res['coverImage']['extraLarge'],
             "plot": info,
@@ -332,7 +330,8 @@ class AniListWLF(WatchlistFlavorBase):
         res = res['media']
         next_up = progress + 1
         episode_count = res['episodes'] if res['episodes'] is not None else 0
-        title = '%s - %s/%s' % (res['title']['userPreferred'], next_up, episode_count)
+        base_title = res['title'].get(self._title_lang) or res['title'].get('userPreferred')
+        title = '%s - %s/%s' % (base_title, next_up, episode_count)
         poster = image = res['coverImage']['extraLarge']
         plot = None
 

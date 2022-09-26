@@ -51,7 +51,6 @@ def WL_LOGOUT(payload, params):
 
 @route('watchlist/*')
 def WATCHLIST(payload, params):
-    # return control.draw_items(WatchlistFlavor.watchlist_request(payload), contentType=control.getSetting("contenttype.menu"))
     return control.draw_items(WatchlistFlavor.watchlist_request(payload), contentType="addons")
 
 
