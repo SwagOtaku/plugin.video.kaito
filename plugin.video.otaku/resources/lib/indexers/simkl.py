@@ -2,6 +2,7 @@ import pickle
 import json
 from functools import partial
 from resources.lib.indexers.tmdb import TMDBAPI
+from resources.lib.indexers.fanart import FANARTAPI
 from resources.lib.ui import database, utils, client
 
 
@@ -84,10 +85,18 @@ class SIMKLAPI:
         if show_meta:
             show_meta = pickle.loads(show['meta_ids'])
             if not kodi_meta.get('fanart'):
-                fanart = TMDBAPI().showFanart(show_meta)
-                if fanart:
-                    kodi_meta['fanart'] = fanart.get('fanart')
-                database.update_kodi_meta(int(anilist_id), kodi_meta)
+                mtype = 'tv'
+                if kodi_meta.get('episodes') == 1 and kodi_meta.get('status') == 'FINISHED':
+                    mtype = 'movies'
+                meta = FANARTAPI().getArt(show_meta, mtype)
+                if meta:
+                    kodi_meta['fanart'] = meta.get('fanart')
+                    database.update_kodi_meta(anilist_id, kodi_meta)
+                else:
+                    fanart = TMDBAPI().showFanart(show_meta)
+                    if fanart:
+                        kodi_meta['fanart'] = fanart.get('fanart')
+                        database.update_kodi_meta(anilist_id, kodi_meta)
 
         return self.get_episodes(anilist_id, filter_lang), 'episodes'
 

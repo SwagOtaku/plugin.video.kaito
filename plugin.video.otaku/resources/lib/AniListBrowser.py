@@ -765,7 +765,7 @@ class AniListBrowser():
         return database.get_show(str(res['id']))
 
     def _base_anilist_view(self, res, mal_dub=None):
-        in_database = database.get_show(str(res['id']))
+        in_database = database.get_show(res['id'])
 
         if not in_database:
             self._database_update_show(res)
@@ -782,7 +782,10 @@ class AniListBrowser():
             except:
                 pass
 
-        kodi_meta = pickle.loads(database.get_show(str(res['id']))['kodi_meta'])
+        kodi_meta = {}
+        show_meta = database.get_show(res['id'])
+        if show_meta:
+            kodi_meta = pickle.loads(show_meta.get('kodi_meta'))
 
         title = res.get('title').get(self._TITLE_LANG)
         if not title:
@@ -867,7 +870,9 @@ class AniListBrowser():
             "name": title,
             "url": "animes/%s/%s/" % (res['id'], res.get('idMal')),
             "image": res['coverImage']['extraLarge'],
+            "poster": res['coverImage']['extraLarge'],
             "fanart": res['coverImage']['extraLarge'],
+            "landscape": res['coverImage']['extraLarge'],
             "info": info,
         }
 
@@ -876,7 +881,7 @@ class AniListBrowser():
         if kodi_meta.get('poster'):
             base['poster'] = kodi_meta.get('poster')
         if kodi_meta.get('thumb'):
-            base['image'] = kodi_meta.get('thumb')
+            base['landscape'] = kodi_meta.get('thumb')
 
         if res['format'] == 'MOVIE' and res['episodes'] == 1:
             base['url'] = "play_movie/%s/1/" % (res['id'])
@@ -969,6 +974,7 @@ class AniListBrowser():
                 info=base["info"],
                 fanart=base["fanart"],
                 poster=base["image"],
+                landscape=base["landscape"],
             )
         ]
 

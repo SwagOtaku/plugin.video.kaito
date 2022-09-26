@@ -2,7 +2,7 @@ import os
 from resources.lib.ui import control
 
 
-def allocate_item(name, url, is_dir=False, image='', info='', fanart=None, poster=None, cast=[]):
+def allocate_item(name, url, is_dir=False, image='', info='', fanart=None, poster=None, cast=[], landscape=None):
     new_res = {}
     new_res['is_dir'] = is_dir
     if image and '/' not in image:
@@ -15,7 +15,8 @@ def allocate_item(name, url, is_dir=False, image='', info='', fanart=None, poste
         'poster': poster or image,
         'icon': image,
         'thumb': image,
-        'fanart': fanart
+        'fanart': fanart,
+        'landscape': landscape
     }
     new_res['name'] = name
     new_res['url'] = url

@@ -170,11 +170,10 @@ class TRAKTAPI:
                 kodi_meta.update(meta)
                 database.update_kodi_meta(anilist_id, kodi_meta)
             else:
-                try:
-                    kodi_meta['fanart'] = TMDBAPI().showFanart(meta_ids)['fanart']
+                fanart = TMDBAPI().showFanart(meta_ids)
+                if fanart:
+                    kodi_meta['fanart'] = fanart.get('fanart')
                     database.update_kodi_meta(anilist_id, kodi_meta)
-                except:
-                    pass
 
     def get_trakt_seasons(self, anilist_id, meta_ids, kodi_meta, db_correction):
         _ = self._add_fanart(anilist_id, meta_ids, kodi_meta)
