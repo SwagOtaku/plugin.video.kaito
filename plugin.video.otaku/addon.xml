@@ -24,7 +24,7 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.2.2 [202209126]:
+Changelog 0.2.2 [20220926]:
 - Fix English language in Anilist & MAL Watchlists
 - Fix nextpage icon in AH2 landscape view
 - Fix posters getting replaced with landscape images
