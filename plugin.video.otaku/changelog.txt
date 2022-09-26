@@ -1,3 +1,10 @@
+Changelog 0.2.2 [202209126]:
+- Fix English language in Anilist & MAL Watchlists
+- Fix nextpage icon in AH2 landscape view
+- Fix posters getting replaced with landscape images
+- Improve trakt search
+- Gogo search fix for certain titles
+
 Changelog 0.2.1 [20220924]:
 - Enhance meta by including fanart.tv
 - Movie playback bug fix
