@@ -1,3 +1,6 @@
+Changelog 0.2.3 [20220926]:
+- Improve scraping on long titles
+
 Changelog 0.2.2 [20220926]:
 - Fix English language in Anilist & MAL Watchlists
 - Fix nextpage icon in AH2 landscape view
