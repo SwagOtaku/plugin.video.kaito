@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.2.1">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.2.2">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -24,9 +24,12 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.2.1 [20220924]:
-- Enhance meta by including fanart.tv
-- Movie playback bug fix
+Changelog 0.2.2 [202209126]:
+- Fix English language in Anilist & MAL Watchlists
+- Fix nextpage icon in AH2 landscape view
+- Fix posters getting replaced with landscape images
+- Improve trakt search
+- Gogo search fix for certain titles
     </news>
   </extension>
 </addon>
