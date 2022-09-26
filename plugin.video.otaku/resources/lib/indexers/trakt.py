@@ -124,13 +124,12 @@ class TRAKTAPI:
         return all_results
 
     def get_trakt_id(self, name):
+        name = re.sub(r'(?i)(?:season)?\s\d+$', '', name)
         url = 'search/show?query=%s&genres=anime&extended=full' % urllib_parse.quote(name)
         result = database.get(self._json_request, 4, url)
 
         if not result:
-            name = re.sub(r'(?i)(?:season)?\s\d+', '', name)
             name = name.replace('?', '')
-
             roman = r'(X{1,3}(IX|IV|V?I{0,3})|X{0,3}(IX|I?V|V?I{1,3}))$'
             name = re.sub(roman, '', name)
             url = 'search/show?query=%s&genres=anime&extended=full' % urllib_parse.quote(name)
