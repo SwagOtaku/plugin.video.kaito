@@ -77,7 +77,7 @@ class sources(BrowserBase):
 
         next_page = page + 1
         name = "Next Page (%d/%d)" % (next_page, total_pages)
-        return [utils.allocate_item(name, base_url % next_page, True, 'next.png')]
+        return [utils.allocate_item(name, base_url % next_page, True, 'next.png', fanart='next.png')]
 
     def _json_request(self, url, data=''):
         response = json.loads(self._get_request(url, data))

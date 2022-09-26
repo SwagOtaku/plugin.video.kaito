@@ -64,7 +64,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         next_page = page + 1
         name = "Next Page (%d)" % (next_page)
         offset = (re.compile("offset=(.+?)&").findall(hasNextPage))[0]
-        return self._parse_view({'name': name, 'url': base_url % (offset, next_page), 'image': 'next.png', 'plot': None})
+        return self._parse_view({'name': name, 'url': base_url % (offset, next_page), 'image': 'next.png', 'plot': None, 'fanart': 'next.png'})
 
     def watchlist(self):
         return self._process_watchlist_view('', "watchlist_page/%d", page=1)

@@ -34,7 +34,7 @@ class AniListBrowser():
 
         next_page = page + 1
         name = "Next Page (%d)" % (next_page)
-        return [utils.allocate_item(name, base_url % next_page, True, 'next.png')]
+        return [utils.allocate_item(name, base_url % next_page, True, 'next.png', fanart='next.png')]
 
     def get_season_year(self, period='current'):
         date = datetime.datetime.today()
