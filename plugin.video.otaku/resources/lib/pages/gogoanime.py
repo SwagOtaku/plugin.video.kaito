@@ -26,14 +26,28 @@ class sources(BrowserBase):
             referer='https://gogoanime.tel/',
             params=params
         )
-        r = json.loads(r)
-        soup = BeautifulSoup(r.get('content'), 'html.parser')
+        r = json.loads(r).get('content')
+
+        if not r and ':' in title:
+            title = title.split(':')[0]
+            params.update({'keyword': title})
+            r = database.get(
+                client.request,
+                4,
+                'https://ajax.gogo-load.com/site/loadAjaxSearch',
+                referer='https://gogoanime.tel/',
+                params=params
+            )
+            r = json.loads(r).get('content')
+
+        soup = BeautifulSoup(r, 'html.parser')
         items = soup.find_all('div', {'class': 'list_search_ajax'})
         slugs = [
             item.find('a').get('href').split('/')[-1]
             for item in items
             if ((item.text.strip() + ' ').lower()).startswith((title + ' ').lower())
             or ((item.text.strip().replace(' - ', ' ') + ' ').lower()).startswith((title + ' ').lower())
+            or (item.text.strip().replace(':', ' ') + ' ').startswith(title + ' ')
         ]
         if not slugs:
             slugs = database.get(get_backup, 168, anilist_id, 'Gogoanime')
