@@ -3,6 +3,7 @@ import time
 import datetime
 import ast
 import json
+import random
 from functools import partial
 from resources.lib.ui import utils, database, client
 from resources.lib.ui.divide_flavors import div_flavor
@@ -291,6 +292,7 @@ class AniListBrowser():
                         coverImage {
                                 extraLarge
                         }
+                        bannerImage
                     }
                 }
             }
@@ -341,6 +343,7 @@ class AniListBrowser():
                     coverImage {
                         extraLarge
                     }
+                    bannerImage
                     startDate {
                         year,
                         month,
@@ -430,6 +433,7 @@ class AniListBrowser():
                     coverImage {
                         extraLarge
                     }
+                    bannerImage
                     startDate {
                         year,
                         month,
@@ -513,6 +517,7 @@ class AniListBrowser():
                         coverImage {
                             extraLarge
                         }
+                        bannerImage
                         startDate {
                             year,
                             month,
@@ -587,6 +592,7 @@ class AniListBrowser():
                 coverImage {
                     extraLarge
                 }
+                bannerImage
                 startDate {
                     year,
                     month,
@@ -659,6 +665,7 @@ class AniListBrowser():
             coverImage {
                 extraLarge
             }
+            bannerImage
             startDate {
                 year,
                 month,
@@ -872,16 +879,18 @@ class AniListBrowser():
             "image": res['coverImage']['extraLarge'],
             "poster": res['coverImage']['extraLarge'],
             "fanart": res['coverImage']['extraLarge'],
-            "landscape": res['coverImage']['extraLarge'],
+            "banner": res.get('bannerImage'),
             "info": info,
         }
 
         if kodi_meta.get('fanart'):
-            base['fanart'] = kodi_meta.get('fanart')
-        if kodi_meta.get('poster'):
-            base['poster'] = kodi_meta.get('poster')
+            base['fanart'] = random.choice(kodi_meta.get('fanart'))
         if kodi_meta.get('thumb'):
-            base['landscape'] = kodi_meta.get('thumb')
+            base['landscape'] = random.choice(kodi_meta.get('thumb'))
+        if kodi_meta.get('clearart'):
+            base['clearart'] = random.choice(kodi_meta.get('clearart'))
+        if kodi_meta.get('clearlogo'):
+            base['clearlogo'] = random.choice(kodi_meta.get('clearlogo'))
 
         if res['format'] == 'MOVIE' and res['episodes'] == 1:
             base['url'] = "play_movie/%s/1/" % (res['id'])
@@ -974,29 +983,44 @@ class AniListBrowser():
                 info=base["info"],
                 fanart=base["fanart"],
                 poster=base["image"],
-                landscape=base["landscape"],
+                landscape=base.get("landscape"),
+                banner=base.get("banner"),
+                clearart=base.get("clearart"),
+                clearlogo=base.get("clearlogo")
             )
         ]
 
     def _parse_div_view(self, base, is_dir):
         parsed_view = [
-            utils.allocate_item("%s" % base["name"],
-                                base["url"] + '2',
-                                is_dir,
-                                base["image"],
-                                base["info"],
-                                base["fanart"],
-                                base["image"])
+            utils.allocate_item(
+                "%s" % base["name"],
+                base["url"] + '2',
+                is_dir,
+                image=base["image"],
+                info=base["info"],
+                fanart=base["fanart"],
+                poster=base["image"],
+                landscape=base.get("landscape"),
+                banner=base.get("banner"),
+                clearart=base.get("clearart"),
+                clearlogo=base.get("clearlogo")
+            )
         ]
 
         parsed_view.append(
-            utils.allocate_item("%s (Dub)" % base["name"],
-                                base["url"] + '0',
-                                is_dir,
-                                base["image"],
-                                base["info"],
-                                base["fanart"],
-                                base["image"])
+            utils.allocate_item(
+                "%s (Dub)" % base["name"],
+                base["url"] + '0',
+                is_dir,
+                image=base["image"],
+                info=base["info"],
+                fanart=base["fanart"],
+                poster=base["image"],
+                landscape=base.get("landscape"),
+                banner=base.get("banner"),
+                clearart=base.get("clearart"),
+                clearlogo=base.get("clearlogo")
+            )
         )
 
         return parsed_view
@@ -1076,6 +1100,7 @@ class AniListBrowser():
                     coverImage {
                         extraLarge
                     }
+                    bannerImage
                     startDate {
                         year,
                         month,

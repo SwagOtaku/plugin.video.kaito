@@ -42,6 +42,7 @@ sleep = xbmc.sleep
 fanart_ = ADDON_PATH + "/fanart.jpg"
 IMAGES_PATH = os.path.join(ADDON_PATH, 'resources', 'images')
 OTAKU_LOGO_PATH = os.path.join(IMAGES_PATH, 'trans-goku.png')
+OTAKU_LOGO2_PATH = os.path.join(IMAGES_PATH, 'trans-goku-small.png')
 OTAKU_FANART_PATH = ADDON_PATH + "/fanart.jpg"
 menuItem = xbmcgui.ListItem
 execute = xbmc.executebuiltin

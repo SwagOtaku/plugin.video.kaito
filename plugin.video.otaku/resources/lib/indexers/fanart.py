@@ -25,36 +25,55 @@ class FANARTAPI:
             if res:
                 if mtype == 'movies':
                     if res.get('moviebackground'):
-                        if len(res.get('moviebackground')) > 1:
-                            for item in res.get('moviebackground'):
-                                if item.get('lang') == 'en' or item.get('lang') == '':
-                                    art.update({'fanart': item.get('url')})
-                                    break
-                        else:
-                            art.update({'fanart': res.get('moviebackground')[0].get('url')})
+                        items = []
+                        for item in res.get('moviebackground'):
+                            if item.get('lang') == 'en' or item.get('lang') == '':
+                                items.append(item.get('url'))
+                        art.update({'fanart': items})
                     if res.get('moviethumb'):
-                        if len(res.get('moviethumb')) > 1:
-                            for item in res.get('moviethumb'):
-                                if item.get('lang') == 'en' or item.get('lang') == '':
-                                    art.update({'thumb': item.get('url')})
-                                    break
-                        else:
-                            art.update({'thumb': res.get('moviethumb')[0].get('url')})
+                        items = []
+                        for item in res.get('moviethumb'):
+                            if item.get('lang') == 'en' or item.get('lang') == '':
+                                items.append(item.get('url'))
+                        art.update({'thumb': items})
                 else:
                     if res.get('showbackground'):
-                        if len(res.get('showbackground')) > 1:
-                            for item in res.get('showbackground'):
-                                if item.get('lang') == 'en' or item.get('lang') == '':
-                                    art.update({'fanart': item.get('url')})
-                                    break
-                        else:
-                            art.update({'fanart': res.get('showbackground')[0].get('url')})
+                        items = []
+                        for item in res.get('showbackground'):
+                            if item.get('lang') == 'en' or item.get('lang') == '':
+                                items.append(item.get('url'))
+                        art.update({'fanart': items})
                     if res.get('tvthumb'):
-                        if len(res.get('tvthumb')) > 1:
-                            for item in res.get('tvthumb'):
-                                if item.get('lang') == 'en' or item.get('lang') == '':
-                                    art.update({'thumb': item.get('url')})
-                                    break
-                        else:
-                            art.update({'thumb': res.get('tvthumb')[0].get('url')})
+                        items = []
+                        for item in res.get('tvthumb'):
+                            if item.get('lang') == 'en' or item.get('lang') == '':
+                                items.append(item.get('url'))
+                        art.update({'thumb': items})
+
+                if res.get('clearart'):
+                    items = []
+                    for item in res.get('clearart'):
+                        if item.get('lang') == 'en' or item.get('lang') == '':
+                            items.append(item.get('url'))
+                    art.update({'clearart': items})
+                elif res.get('hdclearart'):
+                    items = []
+                    for item in res.get('hdclearart'):
+                        if item.get('lang') == 'en' or item.get('lang') == '':
+                            items.append(item.get('url'))
+                    art.update({'clearart': items})
+
+                if res.get('clearlogo'):
+                    items = []
+                    for item in res.get('clearlogo'):
+                        if item.get('lang') == 'en' or item.get('lang') == '':
+                            items.append(item.get('url'))
+                    art.update({'clearlogo': items})
+                elif res.get('hdtvlogo'):
+                    items = []
+                    for item in res.get('hdtvlogo'):
+                        if item.get('lang') == 'en' or item.get('lang') == '':
+                            items.append(item.get('url'))
+                    art.update({'clearlogo': items})
+
         return art

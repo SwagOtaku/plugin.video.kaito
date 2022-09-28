@@ -1,6 +1,7 @@
 import itertools
 import json
 import pickle
+import random
 from resources.lib.ui import database
 from resources.lib.WatchlistFlavor.WatchlistFlavorBase import WatchlistFlavorBase
 
@@ -99,6 +100,7 @@ class AniListWLF(WatchlistFlavorBase):
                 coverImage {
                     extraLarge
                 }
+                bannerImage
                 startDate {
                     year,
                     month,
@@ -305,18 +307,23 @@ class AniListWLF(WatchlistFlavorBase):
             "name": '%s - %d/%d' % (title, progress, res['episodes'] if res['episodes'] is not None else 0),
             "url": "watchlist_query/%s/%s/%d" % (res['id'], res.get('idMal'), progress),
             "image": res['coverImage']['extraLarge'],
-            "plot": info,
+            "poster": res['coverImage']['extraLarge'],
+            "fanart": res['coverImage']['extraLarge'],
+            "banner": res.get('bannerImage'),
+            "plot": info
         }
 
         show_meta = database.get_show(res['id'])
         if show_meta:
             kodi_meta = pickle.loads(show_meta['kodi_meta'])
             if kodi_meta.get('fanart'):
-                base['fanart'] = kodi_meta.get('fanart')
-            if kodi_meta.get('poster'):
-                base['poster'] = kodi_meta.get('poster')
+                base['fanart'] = random.choice(kodi_meta.get('fanart'))
             if kodi_meta.get('thumb'):
-                base['image'] = kodi_meta.get('thumb')
+                base['landscape'] = random.choice(kodi_meta.get('thumb'))
+            if kodi_meta.get('clearart'):
+                base['clearart'] = random.choice(kodi_meta.get('clearart'))
+            if kodi_meta.get('clearlogo'):
+                base['clearlogo'] = random.choice(kodi_meta.get('clearlogo'))
 
         if res['format'] == 'MOVIE' and res['episodes'] == 1:
             base['url'] = "watchlist_to_movie/?anilist_id=%s" % (res['id'])

@@ -145,13 +145,19 @@ class WatchlistFlavorBase(object):
 
     def _parse_view(self, base, is_dir=True):
         return [
-            utils.allocate_item("%s" % base["name"],
-                                base["url"],
-                                is_dir,
-                                base["image"],
-                                base["plot"],
-                                base.get("fanart"),
-                                base.get("poster"))
+            utils.allocate_item(
+                "%s" % base["name"],
+                base["url"],
+                is_dir,
+                base["image"],
+                base["plot"],
+                base.get("fanart"),
+                base.get("poster"),
+                landscape=base.get("landscape"),
+                banner=base.get("banner"),
+                clearart=base.get("clearart"),
+                clearlogo=base.get("clearlogo"),
+            )
         ]
 
     def _to_url(self, url=''):

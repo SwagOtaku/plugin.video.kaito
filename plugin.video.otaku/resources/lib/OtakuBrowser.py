@@ -75,8 +75,9 @@ class OtakuBrowser(BrowserBase):
             database.add_mapping_id(anilist_id, 'mal_id', str(mal_id))
 
         result = client.request("https://arm2.vercel.app/api/kaito-b?type=myanimelist&id={}".format(mal_id))
-        result = json.loads(result)
-        result = result.get('Pages', {}).get(source, {})
+        if result:
+            result = json.loads(result)
+            result = result.get('Pages', {}).get(source, {})
         return result
 
     def get_mal_id(self, anilist_id):

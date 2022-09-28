@@ -1,14 +1,18 @@
 import os
+import random
 from resources.lib.ui import control
 
 
-def allocate_item(name, url, is_dir=False, image='', info='', fanart=None, poster=None, cast=[], landscape=None):
+def allocate_item(name, url, is_dir=False, image='', info='', fanart=None, poster=None, cast=[], landscape=None, banner=None, clearart=None, clearlogo=None):
     new_res = {}
     new_res['is_dir'] = is_dir
     if image and '/' not in image:
         image = os.path.join(control.artPath(), image)
-    if fanart and '/' not in fanart:
-        fanart = os.path.join(control.artPath(), fanart)
+    if fanart:
+        if isinstance(fanart, list):
+            fanart = random.choice(fanart)
+        if '/' not in fanart:
+            fanart = os.path.join(control.artPath(), fanart)
     if poster and '/' not in poster:
         poster = os.path.join(control.artPath(), poster)
     new_res['image'] = {
@@ -16,7 +20,10 @@ def allocate_item(name, url, is_dir=False, image='', info='', fanart=None, poste
         'icon': image,
         'thumb': image,
         'fanart': fanart,
-        'landscape': landscape
+        'landscape': landscape,
+        'banner': banner,
+        'clearart': clearart,
+        'clearlogo': clearlogo
     }
     new_res['name'] = name
     new_res['url'] = url
