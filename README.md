@@ -32,15 +32,7 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 
 **_Function_**:
 
-- Watchlist: We Need to copy jkaws code over Watchlist from Kaito Beta in order to have fixed indicators.
-- Watchlist: Need the Manual Watchlist Update Option.
-- Scrapping: We need to improve the crap out of scrapping like jkaw did on Kaito Beta.
 - Sources: Having the option to enable/disable Gogo sources.
-- Firebase: Needs a recode or alternative way.
-
-**_Quality_**:
-
-- Artwork: Need Fanart TV in order to cover more clear logos for anime titles and anime fanart.
 
 ## Help needed with maintaining
 
