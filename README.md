@@ -14,17 +14,17 @@ Works fine on Kodi 20 Nexus Alpha 3
 
 # Installation & Updates
 
-_You can install it via repository to provide automatic updates_
+_You can install it via repository to provide automatic updates (future updates may require to rebuild database)_
 
 - Download repository: [repository.hooty](https://github.com/Goldenfreddy0703/repository.hooty/blob/master/repo/zips/repository.hooty/repository.hooty-1.0.zip)
 - Or install it via Kodi file-manager
   - add source: <https://goldenfreddy0703.github.io/repository.hooty>
 
-_or install it manually in the following order (future updates should be installed manually)_
+_or install it manually in the following order (future updates should not be installed manually and these download links could be outdated)_
 
 - [context.otaku](https://github.com/Goldenfreddy0703/repository.hooty/raw/master/repo/zips/context.otaku/context.otaku-0.0.6.zip)
-- [script.otaku.themepak](https://github.com/Goldenfreddy0703/repository.hooty/raw/master/repo/zips/script.otaku.themepak/script.otaku.themepak-0.0.1.zip)
-- [plugin.video.otaku](https://github.com/Goldenfreddy0703/repository.hooty/raw/master/repo/zips/plugin.video.otaku/plugin.video.otaku-0.1.8.zip)
+- [script.otaku.themepak](https://github.com/Goldenfreddy0703/repository.hooty/raw/master/repo/zips/script.otaku.themepak/script.otaku.themepak-0.0.2.zip)
+- [plugin.video.otaku](https://github.com/Goldenfreddy0703/repository.hooty/raw/master/repo/zips/plugin.video.otaku/plugin.video.otaku-0.2.4.zip)
 
 After each update, it is recommended that you clear cache/rebuild database to make sure changes take effect.
 
