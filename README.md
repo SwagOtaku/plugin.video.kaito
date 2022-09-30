@@ -31,8 +31,17 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 ## Todo List
 
 **_Function_**:
+- Watchlist: Sync watched status with all accounts. (anilist, mal, kitsu)
+- TMDB Players: Need to add an Otaku openplayer for tmdb helper. (Examples:https://github.com/a4k-openproject/json.openplayers)
 
-- Sources: Having the option to enable/disable Gogo sources.
+**_Quality_**: 
+- Artwork: Scrape for fanart before listing. (Pls Make it an addon settings option or a context menu option)
+
+**_Optional_**: 
+- Embeds: We need to add AniMixPlay in the future.
+- Movies: May need to be looked at if possible.
+- Context Menu: Wanna add more stuff in the context menu if possible. 
+- Sources: Having the option to enable/disable specific embedded sources.
 
 ## Help needed with maintaining
 
