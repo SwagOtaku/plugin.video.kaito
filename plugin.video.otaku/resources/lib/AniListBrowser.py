@@ -5,7 +5,7 @@ import ast
 import json
 import random
 from functools import partial
-from resources.lib.ui import utils, database, client
+from resources.lib.ui import utils, database, client, get_meta
 from resources.lib.ui.divide_flavors import div_flavor
 import pickle
 
@@ -734,6 +734,7 @@ class AniListBrowser():
         else:
             mapfunc = self._base_anilist_view
 
+        _ = get_meta.collect_meta(json_res['ANIME'])
         all_results = map(mapfunc, json_res['ANIME'])
         all_results = list(itertools.chain(*all_results))
 
@@ -765,9 +766,10 @@ class AniListBrowser():
         return all_results
 
     def _process_mal_to_anilist(self, res):
-        titles = self._get_titles(res)
-        start_date = self._get_start_date(res)
+        # titles = self._get_titles(res)
+        # start_date = self._get_start_date(res)
         self._database_update_show(res)
+        _ = get_meta.collect_meta([res])
 
         return database.get_show(str(res['id']))
 
@@ -790,9 +792,9 @@ class AniListBrowser():
                 pass
 
         kodi_meta = {}
-        show_meta = database.get_show(res['id'])
+        show_meta = database.get_show_meta(res['id'])
         if show_meta:
-            kodi_meta = pickle.loads(show_meta.get('kodi_meta'))
+            kodi_meta.update(pickle.loads(show_meta.get('art')))
 
         title = res.get('title').get(self._TITLE_LANG)
         if not title:
@@ -945,6 +947,7 @@ class AniListBrowser():
         kodi_meta['episodes'] = res['episodes']
         kodi_meta['poster'] = res['coverImage']['extraLarge']
         kodi_meta['status'] = res.get('status')
+        kodi_meta['format'] = res.get('format')
 
         database._update_show(
             res['id'],
@@ -1182,6 +1185,7 @@ class AniListBrowser():
         else:
             mapfunc = self._base_anilist_view
 
+        _ = get_meta.collect_meta(anime_res)
         all_results = list(map(mapfunc, anime_res))
         all_results = list(itertools.chain(*all_results))
 

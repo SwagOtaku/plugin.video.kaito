@@ -17,6 +17,7 @@ class AnilistSyncDatabase:
         self.activites = {}
 
         self._build_show_table()
+        self._build_showmeta_table()
         self._build_episode_table()
         self._build_sync_activities()
         self._build_season_table()
@@ -104,6 +105,7 @@ class AnilistSyncDatabase:
         file.close()
 
         self._build_show_table()
+        self._build_showmeta_table()
         self._build_episode_table()
         self._build_sync_activities()
         self._build_season_table()
@@ -116,12 +118,24 @@ class AnilistSyncDatabase:
                        'mal_id INTEGER,'
                        'simkl_id INTEGER,'
                        'kitsu_id INTEGER,'
-                       'meta_ids BLOB,'
                        'kodi_meta BLOB NOT NULL, '
                        'last_updated TEXT NOT NULL, '
                        'air_date TEXT, '
                        'UNIQUE(anilist_id))')
         cursor.execute('CREATE UNIQUE INDEX IF NOT EXISTS ix_shows ON "shows" (anilist_id ASC )')
+        cursor.connection.commit()
+        cursor.close()
+        control.try_release_lock(control.anilistSyncDB_lock)
+
+    def _build_showmeta_table(self):
+        control.anilistSyncDB_lock.acquire()
+        cursor = self._get_cursor()
+        cursor.execute('CREATE TABLE IF NOT EXISTS shows_meta '
+                       '(anilist_id INTEGER PRIMARY KEY, '
+                       'meta_ids BLOB,'
+                       'art BLOB, '
+                       'UNIQUE(anilist_id))')
+        cursor.execute('CREATE UNIQUE INDEX IF NOT EXISTS ix_shows_meta ON "shows_meta" (anilist_id ASC )')
         cursor.connection.commit()
         cursor.close()
         control.try_release_lock(control.anilistSyncDB_lock)
@@ -218,6 +232,7 @@ class AnilistSyncDatabase:
         file.close()
 
         self._build_show_table()
+        self._build_showmeta_table()
         self._build_episode_table()
         self._build_sync_activities()
         self._build_season_table()

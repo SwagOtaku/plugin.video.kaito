@@ -9,7 +9,7 @@ class TMDBAPI:
         self.baseUrl = "https://api.themoviedb.org/3/"
         self.posterPath = "https://image.tmdb.org/t/p/w500"
         self.thumbPath = "https://image.tmdb.org/t/p/w500"
-        self.backgroundPath = "https://image.tmdb.org/t/p/w1280"
+        self.backgroundPath = "https://image.tmdb.org/t/p/original"
         self.art = {}
         self.request_response = None
         self.threads = []
@@ -169,5 +169,31 @@ class TMDBAPI:
             import traceback
             traceback.print_exc()
             return None
+
+        return art
+
+    def getArt(self, traktItem, mtype):
+        art = {}
+        mid = traktItem.get('tmdb')
+
+        if mid:
+            url = '{0}/{1}/images?include_image_language=en,ja,null'.format(mtype[0:5], traktItem['tmdb'])
+            res = self.get_request(url)
+
+            if res.get('backdrops'):
+                items = []
+                items2 = []
+                for item in res.get('backdrops'):
+                    if item.get('file_path'):
+                        items.append(self.backgroundPath + item.get('file_path'))
+                        items.append(self.thumbPath + item.get('file_path'))
+                art.update({'fanart': items, 'thumb': items2})
+
+            if res.get('logos'):
+                items = []
+                for item in res.get('logos'):
+                    if item.get('url'):
+                        items.append(self.backgroundPath + item.get('url'))
+                art.update({'clearart': items})
 
         return art

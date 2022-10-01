@@ -1,8 +1,6 @@
 import pickle
 import json
 from functools import partial
-from resources.lib.indexers.tmdb import TMDBAPI
-from resources.lib.indexers.fanart import FANARTAPI
 from resources.lib.ui import database, utils, client
 
 
@@ -57,6 +55,9 @@ class SIMKLAPI:
 
     def _process_episode_view(self, anilist_id, json_resp, filter_lang, base_plugin_url, page):
         kodi_meta = pickle.loads(database.get_show(anilist_id)['kodi_meta'])
+        show_meta = database.get_show_meta(anilist_id)
+        if show_meta:
+            kodi_meta.update(pickle.loads(show_meta.get('art')))
         fanart = kodi_meta.get('fanart')
         poster = kodi_meta.get('poster')
         eps_watched = kodi_meta.get('eps_watched')
@@ -68,12 +69,12 @@ class SIMKLAPI:
 
     def get_anime(self, anilist_id, filter_lang):
         show = database.get_show(anilist_id)
+        show_meta = database.get_show_meta(anilist_id)
 
         if show['simkl_id']:
             return self.get_episodes(anilist_id, filter_lang), 'episodes'
 
-        show_meta = show['meta_ids']
-        kodi_meta = pickle.loads(show['kodi_meta'])
+        show_meta = show_meta['meta_ids']
         mal_id = show['mal_id']
 
         if not mal_id:
@@ -82,23 +83,8 @@ class SIMKLAPI:
 
         simkl_id = str(self.get_anime_id(mal_id))
         database.add_mapping_id(anilist_id, 'simkl_id', simkl_id)
-        if show_meta:
-            show_meta = pickle.loads(show['meta_ids'])
-            if not kodi_meta.get('fanart'):
-                mtype = 'tv'
-                if kodi_meta.get('episodes') == 1 and kodi_meta.get('status') == 'FINISHED':
-                    mtype = 'movies'
-                meta = FANARTAPI().getArt(show_meta, mtype)
-                if meta:
-                    kodi_meta['fanart'] = meta.get('fanart')
-                    database.update_kodi_meta(anilist_id, kodi_meta)
-                else:
-                    fanart = TMDBAPI().showFanart(show_meta)
-                    if fanart:
-                        kodi_meta['fanart'] = fanart.get('fanart')
-                        database.update_kodi_meta(anilist_id, kodi_meta)
 
-        return self.get_episodes(anilist_id, filter_lang), 'episodes'
+        return (self.get_episodes(anilist_id, filter_lang), 'episodes')
 
     def _get_episodes(self, anilist_id):
         simkl_id = database.get_show(anilist_id)['simkl_id']

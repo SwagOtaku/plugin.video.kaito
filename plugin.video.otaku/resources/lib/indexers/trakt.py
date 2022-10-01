@@ -123,22 +123,47 @@ class TRAKTAPI:
         all_results = list(map(mapfunc, result))
         return all_results
 
-    def get_trakt_id(self, name):
+    def get_trakt_id(self, name, mtype='tv'):
+        name = re.sub(r'(?i)(?:part|cour)\s\d+$', '', name)
         name = re.sub(r'(?i)(?:season)?\s\d+$', '', name)
-        url = 'search/show?query=%s&genres=anime&extended=full' % urllib_parse.quote(name)
+        rtype = 'show' if mtype == 'tv' else 'movie'
+        url = 'search/%s?query=%s&genres=anime&extended=full' % (rtype, urllib_parse.quote(name.strip()))
         result = database.get(self._json_request, 4, url)
 
         if not result:
             name = name.replace('?', '')
             roman = r'(X{1,3}(IX|IV|V?I{0,3})|X{0,3}(IX|I?V|V?I{1,3}))$'
             name = re.sub(roman, '', name)
-            url = 'search/show?query=%s&genres=anime&extended=full' % urllib_parse.quote(name)
+            if ':' in name:
+                name = name.split(':')[0]
+            url = 'search/%s?query=%s&genres=anime&extended=full' % (rtype, urllib_parse.quote(name.strip()))
             result = database.get(self._json_request, 4, url)
 
         if not result:
             return
 
-        return result[0]['show']['ids']
+        return result[0][rtype]['ids']
+
+    def get_trakt(self, name, mtype='tv'):
+        name = re.sub(r'(?i)(?:part|cour)\s\d+$', '', name)
+        name = re.sub(r'(?i)(?:season)?\s\d+$', '', name)
+        rtype = 'show' if mtype == 'tv' else 'movie'
+        url = 'search/%s?query=%s&genres=anime&extended=full' % (rtype, urllib_parse.quote(name.strip()))
+        result = database.get(self._json_request, 4, url)
+
+        if not result:
+            name = name.replace('?', '')
+            roman = r'(X{1,3}(IX|IV|V?I{0,3})|X{0,3}(IX|I?V|V?I{1,3}))$'
+            name = re.sub(roman, '', name)
+            if ':' in name:
+                name = name.split(':')[0]
+            url = 'search/%s?query=%s&genres=anime&extended=full' % (rtype, urllib_parse.quote(name.strip()))
+            result = database.get(self._json_request, 4, url)
+
+        if not result:
+            return
+
+        return result[0][rtype]
 
     def search_trakt_shows(self, anilist_id):
         kodi_meta = pickle.loads(database.get_show(anilist_id)['kodi_meta'])
@@ -147,6 +172,7 @@ class TRAKTAPI:
         result = self._json_request(url)
 
         if not result:
+            name = re.sub(r'(?i)(?:part)?\s\d+$', '', name)
             name = re.sub(r'(?i)(?:season)?\s\d+', '', name)
             name = name.replace('?', '')
             url = 'search/show?query=%s&genres=anime&extended=full' % urllib_parse.quote(name)
@@ -175,7 +201,7 @@ class TRAKTAPI:
                     database.update_kodi_meta(anilist_id, kodi_meta)
 
     def get_trakt_seasons(self, anilist_id, meta_ids, kodi_meta, db_correction):
-        _ = self._add_fanart(anilist_id, meta_ids, kodi_meta)
+        # _ = self._add_fanart(anilist_id, meta_ids, kodi_meta)
         url = 'shows/%d/seasons?extended=full' % meta_ids['trakt']
 
         if db_correction:
@@ -192,18 +218,21 @@ class TRAKTAPI:
             return self.get_trakt_episodes(anilist_id, seasons['season']), 'episodes'
 
         show = database.get_show(anilist_id)
+        show_meta = database.get_show_meta(anilist_id)
         kodi_meta = pickle.loads(show['kodi_meta'])
 
         if kodi_meta['episodes'] is None or int(kodi_meta['episodes']) > 30:
             return
 
-        meta_ids = pickle.loads(show['meta_ids'])
+        meta_ids = pickle.loads(show_meta['meta_ids'])
 
         return self.get_trakt_seasons(anilist_id, meta_ids, kodi_meta, db_correction)
 
     def get_trakt_episodes(self, show_id, season):
-        show_meta = pickle.loads(database.get_show(show_id)['meta_ids'])
+        show_meta = database.get_show_meta(show_id)
+        meta_ids = pickle.loads(show_meta.get('meta_ids'))
         kodi_meta = pickle.loads(database.get_show(show_id)['kodi_meta'])
+        kodi_meta.update(pickle.loads(show_meta.get('art')))
         fanart = kodi_meta.get('fanart')
         poster = kodi_meta.get('poster')
         eps_watched = kodi_meta.get('eps_watched')
@@ -212,6 +241,6 @@ class TRAKTAPI:
         if episodes:
             return self._process_trakt_episodes(show_id, season, episodes, eps_watched)
 
-        url = "shows/%d/seasons/%s?extended=full" % (show_meta['trakt'], str(season))
+        url = "shows/%d/seasons/%s?extended=full" % (meta_ids['trakt'], str(season))
         data = ''
-        return self._process_trakt_episode_view(show_id, show_meta, season, poster, fanart, eps_watched, url, data, "animes_page/%s/%%d" % show_id)
+        return self._process_trakt_episode_view(show_id, meta_ids, season, poster, fanart, eps_watched, url, data, "animes_page/%s/%%d" % show_id)

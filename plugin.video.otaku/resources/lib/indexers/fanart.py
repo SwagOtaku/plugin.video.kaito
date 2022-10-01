@@ -16,7 +16,7 @@ class FANARTAPI:
         else:
             return None
 
-    def getArt(self, meta_ids, mtype):
+    def getArt(self, meta_ids, mtype='tv'):
         art = {}
         mid = meta_ids.get('tmdb') if mtype == 'movies' else meta_ids.get('tvdb')
         if mid:

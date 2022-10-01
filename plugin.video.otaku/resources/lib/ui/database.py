@@ -232,12 +232,25 @@ def _build_show_table():
                    'mal_id INTEGER,'
                    'simkl_id INTEGER,'
                    'kitsu_id INTEGER,'
-                   'meta_ids BLOB,'
                    'kodi_meta BLOB NOT NULL, '
                    'last_updated TEXT NOT NULL, '
                    'air_date TEXT, '
                    'UNIQUE(anilist_id))')
     cursor.execute('CREATE UNIQUE INDEX IF NOT EXISTS ix_shows ON "shows" (anilist_id ASC )')
+    cursor.connection.commit()
+    cursor.close()
+    control.try_release_lock(control.anilistSyncDB_lock)
+
+
+def _build_showmeta_table():
+    control.anilistSyncDB_lock.acquire()
+    cursor = _get_cursor()
+    cursor.execute('CREATE TABLE IF NOT EXISTS shows_meta '
+                   '(anilist_id INTEGER PRIMARY KEY, '
+                   'meta_ids BLOB,'
+                   'art BLOB, '
+                   'UNIQUE(anilist_id))')
+    cursor.execute('CREATE UNIQUE INDEX IF NOT EXISTS ix_shows_meta ON "shows_meta" (anilist_id ASC )')
     cursor.connection.commit()
     cursor.close()
     control.try_release_lock(control.anilistSyncDB_lock)
@@ -303,12 +316,40 @@ def _update_show(anilist_id, mal_id, kodi_meta, last_updated=''):
         control.try_release_lock(control.anilistSyncDB_lock)
 
 
+def _update_show_meta(anilist_id, meta_ids, art):
+    control.anilistSyncDB_lock.acquire()
+    cursor = _get_cursor()
+    if isinstance(meta_ids, dict):
+        meta_ids = pickle.dumps(meta_ids)
+    if isinstance(art, dict):
+        art = pickle.dumps(art)
+    try:
+        cursor.execute('PRAGMA foreign_keys=OFF')
+        cursor.execute(
+            "REPLACE INTO shows_meta ("
+            "anilist_id, meta_ids, art)"
+            "VALUES "
+            "(?, ?, ?)",
+            (anilist_id, meta_ids, art))
+        cursor.execute('PRAGMA foreign_keys=ON')
+        cursor.connection.commit()
+        cursor.close()
+
+    except:
+        cursor.close()
+        import traceback
+        traceback.print_exc()
+        pass
+    finally:
+        control.try_release_lock(control.anilistSyncDB_lock)
+
+
 def add_meta_ids(anilist_id, meta_ids):
     control.anilistSyncDB_lock.acquire()
     cursor = _get_cursor()
     if isinstance(meta_ids, dict):
         meta_ids = pickle.dumps(meta_ids)
-    cursor.execute('UPDATE shows SET meta_ids=? WHERE anilist_id=?', (meta_ids, anilist_id))
+    cursor.execute('UPDATE shows_meta SET meta_ids=? WHERE anilist_id=?', (meta_ids, anilist_id))
     cursor.connection.commit()
     cursor.close()
     control.try_release_lock(control.anilistSyncDB_lock)
@@ -425,6 +466,17 @@ def get_show(anilist_id):
     control.anilistSyncDB_lock.acquire()
     cursor = _get_connection_cursor(control.anilistSyncDB)
     db_query = 'SELECT * FROM shows WHERE anilist_id IN (%s)' % anilist_id
+    cursor.execute(db_query)
+    shows = cursor.fetchone()
+    cursor.close()
+    control.try_release_lock(control.anilistSyncDB_lock)
+    return shows
+
+
+def get_show_meta(anilist_id):
+    control.anilistSyncDB_lock.acquire()
+    cursor = _get_connection_cursor(control.anilistSyncDB)
+    db_query = 'SELECT * FROM shows_meta WHERE anilist_id IN (%s)' % anilist_id
     cursor.execute(db_query)
     shows = cursor.fetchone()
     cursor.close()

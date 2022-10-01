@@ -91,9 +91,11 @@ class WatchlistFlavorBase(object):
             show = database.get_show_mal(mal_id)
 
         if show:
-            show_meta = pickle.loads(show['kodi_meta'])
-            next_up_meta['image'] = show_meta.get('fanart')
             anilist_id = show['anilist_id']
+
+            art = pickle.loads(database.get_show_meta(anilist_id).get('art'))
+            next_up_meta['image'] = art.get('fanart')
+
             episodes = database.get_episode_list(show['anilist_id'])
             if episodes:
                 try:

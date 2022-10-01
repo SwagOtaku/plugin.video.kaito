@@ -90,9 +90,6 @@ class OtakuBrowser(BrowserBase):
         database.add_meta_ids(show_id, meta_ids)
         database.remove_season(show_id)
         database.remove_episodes(show_id)
-        name = pickle.loads(database.get_show(show_id)['kodi_meta'])
-        name.pop('fanart', None)
-        database.add_fanart(show_id, name)
 
     def search_trakt_shows(self, anilist_id):
         shows = trakt.TRAKTAPI().search_trakt_shows(anilist_id)
@@ -117,16 +114,17 @@ class OtakuBrowser(BrowserBase):
         return simkl.SIMKLAPI().get_anime(anilist_id, params)
 
     def get_anime_init(self, anilist_id, filter_lang=None):
-        show_meta = database.get_show(anilist_id)
-
-        if not show_meta:
+        show = database.get_show(anilist_id)
+        if not show:
             from resources.lib.AniListBrowser import AniListBrowser
             show_meta = AniListBrowser().get_anilist(anilist_id)
 
+        show_meta = database.get_show_meta(anilist_id)
         if not show_meta['meta_ids']:
-            kodi_meta = pickle.loads(show_meta['kodi_meta'])
+            kodi_meta = pickle.loads(show['kodi_meta'])
             name = kodi_meta['ename'] or kodi_meta['name']
-            trakt_id = trakt.TRAKTAPI().get_trakt_id(name)
+            mtype = 'movie' if kodi_meta.get('format') == 'MOVIE' else 'tv'
+            trakt_id = trakt.TRAKTAPI().get_trakt_id(name, mtype=mtype)
 
             if not trakt_id:
                 return self.get_anime_simkl(anilist_id, filter_lang)

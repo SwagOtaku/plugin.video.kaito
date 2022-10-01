@@ -2,7 +2,7 @@ import itertools
 import json
 import pickle
 import random
-from resources.lib.ui import database
+from resources.lib.ui import database, get_meta
 from resources.lib.WatchlistFlavor.WatchlistFlavorBase import WatchlistFlavorBase
 
 
@@ -211,13 +211,13 @@ class AniListWLF(WatchlistFlavorBase):
         except IndexError:
             entries = []
 
+        _ = get_meta.collect_meta(entries)
         if next_up:
             all_results = list(map(self._base_next_up_view, reversed(entries)))
         else:
             all_results = list(map(self._base_watchlist_status_view, reversed(entries)))
 
         all_results = [i for i in all_results if i is not None]
-
         all_results = list(itertools.chain(*all_results))
         return all_results
 
@@ -313,17 +313,17 @@ class AniListWLF(WatchlistFlavorBase):
             "plot": info
         }
 
-        show_meta = database.get_show(res['id'])
+        show_meta = database.get_show_meta(res['id'])
         if show_meta:
-            kodi_meta = pickle.loads(show_meta['kodi_meta'])
-            if kodi_meta.get('fanart'):
-                base['fanart'] = random.choice(kodi_meta.get('fanart'))
-            if kodi_meta.get('thumb'):
-                base['landscape'] = random.choice(kodi_meta.get('thumb'))
-            if kodi_meta.get('clearart'):
-                base['clearart'] = random.choice(kodi_meta.get('clearart'))
-            if kodi_meta.get('clearlogo'):
-                base['clearlogo'] = random.choice(kodi_meta.get('clearlogo'))
+            art = pickle.loads(show_meta['art'])
+            if art.get('fanart'):
+                base['fanart'] = random.choice(art.get('fanart'))
+            if art.get('thumb'):
+                base['landscape'] = random.choice(art.get('thumb'))
+            if art.get('clearart'):
+                base['clearart'] = random.choice(art.get('clearart'))
+            if art.get('clearlogo'):
+                base['clearlogo'] = random.choice(art.get('clearlogo'))
 
         if res['format'] == 'MOVIE' and res['episodes'] == 1:
             base['url'] = "watchlist_to_movie/?anilist_id=%s" % (res['id'])
@@ -382,6 +382,18 @@ class AniListWLF(WatchlistFlavorBase):
             "fanart": image,
             "poster": poster,
         }
+
+        show_meta = database.get_show_meta(res['id'])
+        if show_meta:
+            art = pickle.loads(show_meta['art'])
+            if art.get('fanart'):
+                base['fanart'] = random.choice(art.get('fanart'))
+            if art.get('thumb'):
+                base['landscape'] = random.choice(art.get('thumb'))
+            if art.get('clearart'):
+                base['clearart'] = random.choice(art.get('clearart'))
+            if art.get('clearlogo'):
+                base['clearlogo'] = random.choice(art.get('clearlogo'))
 
         if next_up_meta:
             base['url'] = url
