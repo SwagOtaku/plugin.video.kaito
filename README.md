@@ -33,9 +33,6 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 **_Function_**:
 - Watchlist: Sync watched status with all accounts. (anilist, mal, kitsu)
 
-**_Quality_**: 
-- Artwork: Scrape for fanart before listing. (Pls Make it an addon settings option or a context menu option)
-
 **_Optional_**: 
 - TMDB Players: Need to add an Otaku openplayer for tmdb helper. (Examples: [a4k-openproject](https://github.com/a4k-openproject/json.openplayers))
 - Embeds: We need to add AniMixPlay in the future.
