@@ -36,7 +36,6 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 **_Optional_**: 
 - TMDB Players: Need to add an Otaku openplayer for tmdb helper. (Examples: [a4k-openproject](https://github.com/a4k-openproject/json.openplayers))
 - Embeds: We need to add AniMixPlay in the future.
-- Movies: May need to be looked at if possible.
 - Context Menu: Wanna add more stuff in the context menu if possible. 
 - Sources: Having the option to enable/disable specific embedded sources.
 
