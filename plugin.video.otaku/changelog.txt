@@ -1,3 +1,6 @@
+Changelog 0.2.5 [20220930]:
+- Improve meta scraping
+
 Changelog 0.2.4 [20220928]:
 - Add mulitple backgrounds, banner, clearlogo 
 
