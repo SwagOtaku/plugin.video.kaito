@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.2.5">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.2.6">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -24,8 +24,9 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.2.5 [20220930]:
-- Improve meta scraping
+Changelog 0.2.6 [20221002]:
+- Fixed NextUp
+- Fixed missing clearlogo and background
     </news>
   </extension>
 </addon>
