@@ -1,6 +1,7 @@
 import pickle
 from resources.lib.ui import utils, database, client, control
 import json
+import random
 
 
 class WatchlistFlavorBase(object):
@@ -94,7 +95,7 @@ class WatchlistFlavorBase(object):
             anilist_id = show['anilist_id']
 
             art = pickle.loads(database.get_show_meta(anilist_id).get('art'))
-            next_up_meta['image'] = art.get('fanart')
+            next_up_meta['image'] = random.choice(art.get('fanart'))
 
             episodes = database.get_episode_list(show['anilist_id'])
             if episodes:
