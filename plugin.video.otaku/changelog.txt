@@ -1,3 +1,7 @@
+Changelog 0.2.6 [20221002]:
+- Fixed NextUp
+- Fixed missing clearlogo and background
+
 Changelog 0.2.5 [20220930]:
 - Improve meta scraping
 
