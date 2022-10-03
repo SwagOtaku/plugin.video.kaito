@@ -1,3 +1,6 @@
+Changelog 0.2.7 [20221003]:
+- Dont use trakt for anime split seasons
+
 Changelog 0.2.6 [20221002]:
 - Fixed NextUp
 - Fixed missing clearlogo and background
