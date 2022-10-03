@@ -6,6 +6,7 @@ from resources.lib.ui.BrowserBase import BrowserBase
 from resources.lib.indexers import simkl, trakt
 import pickle
 import datetime
+import re
 
 
 class OtakuBrowser(BrowserBase):
@@ -117,7 +118,7 @@ class OtakuBrowser(BrowserBase):
         show = database.get_show(anilist_id)
         if not show:
             from resources.lib.AniListBrowser import AniListBrowser
-            show_meta = AniListBrowser().get_anilist(anilist_id)
+            show = AniListBrowser().get_anilist(anilist_id)
 
         show_meta = database.get_show_meta(anilist_id)
         if not show_meta['meta_ids']:
@@ -125,11 +126,15 @@ class OtakuBrowser(BrowserBase):
             name = kodi_meta['ename'] or kodi_meta['name']
             mtype = 'movie' if kodi_meta.get('format') == 'MOVIE' else 'tv'
             trakt_id = trakt.TRAKTAPI().get_trakt_id(name, mtype=mtype)
+            if trakt_id:
+                database.add_meta_ids(anilist_id, trakt_id)
+        else:
+            trakt_id = pickle.loads(show_meta.get('meta_ids')).get('trakt')
 
-            if not trakt_id:
-                return self.get_anime_simkl(anilist_id, filter_lang)
-
-            database.add_meta_ids(anilist_id, trakt_id)
+        title = pickle.loads(show.get('kodi_meta')).get('ename')
+        p = re.search(r'(?:part|cour)\s*\d', title, re.I)
+        if not trakt_id or p:
+            return self.get_anime_simkl(anilist_id, filter_lang)
 
         return self.get_anime_trakt(anilist_id, filter_lang=filter_lang)
 
