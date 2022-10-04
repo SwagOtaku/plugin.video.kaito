@@ -1,5 +1,6 @@
 import pickle
 import json
+import random
 from functools import partial
 from resources.lib.ui import database, utils, client
 
@@ -26,14 +27,26 @@ class SIMKLAPI:
 
     def _parse_episode_view(self, res, anilist_id, poster, fanart, eps_watched, filter_lang):
         url = "%s/%s/" % (anilist_id, res['episode'])
-
+        if isinstance(fanart, list):
+            fanart = random.choice(fanart)
         if filter_lang:
             url += filter_lang
 
         name = 'Ep. %d (%s)' % (res['episode'], res.get('title'))
-        image = poster or fanart
+
         if res['img'] is not None:
             image = self.imagePath % res['img']
+        else:
+            show_meta = database.get_show_meta(anilist_id)
+            if show_meta:
+                thumbs = pickle.loads(show_meta.get('art')).get('thumb')
+                if thumbs:
+                    image = random.choice(thumbs)
+                else:
+                    image = fanart or poster
+            else:
+                image = fanart or poster
+
         info = {}
         info['plot'] = res['description']
         info['title'] = res['title']

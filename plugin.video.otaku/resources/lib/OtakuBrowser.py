@@ -121,7 +121,7 @@ class OtakuBrowser(BrowserBase):
             show = AniListBrowser().get_anilist(anilist_id)
 
         show_meta = database.get_show_meta(anilist_id)
-        if not show_meta['meta_ids']:
+        if not show_meta:
             kodi_meta = pickle.loads(show['kodi_meta'])
             name = kodi_meta['ename'] or kodi_meta['name']
             mtype = 'movie' if kodi_meta.get('format') == 'MOVIE' else 'tv'
@@ -129,7 +129,7 @@ class OtakuBrowser(BrowserBase):
             if trakt_id:
                 database.add_meta_ids(anilist_id, trakt_id)
         else:
-            trakt_id = pickle.loads(show_meta.get('meta_ids')).get('trakt')
+            trakt_id = pickle.loads(show_meta.get('meta_ids'))
 
         title = pickle.loads(show.get('kodi_meta')).get('ename')
         p = re.search(r'(?:part|cour)\s*\d', title, re.I)
