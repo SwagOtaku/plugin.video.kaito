@@ -1,3 +1,6 @@
+Changelog 0.2.8 [20221004]:
+- Improve episode thumbnails when simkl is used
+
 Changelog 0.2.7 [20221003]:
 - Dont use trakt for anime split seasons
 
