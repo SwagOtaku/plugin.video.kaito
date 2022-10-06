@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.2.8">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.2.9">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -24,8 +24,10 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.2.8 [20221004]:
-- Improve episode thumbnails when simkl is used
+Changelog 0.2.9 [20221006]:
+- Added New Setting to change Content Format for Menu Items
+- Added Changelog Menu in Tools
+- Added textview window and base dialog window for changelog
     </news>
   </extension>
 </addon>
