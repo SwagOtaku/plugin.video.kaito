@@ -61,6 +61,10 @@ msgctxt "#30013"
 msgid "Tools"
 msgstr ""
 
+msgctxt "#30019"
+msgid "View changelog"
+msgstr ""
+
 msgctxt "#30020"
 msgid "Open Settings Menu"
 msgstr ""
@@ -623,8 +627,4 @@ msgstr ""
 
 msgctxt "#40399"
 msgid "MUSIC"
-msgstr ""
-
-msgctxt "#30019"
-msgid "View changelog"
 msgstr ""

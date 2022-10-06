@@ -438,13 +438,13 @@ def RESCRAPE_PLAY(payload, params):
 @route('tools')
 def TOOLS_MENU(payload, params):
     TOOLS_ITEMS = [
+        (control.lang(30019), "change_log", 'changelog.png'),
         (control.lang(30020), "settings", 'open settings menu.png'),
         (control.lang(30021), "clear_cache", 'clear cache.png'),
         (control.lang(30022), "clear_torrent_cache", 'clear local torrent cache.png'),
         (control.lang(30023), "clear_history", 'clear search history.png'),
         (control.lang(30026), "rebuild_database", 'rebuild database.png'),
         (control.lang(30024), "wipe_addon_data", 'wipe addon data.png'),
-        (control.lang(30019), "change_log", 'changelog.png'),
     ]
 
     return control.draw_items(
