@@ -1,3 +1,8 @@
+Changelog 0.2.10 [20221006]:
+- Fix error when no thumbs available
+- Fix preferred audio selection
+- Improve episode meta collection for running series
+
 Changelog 0.2.9 [20221006]:
 - Added New Setting to change Content Format for Menu Items
 - Added Changelog Menu in Tools
