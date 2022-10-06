@@ -32,7 +32,6 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 
 **_Function_**:
 - Watchlist: Sync watched status with all accounts. (anilist, mal, kitsu)
-- Options>General>Interface: Having a Format Option to change menu items.
 - Options>General>Interface: Shows Dubs Only options.
 
 **_Optional_**: 
