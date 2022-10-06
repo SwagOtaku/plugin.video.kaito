@@ -1,3 +1,8 @@
+Changelog 0.2.9 [20221006]:
+- Added New Setting to change Content Format for Menu Items
+- Added Changelog Menu in Tools
+- Added textview window and base dialog window for changelog
+
 Changelog 0.2.8 [20221004]:
 - Improve episode thumbnails when simkl is used
 
