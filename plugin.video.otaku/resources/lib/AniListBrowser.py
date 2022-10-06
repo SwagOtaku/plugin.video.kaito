@@ -5,11 +5,7 @@ import ast
 import json
 import random
 from functools import partial
-<<<<<<< Updated upstream
-from resources.lib.ui import utils, database, client, get_meta
-=======
-from resources.lib.ui import utils, database, control
->>>>>>> Stashed changes
+from resources.lib.ui import utils, database, client, get_meta, control
 from resources.lib.ui.divide_flavors import div_flavor
 import pickle
 
