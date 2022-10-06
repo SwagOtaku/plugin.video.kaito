@@ -227,14 +227,14 @@ class AniListWLF(WatchlistFlavorBase):
 
         # remove cached eps for releasing shows every five days so new eps metadata can be shown
         if res.get('status') == 'RELEASING':
-            try:
-                from datetime import datetime, timedelta
-                check_update = (datetime.today() - timedelta(days=5)).strftime('%Y-%m-%d')
-                last_updated = database.get_episode_list(116006)[0]['last_updated']
-                if check_update == last_updated:
+            from datetime import date
+            ep_list = database.get_episode_list(res['id'])
+            if ep_list:
+                last_updated = ep_list[0]['last_updated']
+                ldate = date.fromisoformat(last_updated)
+                ldiff = date.today() - ldate
+                if ldiff.days >= 5:
                     database.remove_episodes(res['id'])
-            except:
-                pass
 
         info = {}
 

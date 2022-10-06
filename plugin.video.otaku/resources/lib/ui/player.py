@@ -150,22 +150,14 @@ class watchlistPlayer(xbmc.Player):
 
         control.closeAllDialogs()
 
-        try:
-            audio_lang = self.getAvailableAudioStreams()
-            if len(audio_lang) > 1:
-                try:
-                    preferred_audio = int(control.getSetting('general.audio'))
-                    audio_int = audio_lang.index(control.lang(preferred_audio))
-                    self.setAudioStream(audio_int)
-                except:
-                    pass
-                try:
-                    if preferred_audio == 40315:
-                        self.setSubtitleStream(1)
-                except:
-                    pass
-        except:
-            pass
+        audio_lang = self.getAvailableAudioStreams()
+        if len(audio_lang) > 1:
+            control.log('Audio streams are {0}'.format(repr(audio_lang)), 'info')
+            preferred_audio = control.getSetting('general.audio')
+            if len(preferred_audio) == 5:
+                preferred_audio = control.lang(int(preferred_audio))
+            audio_int = audio_lang.index(preferred_audio)
+            self.setAudioStream(audio_int)
 
         if self.media_type == 'movie':
             return self.onWatchedPercent()

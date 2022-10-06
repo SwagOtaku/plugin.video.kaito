@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-	Added by umbrelladev 10-6-22
+    Added by umbrelladev 10-6-22
 """
 from resources.lib.windows.base import BaseDialog
 
@@ -28,5 +28,3 @@ class TextViewerXML(BaseDialog):
     def set_properties(self):
         self.setProperty('otaku.text', self.text)
         self.setProperty('otaku.heading', self.heading)
-        
-

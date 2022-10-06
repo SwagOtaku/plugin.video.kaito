@@ -347,17 +347,18 @@ def artPath():
 def getKodiVersion():
     return int(xbmc.getInfoLabel("System.BuildVersion").split(".")[0])
 
+
 def getChangeLog():
     addon_version = xbmcaddon.Addon('plugin.video.otaku').getAddonInfo('version')
     changelog_file = os.path.join(ADDON_PATH, 'changelog.txt')
     if not xbmcvfs.exists(changelog_file):
-        return xbmc.executebuiltin('Notification(%s, %s, %d, %s)'%('Otaku','Changelog file not found.', 5000, xbmcgui.NOTIFICATION_ERROR))
+        return xbmc.executebuiltin('Notification(%s, %s, %d, %s)' % ('Otaku', 'Changelog file not found.', 5000, xbmcgui.NOTIFICATION_ERROR))
     f = open(changelog_file, 'r', encoding='utf-8', errors='ignore')
     text = f.read()
     f.close()
     heading = '[B]%s -  v%s - ChangeLog[/B]' % ('Otaku', addon_version)
     from resources.lib.windows.textviewer import TextViewerXML
     windows = TextViewerXML('textviewer.xml', ADDON_PATH, heading=heading, text=text)
-    #windows = TextViewerXML(*('textviewer.xml', ADDON_PATH),heading=heading, text=text).doModal()
+    # windows = TextViewerXML(*('textviewer.xml', ADDON_PATH),heading=heading, text=text).doModal()
     windows.run()
     del windows

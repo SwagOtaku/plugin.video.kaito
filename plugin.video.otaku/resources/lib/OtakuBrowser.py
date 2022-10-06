@@ -131,7 +131,8 @@ class OtakuBrowser(BrowserBase):
         else:
             trakt_id = pickle.loads(show_meta.get('meta_ids'))
 
-        title = pickle.loads(show.get('kodi_meta')).get('ename')
+        kodi_meta = pickle.loads(show.get('kodi_meta'))
+        title = kodi_meta.get('ename') or kodi_meta.get('name')
         p = re.search(r'(?:part|cour)\s*\d', title, re.I)
         if not trakt_id or p:
             return self.get_anime_simkl(anilist_id, filter_lang)
@@ -139,10 +140,14 @@ class OtakuBrowser(BrowserBase):
         return self.get_anime_trakt(anilist_id, filter_lang=filter_lang)
 
     def get_episodeList(self, show_id, pass_idx, filter_lang=None, rescrape=False):
+        show = database.get_show(show_id)
         episodes = database.get_episode_list(int(show_id))
 
         if episodes:
-            items = trakt.TRAKTAPI()._process_trakt_episodes(show_id, '', episodes, '')
+            if show['simkl_id']:
+                items = simkl.SIMKLAPI().get_episodes(show_id)
+            else:
+                items = trakt.TRAKTAPI()._process_trakt_episodes(show_id, '', episodes, '')
         else:
             items = simkl.SIMKLAPI().get_episodes(show_id)
 

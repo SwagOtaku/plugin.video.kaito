@@ -25,7 +25,7 @@ class SIMKLAPI:
         response = json.loads(response)
         return response
 
-    def _parse_episode_view(self, res, anilist_id, poster, fanart, eps_watched, filter_lang):
+    def _parse_episode_view(self, res, anilist_id, poster, fanart, eps_watched, filter_lang, update_time):
         url = "%s/%s/" % (anilist_id, res['episode'])
         if isinstance(fanart, list):
             fanart = random.choice(fanart)
@@ -64,9 +64,12 @@ class SIMKLAPI:
         info['tvshowtitle'] = pickle.loads(database.get_show(anilist_id)['kodi_meta'])['title_userPreferred']
         info['mediatype'] = 'episode'
         parsed = utils.allocate_item(name, "play/" + str(url), False, image, info, fanart, poster)
+        database._update_episode(anilist_id, 1, res['episode'], '', update_time, parsed)
         return parsed
 
     def _process_episode_view(self, anilist_id, json_resp, filter_lang, base_plugin_url, page):
+        from datetime import date
+        update_time = date.today().isoformat()
         kodi_meta = pickle.loads(database.get_show(anilist_id)['kodi_meta'])
         show_meta = database.get_show_meta(anilist_id)
         if show_meta:
@@ -75,19 +78,19 @@ class SIMKLAPI:
         poster = kodi_meta.get('poster')
         eps_watched = kodi_meta.get('eps_watched')
         json_resp = [x for x in json_resp if x['type'] == 'episode']
-        mapfunc = partial(self._parse_episode_view, anilist_id=anilist_id, poster=poster, fanart=fanart, eps_watched=eps_watched, filter_lang=filter_lang)
+        mapfunc = partial(self._parse_episode_view, anilist_id=anilist_id, poster=poster, fanart=fanart, eps_watched=eps_watched, filter_lang=filter_lang, update_time=update_time)
         all_results = list(map(mapfunc, json_resp))
 
         return all_results
 
     def get_anime(self, anilist_id, filter_lang):
         show = database.get_show(anilist_id)
-        show_meta = database.get_show_meta(anilist_id)
+        # show_meta = database.get_show_meta(anilist_id)
 
         if show['simkl_id']:
-            return self.get_episodes(anilist_id, filter_lang), 'episodes'
+            return (self.get_episodes(anilist_id, filter_lang), 'episodes')
 
-        show_meta = show_meta['meta_ids']
+        # show_meta = show_meta['meta_ids']
         mal_id = show['mal_id']
 
         if not mal_id:

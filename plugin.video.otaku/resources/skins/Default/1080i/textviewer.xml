@@ -33,7 +33,7 @@
 					<textcolor>white</textcolor>
 					<align>center</align>
 					<aligny>center</aligny>
-						<label>$INFO[Window().Property(otaku.heading)]</label>
+					<label>$INFO[Window().Property(otaku.heading)]</label>
 				</control>
 				<control type="textbox" id="2000">
 					<left>45</left>

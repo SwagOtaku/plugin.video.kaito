@@ -109,7 +109,7 @@ class AniListBrowser():
             'year': str(year) + '%',
             'sort': "FAVOURITES_DESC"
         }
-        
+
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
@@ -782,15 +782,14 @@ class AniListBrowser():
 
         # remove cached eps for releasing shows every five days so new eps metadata can be shown
         if res.get('status') == 'RELEASING':
-            try:
-                from datetime import datetime
-                present = datetime.now()
-                last_updated = database.get_episode_list(res['id'])[0]['last_updated']
-                last_updated = datetime.strptime(last_updated, '%Y-%m-%d')
-                if last_updated.date() <= present.date():
+            from datetime import date
+            ep_list = database.get_episode_list(res['id'])
+            if ep_list:
+                last_updated = ep_list[0]['last_updated']
+                ldate = date.fromisoformat(last_updated)
+                ldiff = date.today() - ldate
+                if ldiff.days >= 5:
                     database.remove_episodes(res['id'])
-            except:
-                pass
 
         kodi_meta = {}
         show_meta = database.get_show_meta(res['id'])

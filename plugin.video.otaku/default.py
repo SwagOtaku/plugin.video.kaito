@@ -79,7 +79,7 @@ def seasonCorrection(payload, params):
 @route('season_correction_database/*')
 def seasonCorrectionDatabase(payload, params):
     show_id, meta_ids = payload.rsplit("/")
-    clean_show = _BROWSER.clean_show(show_id, meta_ids)
+    # clean_show = _BROWSER.clean_show(show_id, meta_ids)
     trakt, content_type = _BROWSER.get_anime_trakt(show_id, True)
     return control.draw_items(trakt, content_type)
 
@@ -132,13 +132,15 @@ def REBUILD_DATABASE(payload, params):
 
 @route('wipe_addon_data')
 def WIPE_ADDON_DATA(payload, params):
-    dialog = control.yesno_dialog(control.lang(30010), control.lang(30025))
+    dialog = control.yesno_dialog(control.lang(30024), control.lang(30025))
     return control.clear_settings(dialog)
+
 
 @route('change_log')
 def CHANGE_LOG(payload, params):
     from resources.lib.ui import control
     return control.getChangeLog()
+
 
 @route('animes/*')
 def ANIMES_PAGE(payload, params):
@@ -307,14 +309,14 @@ def SEARCH(payload, params):
     if isinstance(action_args, dict):
         query = action_args.get('query')
     else:
-        query = control.keyboard(control.lang(30010))
+        query = control.keyboard(control.lang(30012))
     if not query:
         return False
 
     # TODO: Better logic here, maybe move functionatly into router?
     if "Yes" in control.getSetting('searchhistory'):
         database.addSearchHistory(query, 'show')
-        history = database.getSearchHistory('show')
+        # history = database.getSearchHistory('show')
 
     if isinstance(action_args, dict):
         control.draw_items(_ANILIST_BROWSER.get_search(query, (int(action_args.get('page', '1')))))
