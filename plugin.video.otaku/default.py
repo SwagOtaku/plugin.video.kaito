@@ -135,6 +135,10 @@ def WIPE_ADDON_DATA(payload, params):
     dialog = control.yesno_dialog(control.lang(30010), control.lang(30025))
     return control.clear_settings(dialog)
 
+@route('change_log')
+def CHANGE_LOG(payload, params):
+    from resources.lib.ui import control
+    return control.getChangeLog()
 
 @route('animes/*')
 def ANIMES_PAGE(payload, params):
@@ -440,6 +444,7 @@ def TOOLS_MENU(payload, params):
         (control.lang(30023), "clear_history", 'clear search history.png'),
         (control.lang(30026), "rebuild_database", 'rebuild database.png'),
         (control.lang(30024), "wipe_addon_data", 'wipe addon data.png'),
+        (control.lang(30019), "change_log", 'changelog.png'),
     ]
 
     return control.draw_items(
