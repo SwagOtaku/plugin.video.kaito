@@ -588,3 +588,39 @@ msgstr ""
 msgctxt "#40390"
 msgid "White"
 msgstr ""
+
+msgctxt "#40391"
+msgid "Set content format"
+msgstr ""
+
+msgctxt "#40392"
+msgid "Format"
+msgstr ""
+
+msgctxt "#40393"
+msgid "TV"
+msgstr ""
+
+msgctxt "#40394"
+msgid "MOVIE"
+msgstr ""
+
+msgctxt "#40395"
+msgid "TV_SHORT"
+msgstr ""
+
+msgctxt "#40396"
+msgid "SPECIAL"
+msgstr ""
+
+msgctxt "#40397"
+msgid "OVA"
+msgstr ""
+
+msgctxt "#40398"
+msgid "ONA"
+msgstr ""
+
+msgctxt "#40399"
+msgid "MUSIC"
+msgstr ""

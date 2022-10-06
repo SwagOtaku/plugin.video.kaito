@@ -5,7 +5,7 @@ import ast
 import json
 import random
 from functools import partial
-from resources.lib.ui import utils, database, client, get_meta
+from resources.lib.ui import utils, database, client, get_meta, control
 from resources.lib.ui.divide_flavors import div_flavor
 import pickle
 
@@ -18,6 +18,10 @@ class AniListBrowser():
             self._TITLE_LANG = self._title_lang(title_key)
         else:
             self._TITLE_LANG = "userPreferred"
+        self.format_in_type = ''
+        filterEnable = control.getSetting('contentformat.bool') == "true"
+        if filterEnable:
+            self.format_in_type = control.getSetting('contentformat.menu')
 
     def _title_lang(self, title_key):
         title_lang = {
@@ -58,8 +62,8 @@ class AniListBrowser():
             'sort': "POPULARITY_DESC"
         }
 
-        if format_in:
-            variables['format'] = [format_in.upper()]
+        if self.format_in_type:
+            variables['format'] = [self.format_in_type.upper()]
 
         airing_anime = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(airing_anime, "anilist_airing_anime/%d", page)
@@ -74,8 +78,8 @@ class AniListBrowser():
             'sort': "TRENDING_DESC"
         }
 
-        if format_in:
-            variables['format'] = [format_in.upper()]
+        if self.format_in_type:
+            variables['format'] = [self.format_in_type.upper()]
 
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_trending/%d", page)
@@ -90,8 +94,8 @@ class AniListBrowser():
             'sort': "POPULARITY_DESC"
         }
 
-        if format_in:
-            variables['format'] = [format_in.upper()]
+        if self.format_in_type:
+            variables['format'] = [self.format_in_type.upper()]
 
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_popular/%d", page)
@@ -105,9 +109,9 @@ class AniListBrowser():
             'year': str(year) + '%',
             'sort': "FAVOURITES_DESC"
         }
-
-        if format_in:
-            variables['format'] = [format_in.upper()]
+        
+        if self.format_in_type:
+            variables['format'] = [self.format_in_type.upper()]
 
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_voted/%d", page)
@@ -122,8 +126,8 @@ class AniListBrowser():
             'sort': "POPULARITY_DESC"
         }
 
-        if format_in:
-            variables['format'] = [format_in.upper()]
+        if self.format_in_type:
+            variables['format'] = [self.format_in_type.upper()]
 
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming/%d", page)
@@ -135,8 +139,8 @@ class AniListBrowser():
             'sort': "TRENDING_DESC"
         }
 
-        if format_in:
-            variables['format'] = [format_in.upper()]
+        if self.format_in_type:
+            variables['format'] = [self.format_in_type.upper()]
 
         all_time_trending = database.get(self.get_base_res, 24, variables, page)
         return self._process_anilist_view(all_time_trending, "anilist_all_time_trending/%d", page)
@@ -148,8 +152,8 @@ class AniListBrowser():
             'sort': "POPULARITY_DESC"
         }
 
-        if format_in:
-            variables['format'] = [format_in.upper()]
+        if self.format_in_type:
+            variables['format'] = [self.format_in_type.upper()]
 
         all_time_popular = database.get(self.get_base_res, 24, variables, page)
         return self._process_anilist_view(all_time_popular, "anilist_all_time_popular/%d", page)
@@ -161,8 +165,8 @@ class AniListBrowser():
             'sort': "FAVOURITES_DESC"
         }
 
-        if format_in:
-            variables['format'] = [format_in.upper()]
+        if self.format_in_type:
+            variables['format'] = [self.format_in_type.upper()]
 
         all_time_voted = database.get(self.get_base_res, 24, variables, page)
         return self._process_anilist_view(all_time_voted, "anilist_all_time_voted/%d", page)
@@ -174,14 +178,14 @@ class AniListBrowser():
             'sort': "SCORE_DESC"
         }
 
-        if format_in:
-            variables['format'] = [format_in.upper()]
+        if self.format_in_type:
+            variables['format'] = [self.format_in_type.upper()]
 
         top_100_anime = database.get(self.get_base_res, 24, variables, page)
         return self._process_anilist_view(top_100_anime, "anilist_top_100_anime/%d", page)
 
     def get_airing(self, page=1, format_in=''):
-        airing = database.get(self._get_airing, 12, page, format_in)
+        airing = database.get(self._get_airing, 12, page, self.format_in_type)
         return airing
 
     def _get_airing(self, page=1, format_in=''):
@@ -195,9 +199,6 @@ class AniListBrowser():
             'weekEnd': weekEnd,
             'page': page
         }
-
-        if format_in:
-            variables['format'] = [format_in.upper()]
 
         list_ = []
 
