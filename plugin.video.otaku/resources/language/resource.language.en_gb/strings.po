@@ -62,7 +62,7 @@ msgid "Tools"
 msgstr ""
 
 msgctxt "#30019"
-msgid "View changelog"
+msgid "View Changelog"
 msgstr ""
 
 msgctxt "#30020"
