@@ -624,3 +624,7 @@ msgstr ""
 msgctxt "#40399"
 msgid "MUSIC"
 msgstr ""
+
+msgctxt "#30019"
+msgid "View changelog"
+msgstr ""
