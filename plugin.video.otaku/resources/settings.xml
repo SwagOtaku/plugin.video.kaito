@@ -16,7 +16,7 @@
 		<setting id="contenttype.menu" type="labelenum" subsetting="true" label="40304" lvalues="40305|40306|40368" default="40305" visible="eq(-1,true)"/>
 		<setting id="sep"/>
 		<setting id="contentformat.bool" label="40391" type="bool" default="false"/>
-		<setting id="contentformat.menu" type="labelenum" subsetting="true" label="40392" lvalues="40393|40394|40395|40396|40397|40398|40399|40400" default="40393" visible="eq(-1,true)"/>
+		<setting id="contentformat.menu" type="labelenum" subsetting="true" label="40392" lvalues="40393|40394|40395|40396|40397|40398|40399" default="40393" visible="eq(-1,true)"/>
 		<setting id="sep"/>
 		<setting id="general.icons" type="enum" label="40388" lvalues="40389|40390" default="0"/>
 		<!--

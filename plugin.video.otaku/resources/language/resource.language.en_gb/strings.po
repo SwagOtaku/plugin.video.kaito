@@ -598,33 +598,29 @@ msgid "Format"
 msgstr ""
 
 msgctxt "#40393"
-msgid "Any"
-msgstr ""
-
-msgctxt "#40394"
 msgid "TV"
 msgstr ""
 
-msgctxt "#40395"
+msgctxt "#40394"
 msgid "MOVIE"
 msgstr ""
 
-msgctxt "#40396"
+msgctxt "#40395"
 msgid "TV_SHORT"
 msgstr ""
 
-msgctxt "#40397"
+msgctxt "#40396"
 msgid "SPECIAL"
 msgstr ""
 
-msgctxt "#40398"
+msgctxt "#40397"
 msgid "OVA"
 msgstr ""
 
-msgctxt "#40399"
+msgctxt "#40398"
 msgid "ONA"
 msgstr ""
 
-msgctxt "#40400"
+msgctxt "#40399"
 msgid "MUSIC"
 msgstr ""
