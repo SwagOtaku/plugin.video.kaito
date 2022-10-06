@@ -19,7 +19,7 @@ class AniListBrowser():
         else:
             self._TITLE_LANG = "userPreferred"
         self.format_in_type = ''
-        filterEnable = control.getSetting('contentformat.bool')
+        filterEnable = control.getSetting('contentformat.bool') == "true"
         if filterEnable:
             self.format_in_type = control.getSetting('contentformat.menu')
 
