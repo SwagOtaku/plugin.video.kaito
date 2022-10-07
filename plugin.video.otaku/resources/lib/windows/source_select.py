@@ -23,9 +23,9 @@ class SourceSelect(BaseWindow):
         self.last_action = 0
         control.closeBusyDialog()
         self.stream_link = None
-        anime_init = browser.OtakuBrowser().get_anime_init(actionArgs.get('anilist_id'), filter_lang=None)
         episode = actionArgs.get('episode')
         if episode:
+            anime_init = browser.OtakuBrowser().get_anime_init(actionArgs.get('anilist_id'), filter_lang=None)
             episode = int(episode)
             seasonNum = anime_init[0][episode - 1].get('info').get('season')
             episodeNum = anime_init[0][episode - 1].get('info').get('episode')
