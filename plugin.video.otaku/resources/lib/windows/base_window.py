@@ -30,7 +30,9 @@ class BaseWindow(control.xmlWindow):
 
         if actionArgs.get('anilist_id'):
             self.item_information = pickle.loads(database.get_show(actionArgs['anilist_id'])['kodi_meta'])
-            self.item_information.update(pickle.loads(database.get_show_meta(actionArgs['anilist_id']).get('art')))
+            show_meta = database.get_show_meta(actionArgs['anilist_id'])
+            if show_meta:
+                self.item_information.update(pickle.loads(show_meta.get('art')))
         elif actionArgs.get('playnext'):
             self.item_information = actionArgs
         else:
