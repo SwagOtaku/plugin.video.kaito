@@ -3,7 +3,7 @@ import bs4 as bs
 import re
 import six
 from functools import partial
-from resources.lib.ui import utils, source_utils, database
+from resources.lib.ui import utils, source_utils, database, control
 from resources.lib.ui.BrowserBase import BrowserBase
 from resources.lib.debrid import real_debrid, all_debrid, premiumize
 import threading
@@ -256,6 +256,7 @@ class sources(BrowserBase):
             pass
 
     def get_sources(self, query, anilist_id, episode, status, media_type, rescrape):
+        query = query.replace(u'×', ' x ')
         if media_type == 'movie':
             return self._get_movie_sources(query, anilist_id, episode)
 
@@ -291,7 +292,8 @@ class sources(BrowserBase):
             season = str(season['season']).zfill(2)
             query += '|"S%sE%s "' % (season, episode.zfill(2))
 
-        url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % query
+        # url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % query
+        url = "https://nyaa.si/?q=%s&s=downloads&o=desc" % urllib_parse.quote_plus(query)
 
         if status == 'FINISHED':
             query = '%s "Batch"|"Complete Series"' % (show)
@@ -306,7 +308,8 @@ class sources(BrowserBase):
 
             query += '|"- %s"' % (episode.zfill(2))
 
-            url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=seeders&&o=desc" % query
+            # url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=seeders&&o=desc" % query
+            url = "https://nyaa.si/?q=%s&s=seeders&&o=desc" % urllib_parse.quote_plus(query)
 
         return self._process_nyaa_episodes(url, episode.zfill(2), season)
 
@@ -322,7 +325,7 @@ class sources(BrowserBase):
             _zfill = show.get('zfill', 2)
             episode = episode.zfill(_zfill)
             query = urllib_parse.quote(query)
-            url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % query
+            url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % urllib_parse.quote_plus(query)
             return self._process_nyaa_backup(url, anilist_id, _zfill, episode)
 
         try:
@@ -338,7 +341,7 @@ class sources(BrowserBase):
             season = str(season['season']).zfill(2)
             query += '|"S%sE%s"' % (season, episode.zfill(2))
 
-        url = "https://nyaa.si/?f=0&c=1_2&q=%s" % query
+        url = "https://nyaa.si/?f=0&c=1_2&q=%s" % urllib_parse.quote_plus(query)
         return self._process_nyaa_episodes(url, episode)
 
     def _get_episode_sources_pack(self, show, anilist_id, episode):
@@ -353,12 +356,12 @@ class sources(BrowserBase):
             season = season['season']
             query += '|"S{0}"|"Season {0}"'.format(season)
 
-        url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=seeders&&o=desc" % query
+        url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=seeders&&o=desc" % urllib_parse.quote_plus(query)
         return self._process_nyaa_backup(url, anilist_id, 2, episode.zfill(2), True)
 
     def _get_movie_sources(self, query, anilist_id, episode):
         query = urllib_parse.quote(query)
-        url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % query
+        url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % urllib_parse.quote_plus(query)
         sources = self._process_nyaa_movie(url, '1')
 
         if not sources:
@@ -376,11 +379,11 @@ class sources(BrowserBase):
         if 'general_title' in show:
             query = show['general_title']
             query = urllib_parse.quote(query)
-            url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % query
+            url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % urllib_parse.quote_plus(query)
             return self._process_nyaa_backup(url, episode)
 
         query = urllib_parse.quote(show)
-        url = "https://nyaa.si/?f=0&c=1_2&q=%s" % query
+        url = "https://nyaa.si/?f=0&c=1_2&q=%s" % urllib_parse.quote_plus(query)
         return self._process_nyaa_movie(url, episode)
 
 
@@ -395,8 +398,6 @@ class TorrentCacheCheck:
         self.seasonStrings = None
 
     def torrentCacheCheck(self, torrent_list):
-        from resources.lib.ui import control
-
         if control.real_debrid_enabled():
             self.threads.append(
                 threading.Thread(target=self.realdebridWorker, args=(copy.deepcopy(torrent_list),)))
