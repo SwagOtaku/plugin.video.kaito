@@ -324,8 +324,8 @@ class sources(BrowserBase):
             query = show['general_title'].encode('utf-8') if six.PY2 else show['general_title']
             _zfill = show.get('zfill', 2)
             episode = episode.zfill(_zfill)
-            query = urllib_parse.quote(query)
-            url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % urllib_parse.quote_plus(query)
+            query = urllib_parse.quote_plus(query)
+            url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % query
             return self._process_nyaa_backup(url, anilist_id, _zfill, episode)
 
         try:
@@ -360,8 +360,8 @@ class sources(BrowserBase):
         return self._process_nyaa_backup(url, anilist_id, 2, episode.zfill(2), True)
 
     def _get_movie_sources(self, query, anilist_id, episode):
-        query = urllib_parse.quote(query)
-        url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % urllib_parse.quote_plus(query)
+        query = urllib_parse.quote_plus(query)
+        url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % query
         sources = self._process_nyaa_movie(url, '1')
 
         if not sources:
@@ -378,12 +378,12 @@ class sources(BrowserBase):
 
         if 'general_title' in show:
             query = show['general_title']
-            query = urllib_parse.quote(query)
-            url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % urllib_parse.quote_plus(query)
+            query = urllib_parse.quote_plus(query)
+            url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % query
             return self._process_nyaa_backup(url, episode)
 
-        query = urllib_parse.quote(show)
-        url = "https://nyaa.si/?f=0&c=1_2&q=%s" % urllib_parse.quote_plus(query)
+        query = urllib_parse.quote_plus(show)
+        url = "https://nyaa.si/?f=0&c=1_2&q=%s" % query
         return self._process_nyaa_movie(url, episode)
 
 
