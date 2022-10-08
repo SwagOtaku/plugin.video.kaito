@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import time
-from resources.lib.ui import control
+import pickle
+from resources.lib.ui import control, database
 from resources.lib.windows.base_window import BaseWindow
 from resources.lib.windows.resolver import Resolver
-from resources.lib.ui import database
-from resources.lib.indexers import simkl  # NoQA
 from resources.lib import OtakuBrowser as browser
 
 
@@ -42,6 +41,14 @@ class SourceSelect(BaseWindow):
             except:
                 year = ''
             self.setProperty('item.info.year', year)
+        else:
+            show = database.get_show(actionArgs.get('anilist_id'))
+            if show:
+                kodi_meta = pickle.loads(show.get('kodi_meta'))
+                self.setProperty('item.info.year', kodi_meta.get('start_date').split('-')[0])
+                self.setProperty('item.info.plot', kodi_meta.get('plot'))
+                if kodi_meta.get('rating'):
+                    self.setProperty('item.info.rating', str(kodi_meta.get('rating')))
 
     def onInit(self):
 

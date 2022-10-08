@@ -17,7 +17,7 @@ class BaseWindow(control.xmlWindow):
 
         control.closeBusyDialog()
         self.canceled = False
-
+        self._title_lang = self._get_title_lang(control.getSetting("titlelanguage"))
         self.setProperty('texture.white', os.path.join(control.IMAGES_PATH, 'white.png'))
         self.setProperty('otaku.logo', control.OTAKU_LOGO_PATH)
         self.setProperty('otaku.fanart', control.OTAKU_FANART_PATH)
@@ -56,7 +56,14 @@ class BaseWindow(control.xmlWindow):
         self.setProperty('item.art.poster', self.item_information.get('poster'))
         self.setProperty('item.art.fanart', fanart)
         self.setProperty('item.art.clearlogo', clearlogo if clearlogo else control.OTAKU_LOGO2_PATH)
-        self.setProperty('item.info.title', self.item_information.get('name'))
+        if self._title_lang == 'english':
+            title = self.item_information.get('ename') or self.item_information.get('title_userPreferred')
+        else:
+            title = self.item_information.get('name')
+        self.setProperty('item.info.title', title)
+        if self.item_information.get('format') != 'MOVIE':
+            self.setProperty('item.info.plot', self.item_information.get('plot'))
+            self.setProperty('item.info.rating', self.item_information.get('rating'))
 
         # self.item_information['info'] = tools.clean_air_dates(self.item_information['info'])
         # year, month, day = self.item_information['info'].get('aired', '0000-00-00').split('-')
@@ -85,3 +92,12 @@ class BaseWindow(control.xmlWindow):
         #     self.setProperty('item.info.%s' % 1, str('fdf'))
         # except UnicodeEncodeError:
         #     self.setProperty('item.info.%s' % 1, 'fdf')
+
+    def _get_title_lang(self, title_key):
+        title_lang = {
+            "40370": "userPreferred",
+            "Romaji (Shingeki no Kyojin)": "userPreferred",
+            "40371": "english",
+            "English (Attack on Titan)": "english"
+        }
+        return title_lang[title_key]

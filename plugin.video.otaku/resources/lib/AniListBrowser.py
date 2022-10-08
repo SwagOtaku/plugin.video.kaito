@@ -948,6 +948,16 @@ class AniListBrowser():
         kodi_meta['poster'] = res['coverImage']['extraLarge']
         kodi_meta['status'] = res.get('status')
         kodi_meta['format'] = res.get('format')
+        if res.get('format') != 'TV':
+            if res.get('averageScore'):
+                kodi_meta['rating'] = res.get('averageScore') / 10.0
+            desc = res.get('description')
+            if desc:
+                desc = desc.replace('<i>', '[I]').replace('</i>', '[/I]')
+                desc = desc.replace('<b>', '[B]').replace('</b>', '[/B]')
+                desc = desc.replace('<br>', '[CR]')
+                desc = desc.replace('\n', '')
+                kodi_meta['plot'] = desc
 
         database._update_show(
             res['id'],

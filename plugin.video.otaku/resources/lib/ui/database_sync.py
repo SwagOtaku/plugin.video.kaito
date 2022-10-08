@@ -26,7 +26,7 @@ class AnilistSyncDatabase:
         # You will need to update the below version number to match the new addon version
         # This will ensure that the metadata required for operations is available
         # You may also update this version number to force a rebuild of the database after updating Otaku
-        self.last_meta_update = '0.1.1'
+        self.last_meta_update = '0.2.0'
 
         control.anilistSyncDB_lock.acquire()
 
