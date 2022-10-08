@@ -232,12 +232,8 @@ class Sources(DisplayWindow):
             embed_list = [i for i in embed_list if i['lang'] != filter_lang]
 
         elif control.getSetting('general.dubsort') == 'true':
-            _torrent_list = torrent_list
-            torrent_list = [i for i in _torrent_list if i['lang'] > 0] + \
-                           [i for i in embed_list if i['lang'] > 0]
-
-            embed_list = [i for i in _torrent_list if i['lang'] == 0] + \
-                         [i for i in embed_list if i['lang'] == 0]
+            torrent_list = sorted(torrent_list, key=lambda x: x['lang'] > 0, reverse=True)
+            embed_list = sorted(embed_list, key=lambda x: x['lang'] > 0, reverse=True)
 
         debrid_priorities = self.debrid_priority()
 
