@@ -24,8 +24,9 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.2.13 [20221007]:
-- Fix movie source select issue
+Changelog 0.2.14 [20221008]:
+- Fix 'Enable Tertiary Dub Sort Preference' 
+- Fix Movie meta in sourceselect screen
     </news>
   </extension>
 </addon>
