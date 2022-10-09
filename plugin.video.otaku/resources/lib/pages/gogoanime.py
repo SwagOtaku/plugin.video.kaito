@@ -7,6 +7,7 @@ from resources.lib.ui.BrowserBase import BrowserBase
 import re
 import pickle
 import json
+import six
 
 
 class sources(BrowserBase):
@@ -14,7 +15,7 @@ class sources(BrowserBase):
         show = database.get_show(anilist_id)
         kodi_meta = pickle.loads(show.get('kodi_meta'))
         title = kodi_meta.get('name')
-        title = title.replace(u'×', ' x ')
+        title = title.replace(u'×'.encode('utf-8') if six.PY2 else u'×', ' x ')
 
         params = {'keyword': title,
                   'id': -1,

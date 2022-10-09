@@ -2,6 +2,7 @@ import itertools
 import json
 import pickle
 import random
+import six
 from resources.lib.ui import database, get_meta
 from resources.lib.WatchlistFlavor.WatchlistFlavorBase import WatchlistFlavorBase
 
@@ -246,10 +247,10 @@ class AniListWLF(WatchlistFlavorBase):
             desc = desc.replace('<b>', '[B]').replace('</b>', '[/B]')
             desc = desc.replace('<br>', '[CR]')
             desc = desc.replace('\n', '')
-            info['plot'] = desc
+            info['plot'] = desc.encode('utf-8') if six.PY2 else desc
 
         title = res['title'].get(self._title_lang) or res['title'].get('userPreferred')
-        info['title'] = title
+        info['title'] = title.encode('utf-8') if six.PY2 else title
 
         try:
             info['duration'] = res.get('duration') * 60

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import json
 import bs4 as bs
 import re
@@ -256,7 +257,7 @@ class sources(BrowserBase):
             pass
 
     def get_sources(self, query, anilist_id, episode, status, media_type, rescrape):
-        query = query.replace(u'×', ' x ')
+        query = query.replace(u'×'.encode('utf-8') if six.PY2 else u'×', ' x ')
         if media_type == 'movie':
             return self._get_movie_sources(query, anilist_id, episode)
 

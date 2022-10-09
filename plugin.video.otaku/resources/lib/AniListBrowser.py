@@ -8,6 +8,7 @@ from functools import partial
 from resources.lib.ui import utils, database, client, get_meta, control
 from resources.lib.ui.divide_flavors import div_flavor
 import pickle
+import six
 
 
 class AniListBrowser():
@@ -939,9 +940,14 @@ class AniListBrowser():
             title_userPreferred = res['title']['userPreferred']
 
         kodi_meta = {}
-        kodi_meta['name'] = res['title']['romaji']
-        kodi_meta['ename'] = res['title']['english']
-        kodi_meta['title_userPreferred'] = title_userPreferred
+        name = res['title']['romaji']
+        name = name.encode('utf-8') if six.PY2 else name
+        kodi_meta['name'] = name
+        ename = res['title']['english']
+        if ename:
+            ename = ename.encode('utf-8') if six.PY2 else ename
+        kodi_meta['ename'] = ename
+        kodi_meta['title_userPreferred'] = title_userPreferred.encode('utf-8') if six.PY2 else title_userPreferred
         kodi_meta['start_date'] = start_date
         kodi_meta['query'] = titles
         kodi_meta['episodes'] = res['episodes']
@@ -957,7 +963,7 @@ class AniListBrowser():
                 desc = desc.replace('<b>', '[B]').replace('</b>', '[/B]')
                 desc = desc.replace('<br>', '[CR]')
                 desc = desc.replace('\n', '')
-                kodi_meta['plot'] = desc
+                kodi_meta['plot'] = desc.encode('utf-8') if six.PY2 else desc
 
         database._update_show(
             res['id'],
@@ -972,7 +978,12 @@ class AniListBrowser():
         # # titles = [x for x in titles if (all(ord(char) < 128 for char in x) if x else [])][:3]
         # titles = [x.encode('utf-8') if six.PY2 else x for x in titles if x][:3]
         # query_titles = '({})'.format(')|('.join(map(str, titles)))
-        query_titles = '({0})|({1})'.format(res['title']['romaji'], res['title']['english'])
+        name = res['title']['romaji']
+        name = name.encode('utf-8') if six.PY2 else name
+        ename = res['title']['english']
+        if ename:
+            ename = ename.encode('utf-8') if six.PY2 else ename
+        query_titles = '({0})|({1})'.format(name, ename)
         return query_titles
 
     def _get_start_date(self, res):
