@@ -17,6 +17,7 @@ __settings__ = xbmcaddon.Addon(ADDON_NAME)
 __language__ = __settings__.getLocalizedString
 addonInfo = __settings__.getAddonInfo
 PY2 = sys.version_info[0] == 2
+PY3 = sys.version_info[0] == 3
 TRANSLATEPATH = xbmc.translatePath if PY2 else xbmcvfs.translatePath
 LOGINFO = xbmc.LOGNOTICE if PY2 else xbmc.LOGINFO
 INPUT_ALPHANUM = xbmcgui.INPUT_ALPHANUM
@@ -353,7 +354,10 @@ def getChangeLog():
     changelog_file = os.path.join(ADDON_PATH, 'changelog.txt')
     if not xbmcvfs.exists(changelog_file):
         return xbmc.executebuiltin('Notification(%s, %s, %d, %s)' % ('Otaku', 'Changelog file not found.', 5000, xbmcgui.NOTIFICATION_ERROR))
-    f = open(changelog_file, 'r', encoding='utf-8', errors='ignore')
+    if PY2:
+        f = open(changelog_file, 'r')
+    else:
+        f = open(changelog_file, 'r', encoding='utf-8', errors='ignore')
     text = f.read()
     f.close()
     heading = '[B]%s -  v%s - ChangeLog[/B]' % ('Otaku', addon_version)
