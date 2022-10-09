@@ -120,9 +120,6 @@ class OtakuBrowser(BrowserBase):
             from resources.lib.AniListBrowser import AniListBrowser
             show = AniListBrowser().get_anilist(anilist_id)
 
-        control.log('anilist id is {0}'.format(anilist_id), 'info')
-        control.log('show id is {0}'.format(repr(show)), 'info')
-
         show_meta = database.get_show_meta(anilist_id)
         if not show_meta:
             kodi_meta = pickle.loads(show['kodi_meta'])

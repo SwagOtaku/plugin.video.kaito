@@ -232,7 +232,11 @@ class AniListWLF(WatchlistFlavorBase):
             ep_list = database.get_episode_list(res['id'])
             if ep_list:
                 last_updated = ep_list[0]['last_updated']
-                ldate = date.fromisoformat(last_updated)
+                if six.PY2:
+                    year, month, day = last_updated.split('-')
+                    ldate = date(int(year), int(month), int(day))
+                else:
+                    ldate = date.fromisoformat(last_updated)
                 ldiff = date.today() - ldate
                 if ldiff.days >= 5:
                     database.remove_episodes(res['id'])
