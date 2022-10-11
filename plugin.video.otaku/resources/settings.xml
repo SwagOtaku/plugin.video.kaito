@@ -148,4 +148,70 @@
 		<setting id="mal.password" type="text"  default="" visible="false"/>
 		<setting id="mal.titles" type="text"  default="" visible="false"/>
 	</category>
+
+<!-- Menus -->
+	<category label="40400">
+		<!-- Main Menu Items -->
+		<setting type="lsep" label="40400"/>
+		<setting id="sep"/>
+		<setting id="anilist_airing" label="30001" type="bool" default="true"/>
+		<setting id="anilist_airing_anime" label="30002" type="bool" default="true"/>
+		<setting id="movies" label="30018" type="bool" default="true"/>
+		<setting id="tv_shows" label="30019" type="bool" default="true"/>
+		<setting id="anilist_trending_this_year" label="30003" type="bool" default="true"/>
+		<setting id="anilist_popular_this_year" label="30004" type="bool" default="true"/>
+		<setting id="anilist_voted_this_year" label="30005" type="bool" default="true"/>
+		<setting id="anilist_upcoming_next_year" label="30006" type="bool" default="true"/>
+		<setting id="anilist_trending_this_season" label="30007" type="bool" default="true"/>
+		<setting id="anilist_popular_this_season" label="30008" type="bool" default="true"/>
+		<setting id="anilist_voted_this_season" label="30009" type="bool" default="true"/>
+		<setting id="anilist_upcoming_next_season" label="30010" type="bool" default="true"/>
+		<setting id="anilist_all_time_trending" label="30011" type="bool" default="true"/>
+		<setting id="anilist_all_time_popular" label="30012" type="bool" default="true"/>
+		<setting id="anilist_all_time_voted" label="30013" type="bool" default="true"/>
+		<setting id="anilist_top_100_anime" label="30014" type="bool" default="true"/>
+		<setting id="anilist_genres" label="30015" type="bool" visible="false" default="true"/>
+		<setting id="search_history" label="30016" type="bool" visible="false" default="true"/>
+		<setting id="tools" label="30017" type="bool" visible="false" default="true"/>
+		
+		<!-- Movie Items -->
+		<setting type="lsep" label="40401"/>
+		<setting id="sep"/>
+		<setting id="anilist_airing_anime_movie" label="30002" type="bool" default="true"/>
+		<setting id="anilist_trending_this_year_movie" label="30003" type="bool" default="true"/>
+		<setting id="anilist_popular_this_year_movie" label="30004" type="bool" default="true"/>
+		<setting id="anilist_voted_this_year_movie" label="30005" type="bool" default="true"/>
+		<setting id="anilist_upcoming_next_year_movie" label="30006" type="bool" default="true"/>
+		<setting id="anilist_trending_this_season_movie" label="30007" type="bool" default="true"/>
+		<setting id="anilist_popular_this_season_movie" label="30008" type="bool" default="true"/>
+		<setting id="anilist_voted_this_season_movie" label="30009" type="bool" default="true"/>
+		<setting id="anilist_upcoming_next_season_movie" label="30010" type="bool" default="true"/>
+		<setting id="anilist_all_time_trending_movie" label="30011" type="bool" default="true"/>
+		<setting id="anilist_all_time_popular_movie" label="30012" type="bool" default="true"/>
+		<setting id="anilist_all_time_voted_movie" label="30013" type="bool" default="true"/>
+		<setting id="anilist_top_100_anime_movie" label="30014" type="bool" default="true"/>
+		<setting id="anilist_genres" label="30015" type="bool" visible="false" default="true"/>
+		<setting id="search_history" label="30016" type="bool" visible="false" default="true"/>
+		<setting id="tools" label="30017" type="bool" visible="false" default="true"/>
+
+		<!-- TV Show Items -->
+		<setting type="lsep" label="40402"/>
+		<setting id="sep"/>
+		<setting id="anilist_airing_anime_tv" label="30002" type="bool" default="true"/>
+		<setting id="anilist_trending_this_year_tv" label="30003" type="bool" default="true"/>
+		<setting id="anilist_popular_this_year_tv" label="30004" type="bool" default="true"/>
+		<setting id="anilist_voted_this_year_tv" label="30005" type="bool" default="true"/>
+		<setting id="anilist_upcoming_next_year_tv" label="30006" type="bool" default="true"/>
+		<setting id="anilist_trending_this_season_tv" label="30007" type="bool" default="true"/>
+		<setting id="anilist_popular_this_season_tv" label="30008" type="bool" default="true"/>
+		<setting id="anilist_voted_this_season_tv" label="30009" type="bool" default="true"/>
+		<setting id="anilist_upcoming_next_season_tv" label="30010" type="bool" default="true"/>
+		<setting id="anilist_all_time_trending_tv" label="30011" type="bool" default="true"/>
+		<setting id="anilist_all_time_popular_tv" label="30012" type="bool" default="true"/>
+		<setting id="anilist_all_time_voted_tv" label="30013" type="bool" default="true"/>
+		<setting id="anilist_top_100_anime_tv" label="30014" type="bool" default="true"/>
+		<setting id="anilist_genres" label="30015" type="bool" visible="false" default="true"/>
+		<setting id="search_history" label="30016" type="bool" visible="false" default="true"/>
+		<setting id="tools" label="30017" type="bool" visible="false" default="true"/>
+	</category>
 </settings>

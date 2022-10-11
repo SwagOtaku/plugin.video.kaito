@@ -5,6 +5,7 @@
 msgid ""
 msgstr ""
 
+######MAIN MENU DIRECTORY#######
 msgctxt "#30000"
 msgid "Last Watched: "
 msgstr ""
@@ -18,50 +19,75 @@ msgid "Airing Anime"
 msgstr ""
 
 msgctxt "#30003"
-msgid "Trending This Season"
+msgid "Trending This Year"
 msgstr ""
 
 msgctxt "#30004"
-msgid "Popular This Season"
+msgid "Popular This Year"
 msgstr ""
 
 msgctxt "#30005"
-msgid "Voted This Season"
+msgid "Voted This Year"
 msgstr ""
 
 msgctxt "#30006"
-msgid "Upcoming Next Season"
+msgid "Upcoming Next Year"
 msgstr ""
 
 msgctxt "#30007"
-msgid "All Time Trending"
+msgid "Trending This Season"
 msgstr ""
 
 msgctxt "#30008"
-msgid "All Time Popular"
+msgid "Popular This Season"
 msgstr ""
 
 msgctxt "#30009"
-msgid "All Time Voted"
+msgid "Voted This Season"
 msgstr ""
 
 msgctxt "#30010"
-msgid "Top 100 Anime"
+msgid "Upcoming Next Season"
 msgstr ""
 
 msgctxt "#30011"
-msgid "Genres & Tags"
+msgid "All Time Trending"
 msgstr ""
 
 msgctxt "#30012"
-msgid "Search"
+msgid "All Time Popular"
 msgstr ""
 
 msgctxt "#30013"
+msgid "All Time Voted"
+msgstr ""
+
+msgctxt "#30014"
+msgid "Top 100 Anime"
+msgstr ""
+
+msgctxt "#30015"
+msgid "Genres & Tags"
+msgstr ""
+
+msgctxt "#30016"
+msgid "Search"
+msgstr ""
+
+msgctxt "#30017"
 msgid "Tools"
 msgstr ""
 
+msgctxt "#30018"
+msgid "Movies"
+msgstr ""
+
 msgctxt "#30019"
+msgid "TV Shows"
+msgstr ""
+
+######SETTINGS DIRECTORY#######
+msgctxt "#30027"
 msgid "View Changelog"
 msgstr ""
 
@@ -627,4 +653,16 @@ msgstr ""
 
 msgctxt "#40399"
 msgid "MUSIC"
+msgstr ""
+
+msgctxt "#40400"
+msgid "Main Menu Items"
+msgstr ""
+
+msgctxt "#40401"
+msgid "Movie Items"
+msgstr ""
+
+msgctxt "#40402"
+msgid "TV Show Items"
 msgstr ""

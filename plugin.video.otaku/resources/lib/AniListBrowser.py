@@ -69,28 +69,56 @@ class AniListBrowser():
         airing_anime = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(airing_anime, "anilist_airing_anime/%d", page)
 
-    def get_trending(self, page=1, format_in=''):
+    def get_trending_this_year(self, page=1, format_in=''):
         season, year = self.get_season_year()
         variables = {
             'page': page,
             'type': "ANIME",
-            'season': season,
             'year': str(year) + '%',
-            'sort': "TRENDING_DESC"
+            'sort': "TRENDING_DESC",
         }
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
         trending = database.get(self.get_base_res, 0.125, variables, page)
-        return self._process_anilist_view(trending, "anilist_trending/%d", page)
+        return self._process_anilist_view(trending, "anilist_trending_this_year/%d", page)
 
-    def get_popular(self, page=1, format_in=''):
+    def get_popular_this_year(self, page=1, format_in=''):
         season, year = self.get_season_year()
         variables = {
             'page': page,
             'type': "ANIME",
-            'season': season,
+            'year': str(year) + '%',
+            'sort': "POPULARITY_DESC",
+        }
+
+        if self.format_in_type:
+            variables['format'] = [self.format_in_type.upper()]
+
+        popular = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(popular, "anilist_popular_this_year/%d", page)
+
+    def get_voted_this_year(self, page=1, format_in=''):
+        season, year = self.get_season_year()
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'year': str(year) + '%',
+            'sort': "FAVOURITES_DESC",
+        }
+
+        if self.format_in_type:
+            variables['format'] = [self.format_in_type.upper()]
+
+        voted = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(voted, "anilist_voted_this_year/%d", page)
+
+    def get_upcoming_next_year(self, page=1, format_in=''):
+        season, year = self.get_season_year('next')
+        variables = {
+            'page': page,
+            'type': "ANIME",
             'year': str(year) + '%',
             'sort': "POPULARITY_DESC"
         }
@@ -98,26 +126,58 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
-        popular = database.get(self.get_base_res, 0.125, variables, page)
-        return self._process_anilist_view(popular, "anilist_popular/%d", page)
+        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(upcoming, "anilist_upcoming_next_year/%d", page)
 
-    def get_voted(self, page=1, format_in=''):
+    def get_trending_this_season(self, page=1, format_in=''):
         season, year = self.get_season_year()
         variables = {
             'page': page,
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            'sort': "FAVOURITES_DESC"
+            'sort': "TRENDING_DESC",
+        }
+
+        if self.format_in_type:
+            variables['format'] = [self.format_in_type.upper()]
+
+        trending = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(trending, "anilist_trending_this_season/%d", page)
+
+    def get_popular_this_season(self, page=1, format_in=''):
+        season, year = self.get_season_year()
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'season': season,
+            'year': str(year) + '%',
+            'sort': "POPULARITY_DESC",
+        }
+
+        if self.format_in_type:
+            variables['format'] = [self.format_in_type.upper()]
+
+        popular = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(popular, "anilist_popular_this_season/%d", page)
+
+    def get_voted_this_season(self, page=1, format_in=''):
+        season, year = self.get_season_year()
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'season': season,
+            'year': str(year) + '%',
+            'sort': "FAVOURITES_DESC",
         }
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
         voted = database.get(self.get_base_res, 0.125, variables, page)
-        return self._process_anilist_view(voted, "anilist_voted/%d", page)
+        return self._process_anilist_view(voted, "anilist_voted_this_season/%d", page)
 
-    def get_upcoming(self, page=1, format_in=''):
+    def get_upcoming_next_season(self, page=1, format_in=''):
         season, year = self.get_season_year('next')
         variables = {
             'page': page,
@@ -131,7 +191,7 @@ class AniListBrowser():
             variables['format'] = [self.format_in_type.upper()]
 
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
-        return self._process_anilist_view(upcoming, "anilist_upcoming/%d", page)
+        return self._process_anilist_view(upcoming, "anilist_upcoming_next_season/%d", page)
 
     def get_all_time_trending(self, page=1, format_in=''):
         variables = {
@@ -184,6 +244,336 @@ class AniListBrowser():
 
         top_100_anime = database.get(self.get_base_res, 24, variables, page)
         return self._process_anilist_view(top_100_anime, "anilist_top_100_anime/%d", page)
+
+    def get_airing_anime_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'status': "RELEASING",
+            'sort': "POPULARITY_DESC",
+            'format': "MOVIE"
+        }
+
+        airing_anime = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(airing_anime, "anilist_airing_anime_movie/%d", page)
+
+    def get_trending_this_year_movie(self, page=1, format_in=''):
+        season, year = self.get_season_year()
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'year': str(year) + '%',
+            'sort': "TRENDING_DESC",
+            'format': "MOVIE"
+        }
+
+        trending = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(trending, "anilist_trending_this_year_movie/%d", page)
+
+    def get_popular_this_year_movie(self, page=1, format_in=''):
+        season, year = self.get_season_year()
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'year': str(year) + '%',
+            'sort': "POPULARITY_DESC",
+            'format': "MOVIE"
+        }
+
+        popular = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(popular, "anilist_popular_this_year_movie/%d", page)
+
+    def get_voted_this_year_movie(self, page=1, format_in=''):
+        season, year = self.get_season_year()
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'year': str(year) + '%',
+            'sort': "FAVOURITES_DESC",
+            'format': "MOVIE"
+        }
+
+        voted = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(voted, "anilist_voted_this_year_movie/%d", page)
+
+    def get_upcoming_next_year_movie(self, page=1, format_in=''):
+        season, year = self.get_season_year('next')
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'season': season,
+            'year': str(year) + '%',
+            'sort': "POPULARITY_DESC",
+            'format': "MOVIE"
+        }
+
+        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(upcoming, "anilist_upcoming_next_year_movie/%d", page)
+
+    def get_trending_this_season_movie(self, page=1, format_in=''):
+        season, year = self.get_season_year()
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'season': season,
+            'year': str(year) + '%',
+            'sort': "TRENDING_DESC",
+            'format': "MOVIE"
+        }
+
+        trending = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(trending, "anilist_trending_this_season_movie/%d", page)
+
+    def get_popular_this_season_movie(self, page=1, format_in=''):
+        season, year = self.get_season_year()
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'season': season,
+            'year': str(year) + '%',
+            'sort': "POPULARITY_DESC",
+            'format': "MOVIE"
+        }
+
+        popular = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(popular, "anilist_popular_this_season_movie/%d", page)
+
+    def get_voted_this_season_movie(self, page=1, format_in=''):
+        season, year = self.get_season_year()
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'season': season,
+            'year': str(year) + '%',
+            'sort': "FAVOURITES_DESC",
+            'format': "MOVIE"
+        }
+
+        voted = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(voted, "anilist_voted_this_season_movie/%d", page)
+
+    def get_upcoming_next_season_movie(self, page=1, format_in=''):
+        season, year = self.get_season_year('next')
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'season': season,
+            'year': str(year) + '%',
+            'sort': "POPULARITY_DESC",
+            'format': "MOVIE"
+        }
+
+        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(upcoming, "anilist_upcoming_next_season_movie/%d", page)
+
+    def get_all_time_trending_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "TRENDING_DESC",
+            'format': "MOVIE"
+        }
+
+        all_time_trending = database.get(self.get_base_res, 24, variables, page)
+        return self._process_anilist_view(all_time_trending, "anilist_all_time_trending_movie/%d", page)
+
+    def get_all_time_popular_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "POPULARITY_DESC",
+            'format': "MOVIE"
+        }
+
+        all_time_popular = database.get(self.get_base_res, 24, variables, page)
+        return self._process_anilist_view(all_time_popular, "anilist_all_time_popular_movie/%d", page)
+
+    def get_all_time_voted_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "FAVOURITES_DESC",
+            'format': "MOVIE"
+        }
+
+        all_time_voted = database.get(self.get_base_res, 24, variables, page)
+        return self._process_anilist_view(all_time_voted, "anilist_all_time_voted_movie/%d", page)
+
+    def get_top_100_anime_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'format': "MOVIE"
+        }
+
+        top_100_anime = database.get(self.get_base_res, 24, variables, page)
+        return self._process_anilist_view(top_100_anime, "anilist_top_100_anime_movie/%d", page)
+
+    def get_airing_anime_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'status': "RELEASING",
+            'sort': "POPULARITY_DESC",
+            'format': "TV"
+        }
+
+        airing_anime = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(airing_anime, "anilist_airing_anime_tv/%d", page)
+
+    def get_trending_this_year_tv(self, page=1, format_in=''):
+        season, year = self.get_season_year()
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'year': str(year) + '%',
+            'sort': "TRENDING_DESC",
+            'format': "TV"
+        }
+
+        trending = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(trending, "anilist_trending_this_year_tv/%d", page)
+
+    def get_popular_this_year_tv(self, page=1, format_in=''):
+        season, year = self.get_season_year()
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'year': str(year) + '%',
+            'sort': "POPULARITY_DESC",
+            'format': "TV"
+        }
+
+        popular = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(popular, "anilist_popular_this_year_tv/%d", page)
+
+    def get_voted_this_year_tv(self, page=1, format_in=''):
+        season, year = self.get_season_year()
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'year': str(year) + '%',
+            'sort': "FAVOURITES_DESC",
+            'format': "TV"
+        }
+
+        voted = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(voted, "anilist_voted_this_year_tv/%d", page)
+
+    def get_upcoming_next_year_tv(self, page=1, format_in=''):
+        season, year = self.get_season_year('next')
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'season': season,
+            'year': str(year) + '%',
+            'sort': "POPULARITY_DESC",
+            'format': "TV"
+        }
+
+        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(upcoming, "anilist_upcoming_next_year_tv/%d", page)
+
+    def get_trending_this_season_tv(self, page=1, format_in=''):
+        season, year = self.get_season_year()
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'season': season,
+            'year': str(year) + '%',
+            'sort': "TRENDING_DESC",
+            'format': "TV"
+        }
+
+        trending = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(trending, "anilist_trending_this_season_tv/%d", page)
+
+    def get_popular_this_season_tv(self, page=1, format_in=''):
+        season, year = self.get_season_year()
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'season': season,
+            'year': str(year) + '%',
+            'sort': "POPULARITY_DESC",
+            'format': "TV"
+        }
+
+        popular = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(popular, "anilist_popular_this_season_tv/%d", page)
+
+    def get_voted_this_season_tv(self, page=1, format_in=''):
+        season, year = self.get_season_year()
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'season': season,
+            'year': str(year) + '%',
+            'sort': "FAVOURITES_DESC",
+            'format': "TV"
+        }
+
+        voted = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(voted, "anilist_voted_this_season_tv/%d", page)
+
+    def get_upcoming_next_season_tv(self, page=1, format_in=''):
+        season, year = self.get_season_year('next')
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'season': season,
+            'year': str(year) + '%',
+            'sort': "POPULARITY_DESC",
+            'format': "TV"
+        }
+
+        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        return self._process_anilist_view(upcoming, "anilist_upcoming_next_season_tv/%d", page)
+
+    def get_all_time_trending_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "TRENDING_DESC",
+            'format': "TV"
+        }
+
+        all_time_trending = database.get(self.get_base_res, 24, variables, page)
+        return self._process_anilist_view(all_time_trending, "anilist_all_time_trending_tv/%d", page)
+
+    def get_all_time_popular_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "POPULARITY_DESC",
+            'format': "TV"
+        }
+
+        all_time_popular = database.get(self.get_base_res, 24, variables, page)
+        return self._process_anilist_view(all_time_popular, "anilist_all_time_popular_tv/%d", page)
+
+    def get_all_time_voted_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "FAVOURITES_DESC",
+            'format': "TV"
+        }
+
+        all_time_voted = database.get(self.get_base_res, 24, variables, page)
+        return self._process_anilist_view(all_time_voted, "anilist_all_time_voted_tv/%d", page)
+
+    def get_top_100_anime_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'format': "TV"
+        }
+
+        top_100_anime = database.get(self.get_base_res, 24, variables, page)
+        return self._process_anilist_view(top_100_anime, "anilist_top_100_anime_tv/%d", page)
 
     def get_airing(self, page=1, format_in=''):
         airing = database.get(self._get_airing, 12, page, self.format_in_type)
