@@ -1,4 +1,4 @@
-Changelog 0.2.16 [20221010]:
+Changelog 0.2.16 [20221011]:
 - Added Movies and TV Shows Category so that its easier
 - Added Trending This Year
 - Added Popular This Year
@@ -6,6 +6,8 @@ Changelog 0.2.16 [20221010]:
 - Added Upcoming Next Year
 - Added Options to disable Menu Items
 - Added two new icons: Movies.png and TV Shows.png
+- Fix ratings display bug in source select
+- Use clearart if available in get sources window
 
 Changelog 0.2.15 [20221008]:
 - Fix encoding errors on Kodi Leia
