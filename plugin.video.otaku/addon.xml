@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.2.16">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.2.17">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -24,16 +24,8 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.2.16 [20221011]:
-- Added Movies and TV Shows Category so that its easier
-- Added Trending This Year
-- Added Popular This Year
-- Added Voted This Year
-- Added Upcoming Next Year
-- Added Options to disable Menu Items
-- Added two new icons: Movies.png and TV Shows.png
-- Fix ratings display bug in source select
-- Use clearart if available in get sources window
+Changelog 0.2.17 [20221012]:
+- Kodi Leia compatibilty fix
     </news>
   </extension>
 </addon>
