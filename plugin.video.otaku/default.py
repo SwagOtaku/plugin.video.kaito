@@ -1,3 +1,21 @@
+# -*- coding: utf-8 -*-
+"""
+    Otaku Add-on
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+"""
+
 from resources.lib.ui import control, player, utils, database
 from resources.lib.ui.router import route, router_process
 from resources.lib.OtakuBrowser import OtakuBrowser
@@ -27,6 +45,9 @@ MENU_ITEMS = [
     (control.lang(30016), "search_history", 'search.png'),
     (control.lang(30017), "tools", 'tools.png'),
 ]
+_TITLE_LANG = control.getSetting("titlelanguage")
+_BROWSER = OtakuBrowser()
+_ANILIST_BROWSER = AniListBrowser(_TITLE_LANG)
 
 
 @route('movies')
@@ -49,16 +70,17 @@ def MOVIES_MENU(payload, params):
         (control.lang(30016), "search_history", 'search.png'),
     ]
 
-    MOVIES_ITEMS_SETTINGS = MOVIES_ITEMS.copy()
+    MOVIES_ITEMS_SETTINGS = MOVIES_ITEMS[:]
     for i in MOVIES_ITEMS:
         if control.getSetting(i[1]) != 'true':
             MOVIES_ITEMS_SETTINGS.remove(i)
-            
+
     return control.draw_items(
         [utils.allocate_item(name, url, True, image) for name, url, image in MOVIES_ITEMS_SETTINGS],
         contentType="addons",
     )
-    
+
+
 @route('tv_shows')
 def TV_SHOWS_MENU(payload, params):
     TV_SHOWS_ITEMS = [
@@ -79,21 +101,15 @@ def TV_SHOWS_MENU(payload, params):
         (control.lang(30016), "search_history", 'search.png'),
     ]
 
-    TV_SHOWS_ITEMS_SETTINGS = TV_SHOWS_ITEMS.copy()
+    TV_SHOWS_ITEMS_SETTINGS = TV_SHOWS_ITEMS[:]
     for i in TV_SHOWS_ITEMS:
         if control.getSetting(i[1]) != 'true':
             TV_SHOWS_ITEMS_SETTINGS.remove(i)
-            
+
     return control.draw_items(
         [utils.allocate_item(name, url, True, image) for name, url, image in TV_SHOWS_ITEMS_SETTINGS],
         contentType="addons",
     )
-
-_TITLE_LANG = control.getSetting("titlelanguage")
-
-_BROWSER = OtakuBrowser()
-
-_ANILIST_BROWSER = AniListBrowser(_TITLE_LANG)
 
 
 def _add_last_watched():
@@ -816,7 +832,7 @@ def TOOLS_MENU(payload, params):
         (control.lang(30024), "wipe_addon_data", 'wipe addon data.png'),
     ]
 
-    TOOLS_ITEMS_SETTINGS = TOOLS_ITEMS.copy()
+    TOOLS_ITEMS_SETTINGS = TOOLS_ITEMS[:]
     for i in TOOLS_ITEMS:
         if control.getSetting(i[1]) != 'true':
             TOOLS_ITEMS_SETTINGS.remove(i)
@@ -830,7 +846,7 @@ def TOOLS_MENU(payload, params):
 @route('')
 def LIST_MENU(payload, params):
     ls = str(control.lang(30000))
-    MENU_ITEMS_SETTINGS = MENU_ITEMS.copy()
+    MENU_ITEMS_SETTINGS = MENU_ITEMS[:]
     for i in MENU_ITEMS_SETTINGS:
         if control.getSetting(i[1]) != 'true' and ls not in i[0] and 'watchlist' not in i[1]:
             MENU_ITEMS.remove(i)
