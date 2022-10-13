@@ -123,6 +123,10 @@ class KitsuWLF(WatchlistFlavorBase):
         result = json.loads(result)
         _list = result["data"]
         el = result["included"][:len(_list)]
+        
+        if not result.get('included'):
+            result['included'] = []
+        
         # self._mapping = filter(lambda x: x['type'] == 'mappings', result['included'])
         self._mapping = [x for x in result['included'] if x['type'] == 'mappings']
 
