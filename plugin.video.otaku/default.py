@@ -149,7 +149,7 @@ def on_stopped():
 
 # Will be called on genre page
 def genre_dialog(genre_display_list):
-    return control.multiselect_dialog(control.lang(30009), genre_display_list)
+    return control.multiselect_dialog(control.lang(30015), genre_display_list)
 
 
 @route('season_correction/*')
@@ -692,7 +692,7 @@ def SEARCH(payload, params):
     if isinstance(action_args, dict):
         query = action_args.get('query')
     else:
-        query = control.keyboard(control.lang(30012))
+        query = control.keyboard(control.lang(30016))
     if not query:
         return False
 
