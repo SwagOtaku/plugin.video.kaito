@@ -146,13 +146,14 @@ class TRAKTAPI:
 
     def get_trakt(self, name, mtype='tv'):
         name = re.sub(r'(?i)(?:part|cour)\s\d+$', '', name)
-        name = re.sub(r'(?i)(?:season)?\s\d+$', '', name)
+        name = re.sub(r'(?i)season\s\d+$', '', name)
         rtype = 'show' if mtype == 'tv' else 'movie'
         url = 'search/%s?query=%s&genres=anime&extended=full' % (rtype, urllib_parse.quote(name.strip()))
         result = database.get(self._json_request, 4, url)
 
         if not result:
             name = name.replace('?', '')
+            name = re.sub(r'\s\d+$', '', name)
             roman = r'(X{1,3}(IX|IV|V?I{0,3})|X{0,3}(IX|I?V|V?I{1,3}))$'
             name = re.sub(roman, '', name)
             if ':' in name:
@@ -163,7 +164,16 @@ class TRAKTAPI:
         if not result:
             return
 
-        return result[0][rtype]
+        jres = {}
+        if len(result) > 1:
+            for res in result:
+                if res.get(rtype).get('title').lower == name.lower():
+                    jres = res
+                    break
+        if not jres:
+            jres = result[0]
+
+        return jres.get(rtype)
 
     def search_trakt_shows(self, anilist_id):
         kodi_meta = pickle.loads(database.get_show(anilist_id)['kodi_meta'])
@@ -220,11 +230,10 @@ class TRAKTAPI:
         show = database.get_show(anilist_id)
         show_meta = database.get_show_meta(anilist_id)
         kodi_meta = pickle.loads(show['kodi_meta'])
+        meta_ids = pickle.loads(show_meta['meta_ids'])
 
         if kodi_meta['episodes'] is None or int(kodi_meta['episodes']) > 30:
             return
-
-        meta_ids = pickle.loads(show_meta['meta_ids'])
 
         return self.get_trakt_seasons(anilist_id, meta_ids, kodi_meta, db_correction)
 

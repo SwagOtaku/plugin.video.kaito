@@ -103,7 +103,8 @@ class OtakuBrowser(BrowserBase):
         anime = trakt.TRAKTAPI().get_anime(anilist_id, db_correction)
 
         if anime and filter_lang:
-            for i in anime[0]:
+            anime1 = anime[0][0] if isinstance(anime[0], tuple) else anime[0]
+            for i in anime1:
                 i['url'] += filter_lang
 
         if not anime:
