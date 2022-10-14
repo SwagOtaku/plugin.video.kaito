@@ -1,3 +1,6 @@
+Changelog 0.2.19 [20221014]:
+- Fix Stein's Gate 0 Issue
+
 Changelog 0.2.18 [20221013]:
 - Fix for empty Kitsu lists
 - Quickfix for Strings
