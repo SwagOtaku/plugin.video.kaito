@@ -31,7 +31,7 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 ## Todo List
 
 **_Function_**:
-- Playback: Anime title and Episode Plot does not show during playback when using select source.
+- Context Menu: Anime title and Episode Plot does not show during playback when using select source.
 - Widgets: No information shows during the playback
 - Widgets: Skip intro seems to display twice only on widgets
 - Widgets: Double scrapping happens when clicking 
