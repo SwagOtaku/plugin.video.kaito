@@ -31,9 +31,10 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 ## Todo List
 
 **_Function_**:
-- Watchlist: Sync watched status with all accounts. (anilist, mal, kitsu)
-- Widgets: No infomation shows during the playback
+- Playback: Anime title and Episode Plot does not show during playback when using select source.
+- Widgets: No information shows during the playback
 - Widgets: Skip intro seems to display twice only on widgets
+- Widgets: Double scrapping happens when clicking 
 
 **_Optional_**: 
 - TMDB Players: Need to add an Otaku openplayer for tmdb helper. (Examples: [a4k-openproject](https://github.com/a4k-openproject/json.openplayers))
