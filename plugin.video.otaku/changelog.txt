@@ -1,3 +1,6 @@
+Changelog 0.2.21 [20221015]:
+- Improved gogo
+
 Changelog 0.2.20 [20221015]:
 - Fix title not showing in next playing window 
 
