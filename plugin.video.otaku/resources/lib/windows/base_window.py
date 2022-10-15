@@ -57,14 +57,15 @@ class BaseWindow(control.xmlWindow):
         self.setProperty('item.art.fanart', fanart)
         self.setProperty('item.art.clearlogo', clearlogo if clearlogo else control.OTAKU_LOGO2_PATH)
         self.setProperty('item.art.logo', clearlogo if clearlogo else control.OTAKU_LOGO_PATH)
-        if self._title_lang == 'english':
-            title = self.item_information.get('ename') or self.item_information.get('title_userPreferred')
-        else:
-            title = self.item_information.get('name')
-        self.setProperty('item.info.title', title)
+        self.setProperty('item.info.title', self.item_information.get('name'))
         if self.item_information.get('format') == 'MOVIE':
             self.setProperty('item.info.plot', self.item_information.get('plot'))
             self.setProperty('item.info.rating', str(self.item_information.get('rating')))
+            if self._title_lang == 'english':
+                title = self.item_information.get('ename') or self.item_information.get('title_userPreferred')
+            else:
+                title = self.item_information.get('name')
+            self.setProperty('item.info.title', title)
 
         # self.item_information['info'] = tools.clean_air_dates(self.item_information['info'])
         # year, month, day = self.item_information['info'].get('aired', '0000-00-00').split('-')
