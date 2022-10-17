@@ -24,8 +24,8 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.2.22 [20221016]:
-- Fix MAL errors related to missing meta for shows
+Changelog 0.2.23 [20221016]:
+- Fix dependency issues
     </news>
   </extension>
 </addon>
