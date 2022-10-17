@@ -93,10 +93,12 @@ class WatchlistFlavorBase(object):
 
         if show:
             anilist_id = show['anilist_id']
+            show_meta = database.get_show_meta(anilist_id)
 
-            art = pickle.loads(database.get_show_meta(anilist_id).get('art'))
-            if art.get('fanart'):
-                next_up_meta['image'] = random.choice(art.get('fanart'))
+            if show_meta:
+                art = pickle.loads(show_meta.get('art'))
+                if art.get('fanart'):
+                    next_up_meta['image'] = random.choice(art.get('fanart'))
 
             episodes = database.get_episode_list(show['anilist_id'])
             if episodes:
