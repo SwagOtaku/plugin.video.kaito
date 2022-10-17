@@ -1,3 +1,6 @@
+Changelog 0.2.22 [20221016]:
+- Fix MAL errors related to missing meta for shows
+
 Changelog 0.2.21 [20221015]:
 - Improved gogo
 
