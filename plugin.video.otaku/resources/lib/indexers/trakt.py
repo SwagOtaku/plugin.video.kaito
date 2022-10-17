@@ -144,11 +144,13 @@ class TRAKTAPI:
 
         return result[0][rtype]['ids']
 
-    def get_trakt(self, name, mtype='tv'):
+    def get_trakt(self, name, mtype='tv', year=''):
         name = re.sub(r'(?i)(?:part|cour)\s\d+$', '', name)
         name = re.sub(r'(?i)season\s\d+$', '', name)
         rtype = 'show' if mtype == 'tv' else 'movie'
         url = 'search/%s?query=%s&genres=anime&extended=full' % (rtype, urllib_parse.quote(name.strip()))
+        if year:
+            url += '&years=%s' % year
         result = database.get(self._json_request, 4, url)
 
         if not result:
@@ -159,6 +161,8 @@ class TRAKTAPI:
             if ':' in name:
                 name = name.split(':')[0]
             url = 'search/%s?query=%s&genres=anime&extended=full' % (rtype, urllib_parse.quote(name.strip()))
+            if year:
+                url += '&years=%s' % year
             result = database.get(self._json_request, 4, url)
 
         if not result:

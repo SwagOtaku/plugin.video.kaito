@@ -17,14 +17,17 @@ def collect_meta(anime_list):
             if name is None:
                 name = anime.get('title').get('romaji')
             mtype = 'movies' if anime.get('format') == 'MOVIE' else 'tv'
-            threads.append(threading.Thread(target=__get_meta, args=(anilist_id, name, mtype)))
+            if anime.get('format') == 'ONA' and anime.get('episodes') == 1:
+                mtype = 'movies'
+            year = anime.get('startDate').get('year')
+            threads.append(threading.Thread(target=__get_meta, args=(anilist_id, name, mtype, year)))
     [i.start() for i in threads]
     [i.join() for i in threads]
     return
 
 
-def __get_meta(anilist_id, name, mtype='tv'):
-    res = TRAKTAPI().get_trakt(name, mtype)
+def __get_meta(anilist_id, name, mtype='tv', year=''):
+    res = TRAKTAPI().get_trakt(name, mtype=mtype, year=year)
     if res:
         meta_ids = res.get('ids')
         meta = FANARTAPI().getArt(meta_ids, mtype)

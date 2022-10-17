@@ -1289,7 +1289,7 @@ class AniListBrowser():
         if kodi_meta.get('clearlogo'):
             base['clearlogo'] = random.choice(kodi_meta.get('clearlogo'))
 
-        if res['format'] == 'MOVIE' and res['episodes'] == 1:
+        if res['format'] in ['MOVIE', 'ONA'] and res['episodes'] == 1:
             base['url'] = "play_movie/%s/1/" % (res['id'])
             base['info']['mediatype'] = 'movie'
             return self._parse_view(base, False, dub=dub)
