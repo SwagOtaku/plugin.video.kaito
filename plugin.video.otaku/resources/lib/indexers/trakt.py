@@ -216,7 +216,7 @@ class TRAKTAPI:
 
     def get_trakt_seasons(self, anilist_id, meta_ids, kodi_meta, db_correction):
         # _ = self._add_fanart(anilist_id, meta_ids, kodi_meta)
-        url = 'shows/%d/seasons?extended=full' % meta_ids['trakt']
+        url = 'shows/%d/seasons?extended=full' % meta_ids.get('trakt')
 
         if db_correction:
             target = self._process_season_view
@@ -234,7 +234,7 @@ class TRAKTAPI:
         show = database.get_show(anilist_id)
         show_meta = database.get_show_meta(anilist_id)
         kodi_meta = pickle.loads(show['kodi_meta'])
-        meta_ids = pickle.loads(show_meta['meta_ids'])
+        meta_ids = pickle.loads(show_meta['meta_ids']) if show_meta else {}
 
         if kodi_meta['episodes'] is None or int(kodi_meta['episodes']) > 30:
             return
