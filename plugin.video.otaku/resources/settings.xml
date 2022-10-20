@@ -29,6 +29,13 @@
 		-->
 	</category>
 
+	<!-- Provider -->
+	<category label="40226">
+		<setting id="provider.nyaa" type="bool" label="Nyaa Alt" default="false" />
+		<setting id="provider.gogo" type="bool" label="Gogo" default="true" />
+		<setting id="provider.animix" type="bool" label="Animix" default="true" />
+	</category>
+
 	<!-- Playback -->
 	<category label="40307">
 		<!-- General -->
@@ -103,7 +110,7 @@
 		<setting id="alldebrid.priority" type="slider" subsetting="true" label="40344" option="int" range="1,1,10" default="10" visible="eq(-3,true)" />
 	</category>
 
-<!-- Watchlist -->
+	<!-- Watchlist -->
 	<category label="40345">
 		<!-- General -->
 		<setting type="lsep" label="40300"/>
@@ -149,7 +156,7 @@
 		<setting id="mal.titles" type="text"  default="" visible="false"/>
 	</category>
 
-<!-- Menus -->
+	<!-- Menus -->
 	<category label="40400">
 		<!-- Main Menu Items -->
 		<setting type="lsep" label="40400"/>

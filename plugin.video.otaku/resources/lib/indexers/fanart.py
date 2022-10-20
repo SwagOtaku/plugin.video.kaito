@@ -1,5 +1,6 @@
-from resources.lib.ui import client
 import json
+
+from resources.lib.ui import client
 
 
 class FANARTAPI:

@@ -1,31 +1,32 @@
-# -*- coding: utf-8 -*-
-from bs4 import BeautifulSoup
 import itertools
-from functools import partial
-from resources.lib.ui import utils, source_utils, database, client
-from resources.lib.ui.BrowserBase import BrowserBase
-import re
-import pickle
 import json
-import six
+import pickle
+import re
+from functools import partial
+
+from bs4 import BeautifulSoup
+from resources.lib.ui import database, source_utils, utils
+from resources.lib.ui.BrowserBase import BrowserBase
 
 
 class sources(BrowserBase):
+    _BASE_URL = 'https://gogoanime.tel/'
+
     def get_sources(self, anilist_id, episode, get_backup):
         show = database.get_show(anilist_id)
         kodi_meta = pickle.loads(show.get('kodi_meta'))
         title = kodi_meta.get('name')
-        title = title.replace(u'×'.encode('utf-8') if six.PY2 else u'×', ' x ')
-
+        title = self._clean_title(title)
+        headers = {'Referer': self._BASE_URL}
         params = {'keyword': title,
                   'id': -1,
-                  'link_web': 'https://gogoanime.tel/'}
+                  'link_web': self._BASE_URL}
         r = database.get(
-            client.request,
-            4,
+            self._get_request,
+            8,
             'https://ajax.gogo-load.com/site/loadAjaxSearch',
-            referer='https://gogoanime.tel/',
-            params=params
+            data=params,
+            headers=headers
         )
         r = json.loads(r).get('content')
 
@@ -33,11 +34,11 @@ class sources(BrowserBase):
             title = title.split(':')[0]
             params.update({'keyword': title})
             r = database.get(
-                client.request,
-                72,
+                self._get_request,
+                8,
                 'https://ajax.gogo-load.com/site/loadAjaxSearch',
-                referer='https://gogoanime.tel/',
-                params=params
+                data=params,
+                headers=headers
             )
             r = json.loads(r).get('content')
 
@@ -64,13 +65,24 @@ class sources(BrowserBase):
         return all_results
 
     def _process_gogo(self, slug, show_id, episode):
-        url = "https://gogoanime.tel/{0}-episode-{1}".format(slug, episode)
+        url = "{0}{1}-episode-{2}".format(self._BASE_URL, slug, episode)
+        headers = {'Referer': self._BASE_URL}
         title = (slug.replace('-', ' ')).title() + '  Episode-{0}'.format(episode)
-        r = client.request(url, referer='https://gogoanime.tel/')
+        r = database.get(
+            self._send_request,
+            8,
+            url,
+            headers=headers
+        )
 
         if not r:
-            url = 'https://gogoanime.tel/category/{0}'.format(slug)
-            html = database.get(client.request, 4, url, referer='https://gogoanime.tel/')
+            url = '{0}category/{1}'.format(self._BASE_URL, slug)
+            html = database.get(
+                self._send_request,
+                8,
+                url,
+                headers=headers
+            )
             mid = re.findall(r'value="([^"]+)"\s*id="movie_id"', html)
             if mid:
                 params = {'ep_start': episode,
@@ -78,13 +90,13 @@ class sources(BrowserBase):
                           'id': mid[0],
                           'alias': slug}
                 eurl = 'https://ajax.gogo-load.com/ajax/load-list-episode'
-                r2 = client.request(eurl, referer='https://gogoanime.tel/', params=params)
+                r2 = self._get_request(eurl, data=params, headers=headers)
                 soup2 = BeautifulSoup(r2, 'html.parser')
                 eslug = soup2.find('a')
                 if eslug:
                     eslug = eslug.get('href').strip()
-                    url = "https://gogoanime.tel{0}".format(eslug)
-                    r = client.request(url, referer='https://gogoanime.tel/')
+                    url = "{0}{1}".format(self._BASE_URL[:-1], eslug)
+                    r = self._send_request(url, headers=headers)
 
         soup = BeautifulSoup(r, 'html.parser')
         sources = []
@@ -134,7 +146,7 @@ class sources(BrowserBase):
         return self._process_latest_view(url)
 
     def _process_latest_view(self, url):
-        result = client.request(url)
+        result = self._send_request(url)
         soup = BeautifulSoup(result, 'html.parser')
         animes = soup.find_all('div', {'class': 'img'})
         all_results = list(map(self._parse_latest_view, animes))

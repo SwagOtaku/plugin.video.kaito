@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 
 import sys
+
 from kodi_six import xbmc
+from resources.lib.debrid import all_debrid, premiumize, real_debrid
 from resources.lib.ui import control
-from resources.lib.debrid import premiumize, real_debrid, all_debrid
 from resources.lib.windows.base_window import BaseWindow
 
 try:

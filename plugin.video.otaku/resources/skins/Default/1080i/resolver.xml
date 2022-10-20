@@ -80,11 +80,11 @@
 
         <!-- otaku Logo -->
         <control type="image" id="1001">
-            <top>-50</top>
-            <left>830</left>
-            <width>250</width>
+            <top>-150</top>
+            <left>700</left>
+            <width>500</width>
             <aspectratio>keep</aspectratio>
-            <texture>$INFO[Window().Property(otaku.logo)]</texture>
+            <texture>$INFO[Window().Property(item.art.logo)]</texture>
         </control>
         <control>
             <top>600</top>

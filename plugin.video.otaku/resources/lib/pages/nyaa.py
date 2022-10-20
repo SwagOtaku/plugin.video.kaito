@@ -1,20 +1,22 @@
-# -*- coding: utf-8 -*-
-import json
-import bs4 as bs
-import re
-import six
-from functools import partial
-from resources.lib.ui import utils, source_utils, database, control
-from resources.lib.ui.BrowserBase import BrowserBase
-from resources.lib.debrid import real_debrid, all_debrid, premiumize
-import threading
 import copy
-import pickle
 import itertools
+import json
+import pickle
+import re
+import threading
+from functools import partial
+
+import six
+from bs4 import BeautifulSoup, SoupStrainer
+from resources.lib.debrid import all_debrid, premiumize, real_debrid
+from resources.lib.ui import control, database, source_utils, utils
+from resources.lib.ui.BrowserBase import BrowserBase
 from six.moves import filter, urllib_parse
 
 
 class sources(BrowserBase):
+    _BASE_URL = 'https://nyaa.si/' if control.getSetting('provider.nyaa') == 'false' else 'https://nyaa.iss.ink/'
+
     def _parse_anime_view(self, res):
         info = {}
         url = '{}/{}'.format(res['debrid_provider'], res['hash'])
@@ -86,7 +88,7 @@ class sources(BrowserBase):
 
     def _process_anime_view(self, url, data, base_plugin_url, page):
         json_resp = self._get_request(url)
-        results = bs.BeautifulSoup(json_resp, 'html.parser')
+        results = BeautifulSoup(json_resp, 'html.parser')
         rex = r'(magnet:)+[^"]*'
         search_results = [
             (i.find_all('a', {'href': re.compile(rex)})[0].get('href'),
@@ -109,25 +111,17 @@ class sources(BrowserBase):
         return all_results
 
     def _process_nyaa_episodes(self, url, episode, season=None):
-        json_resp = self._get_request(url)
-        results = bs.BeautifulSoup(json_resp, 'html.parser')
+        html = self._get_request(url)
+        mlink = SoupStrainer('div', {'class': 'table-responsive'})
+        soup = BeautifulSoup(html, "html.parser", parse_only=mlink)
         rex = r'(magnet:)+[^"]*'
-        search_results = [
-            (i.find_all('a', {'href': re.compile(rex)})[0].get('href'),
-             i.find_all('a', {'class': None})[1].get('title'),
-             i.find_all('td', {'class': 'text-center'})[1].text,
-             i.find_all('td', {'class': 'text-center'})[-1].text)
-            for i in results.select("tr.danger,tr.default,tr.success")
-        ]
-
         list_ = [
-            {'magnet': magnet,
-             'name': name,
-             'size': size.replace('i', ''),
-             'downloads': int(downloads)
-             }
-            for magnet, name, size, downloads in search_results]
-
+            {'magnet': i.find('a', {'href': re.compile(rex)}).get('href'),
+             'name': i.find_all('a', {'class': None})[1].get('title'),
+             'size': i.find_all('td', {'class': 'text-center'})[1].text.replace('i', ''),
+             'downloads': int(i.find_all('td', {'class': 'text-center'})[-1].text)}
+            for i in soup.select("tr.danger,tr.default,tr.success")
+        ]
         regex = r'\ss(\d+)|season\s(\d+)|(\d+)+(?:st|[nr]d|th)\sseason'
         regex_ep = r'\de(\d+)\b|\se(\d+)\b|\s-\s(\d{1,3})\b'
         rex = re.compile(regex)
@@ -170,7 +164,7 @@ class sources(BrowserBase):
 
     def _process_nyaa_backup(self, url, anilist_id, _zfill, episode='', rescrape=False):
         json_resp = self._get_request(url)
-        results = bs.BeautifulSoup(json_resp, 'html.parser')
+        results = BeautifulSoup(json_resp, 'html.parser')
         rex = r'(magnet:)+[^"]*'
         search_results = [
             (i.find_all('a', {'href': re.compile(rex)})[0].get('href'),
@@ -203,7 +197,7 @@ class sources(BrowserBase):
 
     def _process_nyaa_movie(self, url, episode):
         json_resp = self._get_request(url)
-        results = bs.BeautifulSoup(json_resp, 'html.parser')
+        results = BeautifulSoup(json_resp, 'html.parser')
         rex = r'(magnet:)+[^"]*'
         search_results = [
             (i.find_all('a', {'href': re.compile(rex)})[0].get('href'),
@@ -237,12 +231,12 @@ class sources(BrowserBase):
         return all_results
 
     def get_latest(self, page=1):
-        url = "https://nyaa.si/?f=0&c=1_2&q="
+        url = self._BASE_URL + '?f=0&c=1_0&q='
         data = ''
         return self._process_anime_view(url, data, "latest/%d", page)
 
     def get_latest_dub(self, page=1):
-        url = "https://nyaa.si/?f=0&c=1_2&q=english+dub"
+        url = self._BASE_URL + '?f=0&c=1_2&q=english+dub'
         data = ''
         return self._process_anime_view(url, data, "latest_dub/%d", page)
 
@@ -257,7 +251,7 @@ class sources(BrowserBase):
             pass
 
     def get_sources(self, query, anilist_id, episode, status, media_type, rescrape):
-        query = query.replace(u'×'.encode('utf-8') if six.PY2 else u'×', ' x ')
+        query = self._clean_title(query)
         if media_type == 'movie':
             return self._get_movie_sources(query, anilist_id, episode)
 
@@ -293,8 +287,7 @@ class sources(BrowserBase):
             season = str(season['season']).zfill(2)
             query += '|"S%sE%s "' % (season, episode.zfill(2))
 
-        # url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % query
-        url = "https://nyaa.si/?q=%s&s=downloads&o=desc" % urllib_parse.quote_plus(query)
+        url = '%s?f=0&c=1_0&q=%s&s=downloads&o=desc' % (self._BASE_URL, urllib_parse.quote_plus(query))
 
         if status == 'FINISHED':
             query = '%s "Batch"|"Complete Series"' % (show)
@@ -309,24 +302,23 @@ class sources(BrowserBase):
 
             query += '|"- %s"' % (episode.zfill(2))
 
-            # url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=seeders&&o=desc" % query
-            url = "https://nyaa.si/?q=%s&s=seeders&&o=desc" % urllib_parse.quote_plus(query)
+            url = '%s?f=0&c=1_0&q=%s&s=seeders&&o=desc' % (self._BASE_URL, urllib_parse.quote_plus(query))
 
         return self._process_nyaa_episodes(url, episode.zfill(2), season)
 
     def _get_episode_sources_backup(self, db_query, anilist_id, episode):
         show = self._get_request('https://kaito-title.firebaseio.com/%s.json' % anilist_id)
+        show = json.loads(show)
 
         if not show:
             return []
-        show = json.loads(show)
 
         if 'general_title' in show:
             query = show['general_title'].encode('utf-8') if six.PY2 else show['general_title']
             _zfill = show.get('zfill', 2)
             episode = episode.zfill(_zfill)
             query = urllib_parse.quote_plus(query)
-            url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % query
+            url = '%s?f=0&c=1_0&q=%s&s=downloads&o=desc' % (self._BASE_URL, query)
             return self._process_nyaa_backup(url, anilist_id, _zfill, episode)
 
         try:
@@ -342,7 +334,7 @@ class sources(BrowserBase):
             season = str(season['season']).zfill(2)
             query += '|"S%sE%s"' % (season, episode.zfill(2))
 
-        url = "https://nyaa.si/?f=0&c=1_2&q=%s" % urllib_parse.quote_plus(query)
+        url = '%s?f=0&c=1_0&q=%s' % (self._BASE_URL, urllib_parse.quote_plus(query))
         return self._process_nyaa_episodes(url, episode)
 
     def _get_episode_sources_pack(self, show, anilist_id, episode):
@@ -357,12 +349,12 @@ class sources(BrowserBase):
             season = season['season']
             query += '|"S{0}"|"Season {0}"'.format(season)
 
-        url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=seeders&&o=desc" % urllib_parse.quote_plus(query)
+        url = '%s?f=0&c=1_2&q=%s&s=seeders&&o=desc' % (self._BASE_URL, urllib_parse.quote_plus(query))
         return self._process_nyaa_backup(url, anilist_id, 2, episode.zfill(2), True)
 
     def _get_movie_sources(self, query, anilist_id, episode):
         query = urllib_parse.quote_plus(query)
-        url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % query
+        url = '%s?f=0&c=1_2&q=%s&s=downloads&o=desc' % (self._BASE_URL, query)
         sources = self._process_nyaa_movie(url, '1')
 
         if not sources:
@@ -380,11 +372,11 @@ class sources(BrowserBase):
         if 'general_title' in show:
             query = show['general_title']
             query = urllib_parse.quote_plus(query)
-            url = "https://nyaa.si/?f=0&c=1_2&q=%s&s=downloads&o=desc" % query
+            url = '%s?f=0&c=1_2&q=%s&s=downloads&o=desc' % (self._BASE_URL, query)
             return self._process_nyaa_backup(url, episode)
 
         query = urllib_parse.quote_plus(show)
-        url = "https://nyaa.si/?f=0&c=1_2&q=%s" % query
+        url = '%s?f=0&c=1_2&q=%s' % (self._BASE_URL, query)
         return self._process_nyaa_movie(url, episode)
 
 

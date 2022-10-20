@@ -1,10 +1,10 @@
 import os
-import threading
 import sys
-from kodi_six import xbmc, xbmcaddon, xbmcplugin, xbmcvfs
-import xbmcgui
-from six.moves import urllib_parse
+import threading
 
+import xbmcgui
+from kodi_six import xbmc, xbmcaddon, xbmcplugin, xbmcvfs
+from six.moves import urllib_parse
 
 try:
     HANDLE = int(sys.argv[1])
@@ -139,7 +139,7 @@ def copy2clip(txt):
             pass
     elif platform == 'linux2':
         try:
-            from subprocess import Popen, PIPE
+            from subprocess import PIPE, Popen
 
             p = Popen(['xsel', '-pi'], stdin=PIPE)
             p.communicate(input=txt)
@@ -225,8 +225,8 @@ def clear_settings(dialog):
     addonInfo = __settings__.getAddonInfo
     dataPath = TRANSLATEPATH(addonInfo('profile'))
 
-    import shutil
     import os
+    import shutil
 
     if os.path.exists(dataPath):
         shutil.rmtree(dataPath)

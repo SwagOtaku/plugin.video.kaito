@@ -1,10 +1,11 @@
+import json
 import pickle
 import re
-import json
 from functools import partial
-from resources.lib.indexers.tmdb import TMDBAPI
+
 from resources.lib.indexers.fanart import FANARTAPI
-from resources.lib.ui import database, utils, client
+from resources.lib.indexers.tmdb import TMDBAPI
+from resources.lib.ui import client, database, utils
 from six.moves import urllib_parse
 
 
@@ -216,6 +217,8 @@ class TRAKTAPI:
 
     def get_trakt_seasons(self, anilist_id, meta_ids, kodi_meta, db_correction):
         # _ = self._add_fanart(anilist_id, meta_ids, kodi_meta)
+        if not meta_ids.get('trakt'):
+            return []
         url = 'shows/%d/seasons?extended=full' % meta_ids.get('trakt')
 
         if db_correction:

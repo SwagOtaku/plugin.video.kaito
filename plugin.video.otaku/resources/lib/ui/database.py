@@ -1,15 +1,18 @@
 import ast
-import pickle
 import hashlib
+import pickle
 import re
 import time
+
 from kodi_six import xbmcvfs
 from resources.lib.ui import control
 
 try:
-    from sqlite3 import dbapi2 as db, OperationalError
+    from sqlite3 import OperationalError
+    from sqlite3 import dbapi2 as db
 except ImportError:
-    from pysqlite2 import dbapi2 as db, OperationalError
+    from pysqlite2 import OperationalError
+    from pysqlite2 import dbapi2 as db
 
 cache_table = 'cache'
 

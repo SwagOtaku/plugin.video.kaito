@@ -1,15 +1,16 @@
-import re
-import six
-from six.moves import urllib_parse, urllib_error
-from resources.lib.ui import control, client, jsunpack
-import json
 import base64
-from bs4 import BeautifulSoup
-from resources.lib.ui.pyaes import AESModeOfOperationCBC, Encrypter, Decrypter
-import random
-import string
 import binascii
+import json
+import random
+import re
+import string
 import time
+
+import six
+from bs4 import BeautifulSoup
+from resources.lib.ui import client, control, jsunpack
+from resources.lib.ui.pyaes import AESModeOfOperationCBC, Decrypter, Encrypter
+from six.moves import urllib_error, urllib_parse
 
 _EMBED_EXTRACTORS = {}
 _EDGE_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.18363'

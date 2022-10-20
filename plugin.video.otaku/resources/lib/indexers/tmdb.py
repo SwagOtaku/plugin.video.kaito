@@ -179,21 +179,21 @@ class TMDBAPI:
         if mid:
             url = '{0}/{1}/images?include_image_language=en,ja,null'.format(mtype[0:5], traktItem['tmdb'])
             res = self.get_request(url)
+            if res:
+                if res.get('backdrops'):
+                    items = []
+                    items2 = []
+                    for item in res.get('backdrops'):
+                        if item.get('file_path'):
+                            items.append(self.backgroundPath + item.get('file_path'))
+                            items.append(self.thumbPath + item.get('file_path'))
+                    art.update({'fanart': items, 'thumb': items2})
 
-            if res.get('backdrops'):
-                items = []
-                items2 = []
-                for item in res.get('backdrops'):
-                    if item.get('file_path'):
-                        items.append(self.backgroundPath + item.get('file_path'))
-                        items.append(self.thumbPath + item.get('file_path'))
-                art.update({'fanart': items, 'thumb': items2})
-
-            if res.get('logos'):
-                items = []
-                for item in res.get('logos'):
-                    if item.get('url'):
-                        items.append(self.backgroundPath + item.get('url'))
-                art.update({'clearart': items})
+                if res.get('logos'):
+                    items = []
+                    for item in res.get('logos'):
+                        if item.get('url'):
+                            items.append(self.backgroundPath + item.get('url'))
+                    art.update({'clearart': items})
 
         return art

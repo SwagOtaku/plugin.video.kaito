@@ -1,8 +1,10 @@
 import threading
-from resources.lib.pages import nyaa, gogoanime, animixplay, debrid_cloudfiles
-from resources.lib.ui import control
-from resources.lib.windows.get_sources_window import GetSources as DisplayWindow
 import time
+
+from resources.lib.pages import animixplay, debrid_cloudfiles, gogoanime, nyaa
+from resources.lib.ui import control
+from resources.lib.windows.get_sources_window import \
+    GetSources as DisplayWindow
 
 
 class CancelProcess(Exception):
@@ -10,9 +12,6 @@ class CancelProcess(Exception):
 
 
 def getSourcesHelper(actionArgs):
-    # sources_window = Sources(*SkinManager().confirm_skin_path('get_sources.xml'),
-    #                          actionArgs=actionArgs)
-
     sources_window = Sources(*('get_sources.xml', control.ADDON_PATH),
                              actionArgs=actionArgs)
 
@@ -41,7 +40,7 @@ class Sources(DisplayWindow):
         self.embedSources = []
         self.hosterSources = []
         self.cloud_files = []
-        self.remainingProviders = ['nyaa', 'gogo']
+        self.remainingProviders = ['nyaa', 'gogo', 'animix']
         self.allTorrents = {}
         self.allTorrents_len = 0
         self.hosterDomains = {}
@@ -88,11 +87,17 @@ class Sources(DisplayWindow):
         else:
             self.remainingProviders.remove('nyaa')
 
-        self.threads.append(
-            threading.Thread(target=self.gogo_worker, args=(anilist_id, episode, get_backup, rescrape)))
+        if control.getSetting('provider.gogo') == 'true':
+            self.threads.append(
+                threading.Thread(target=self.gogo_worker, args=(anilist_id, episode, get_backup, rescrape)))
+        else:
+            self.remainingProviders.remove('gogo')
 
-        # self.threads.append(
-        #     threading.Thread(target=self.animixplay_worker, args=(anilist_id, episode, get_backup, rescrape,)))
+        if control.getSetting('provider.animix') == 'true':
+            self.threads.append(
+                threading.Thread(target=self.animixplay_worker, args=(anilist_id, episode, get_backup, rescrape,)))
+        else:
+            self.remainingProviders.remove('animix')
 
         self.threads.append(
             threading.Thread(target=self.user_cloud_inspection, args=(query, anilist_id, episode, media_type, rescrape)))
@@ -105,7 +110,7 @@ class Sources(DisplayWindow):
         runtime = 0
 
         while self.progress < 100:
-            if (len(self.remainingProviders) == 0 and runtime > 5):
+            if (len(self.remainingProviders) < 1 and runtime > 5):
                 break
 
             if self.canceled:
@@ -153,15 +158,13 @@ class Sources(DisplayWindow):
         if not rescrape:
             self.gogoSources = gogoanime.sources().get_sources(anilist_id, episode, get_backup)
             self.embedSources += self.gogoSources
-
         self.remainingProviders.remove('gogo')
 
     def animixplay_worker(self, anilist_id, episode, get_backup, rescrape):
         if not rescrape:
             self.animixplaySources = animixplay.sources().get_sources(anilist_id, episode, get_backup)
             self.embedSources += self.animixplaySources
-
-        self.remainingProviders.remove('animixplay')
+        self.remainingProviders.remove('animix')
 
     def user_cloud_inspection(self, query, anilist_id, episode, media_type, rescrape):
         self.remainingProviders.append('Cloud Inspection')

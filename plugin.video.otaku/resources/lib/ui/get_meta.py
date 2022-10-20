@@ -1,8 +1,9 @@
-from resources.lib.ui import database
-from resources.lib.indexers.trakt import TRAKTAPI
+import threading
+
 from resources.lib.indexers.fanart import FANARTAPI
 from resources.lib.indexers.tmdb import TMDBAPI
-import threading
+from resources.lib.indexers.trakt import TRAKTAPI
+from resources.lib.ui import database
 
 
 def collect_meta(anime_list):
