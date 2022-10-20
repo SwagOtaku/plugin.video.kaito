@@ -1,3 +1,6 @@
+Changelog 0.2.27 [20221020]:
+- Fix trakt rescrape issue
+
 Changelog 0.2.26 [20221020]:
 - Add option to enable/disable embeds
 - Improved Nyaa a little
