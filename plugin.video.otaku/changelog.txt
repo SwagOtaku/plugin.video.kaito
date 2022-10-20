@@ -1,3 +1,8 @@
+Changelog 0.2.26 [20221020]:
+- Add option to enable/disable embeds
+- Improved Nyaa a little
+- Added Animixplay Embeds
+
 Changelog 0.2.25 [20221018]:
 - Improved Episode meta
 
