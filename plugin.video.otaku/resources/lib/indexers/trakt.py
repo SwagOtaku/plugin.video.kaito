@@ -162,8 +162,6 @@ class TRAKTAPI:
             if ':' in name:
                 name = name.split(':')[0]
             url = 'search/%s?query=%s&genres=anime&extended=full' % (rtype, urllib_parse.quote(name.strip()))
-            if year:
-                url += '&years=%s' % year
             result = database.get(self._json_request, 4, url)
 
         if not result:
