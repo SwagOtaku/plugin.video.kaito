@@ -117,6 +117,32 @@ def __extract_mp4upload(url, page_content, referer=None):
     return
 
 
+def __extract_okru(url, page_content, referer=None):
+    pattern = r'(?://|\.)(ok\.ru|odnoklassniki\.ru)/(?:videoembed|video|live)/(\d+)'
+    host, media_id = re.findall(pattern, url)[0]
+    aurl = "http://www.ok.ru/dk"
+    data = {'cmd': 'videoPlayerMetadata', 'mid': media_id}
+    data = urllib_parse.urlencode(data)
+    html = client.request(aurl, post=data)
+    json_data = json.loads(html)
+    if 'error' in json_data:
+        return
+    strurl = json_data.get('hlsManifestUrl')
+    return strurl
+
+
+def __extract_mixdrop(url, page_content, referer=None):
+    r = re.search(r'(?:vsr|wurl|surl)[^=]*=\s*"([^"]+)', __get_packed_data(page_content))
+    if r:
+        surl = r.group(1)
+        if surl.startswith('//'):
+            surl = 'https:' + surl
+        headers = {'User-Agent': _EDGE_UA,
+                   'Referer': url}
+        return surl + __append_headers(headers)
+    return
+
+
 def __extract_dood(url, page_content, referer=None):
     def dood_decode(pdata):
         t = string.ascii_letters + string.digits
@@ -132,6 +158,31 @@ def __extract_dood(url, page_content, referer=None):
         headers = {'User-Agent': _EDGE_UA,
                    'Referer': url}
         return dood_decode(html) + token + str(int(time.time() * 1000)) + __append_headers(headers)
+    return
+
+
+def __extract_streamlare(url, page_content, referer=None):
+    pattern = r'(?://|\.)((?:streamlare|sl(?:maxed|tube|watch))\.(?:com?|org))/(?:e|v)/([0-9A-Za-z]+)'
+    host, media_id = re.findall(pattern, url)[0]
+    headers = {'User-Agent': _EDGE_UA, 'Referer': url}
+    api_durl = 'https://{0}/api/video/download/get'.format(host)
+    api_surl = 'https://{0}/api/video/stream/get'.format(host)
+    data = {'id': media_id}
+    html = json.loads(client.request(api_surl, XHR=True, headers=headers, post=data, jpost=True))
+    result = html.get('result', {})
+    source = result.get('file') \
+        or result.get('Original', {}).get('file') \
+        or result.get(list(result.keys())[0], {}).get('file')
+    if not source:
+        html = client.request(api_durl, XHR=True, headers=headers, post=data, jpost=True)
+        source = json.loads(html).get('result', {}).get('Original', {}).get('url')
+
+    if source:
+        if '?token=' in source:
+            t = client.request(source, redirect=False, headers=headers, output='extended')
+            if t:
+                source = t[2].get('Location')
+        return source + __append_headers(headers)
     return
 
 
@@ -271,6 +322,18 @@ __register_extractor(["https://www.mp4upload.com/",
                       "https://mp4upload.com/"],
                      __extract_mp4upload)
 
+__register_extractor(["https://mixdrop.co/",
+                      "https://mixdrop.to/",
+                      "https://mixdrop.sx/",
+                      "https://mixdrop.bz/",
+                      "https://mixdrop.ch/",
+                      "https://mixdrp.co/"],
+                     __extract_mixdrop)
+
+__register_extractor(["https://ok.ru/",
+                      "odnoklassniki.ru"],
+                     __extract_okru)
+
 __register_extractor(["https://dood.wf/",
                       "https://dood.pm/"],
                      __extract_dood)
@@ -279,6 +342,12 @@ __register_extractor(["https://goload.io/",
                       "https://goload.pro/",
                       "https://gogohd.net/"],
                      __extract_goload)
+
+__register_extractor(["https://streamlare.com/",
+                      "https://slmaxed.com/",
+                      "https://sltube.org/",
+                      "https://slwatch.co/"],
+                     __extract_streamlare)
 
 __register_extractor(["https://vidstreaming.io",
                       "https://gogo-stream.com",

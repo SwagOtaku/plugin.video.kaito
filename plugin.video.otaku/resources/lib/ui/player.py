@@ -265,20 +265,17 @@ def _prefetch_play_link(link):
         return None
     url = link
     headers = {}
-    vfy = True
+
     if '|' in url:
         url, hdrs = link.split('|')
         headers = dict([item.split('=') for item in hdrs.split('&')])
         for header in headers:
             headers[header] = urllib_parse.unquote_plus(headers[header])
-        if 'verifypeer' in headers.keys():
-            headers.pop('verifypeer')
-            vfy = False
 
-    linkInfo = client.request(url, limit='0', headers=headers, verify=vfy, output='extended')
+    linkInfo = client.request(url, headers=headers, limit='0', output='extended')
     if linkInfo[1] != '200':
-        raise Exception('could not resolve %s. status_code=%d' %
-                        (link, linkInfo.status_code))
+        raise Exception('could not resolve %s. status_code=%s' %
+                        (link, linkInfo[1]))
     return {
         "url": link if '|' in link else linkInfo[5],
         "headers": linkInfo[2],
@@ -286,9 +283,14 @@ def _prefetch_play_link(link):
 
 
 def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=None, episode=None, filter_lang=None, rescrape=False):
-    linkInfo = _prefetch_play_link(link)
-    if not linkInfo:
+    try:
+        linkInfo = _prefetch_play_link(link)
+        if not linkInfo:
+            cancelPlayback()
+            return
+    except Exception as e:
         cancelPlayback()
+        control.ok_dialog('Otaku', str(e))
         return
 
     item = xbmcgui.ListItem(path=linkInfo['url'])
