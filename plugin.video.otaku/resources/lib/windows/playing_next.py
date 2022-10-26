@@ -1,6 +1,6 @@
-from resources.lib.windows.base_window import BaseWindow
-from resources.lib.ui import control
 from kodi_six import xbmc
+from resources.lib.ui import control
+from resources.lib.windows.base_window import BaseWindow
 
 
 class PlayingNext(BaseWindow):
@@ -69,7 +69,8 @@ class PlayingNext(BaseWindow):
 
         if control_id == 3001:
             self.actioned = True
-            self.player.seekTime(self.player.getTotalTime())
+            # self.player.seekTime(self.player.getTotalTime())
+            xbmc.executebuiltin('PlayerControl(BigSkipForward)')
             self.close()
         if control_id == 3002:
             self.actioned = True
