@@ -81,7 +81,7 @@ class Sources(DisplayWindow):
         get_backup = args['get_backup']
         self.setProperty('process_started', 'true')
 
-        if control.real_debrid_enabled() or control.all_debrid_enabled() or control.premiumize_enabled():
+        if control.real_debrid_enabled() or control.all_debrid_enabled() or control.debrid_link_enabled() or control.premiumize_enabled():
             self.threads.append(
                 threading.Thread(target=self.nyaa_worker, args=(query, anilist_id, episode, status, media_type, rescrape)))
         else:
@@ -207,6 +207,8 @@ class Sources(DisplayWindow):
             p.append({'slug': 'real_debrid', 'priority': int(control.getSetting('rd.priority'))})
         if control.getSetting('alldebrid.enabled') == 'true':
             p.append({'slug': 'all_debrid', 'priority': int(control.getSetting('alldebrid.priority'))})
+        if control.getSetting('dl.enabled') == 'true':
+            p.append({'slug': 'debrid_link', 'priority': int(control.getSetting('dl.priority'))})
 
         p.append({'slug': '', 'priority': 11})
 

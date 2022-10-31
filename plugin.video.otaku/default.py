@@ -16,13 +16,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
-from resources.lib.ui import control, player, utils, database
-from resources.lib.ui.router import route, router_process
-from resources.lib.OtakuBrowser import OtakuBrowser
-from resources.lib.AniListBrowser import AniListBrowser
-from resources.lib.WatchlistIntegration import set_browser, add_watchlist, watchlist_update
-import six
 import pickle
+
+import six
+from resources.lib.AniListBrowser import AniListBrowser
+from resources.lib.OtakuBrowser import OtakuBrowser
+from resources.lib.ui import control, database, player, utils
+from resources.lib.ui.router import route, router_process
+from resources.lib.WatchlistIntegration import (add_watchlist, set_browser,
+                                                watchlist_update)
 
 MENU_ITEMS = [
     (control.lang(30001), "anilist_airing", 'airing anime calendar.png'),
@@ -177,6 +179,12 @@ def FIND_SIMILAR(payload, params):
 def authAllDebrid(payload, params):
     from resources.lib.debrid.all_debrid import AllDebrid
     AllDebrid().auth()
+
+
+@route('authDebridLink')
+def authDebridLink(payload, params):
+    from resources.lib.debrid.debrid_link import DebridLink
+    DebridLink().auth()
 
 
 @route('authRealDebrid')

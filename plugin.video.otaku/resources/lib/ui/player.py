@@ -152,7 +152,6 @@ class watchlistPlayer(xbmc.Player):
 
         audio_lang = self.getAvailableAudioStreams()
         if len(audio_lang) > 1:
-            control.log('Audio streams are {0}'.format(repr(audio_lang)), 'info')
             preferred_audio = control.getSetting('general.audio')
             if len(preferred_audio) == 5:
                 preferred_audio = control.lang(int(preferred_audio))

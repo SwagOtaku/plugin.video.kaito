@@ -1,7 +1,7 @@
 import json
+
+from resources.lib.ui import client, control, source_utils
 from six.moves import urllib_parse
-from resources.lib.ui import source_utils
-from resources.lib.ui import control, client
 
 
 class AllDebrid:
@@ -82,7 +82,10 @@ class AllDebrid:
             control.setSetting('alldebrid.username', user_information['user']['username'])
 
     def check_hash(self, hash_list):
-        hashString = '&'.join(['magnets[]=' + x for x in hash_list])
+        if isinstance(hash_list, list):
+            hashString = '&'.join(['magnets[]=' + x for x in hash_list])
+        else:
+            hashString = '&magnets[]=' + hash_list
         return self.post_json('magnet/instant', hashString, apikey=self.apikey)
 
     def upload_magnet(self, magnet_hash):

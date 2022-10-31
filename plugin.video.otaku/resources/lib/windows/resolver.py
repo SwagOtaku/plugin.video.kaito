@@ -3,7 +3,8 @@
 import sys
 
 from kodi_six import xbmc
-from resources.lib.debrid import all_debrid, premiumize, real_debrid
+from resources.lib.debrid import (all_debrid, debrid_link, premiumize,
+                                  real_debrid)
 from resources.lib.ui import control
 from resources.lib.windows.base_window import BaseWindow
 
@@ -31,6 +32,7 @@ class Resolver(BaseWindow):
 
         self.pack_select = None
         self.resolvers = {'all_debrid': all_debrid.AllDebrid,
+                          'debrid_link': debrid_link.DebridLink,
                           'premiumize': premiumize.Premiumize,
                           'real_debrid': real_debrid.RealDebrid}
 

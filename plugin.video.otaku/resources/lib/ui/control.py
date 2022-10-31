@@ -12,6 +12,7 @@ except:
     HANDLE = '1'
 
 addonInfo = xbmcaddon.Addon().getAddonInfo
+ADDON_VERSION = addonInfo('version')
 ADDON_NAME = addonInfo('id')
 __settings__ = xbmcaddon.Addon(ADDON_NAME)
 __language__ = __settings__.getLocalizedString
@@ -77,6 +78,13 @@ def try_release_lock(lock):
 
 def real_debrid_enabled():
     if getSetting('rd.auth') != '' and getSetting('realdebrid.enabled') == 'true':
+        return True
+    else:
+        return False
+
+
+def debrid_link_enabled():
+    if getSetting('dl.auth') != '' and getSetting('dl.enabled') == 'true':
         return True
     else:
         return False

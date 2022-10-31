@@ -8,7 +8,8 @@ from functools import partial
 
 import six
 from bs4 import BeautifulSoup, SoupStrainer
-from resources.lib.debrid import all_debrid, premiumize, real_debrid
+from resources.lib.debrid import (all_debrid, debrid_link, premiumize,
+                                  real_debrid)
 from resources.lib.ui import control, database, source_utils, utils
 from resources.lib.ui.BrowserBase import BrowserBase
 from six.moves import filter, urllib_parse
@@ -385,6 +386,7 @@ class TorrentCacheCheck:
         self.premiumizeCached = []
         self.realdebridCached = []
         self.all_debridCached = []
+        self.debrid_linkCached = []
         self.threads = []
 
         self.episodeStrings = None
@@ -393,10 +395,14 @@ class TorrentCacheCheck:
     def torrentCacheCheck(self, torrent_list):
         if control.real_debrid_enabled():
             self.threads.append(
-                threading.Thread(target=self.realdebridWorker, args=(copy.deepcopy(torrent_list),)))
+                threading.Thread(target=self.real_debrid_worker, args=(copy.deepcopy(torrent_list),)))
+
+        if control.debrid_link_enabled():
+            self.threads.append(
+                threading.Thread(target=self.debrid_link_worker, args=(copy.deepcopy(torrent_list),)))
 
         if control.premiumize_enabled():
-            self.threads.append(threading.Thread(target=self.premiumizeWorker, args=(copy.deepcopy(torrent_list),)))
+            self.threads.append(threading.Thread(target=self.premiumize_worker, args=(copy.deepcopy(torrent_list),)))
 
         if control.all_debrid_enabled():
             self.threads.append(
@@ -407,7 +413,7 @@ class TorrentCacheCheck:
         for i in self.threads:
             i.join()
 
-        cachedList = self.realdebridCached + self.premiumizeCached + self.all_debridCached
+        cachedList = self.realdebridCached + self.premiumizeCached + self.all_debridCached + self.debrid_linkCached
         return cachedList
 
     def all_debrid_worker(self, torrent_list):
@@ -431,7 +437,28 @@ class TorrentCacheCheck:
 
         self.all_debridCached = cache_list
 
-    def realdebridWorker(self, torrent_list):
+    def debrid_link_worker(self, torrent_list):
+
+        api = debrid_link.DebridLink()
+
+        if len(torrent_list) == 0:
+            return
+
+        cache_check = api.check_hash([i['hash'] for i in torrent_list])
+
+        if not cache_check:
+            return
+
+        cache_list = []
+
+        for i in torrent_list:
+            if i['hash'] in list(cache_check.keys()):
+                i['debrid_provider'] = 'debrid_link'
+                cache_list.append(i)
+
+        self.debrid_linkCached = cache_list
+
+    def real_debrid_worker(self, torrent_list):
         cache_list = []
 
         hash_list = [i['hash'] for i in torrent_list]
@@ -455,7 +482,7 @@ class TorrentCacheCheck:
 
         self.realdebridCached = cache_list
 
-    def premiumizeWorker(self, torrent_list):
+    def premiumize_worker(self, torrent_list):
         hash_list = [i['hash'] for i in torrent_list]
         if len(hash_list) == 0:
             return

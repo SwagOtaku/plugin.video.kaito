@@ -666,3 +666,25 @@ msgstr ""
 msgctxt "#40402"
 msgid "TV Show Items"
 msgstr ""
+
+# empty strings from id 40403 to 40410
+
+msgctxt "#40411"
+msgid "Debrid-Link"
+msgstr ""
+
+msgctxt "#40412"
+msgid "Enable Debrid-Link..."
+msgstr ""
+
+msgctxt "#40413"
+msgid "Debrid-Link Username"
+msgstr ""
+
+msgctxt "#40414"
+msgid "Authorize Debrid-Link..."
+msgstr ""
+
+msgctxt "#40415"
+msgid "Debrid-Link Priority"
+msgstr ""

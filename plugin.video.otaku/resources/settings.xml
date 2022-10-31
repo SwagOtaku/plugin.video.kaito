@@ -83,6 +83,21 @@
 
 	<!-- Accounts -->
 	<category label="40334">
+		<!-- All Debrid -->
+		<setting type="lsep" label="40340" />
+		<setting type="sep" />
+		<setting id="alldebrid.enabled" type="bool" default="false" label="40341" />
+		<setting id="alldebrid.username" type="text" default="" label="40342" enable="false" visible="eq(-1,true)"/>
+		<setting id="alldebrid.auth_start" type="action" label="40343" option="close" action="RunPlugin(plugin://plugin.video.otaku/authAllDebrid)" visible="eq(-2,true)" />
+		<setting id="alldebrid.priority" type="slider" subsetting="true" label="40344" option="int" range="1,1,10" default="10" visible="eq(-3,true)" />
+		<!-- Debrid-Link -->
+		<setting type="lsep" label="40411" />
+		<setting type="sep" />
+		<setting id="dl.enabled" type="bool" default="false" label="40412" />
+		<setting id="dl.username" type="text" default="" label="40413" enable="false" visible="eq(-1,true)"/>
+		<setting id="dl.auth_start" type="action" label="40414" option="close" action="RunPlugin(plugin://plugin.video.otaku/authDebridLink)" visible="eq(-2,true)" />
+		<setting id="dl.priority" type="slider" subsetting="true" label="40415" option="int" range="1,1,10" default="10" visible="eq(-3,true)" />
+		<!-- <setting id="dl.cloudInspection" type="bool" subsetting="true" label="40372" default="false" visible="eq(-4,true)" /> -->
 		<!-- Premiumize -->
 		<setting type="lsep" label="40363" />
 		<setting type="sep" />
@@ -91,7 +106,6 @@
 		<setting id="premiumize.auth_start" type="action" label="40366" option="close" action="RunPlugin(plugin://plugin.video.otaku/authPremiumize)" visible="eq(-2,true)" />
 		<setting id="premiumize.priority" type="slider" subsetting="true" label="40367" option="int" range="1,1,10" default="10" visible="eq(-3,true)" />
 		<setting id="premiumize.cloudInspection" type="bool" subsetting="true" label="40372" default="false" visible="eq(-4,true)" />
-
 		<!-- Real-Debrid -->
 		<setting type="lsep" label="40335" />
 		<setting type="sep" />
@@ -100,14 +114,6 @@
 		<setting id="rd.auth_start" type="action" label="40338" option="close" action="RunPlugin(plugin://plugin.video.otaku/authRealDebrid)" visible="eq(-2,true)" />
 		<setting id="rd.priority" type="slider" subsetting="true" label="40339" option="int" range="1,1,10" default="10" visible="eq(-3,true)" />
 		<setting id="rd.cloudInspection" type="bool" subsetting="true" label="40372" default="false" visible="eq(-4,true)" />
-
-		<!-- All Debrid -->
-		<setting type="lsep" label="40340" />
-		<setting type="sep" />
-		<setting id="alldebrid.enabled" type="bool" default="false" label="40341" />
-		<setting id="alldebrid.username" type="text" default="" label="40342" enable="false" visible="eq(-1,true)"/>
-		<setting id="alldebrid.auth_start" type="action" label="40343" option="close" action="RunPlugin(plugin://plugin.video.otaku/authAllDebrid)" visible="eq(-2,true)" />
-		<setting id="alldebrid.priority" type="slider" subsetting="true" label="40344" option="int" range="1,1,10" default="10" visible="eq(-3,true)" />
 	</category>
 
 	<!-- Watchlist -->

@@ -1,12 +1,14 @@
-import json
-from resources.lib.ui import utils, database, control, client
-from resources.lib.debrid import all_debrid, real_debrid, premiumize
-from resources.lib import pages
-from resources.lib.ui.BrowserBase import BrowserBase
-from resources.lib.indexers import simkl, trakt
-import pickle
 import datetime
+import json
+import pickle
 import re
+
+from resources.lib import pages
+from resources.lib.debrid import (all_debrid, debrid_link, premiumize,
+                                  real_debrid)
+from resources.lib.indexers import simkl, trakt
+from resources.lib.ui import client, control, database, utils
+from resources.lib.ui.BrowserBase import BrowserBase
 
 
 class OtakuBrowser(BrowserBase):
@@ -209,6 +211,7 @@ class OtakuBrowser(BrowserBase):
     def get_latest_sources(self, debrid_provider, hash_):
         resolvers = {'premiumize': premiumize.Premiumize,
                      'all_debrid': all_debrid.AllDebrid,
+                     'debrid_link': debrid_link.DebridLink,
                      'real_debrid': real_debrid.RealDebrid}
 
         magnet = 'magnet:?xt=urn:btih:' + hash_
