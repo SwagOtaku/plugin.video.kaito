@@ -1,3 +1,6 @@
+Changelog 0.2.29 [20221031]:
+- Added Debrid-Link support
+
 Changelog 0.2.28 [20221023]:
 - Get embeds from Animix
 
