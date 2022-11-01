@@ -88,11 +88,11 @@ class SourceSelect(BaseWindow):
         if (time.time() - self.last_action) < .5:
             return
 
-        if actionID == 7 and self.getFocusId() == 1000:
+        if actionID in [7, 401, 100] and self.getFocusId() == 1000:
             self.position = self.display_list.getSelectedPosition()
             self.resolve_item()
 
-        if actionID == 92 or id == 10:
+        if actionID in [92, 10, 411]:
             self.stream_link = False
             self.close()
 
@@ -101,7 +101,7 @@ class SourceSelect(BaseWindow):
     def onAction(self, action):
         actionID = action.getId()
 
-        if actionID in [7, 92, 10]:
+        if actionID in [7, 92, 10, 401, 411, 100]:
             self.handle_action(actionID)
 
     def info_list_to_sorted_dict(self, info_list):

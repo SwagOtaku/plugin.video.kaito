@@ -92,7 +92,7 @@ class SkipIntro(BaseWindow):
 
         action = action.getId()
 
-        if action == 92 or action == 10:
+        if action == 92 or action == 10 or action == 100 or action == 401:
             # BACKSPACE / ESCAPE
             self.close()
 
