@@ -1,3 +1,6 @@
+Changelog 0.2.30 [20221031]:
+- Enable touch actions for Source Select, Intro Skip, and Play Next
+
 Changelog 0.2.29 [20221031]:
 - Added Debrid-Link support
 
