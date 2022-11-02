@@ -1,3 +1,10 @@
+Changelog 0.2.31 [20221102]:
+- Added Shortcut Settings Category
+- Added Completed This Year
+- Added Completed This Season
+- Added Two New Icons 
+- Fixed typo for the Voted Menu Items
+
 Changelog 0.2.30 [20221031]:
 - Enable touch actions for Source Select, Intro Skip, and Play Next
 

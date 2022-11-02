@@ -27,25 +27,27 @@ from resources.lib.WatchlistIntegration import (add_watchlist, set_browser,
                                                 watchlist_update)
 
 MENU_ITEMS = [
-    (control.lang(30001), "anilist_airing", 'airing anime calendar.png'),
-    (control.lang(30002), "anilist_airing_anime", 'airing anime.png'),
-    (control.lang(30018), "movies", 'movies.png'),
-    (control.lang(30019), "tv_shows", 'tv shows.png'),
-    (control.lang(30003), "anilist_trending_this_year", 'trending this year.png'),
-    (control.lang(30004), "anilist_popular_this_year", 'popular this year.png'),
-    (control.lang(30005), "anilist_voted_this_year", 'voted this year.png'),
-    (control.lang(30006), "anilist_upcoming_next_year", 'upcoming next year.png'),
-    (control.lang(30007), "anilist_trending_this_season", 'trending this season.png'),
-    (control.lang(30008), "anilist_popular_this_season", 'popular this season.png'),
-    (control.lang(30009), "anilist_voted_this_season", 'voted this season.png'),
-    (control.lang(30010), "anilist_upcoming_next_season", 'upcoming next season.png'),
-    (control.lang(30011), 'anilist_all_time_trending', 'all time trending.png'),
-    (control.lang(30012), 'anilist_all_time_popular', 'all time popular.png'),
-    (control.lang(30013), 'anilist_all_time_voted', 'all time voted.png'),
-    (control.lang(30014), 'anilist_top_100_anime', 'top 100 anime.png'),
-    (control.lang(30015), "anilist_genres", 'genres & tags.png'),
-    (control.lang(30016), "search_history", 'search.png'),
-    (control.lang(30017), "tools", 'tools.png'),
+    (control.lang(50000), "anilist_airing", 'airing anime calendar.png'),
+    (control.lang(50006), "anilist_airing_anime", 'airing anime.png'),
+    (control.lang(50001), "movies", 'movies.png'),
+    (control.lang(50002), "tv_shows", 'tv shows.png'),
+    (control.lang(50007), "anilist_trending_this_year", 'trending this year.png'),
+    (control.lang(50008), "anilist_popular_this_year", 'popular this year.png'),
+    (control.lang(50009), "anilist_voted_this_year", 'voted this year.png'),
+    (control.lang(50010), "anilist_completed_this_year", 'completed this year.png'),
+    (control.lang(50011), "anilist_upcoming_next_year", 'upcoming next year.png'),
+    (control.lang(50012), "anilist_trending_this_season", 'trending this season.png'),
+    (control.lang(50013), "anilist_popular_this_season", 'popular this season.png'),
+    (control.lang(50014), "anilist_voted_this_season", 'voted this season.png'),
+    (control.lang(50015), "anilist_completed_this_season", 'completed this season.png'),
+    (control.lang(50016), "anilist_upcoming_next_season", 'upcoming next season.png'),
+    (control.lang(50017), 'anilist_all_time_trending', 'all time trending.png'),
+    (control.lang(50018), 'anilist_all_time_popular', 'all time popular.png'),
+    (control.lang(50019), 'anilist_all_time_voted', 'all time voted.png'),
+    (control.lang(50020), 'anilist_top_100_anime', 'top 100 anime.png'),
+    (control.lang(50003), "anilist_genres", 'genres & tags.png'),
+    (control.lang(50004), "search_history", 'search.png'),
+    (control.lang(50005), "tools", 'tools.png'),
 ]
 _TITLE_LANG = control.getSetting("titlelanguage")
 _BROWSER = OtakuBrowser()
@@ -55,21 +57,23 @@ _ANILIST_BROWSER = AniListBrowser(_TITLE_LANG)
 @route('movies')
 def MOVIES_MENU(payload, params):
     MOVIES_ITEMS = [
-        (control.lang(30002), "anilist_airing_anime_movie", 'airing anime.png'),
-        (control.lang(30003), "anilist_trending_this_year_movie", 'trending this year.png'),
-        (control.lang(30004), "anilist_popular_this_year_movie", 'popular this year.png'),
-        (control.lang(30005), "anilist_voted_this_year_movie", 'voted this year.png'),
-        (control.lang(30006), "anilist_upcoming_next_year_movie", 'upcoming next year.png'),
-        (control.lang(30007), "anilist_trending_this_season_movie", 'trending this season.png'),
-        (control.lang(30008), "anilist_popular_this_season_movie", 'popular this season.png'),
-        (control.lang(30009), "anilist_voted_this_season_movie", 'voted this season.png'),
-        (control.lang(30010), "anilist_upcoming_next_season_movie", 'upcoming next season.png'),
-        (control.lang(30011), 'anilist_all_time_trending_movie', 'all time trending.png'),
-        (control.lang(30012), 'anilist_all_time_popular_movie', 'all time popular.png'),
-        (control.lang(30013), 'anilist_all_time_voted_movie', 'all time voted.png'),
-        (control.lang(30014), 'anilist_top_100_anime_movie', 'top 100 anime.png'),
-        (control.lang(30015), "anilist_genres", 'genres & tags.png'),
-        (control.lang(30016), "search_history", 'search.png'),
+        (control.lang(50006), "anilist_airing_anime_movie", 'airing anime.png'),
+        (control.lang(50007), "anilist_trending_this_year_movie", 'trending this year.png'),
+        (control.lang(50008), "anilist_popular_this_year_movie", 'popular this year.png'),
+        (control.lang(50009), "anilist_voted_this_year_movie", 'voted this year.png'),
+        (control.lang(50010), "anilist_completed_this_year_movie", 'completed this year.png'),
+        (control.lang(50011), "anilist_upcoming_next_year_movie", 'upcoming next year.png'),
+        (control.lang(50012), "anilist_trending_this_season_movie", 'trending this season.png'),
+        (control.lang(50013), "anilist_popular_this_season_movie", 'popular this season.png'),
+        (control.lang(50014), "anilist_voted_this_season_movie", 'voted this season.png'),
+        (control.lang(50015), "anilist_completed_this_season_movie", 'completed this season.png'),
+        (control.lang(50016), "anilist_upcoming_next_season_movie", 'upcoming next season.png'),
+        (control.lang(50017), 'anilist_all_time_trending_movie', 'all time trending.png'),
+        (control.lang(50018), 'anilist_all_time_popular_movie', 'all time popular.png'),
+        (control.lang(50019), 'anilist_all_time_voted_movie', 'all time voted.png'),
+        (control.lang(50020), 'anilist_top_100_anime_movie', 'top 100 anime.png'),
+        (control.lang(50003), "anilist_genres", 'genres & tags.png'),
+        (control.lang(50004), "search_history", 'search.png'),
     ]
 
     MOVIES_ITEMS_SETTINGS = MOVIES_ITEMS[:]
@@ -86,21 +90,23 @@ def MOVIES_MENU(payload, params):
 @route('tv_shows')
 def TV_SHOWS_MENU(payload, params):
     TV_SHOWS_ITEMS = [
-        (control.lang(30002), "anilist_airing_anime_tv", 'airing anime.png'),
-        (control.lang(30003), "anilist_trending_this_year_tv", 'trending this year.png'),
-        (control.lang(30004), "anilist_popular_this_year_tv", 'popular this year.png'),
-        (control.lang(30005), "anilist_voted_this_year_tv", 'voted this year.png'),
-        (control.lang(30006), "anilist_upcoming_next_year_tv", 'upcoming next year.png'),
-        (control.lang(30007), "anilist_trending_this_season_tv", 'trending this season.png'),
-        (control.lang(30008), "anilist_popular_this_season_tv", 'popular this season.png'),
-        (control.lang(30009), "anilist_voted_this_season_tv", 'voted this season.png'),
-        (control.lang(30010), "anilist_upcoming_next_season_tv", 'upcoming next season.png'),
-        (control.lang(30011), 'anilist_all_time_trending_tv', 'all time trending.png'),
-        (control.lang(30012), 'anilist_all_time_popular_tv', 'all time popular.png'),
-        (control.lang(30013), 'anilist_all_time_voted_tv', 'all time voted.png'),
-        (control.lang(30014), 'anilist_top_100_anime_tv', 'top 100 anime.png'),
-        (control.lang(30015), "anilist_genres", 'genres & tags.png'),
-        (control.lang(30016), "search_history", 'search.png'),
+        (control.lang(50006), "anilist_airing_anime_tv", 'airing anime.png'),
+        (control.lang(50007), "anilist_trending_this_year_tv", 'trending this year.png'),
+        (control.lang(50008), "anilist_popular_this_year_tv", 'popular this year.png'),
+        (control.lang(50009), "anilist_voted_this_year_tv", 'voted this year.png'),
+        (control.lang(50010), "anilist_completed_this_year_tv", 'completed this year.png'),
+        (control.lang(50011), "anilist_upcoming_next_year_tv", 'upcoming next year.png'),
+        (control.lang(50012), "anilist_trending_this_season_tv", 'trending this season.png'),
+        (control.lang(50013), "anilist_popular_this_season_tv", 'popular this season.png'),
+        (control.lang(50014), "anilist_voted_this_season_tv", 'voted this season.png'),
+        (control.lang(50015), "anilist_completed_this_season_tv", 'completed this season.png'),
+        (control.lang(50016), "anilist_upcoming_next_season_tv", 'upcoming next season.png'),
+        (control.lang(50017), 'anilist_all_time_trending_tv', 'all time trending.png'),
+        (control.lang(50018), 'anilist_all_time_popular_tv', 'all time popular.png'),
+        (control.lang(50019), 'anilist_all_time_voted_tv', 'all time voted.png'),
+        (control.lang(50020), 'anilist_top_100_anime_tv', 'top 100 anime.png'),
+        (control.lang(50003), "anilist_genres", 'genres & tags.png'),
+        (control.lang(50004), "search_history", 'search.png'),
     ]
 
     TV_SHOWS_ITEMS_SETTINGS = TV_SHOWS_ITEMS[:]
@@ -151,7 +157,7 @@ def on_stopped():
 
 # Will be called on genre page
 def genre_dialog(genre_display_list):
-    return control.multiselect_dialog(control.lang(30015), genre_display_list)
+    return control.multiselect_dialog(control.lang(50003), genre_display_list)
 
 
 @route('season_correction/*')
@@ -318,6 +324,16 @@ def ANILIST_VOTED_THIS_YEAR_PAGES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_voted_this_year(int(payload)))
 
 
+@route('anilist_completed_this_year')
+def ANILIST_COMPLETED_THIS_YEAR(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_this_year())
+
+
+@route('anilist_completed_this_year/*')
+def ANILIST_COMPLETED_THIS_YEAR_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_this_year(int(payload)))
+
+
 @route('anilist_upcoming_next_year')
 def ANILIST_UPCOMING_NEXT_YEAR(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_upcoming_next_year())
@@ -356,6 +372,16 @@ def ANILIST_VOTED_THIS_SEASON(payload, params):
 @route('anilist_voted_this_season/*')
 def ANILIST_VOTED_THIS_SEASON_PAGES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_voted_this_season(int(payload)))
+    
+
+@route('anilist_completed_this_season')
+def ANILIST_COMPLETED_THIS_SEASON(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_this_season())
+
+
+@route('anilist_completed_this_season/*')
+def ANILIST_COMPLETED_THIS_SEASON_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_this_season(int(payload)))
 
 
 @route('anilist_upcoming_next_season')
@@ -445,7 +471,17 @@ def ANILIST_VOTED_THIS_YEAR_MOVIE(payload, params):
 
 @route('anilist_voted_this_year_movie/*')
 def ANILIST_VOTED_THIS_YEAR_MOVIE_PAGES(payload, params):
-    return control.draw_items(_ANILIST_BROWSER.get_vote_this_year_movie(int(payload)))
+    return control.draw_items(_ANILIST_BROWSER.get_voted_this_year_movie(int(payload)))
+
+
+@route('anilist_completed_this_year_movie')
+def ANILIST_COMPLETED_THIS_YEAR_MOVIE(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_this_year_movie())
+
+
+@route('anilist_completed_this_year_movie/*')
+def ANILIST_COMPLETED_THIS_YEAR_MOVIE_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_this_year_movie(int(payload)))
 
 
 @route('anilist_upcoming_next_year_movie')
@@ -485,7 +521,17 @@ def ANILIST_VOTED_THIS_SEASON_MOVIE(payload, params):
 
 @route('anilist_voted_this_season_movie/*')
 def ANILIST_VOTED_THIS_SEASON_MOVIE_PAGES(payload, params):
-    return control.draw_items(_ANILIST_BROWSER.get_vote_this_season_movie(int(payload)))
+    return control.draw_items(_ANILIST_BROWSER.get_voted_this_season_movie(int(payload)))
+
+
+@route('anilist_completed_this_season_movie')
+def ANILIST_COMPLETED_THIS_SEASON_MOVIE(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_this_season_movie())
+
+
+@route('anilist_completed_this_season_movie/*')
+def ANILIST_COMPLETED_THIS_SEASON_MOVIE_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_this_season_movie(int(payload)))
 
 
 @route('anilist_upcoming_next_season_movie')
@@ -575,7 +621,17 @@ def ANILIST_VOTED_THIS_YEAR_TV(payload, params):
 
 @route('anilist_voted_this_year_tv/*')
 def ANILIST_VOTED_THIS_YEAR_TV_PAGES(payload, params):
-    return control.draw_items(_ANILIST_BROWSER.get_vote_this_year_tv(int(payload)))
+    return control.draw_items(_ANILIST_BROWSER.get_voted_this_year_tv(int(payload)))
+
+
+@route('anilist_completed_this_year_tv')
+def ANILIST_COMPLETED_THIS_YEAR_TV(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_this_year_tv())
+
+
+@route('anilist_completed_this_year_tv/*')
+def ANILIST_COMPLETED_THIS_YEAR_TV_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_this_year_tv(int(payload)))
 
 
 @route('anilist_upcoming_next_year_tv')
@@ -615,7 +671,17 @@ def ANILIST_VOTED_THIS_SEASON_TV(payload, params):
 
 @route('anilist_voted_this_season_tv/*')
 def ANILIST_VOTED_THIS_SEASON_TV_PAGES(payload, params):
-    return control.draw_items(_ANILIST_BROWSER.get_vote_this_season_tv(int(payload)))
+    return control.draw_items(_ANILIST_BROWSER.get_voted_this_season_tv(int(payload)))
+
+
+@route('anilist_completed_this_season_tv')
+def ANILIST_COMPLETED_THIS_SEASON_TV(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_this_season_tv())
+
+
+@route('anilist_completed_this_season_tv/*')
+def ANILIST_COMPLETED_THIS_SEASON_TV_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_this_season_tv(int(payload)))
 
 
 @route('anilist_upcoming_next_season_tv')
@@ -700,7 +766,7 @@ def SEARCH(payload, params):
     if isinstance(action_args, dict):
         query = action_args.get('query')
     else:
-        query = control.keyboard(control.lang(30016))
+        query = control.keyboard(control.lang(50004))
     if not query:
         return False
 
