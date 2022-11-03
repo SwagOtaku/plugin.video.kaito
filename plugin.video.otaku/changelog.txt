@@ -1,3 +1,6 @@
+Changelog 0.2.32 [20221102]:
+- Fixed an icon typo
+
 Changelog 0.2.31 [20221102]:
 - Added Shortcut Settings Category
 - Added Completed This Year

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.2.31">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.2.32">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -7,7 +7,7 @@
     <import addon="script.module.six" version="1.15.0"/>
     <import addon="script.module.kodi-six" version="0.1.3"/>
     <import addon="context.otaku" version="0.0.6"/>
-    <import addon="script.otaku.themepak" version="0.0.5"/>
+    <import addon="script.otaku.themepak" version="0.0.6"/>
   </requires>
   <extension library="default.py" point="xbmc.python.pluginsource">
         <provides>video</provides>
@@ -24,12 +24,8 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.2.31 [20221102]:
-- Added Shortcut Settings Category
-- Added Completed This Year
-- Added Completed This Season
-- Added Two New Icons 
-- Fixed typo for the Voted Menu Items
+Changelog 0.2.32 [20221102]:
+- Fixed an icon typo
     </news>
   </extension>
 </addon>
