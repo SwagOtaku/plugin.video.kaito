@@ -1,3 +1,6 @@
+Changelog 0.2.33 [20221105]:
+- Context menu entry to add to watchlist and remove from watchlist
+
 Changelog 0.2.32 [20221102]:
 - Fixed an icon typo
 
