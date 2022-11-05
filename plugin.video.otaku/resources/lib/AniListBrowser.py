@@ -1,14 +1,15 @@
-import itertools
-import time
-import datetime
 import ast
+import datetime
+import itertools
 import json
-import random
-from functools import partial
-from resources.lib.ui import utils, database, client, get_meta, control
-from resources.lib.ui.divide_flavors import div_flavor
 import pickle
+import random
+import time
+from functools import partial
+
 import six
+from resources.lib.ui import client, control, database, get_meta, utils
+from resources.lib.ui.divide_flavors import div_flavor
 
 
 class AniListBrowser():
@@ -703,7 +704,8 @@ class AniListBrowser():
             'page': page,
             'search': query,
             'sort': "SEARCH_MATCH",
-            'type': "ANIME"
+            'type': "ANIME",
+            'isAdult': control.getSetting('search.adult') == "true"
         }
 
         search = database.get(self.get_search_res, 0.125, variables, page)

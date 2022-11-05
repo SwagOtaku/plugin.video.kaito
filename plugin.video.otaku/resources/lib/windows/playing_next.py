@@ -78,12 +78,12 @@ class PlayingNext(BaseWindow):
 
     def onAction(self, action):
 
-        action = action.getId()
+        actionID = action.getId()
 
-        if action == 92 or action == 10 or action == 100 or action == 401:
+        if actionID in [92, 10, 100, 401]:
             # BACKSPACE / ESCAPE
             self.close()
 
-        if action == 7:
-            self.handle_action(action)
+        if actionID == 7:
+            self.handle_action(actionID)
             return

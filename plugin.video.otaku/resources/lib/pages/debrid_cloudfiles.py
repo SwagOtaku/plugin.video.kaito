@@ -34,7 +34,7 @@ class sources(BrowserBase):
 
         filenames = [re.sub(r'\[.*?\]\s*', '', i['filename']) for i in torrents]
         filenames_query = ','.join(filenames)
-        resp = client.request('https://armkai.vercel.app/api/fuzzypacks?dict={}&match={}'.format(filenames_query, query))
+        resp = client.request('https://armkai.vercel.app/api/fuzzypacks', params={"dict": filenames_query, "match": query})
         resp = json.loads(resp)
 
         for i in resp:
@@ -74,7 +74,7 @@ class sources(BrowserBase):
 
         filenames = [re.sub(r'\[.*?\]\s*', '', i['name']) for i in cloud_items]
         filenames_query = ','.join(filenames)
-        resp = client.request('https://armkai.vercel.app/api/fuzzypacks?dict={}&match={}'.format(filenames_query, query))
+        resp = client.request('https://armkai.vercel.app/api/fuzzypacks', params={"dict": filenames_query, "match": query})
         resp = json.loads(resp)
 
         for i in resp:

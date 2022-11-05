@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from resources.lib.windows.base_window import BaseWindow
-from resources.lib.ui import control
 from kodi_six import xbmc
+from resources.lib.ui import control
+from resources.lib.windows.base_window import BaseWindow
 
 
 def run_once(f):
@@ -90,12 +90,12 @@ class SkipIntro(BaseWindow):
 
     def onAction(self, action):
 
-        action = action.getId()
+        actionID = action.getId()
 
-        if action == 92 or action == 10 or action == 100 or action == 401:
+        if actionID in [92, 10, 100, 401]:
             # BACKSPACE / ESCAPE
             self.close()
 
-        if action == 7:
-            self.handle_action(action)
+        if actionID == 7:
+            self.handle_action(actionID)
             return

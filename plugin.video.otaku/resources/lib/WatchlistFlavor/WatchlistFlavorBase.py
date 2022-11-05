@@ -1,7 +1,8 @@
-import pickle
-from resources.lib.ui import utils, database, client, control
 import json
+import pickle
 import random
+
+from resources.lib.ui import client, control, database, utils
 
 
 class WatchlistFlavorBase(object):
@@ -83,6 +84,12 @@ class WatchlistFlavorBase(object):
     def watchlist_update(self, episode, kitsu_id):
         raise NotImplementedError("watchlist_update should be implemented by subclass")
 
+    def watchlist_append(self, anilist_id):
+        raise NotImplementedError("watchlist_append should be implemented by subclass")
+
+    def watchlist_remove(self, anilist_id):
+        raise NotImplementedError("watchlist_append should be implemented by subclass")
+
     def _get_next_up_meta(self, mal_id, next_up, anilist_id=None):
         next_up_meta = {}
 
@@ -140,6 +147,22 @@ class WatchlistFlavorBase(object):
         flavor_id = arm_resp.get(flavor[:-3])
         return flavor_id
 
+    def _get_mapping_id_mal(self, mal_id, flavor):
+        try:
+            mapping_id = database.get_show_mal(mal_id)[flavor]
+            if not mapping_id:
+                raise KeyError
+        except:
+            mapping_id = self._get_flavor_id_mal(mal_id, flavor)
+
+        return mapping_id
+
+    def _get_flavor_id_mal(self, mal_id, flavor):
+        arm_resp = database.get(client.request, 4, 'https://armkai.vercel.app/api/search?type=mal&id={0}'.format(mal_id))
+        arm_resp = json.loads(arm_resp)
+        flavor_id = arm_resp.get(flavor[:-3])
+        return flavor_id
+
     def _format_login_data(self, name, image, token):
         login_data = {
             "name": name,
@@ -182,3 +205,6 @@ class WatchlistFlavorBase(object):
 
     def _put_request(self, url, headers=None, cookies=None, data=None, params=None):
         return client.request(url, headers=headers, cookie=cookies, post=data, params=params, method='PUT')
+
+    def _delete_request(self, url, headers=None, cookies=None, params=None):
+        return client.request(url, headers=headers, cookie=cookies, params=params, method='DELETE')

@@ -1,8 +1,9 @@
 from resources.lib.ui import control
-from resources.lib.WatchlistFlavor.WatchlistFlavorBase import WatchlistFlavorBase
 from resources.lib.WatchlistFlavor import AniList  # noQA
 from resources.lib.WatchlistFlavor import Kitsu  # noQA
 from resources.lib.WatchlistFlavor import MyAnimeList  # noQA
+from resources.lib.WatchlistFlavor.WatchlistFlavorBase import \
+    WatchlistFlavorBase
 
 
 class WatchlistFlavor(object):
@@ -69,6 +70,14 @@ class WatchlistFlavor(object):
     @staticmethod
     def watchlist_update_request(anilist_id, episode):
         return WatchlistFlavor.get_update_flavor().watchlist_update(anilist_id, episode)
+
+    @staticmethod
+    def watchlist_append_request(anilist_id):
+        return WatchlistFlavor.get_update_flavor().watchlist_append(anilist_id)
+
+    @staticmethod
+    def watchlist_remove_request(anilist_id):
+        return WatchlistFlavor.get_update_flavor().watchlist_remove(anilist_id)
 
     @staticmethod
     def login_request(flavor):

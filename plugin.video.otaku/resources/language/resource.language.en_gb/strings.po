@@ -10,91 +10,7 @@ msgctxt "#30000"
 msgid "Last Watched: "
 msgstr ""
 
-msgctxt "#50000"
-msgid "Airing Anime Calendar"
-msgstr ""
-
-msgctxt "#50006"
-msgid "Airing Anime"
-msgstr ""
-
-msgctxt "#50007"
-msgid "Trending This Year"
-msgstr ""
-
-msgctxt "#50008"
-msgid "Popular This Year"
-msgstr ""
-
-msgctxt "#50009"
-msgid "Voted This Year"
-msgstr ""
-
-msgctxt "#50010"
-msgid "Completed This Year"
-msgstr ""
-
-msgctxt "#50011"
-msgid "Upcoming Next Year"
-msgstr ""
-
-msgctxt "#50012"
-msgid "Trending This Season"
-msgstr ""
-
-msgctxt "#50013"
-msgid "Popular This Season"
-msgstr ""
-
-msgctxt "#50014"
-msgid "Voted This Season"
-msgstr ""
-
-msgctxt "#50015"
-msgid "Completed This Season"
-msgstr ""
-
-msgctxt "#50016"
-msgid "Upcoming Next Season"
-msgstr ""
-
-msgctxt "#50017"
-msgid "All Time Trending"
-msgstr ""
-
-msgctxt "#50018"
-msgid "All Time Popular"
-msgstr ""
-
-msgctxt "#50019"
-msgid "All Time Voted"
-msgstr ""
-
-msgctxt "#50020"
-msgid "Top 100 Anime"
-msgstr ""
-
-msgctxt "#50003"
-msgid "Genres & Tags"
-msgstr ""
-
-msgctxt "#50004"
-msgid "Search"
-msgstr ""
-
-msgctxt "#50005"
-msgid "Tools"
-msgstr ""
-
-msgctxt "#50001"
-msgid "Movies"
-msgstr ""
-
-msgctxt "#50002"
-msgid "TV Shows"
-msgstr ""
-
-######SETTINGS DIRECTORY#######
+######TOOLS & SEARCH DIRECTORY#######
 msgctxt "#30027"
 msgid "View Changelog"
 msgstr ""
@@ -675,7 +591,15 @@ msgctxt "#40402"
 msgid "TV Show Items"
 msgstr ""
 
-# empty strings from id 40403 to 40410
+# empty strings from id 40403 to 40408
+
+msgctxt "#40409"
+msgid "Search Filter"
+msgstr ""
+
+msgctxt "#40410"
+msgid "Enable searching mature titles"
+msgstr ""
 
 msgctxt "#40411"
 msgid "Debrid-Link"
@@ -698,5 +622,90 @@ msgid "Debrid-Link Priority"
 msgstr ""
 
 msgctxt "#40416"
-msgid "Shortcuts"
+msgid "Maintenance"
+msgstr ""
+
+######MAIN Category DIRECTORY#######
+msgctxt "#50000"
+msgid "Airing Anime Calendar"
+msgstr ""
+
+msgctxt "#50001"
+msgid "Movies"
+msgstr ""
+
+msgctxt "#50002"
+msgid "TV Shows"
+msgstr ""
+
+msgctxt "#50003"
+msgid "Genres & Tags"
+msgstr ""
+
+msgctxt "#50004"
+msgid "Search"
+msgstr ""
+
+msgctxt "#50005"
+msgid "Tools"
+msgstr ""
+
+msgctxt "#50006"
+msgid "Airing Anime"
+msgstr ""
+
+msgctxt "#50007"
+msgid "Trending This Year"
+msgstr ""
+
+msgctxt "#50008"
+msgid "Popular This Year"
+msgstr ""
+
+msgctxt "#50009"
+msgid "Voted This Year"
+msgstr ""
+
+msgctxt "#50010"
+msgid "Completed This Year"
+msgstr ""
+
+msgctxt "#50011"
+msgid "Upcoming Next Year"
+msgstr ""
+
+msgctxt "#50012"
+msgid "Trending This Season"
+msgstr ""
+
+msgctxt "#50013"
+msgid "Popular This Season"
+msgstr ""
+
+msgctxt "#50014"
+msgid "Voted This Season"
+msgstr ""
+
+msgctxt "#50015"
+msgid "Completed This Season"
+msgstr ""
+
+msgctxt "#50016"
+msgid "Upcoming Next Season"
+msgstr ""
+
+msgctxt "#50017"
+msgid "All Time Trending"
+msgstr ""
+
+msgctxt "#50018"
+msgid "All Time Popular"
+msgstr ""
+
+msgctxt "#50019"
+msgid "All Time Voted"
+msgstr ""
+
+msgctxt "#50020"
+msgid "Top 100 Anime"
 msgstr ""

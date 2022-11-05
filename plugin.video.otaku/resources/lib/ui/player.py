@@ -1,26 +1,17 @@
 import sys
-from kodi_six import xbmc, xbmcaddon, xbmcplugin, xbmcgui
+
+from kodi_six import xbmc, xbmcgui, xbmcplugin
+from resources.lib.ui import client, control
 from six.moves import urllib_parse
-from resources.lib.ui import control, client
 
 try:
     HANDLE = int(sys.argv[1])
 except:
     HANDLE = '1'
 
-addonInfo = xbmcaddon.Addon().getAddonInfo
-ADDON_NAME = addonInfo('id')
-__settings__ = xbmcaddon.Addon(ADDON_NAME)
-addonInfo = __settings__.getAddonInfo
-ADDON_PATH = __settings__.getAddonInfo('path')
-
-kodiGui = xbmcgui
-
 playList = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
 player = xbmc.Player
-
 progressDialog = xbmcgui.DialogProgress()
-kodi = xbmc
 
 
 class hook_mimetype(object):
@@ -221,13 +212,13 @@ class PlayerDialogs(xbmc.Player):
     def _show_playing_next(self):
         from resources.lib.windows.playing_next import PlayingNext
 
-        PlayingNext(*('playing_next.xml', ADDON_PATH),
+        PlayingNext(*('playing_next.xml', control.ADDON_PATH),
                     actionArgs=self._get_next_item_args()).doModal()
 
     def _show_skip_intro(self):
         from resources.lib.windows.skip_intro import SkipIntro
 
-        SkipIntro(*('skip_intro.xml', ADDON_PATH),
+        SkipIntro(*('skip_intro.xml', control.ADDON_PATH),
                   actionArgs={'item_type': 'skip_intro'}).doModal()
 
     def _show_still_watching(self):
@@ -246,7 +237,7 @@ class PlayerDialogs(xbmc.Player):
     @staticmethod
     def _is_video_window_open():
 
-        if kodiGui.getCurrentWindowId() != 12005:
+        if xbmcgui.getCurrentWindowId() != 12005:
             return False
         return True
 

@@ -24,6 +24,8 @@ from resources.lib.OtakuBrowser import OtakuBrowser
 from resources.lib.ui import control, database, player, utils
 from resources.lib.ui.router import route, router_process
 from resources.lib.WatchlistIntegration import (add_watchlist, set_browser,
+                                                watchlist_append,
+                                                watchlist_remove,
                                                 watchlist_update)
 
 MENU_ITEMS = [
@@ -84,6 +86,7 @@ def MOVIES_MENU(payload, params):
     return control.draw_items(
         [utils.allocate_item(name, url, True, image) for name, url, image in MOVIES_ITEMS_SETTINGS],
         contentType="addons",
+        draw_cm=False
     )
 
 
@@ -117,6 +120,7 @@ def TV_SHOWS_MENU(payload, params):
     return control.draw_items(
         [utils.allocate_item(name, url, True, image) for name, url, image in TV_SHOWS_ITEMS_SETTINGS],
         contentType="addons",
+        draw_cm=False
     )
 
 
@@ -372,7 +376,7 @@ def ANILIST_VOTED_THIS_SEASON(payload, params):
 @route('anilist_voted_this_season/*')
 def ANILIST_VOTED_THIS_SEASON_PAGES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_voted_this_season(int(payload)))
-    
+
 
 @route('anilist_completed_this_season')
 def ANILIST_COMPLETED_THIS_SEASON(payload, params):
@@ -745,11 +749,25 @@ def ANILIST_GENRES_PAGES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_genres_page(genres, tags, int(page)))
 
 
+@route('add_to_watchlist/*')
+def ADD_TO_WATCHLIST(payload, params):
+    anilist_id, mal_id = payload.split("/")[1:-1]
+    return watchlist_append(anilist_id)
+
+
+@route('remove_from_watchlist/*')
+def REMOVE_FROM_WATCHLIST(payload, params):
+    anilist_id = params.get('anilist_id') if params.get('anilist_id') else payload.split("/")[1]
+    watchlist_remove(anilist_id)
+    control.refresh()
+    return
+
+
 @route('search_history')
 def SEARCH_HISTORY(payload, params):
     history = database.getSearchHistory('show')
     if "Yes" in control.getSetting('searchhistory'):
-        return control.draw_items(_BROWSER.search_history(history), contentType="addons")
+        return control.draw_items(_BROWSER.search_history(history), contentType="addons", draw_cm=False)
     else:
         return SEARCH(payload, params)
 
@@ -914,6 +932,7 @@ def TOOLS_MENU(payload, params):
     return control.draw_items(
         [utils.allocate_item(name, url, True, image) for name, url, image in TOOLS_ITEMS],
         contentType="addons",
+        draw_cm=False
     )
 
 
@@ -927,6 +946,7 @@ def LIST_MENU(payload, params):
     return control.draw_items(
         [utils.allocate_item(name, url, True, image) for name, url, image in MENU_ITEMS],
         contentType="addons",
+        draw_cm=False
     )
 
 

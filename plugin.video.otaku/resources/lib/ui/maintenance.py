@@ -14,8 +14,6 @@ def refresh_apis():
             rd_expiry = int(float(control.getSetting('rd.expiry')))
             if time.time() > (rd_expiry - (10 * 60)):
                 from resources.lib.debrid import real_debrid
-
-                # tools.log('Service Refreshing Real Debrid Token')
                 real_debrid.RealDebrid().refreshToken()
     except:
         pass
@@ -25,8 +23,6 @@ def refresh_apis():
             dl_expiry = int(float(control.getSetting('dl.expiry')))
             if time.time() > (dl_expiry - (10 * 60)):
                 from resources.lib.debrid import debrid_link
-
-                # tools.log('Service Refreshing Real Debrid Token')
                 debrid_link.DebridLink().refreshToken()
     except:
         pass

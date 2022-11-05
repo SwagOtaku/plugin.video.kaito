@@ -1,8 +1,8 @@
 import pickle
-from resources.lib.ui import control
+
+from resources.lib.ui import control, database
 from resources.lib.ui.router import route
 from resources.lib.WatchlistFlavor import WatchlistFlavor
-from resources.lib.ui import database
 
 _BROWSER = None
 
@@ -20,6 +20,7 @@ def get_anilist_res(mal_id):
 
 def get_auth_dialog(flavor):
     import sys
+
     from resources.lib.windows import wlf_auth
 
     platform = sys.platform
@@ -57,13 +58,15 @@ def WATCHLIST(payload, params):
 @route('watchlist_status_type/*')
 def WATCHLIST_STATUS_TYPE(payload, params):
     flavor, status = payload.rsplit("/")
-    return control.draw_items(WatchlistFlavor.watchlist_status_request(flavor, status, params))
+    draw_cm = ('Remove from Watchlist', 'remove_from_watchlist')
+    return control.draw_items(WatchlistFlavor.watchlist_status_request(flavor, status, params), draw_cm=draw_cm)
 
 
 @route('watchlist_status_type_pages/*')
 def WATCHLIST_STATUS_TYPE_PAGES(payload, params):
     flavor, status, offset, page = payload.rsplit("/")
-    return control.draw_items(WatchlistFlavor.watchlist_status_request_pages(flavor, status, params, offset, int(page)))
+    draw_cm = ('Remove from Watchlist', 'remove_from_watchlist')
+    return control.draw_items(WatchlistFlavor.watchlist_status_request_pages(flavor, status, params, offset, int(page)), draw_cm=draw_cm)
 
 
 @route('watchlist_query/*')
@@ -144,6 +147,20 @@ def watchlist_update(anilist_id, episode):
         return
 
     return WatchlistFlavor.watchlist_update_request(anilist_id, episode)
+
+
+def watchlist_append(anilist_id):
+    flavor = WatchlistFlavor.get_update_flavor()
+    if not flavor:
+        return
+    return WatchlistFlavor.watchlist_append_request(anilist_id)
+
+
+def watchlist_remove(anilist_id):
+    flavor = WatchlistFlavor.get_update_flavor()
+    if not flavor:
+        return
+    return WatchlistFlavor.watchlist_remove_request(anilist_id)
 
 
 def add_watchlist(items):

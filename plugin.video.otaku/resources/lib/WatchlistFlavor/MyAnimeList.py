@@ -1,8 +1,11 @@
-import re
 import itertools
-import time
 import json
-from resources.lib.WatchlistFlavor.WatchlistFlavorBase import WatchlistFlavorBase
+import re
+import time
+
+from resources.lib.ui import control
+from resources.lib.WatchlistFlavor.WatchlistFlavorBase import \
+    WatchlistFlavorBase
 
 
 class MyAnimeListWLF(WatchlistFlavorBase):
@@ -213,7 +216,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
 
         base = {
             "name": '%s - %s/%s' % (title, res['list_status']["num_episodes_watched"], res['node']["num_episodes"]),
-            "url": "watchlist_to_ep/%s//%s" % (res['node']['id'], res['list_status']["num_episodes_watched"]),
+            "url": "watchlist_to_ep/%s/%s" % (res['node']['id'], res['list_status']["num_episodes_watched"]),
             "image": res['node']['main_picture'].get('large', res['node']['main_picture']['medium']),
             "plot": info,
         }
@@ -321,3 +324,20 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         }
 
         return sort_types[self._sort]
+
+    def watchlist_append(self, anilist_id):
+        mal_id = self._get_mapping_id(anilist_id, 'mal_id')
+        if not mal_id:
+            return
+        url = self._to_url("anime/%s/my_list_status" % (mal_id))
+        data = {'status': 'plan_to_watch'}
+        result = json.loads(self._put_request(url, data=data, headers=self.__headers()))
+        if result.get('status'):
+            control.notify('Added to Watchlist')
+        return
+
+    def watchlist_remove(self, mal_id):
+        url = self._to_url("anime/%s/my_list_status" % (mal_id))
+        _ = self._delete_request(url, headers=self.__headers())
+        control.notify('Removed from Watchlist')
+        return

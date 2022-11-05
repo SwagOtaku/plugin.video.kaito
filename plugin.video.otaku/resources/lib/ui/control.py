@@ -13,8 +13,10 @@ except:
 
 addonInfo = xbmcaddon.Addon().getAddonInfo
 ADDON_VERSION = addonInfo('version')
-ADDON_NAME = addonInfo('id')
-__settings__ = xbmcaddon.Addon(ADDON_NAME)
+ADDON_NAME = addonInfo('name')
+ADDON_ID = addonInfo('id')
+ADDON_ICON = addonInfo('icon')
+__settings__ = xbmcaddon.Addon(ADDON_ID)
 __language__ = __settings__.getLocalizedString
 addonInfo = __settings__.getAddonInfo
 PY2 = sys.version_info[0] == 2
@@ -130,8 +132,15 @@ def watchlist_to_update():
         flavor = getSetting('watchlist.update.flavor').lower()
         if getSetting('%s.enabled' % flavor) == 'true':
             return flavor
-    else:
-        return
+    return
+
+
+def watchlist_enabled():
+    if getSetting('watchlist.update.enabled') == 'true':
+        flavor = getSetting('watchlist.update.flavor').lower()
+        if getSetting('%s.enabled' % flavor) == 'true':
+            return True
+    return False
 
 
 def copy2clip(txt):
@@ -186,7 +195,7 @@ def lang(x):
 
 
 def addon_url(url=''):
-    return "plugin://%s/%s" % (ADDON_NAME, url)
+    return "plugin://%s/%s" % (ADDON_ID, url)
 
 
 def get_plugin_url():
@@ -217,6 +226,10 @@ def ok_dialog(title, text):
 
 def yesno_dialog(title, text, nolabel=None, yeslabel=None):
     return xbmcgui.Dialog().yesno(title, text, nolabel=nolabel, yeslabel=yeslabel)
+
+
+def notify(text):
+    xbmcgui.Dialog().notification(ADDON_NAME, text, ADDON_ICON, 5000, False)
 
 
 def multiselect_dialog(title, _list):
@@ -261,7 +274,11 @@ def _get_view_type(viewType):
 def xbmc_add_player_item(name, url, art={}, info={}, draw_cm=None, bulk_add=False):
     ok = True
     u = addon_url(url)
-    cm = draw_cm(addon_url, name) if draw_cm is not None else []
+    # cm = draw_cm(addon_url, name) if draw_cm is not None else []
+    cm = []
+    if draw_cm is not None:
+        if isinstance(draw_cm, tuple):
+            cm.append((draw_cm[0], 'RunPlugin(plugin://{0}/{1}/{2})'.format(ADDON_ID, draw_cm[1], url)))
 
     liz = xbmcgui.ListItem(name)
     cast = info.pop('cast2') if isinstance(info, dict) and 'cast2' in info.keys() else []
@@ -289,7 +306,13 @@ def xbmc_add_player_item(name, url, art={}, info={}, draw_cm=None, bulk_add=Fals
 def xbmc_add_dir(name, url, art={}, info={}, draw_cm=None):
     ok = True
     u = addon_url(url)
-    cm = draw_cm(addon_url, name) if draw_cm is not None else []
+    # cm = draw_cm(addon_url, name) if draw_cm is not None else []
+    cm = []
+    if draw_cm is not None:
+        if isinstance(draw_cm, tuple):
+            cm.append((draw_cm[0], 'RunPlugin(plugin://{0}/{1}/{2})'.format(ADDON_ID, draw_cm[1], url)))
+    elif watchlist_enabled():
+        cm.append(('Add to Watchlist', 'RunPlugin(plugin://{0}/add_to_watchlist/{1})'.format(ADDON_ID, url)))
 
     liz = xbmcgui.ListItem(name)
     cast = info.pop('cast2') if isinstance(info, dict) and 'cast2' in info.keys() else []
@@ -318,6 +341,9 @@ def draw_items(video_data, contentType="tvshows", viewType=None, draw_cm=None, b
         if vid['is_dir']:
             xbmc_add_dir(vid['name'], vid['url'], vid['image'], vid['info'], draw_cm)
         else:
+            if draw_cm is None:
+                if contentType != 'episodes':
+                    draw_cm = ('Add to Watchlist', 'add_to_watchlist')
             xbmc_add_player_item(vid['name'], vid['url'], vid['image'],
                                  vid['info'], draw_cm, bulk_add)
 

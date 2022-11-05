@@ -365,10 +365,9 @@ class sources(BrowserBase):
 
     def _get_movie_sources_backup(self, anilist_id, episode='1'):
         show = self._get_request("https://kimetsu-title.firebaseio.com/%s.json" % anilist_id)
-
+        show = json.loads(show)
         if not show:
             return []
-        show = json.loads(show)
 
         if 'general_title' in show:
             query = show['general_title']

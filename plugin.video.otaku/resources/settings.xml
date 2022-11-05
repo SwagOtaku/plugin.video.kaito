@@ -66,19 +66,19 @@
 
 	<!-- Sort & Filter -->
 	<category label="40326">
-
 		<!-- Source Filters -->
 		<setting type="lsep" label="40327"/>
-		<setting type="sep" />
 		<setting id="general.maxResolution" type="enum" label="40328" values="4k|1080p|720p|NA" default="0" />
 		<setting id="general.disable265" type="bool" label="40329" default="false" />
 		<setting id="general.hidedub" type="bool" label="40330" default="false" />
-
+		<setting type="sep" />
 		<!-- Source Sorting -->
 		<setting type="lsep" label="40331"/>
-		<setting type="sep" />
 		<setting id="general.sortsources" type="enum" label="40332" values="Torrents|Embeds" default="0" />
 		<setting id="general.dubsort" type="bool" label="40333" default="false" />
+		<!-- Search Filtering -->
+		<setting type="lsep" label="40409"/>
+		<setting id="search.adult" type="bool" label="40410" default="false" />
 	</category>
 
 	<!-- Accounts -->
@@ -132,7 +132,7 @@
 		<setting id="anilist.token" type="text" subsetting="true" label="40351" default="" enable="false" visible="eq(-2,true)" />
 		<setting id="anilist.login" type="action" subsetting="true" label="40352" option="close" action="RunPlugin(plugin://plugin.video.otaku/watchlist_login/anilist?auth_dialog=true)" visible="eq(-3,true)"/>
 		<setting id="anilist.listsettings" type="action" label="40353" option="close" visible="eq(-4,true)"/>
-		<setting id="anilist.sort" type="labelenum" subsetting="true" label="40354" values="Score|Progress|Last Updated|Last Added" default="Progress" visible="eq(-5,true)"/>
+		<setting id="anilist.sort" type="labelenum" subsetting="true" label="40354" values="Romaji Title|English Title|Score|Progress|Last Updated|Last Added" default="Progress" visible="eq(-5,true)"/>
 
 		<!-- Kitsu -->
 		<setting type="lsep" label="40355"/>
@@ -247,4 +247,3 @@
 		<setting id="wipe_addon_data" type="action" label="30024" action="RunPlugin(plugin://plugin.video.otaku/wipe_addon_data)"/>
 	</category>
 </settings>
-

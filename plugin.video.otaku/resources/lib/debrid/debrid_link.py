@@ -78,17 +78,14 @@ class DebridLink:
 
     def refreshToken(self):
         postData = {'grant_type': 'refresh_token',
-                    'code': self.refresh,
+                    'refresh_token': self.refresh,
                     'client_id': self.ClientID}
         url = '{0}/oauth/token'.format(self.api_url[:-3])
         response = client.request(url, post=postData, headers={'User-Agent': self.USER_AGENT}, error=True)
         response = json.loads(response)
         if 'access_token' in response:
             self.token = response.get('access_token')
-        if 'refresh_token' in response:
-            self.refresh = response.get('refresh_token')
             control.setSetting('dl.auth', self.token)
-            control.setSetting('dl.refresh', self.refresh)
             control.setSetting('dl.expiry', str(time.time() + response.get('expires_in')))
 
     def check_hash(self, hashList):
@@ -112,7 +109,8 @@ class DebridLink:
         hashString = ','.join(hashes)
         url = "{0}/seedbox/cached?url={1}".format(self.api_url, hashString)
         response = client.request(url, headers=self.headers)
-        self.cache_check_results.update(json.loads(response).get('value'))
+        if response:
+            self.cache_check_results.update(json.loads(response).get('value'))
 
     def addMagnet(self, magnet):
         postData = {'url': magnet,

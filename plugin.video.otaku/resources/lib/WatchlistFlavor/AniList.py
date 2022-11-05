@@ -2,9 +2,11 @@ import itertools
 import json
 import pickle
 import random
+
 import six
-from resources.lib.ui import database, get_meta
-from resources.lib.WatchlistFlavor.WatchlistFlavorBase import WatchlistFlavorBase
+from resources.lib.ui import control, database, get_meta
+from resources.lib.WatchlistFlavor.WatchlistFlavorBase import \
+    WatchlistFlavorBase
 
 
 class AniListWLF(WatchlistFlavorBase):
@@ -161,9 +163,8 @@ class AniListWLF(WatchlistFlavorBase):
             'username': self._username,
             'status': status,
             'type': 'ANIME',
-            'sort': [self.__get_sort()]
+            'sort': self.__get_sort()
         }
-
         return self._process_status_view(query, variables, next_up, "watchlist/%d", page=1)
 
     def get_watchlist_anime_entry(self, anilist_id):
@@ -207,10 +208,10 @@ class AniListWLF(WatchlistFlavorBase):
         if "errors" in results.keys():
             return
 
-        try:
-            entries = results['data']['MediaListCollection']['lists'][0]['entries']
-        except IndexError:
-            entries = []
+        entries = []
+        lists = results['data']['MediaListCollection']['lists']
+        for mlist in lists:
+            entries += mlist['entries']
 
         _ = get_meta.collect_meta(entries)
         if next_up:
@@ -426,6 +427,8 @@ class AniListWLF(WatchlistFlavorBase):
             "Progress": "PROGRESS",
             "Last Updated": "UPDATED_TIME",
             "Last Added": "ADDED_TIME",
+            "Romaji Title": "MEDIA_TITLE_ROMAJI_DESC",
+            "English Title": "MEDIA_TITLE_ENGLISH_DESC"
         }
 
         return sort_types[self._sort]
@@ -468,3 +471,65 @@ class AniListWLF(WatchlistFlavorBase):
         }
 
         self._post_request(self._URL, headers=self.__headers(), json={'query': query, 'variables': variables})
+
+    def watchlist_append(self, anilist_id):
+        result = json.loads(self.__update_planning(anilist_id))
+        if result.get('data').get('SaveMediaListEntry'):
+            control.notify('Added to Watchlist')
+        return
+
+    def __update_planning(self, anilist_id):
+        query = '''
+        mutation ($mediaId: Int, $status: MediaListStatus) {
+            SaveMediaListEntry (mediaId: $mediaId, status: $status) {
+                id
+                status
+                }
+            }
+        '''
+
+        variables = {
+            'mediaId': int(anilist_id),
+            'status': 'PLANNING'
+        }
+
+        return self._post_request(self._URL, headers=self.__headers(), json={'query': query, 'variables': variables})
+
+    def watchlist_remove(self, anilist_id):
+        item_id = self.__get_item_id(anilist_id)
+        result = self.__delete_item(item_id)
+        if result:
+            control.notify('Removed from Watchlist')
+        return
+
+    def __get_item_id(self, anilist_id):
+        query = '''
+        query ($mediaId: Int) {
+            Media (id: $mediaId) {
+                mediaListEntry {
+                    id
+                    }
+                }
+            }
+        '''
+
+        variables = {
+            'mediaId': int(anilist_id),
+        }
+        res = json.loads(self._post_request(self._URL, headers=self.__headers(), json={'query': query, 'variables': variables}))
+        return res.get('data').get('Media').get('mediaListEntry').get('id')
+
+    def __delete_item(self, anilist_id):
+        query = '''
+        mutation ($id: Int) {
+            DeleteMediaListEntry (id: $id) {
+                deleted
+                }
+            }
+        '''
+
+        variables = {
+            'id': int(anilist_id),
+        }
+        res = json.loads(self._post_request(self._URL, headers=self.__headers(), json={'query': query, 'variables': variables}))
+        return res.get('data').get('DeleteMediaListEntry').get('deleted')

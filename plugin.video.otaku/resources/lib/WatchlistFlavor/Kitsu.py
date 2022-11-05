@@ -1,8 +1,11 @@
 import itertools
-import time
 import json
+import time
+
+from resources.lib.ui import control
+from resources.lib.WatchlistFlavor.WatchlistFlavorBase import \
+    WatchlistFlavorBase
 from six.moves import urllib_parse
-from resources.lib.WatchlistFlavor.WatchlistFlavorBase import WatchlistFlavorBase
 
 
 class KitsuWLF(WatchlistFlavorBase):
@@ -122,10 +125,10 @@ class KitsuWLF(WatchlistFlavorBase):
         result = self._get_request(url, headers=self.__headers(), params=params)
         result = json.loads(result)
         _list = result["data"]
-        
+
         if not result.get('included'):
             result['included'] = []
-            
+
         el = result["included"][:len(_list)]
         # self._mapping = filter(lambda x: x['type'] == 'mappings', result['included'])
         self._mapping = [x for x in result['included'] if x['type'] == 'mappings']
@@ -353,3 +356,51 @@ class KitsuWLF(WatchlistFlavorBase):
         }
 
         return title_langs[self._title_lang]
+
+    def watchlist_append(self, anilist_id):
+        kitsu_id = self._get_mapping_id(anilist_id, 'kitsu_id')
+        if not kitsu_id:
+            return
+        url = self._to_url("edge/library-entries")
+        params = {
+            "data": {
+                "type": "libraryEntries",
+                "attributes": {
+                    'status': 'planned',
+                },
+                "relationships": {
+                    "user": {
+                        "data": {
+                            "id": self._user_id,
+                            "type": "users"
+                        }
+                    },
+                    "anime": {
+                        "data": {
+                            "id": int(kitsu_id),
+                            "type": "anime"
+                        }
+                    }
+                }
+            }
+        }
+        result = json.loads(self._post_request(url, headers=self.__headers(), json=params))
+        if result.get('data'):
+            control.notify('Added to Watchlist')
+        return
+
+    def watchlist_remove(self, mal_id):
+        kitsu_id = self._get_mapping_id_mal(mal_id, 'kitsu_id')
+        if not kitsu_id:
+            return
+        url = self._to_url("edge/library-entries")
+        params = {
+            "filter[user_id]": self._user_id,
+            "filter[anime_id]": kitsu_id
+        }
+        result = self._get_request(url, headers=self.__headers(), params=params)
+        item_id = json.loads(result).get('data')[0].get('id')
+        url = self._to_url("edge/library-entries/%s" % (item_id))
+        _ = self._delete_request(url, headers=self.__headers())
+        control.notify('Removed from Watchlist')
+        return
