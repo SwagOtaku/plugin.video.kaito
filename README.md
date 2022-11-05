@@ -38,7 +38,6 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 
 **_Optional_**: 
 - TMDB Players: Need to add an Otaku openplayer for tmdb helper. (Examples: [a4k-openproject](https://github.com/a4k-openproject/json.openplayers))
-- Context Menu: Wanna add more stuff in the context menu if possible. 
 
 ## Help needed with maintaining
 
