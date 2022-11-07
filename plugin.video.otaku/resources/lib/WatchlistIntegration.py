@@ -88,7 +88,12 @@ def WATCHLIST_QUERY(payload, params):
 
 @route('watchlist_to_ep/*')
 def WATCHLIST_TO_EP(payload, params):
-    mal_id, kitsu_id, eps_watched = payload.rsplit("/")
+    parts = payload.rsplit("/")
+    if len(parts) > 2:
+        mal_id, kitsu_id, eps_watched = parts
+    else:
+        mal_id, eps_watched = parts
+        kitsu_id = ''
 
     if not mal_id:
         return []
