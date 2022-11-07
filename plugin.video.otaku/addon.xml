@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.2.33">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.2.34">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -24,8 +24,8 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.2.33 [20221105]:
-- Context menu entry to add to watchlist and remove from watchlist
+Changelog 0.2.34 [20221107]:
+- Fixes error on mal watchlist playback
     </news>
   </extension>
 </addon>
