@@ -1,3 +1,6 @@
+Changelog 0.2.34 [20221107]:
+- Fixes error on mal watchlist playback
+
 Changelog 0.2.33 [20221105]:
 - Context menu entry to add to watchlist and remove from watchlist
 
