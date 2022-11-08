@@ -1,4 +1,5 @@
 import json
+import threading
 
 from resources.lib.ui import client, control, source_utils
 from six.moves import urllib_parse
@@ -9,6 +10,7 @@ class AllDebrid:
         self.apikey = control.getSetting('alldebrid.apikey')
         self.agent_identifier = 'Otaku_Kodi_Addon'
         self.base_url = 'https://api.alldebrid.com/v4/'
+        self.cache_check_results = []
 
     def get(self, url, **params):
         params.update({'agent': self.agent_identifier})
@@ -81,12 +83,26 @@ class AllDebrid:
         if user_information is not None:
             control.setSetting('alldebrid.username', user_information['user']['username'])
 
-    def check_hash(self, hash_list):
-        if isinstance(hash_list, list):
-            hashString = '&'.join(['magnets[]=' + x for x in hash_list])
+    def check_hash(self, hashList):
+        if isinstance(hashList, list):
+            self.cache_check_results = []
+            hashList = [hashList[x: x + 10] for x in range(0, len(hashList), 10)]
+            threads = []
+            for section in hashList:
+                threads.append(threading.Thread(target=self._check_hash_thread, args=(section,)))
+            for i in threads:
+                i.start()
+            for i in threads:
+                i.join()
+            return self.cache_check_results
         else:
-            hashString = '&magnets[]=' + hash_list
-        return self.post_json('magnet/instant', hashString, apikey=self.apikey)
+            hashString = '&magnets[]=' + hashList
+            return self.post_json('magnet/instant', hashString, apikey=self.apikey).get('magnets')
+
+    def _check_hash_thread(self, hashes):
+        hashString = '&'.join(['magnets[]=' + x for x in hashes])
+        response = self.post_json('magnet/instant', hashString, apikey=self.apikey)
+        self.cache_check_results += response.get('magnets')
 
     def upload_magnet(self, magnet_hash):
         return self.get_json('magnet/upload', apikey=self.apikey, magnets=magnet_hash)

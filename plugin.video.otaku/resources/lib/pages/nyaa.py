@@ -423,14 +423,14 @@ class TorrentCacheCheck:
             return
 
         cache_check = api.check_hash([i['hash'] for i in torrent_list])
-
         if not cache_check:
             return
 
         cache_list = []
+        cached_items = [m.get('hash') for m in cache_check if m.get('instant') is True]
 
-        for idx, i in enumerate(torrent_list):
-            if cache_check['magnets'][idx]['instant'] is True:
+        for i in torrent_list:
+            if i['hash'] in cached_items:
                 i['debrid_provider'] = 'all_debrid'
                 cache_list.append(i)
 
