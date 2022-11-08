@@ -1,3 +1,6 @@
+Changelog 0.2.35 [20221108]:
+-  Improve alldebrid cache check
+
 Changelog 0.2.34 [20221107]:
 - Fixes error on mal watchlist playback
 
