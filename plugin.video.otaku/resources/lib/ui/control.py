@@ -274,7 +274,6 @@ def _get_view_type(viewType):
 def xbmc_add_player_item(name, url, art={}, info={}, draw_cm=None, bulk_add=False):
     ok = True
     u = addon_url(url)
-    # cm = draw_cm(addon_url, name) if draw_cm is not None else []
     cm = []
     if draw_cm is not None:
         if isinstance(draw_cm, tuple):
@@ -306,13 +305,13 @@ def xbmc_add_player_item(name, url, art={}, info={}, draw_cm=None, bulk_add=Fals
 def xbmc_add_dir(name, url, art={}, info={}, draw_cm=None):
     ok = True
     u = addon_url(url)
-    # cm = draw_cm(addon_url, name) if draw_cm is not None else []
-    cm = []
+    cm = [('Trakt Meta Correction', 'RunPlugin(plugin://{0}/trakt_correction/{1})'.format(ADDON_ID, url))]
     if draw_cm is not None:
         if isinstance(draw_cm, tuple):
             cm.append((draw_cm[0], 'RunPlugin(plugin://{0}/{1}/{2})'.format(ADDON_ID, draw_cm[1], url)))
-    elif watchlist_enabled():
-        cm.append(('Add to Watchlist', 'RunPlugin(plugin://{0}/add_to_watchlist/{1})'.format(ADDON_ID, url)))
+    else:
+        if watchlist_enabled():
+            cm.append(('Add to Watchlist', 'RunPlugin(plugin://{0}/add_to_watchlist/{1})'.format(ADDON_ID, url)))
 
     liz = xbmcgui.ListItem(name)
     cast = info.pop('cast2') if isinstance(info, dict) and 'cast2' in info.keys() else []
@@ -342,7 +341,7 @@ def draw_items(video_data, contentType="tvshows", viewType=None, draw_cm=None, b
             xbmc_add_dir(vid['name'], vid['url'], vid['image'], vid['info'], draw_cm)
         else:
             if draw_cm is None:
-                if contentType != 'episodes':
+                if contentType != 'episodes' and watchlist_enabled():
                     draw_cm = ('Add to Watchlist', 'add_to_watchlist')
             xbmc_add_player_item(vid['name'], vid['url'], vid['image'],
                                  vid['info'], draw_cm, bulk_add)

@@ -179,6 +179,13 @@ def seasonCorrectionDatabase(payload, params):
     return control.draw_items(trakt, content_type)
 
 
+@route('trakt_correction/*')
+def traktCorrection(payload, params):
+    anilist_id, mal_id, filter_lang = payload.split("/")[1:]
+    _ANILIST_BROWSER.update_trakt_id(anilist_id)
+    return
+
+
 @route('find_similar/*')
 def FIND_SIMILAR(payload, params):
     anilist_id, mal_id, filter_lang = payload.split("/")[1:]

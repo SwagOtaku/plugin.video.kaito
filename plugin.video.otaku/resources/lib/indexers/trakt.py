@@ -22,7 +22,8 @@ class TRAKTAPI:
     def _json_request(self, url):
         url = self.baseUrl + url
         response = client.request(url, headers=self.headers)
-        response = json.loads(response)
+        if response:
+            response = json.loads(response)
         return response
 
     def _parse_trakt_seasons(self, res, show_id, eps_watched):
@@ -258,3 +259,8 @@ class TRAKTAPI:
         url = "shows/%d/seasons/%s?extended=full" % (meta_ids['trakt'], str(season))
         data = ''
         return self._process_trakt_episode_view(show_id, meta_ids, season, poster, fanart, eps_watched, url, data, "animes_page/%s/%%d" % show_id)
+
+    def get_ids_by_slug(self, slug, mtype='shows'):
+        url = '{0}/{1}'.format(mtype, slug)
+        result = self._json_request(url)
+        return result.get('ids')

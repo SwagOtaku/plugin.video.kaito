@@ -31,12 +31,17 @@ def __get_meta(anilist_id, name, mtype='tv', year=''):
     res = TRAKTAPI().get_trakt(name, mtype=mtype, year=year)
     if res:
         meta_ids = res.get('ids')
-        meta = FANARTAPI().getArt(meta_ids, mtype)
-        if not meta:
-            meta = TMDBAPI().getArt(meta_ids, mtype)
-        elif 'fanart' not in meta.keys():
-            meta2 = TMDBAPI().getArt(meta_ids, mtype)
-            if meta2.get('fanart'):
-                meta.update({'fanart': meta2.get('fanart')})
-        database._update_show_meta(anilist_id, meta_ids, meta)
+        _ = update_meta(anilist_id, meta_ids, mtype)
+    return
+
+
+def update_meta(anilist_id, meta_ids={}, mtype='tv'):
+    meta = FANARTAPI().getArt(meta_ids, mtype)
+    if not meta:
+        meta = TMDBAPI().getArt(meta_ids, mtype)
+    elif 'fanart' not in meta.keys():
+        meta2 = TMDBAPI().getArt(meta_ids, mtype)
+        if meta2.get('fanart'):
+            meta.update({'fanart': meta2.get('fanart')})
+    database._update_show_meta(anilist_id, meta_ids, meta)
     return

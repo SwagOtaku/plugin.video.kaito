@@ -1702,3 +1702,21 @@ class AniListBrowser():
 
     def get_genres_page(self, genre_string, tag_string, page):
         return self._genres_payload(ast.literal_eval(genre_string), ast.literal_eval(tag_string), page)
+
+    def update_trakt_id(self, anilist_id):
+        slug = control.keyboard('Enter Trakt Slug[CR]example, to-your-eternity')
+        if slug:
+            from resources.lib.indexers.trakt import TRAKTAPI
+            from resources.lib.ui.get_meta import update_meta
+            show = database.get_show(anilist_id)
+            kodi_meta = pickle.loads(show.get('kodi_meta'))
+            mtype = 'movies' if kodi_meta.get('format') == 'MOVIE' else 'tv'
+            if kodi_meta.get('format') == 'ONA' and kodi_meta.get('episodes') == 1:
+                mtype = 'movies'
+            slug_type = 'shows' if mtype == 'tv' else mtype
+            meta_ids = TRAKTAPI().get_ids_by_slug(slug, slug_type)
+            update_meta(anilist_id, meta_ids, mtype)
+            database.remove_season(anilist_id)
+            database.remove_episodes(anilist_id)
+            control.refresh()
+        return
