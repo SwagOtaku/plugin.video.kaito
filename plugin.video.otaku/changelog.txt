@@ -1,3 +1,6 @@
+Changelog 0.2.35 [20221121]:
+-  New Context menu: trakt correction
+
 Changelog 0.2.35 [20221108]:
 -  Improve alldebrid cache check
 
