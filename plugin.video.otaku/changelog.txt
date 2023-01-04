@@ -1,4 +1,7 @@
-Changelog 0.2.35 [20221121]:
+Changelog 0.2.37 [20230104]:
+-  Use alternate Animix site
+
+Changelog 0.2.36 [20221121]:
 -  New Context menu: trakt correction
 
 Changelog 0.2.35 [20221108]:
