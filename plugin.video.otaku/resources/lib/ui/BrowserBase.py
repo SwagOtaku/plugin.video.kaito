@@ -41,3 +41,7 @@ class BrowserBase(object):
 
     def _bdecode(self, text):
         return six.ensure_str(base64.b64decode(text))
+
+    def _get_origin(self, url):
+        purl = urllib_parse.urlparse(url)
+        return '{0}://{1}'.format(purl.scheme, purl.netloc)
