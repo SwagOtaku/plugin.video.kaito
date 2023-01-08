@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.2.37">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.2.38">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -24,8 +24,8 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.2.37 [20230104]:
--  Use alternate Animix site
+Changelog 0.2.38 [20230108]:
+- Animix bugfix
     </news>
   </extension>
 </addon>
