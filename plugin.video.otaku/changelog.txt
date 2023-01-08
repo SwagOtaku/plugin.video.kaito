@@ -1,11 +1,14 @@
+Changelog 0.2.38 [20230108]:
+- Animix bugfix
+
 Changelog 0.2.37 [20230104]:
--  Use alternate Animix site
+- Use alternate Animix site
 
 Changelog 0.2.36 [20221121]:
--  New Context menu: trakt correction
+- New Context menu: trakt correction
 
 Changelog 0.2.35 [20221108]:
--  Improve alldebrid cache check
+- Improve alldebrid cache check
 
 Changelog 0.2.34 [20221107]:
 - Fixes error on mal watchlist playback
