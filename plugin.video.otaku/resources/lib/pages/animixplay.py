@@ -75,7 +75,7 @@ class sources(BrowserBase):
         headers = {'Referer': self._BASE_URL}
         url = slug.replace('/anime/', '/watch/')
         r = database.get(self._get_request, 8, url, headers=headers)
-        mdata = re.search(r"var\s*anime\s*=\s*([^;]+)", r)
+        mdata = re.search(r"var\s*anime\s*=\s*(.+?});", r)
         if mdata:
             mdata = json.loads(mdata.group(1))
             eps = mdata.get('episodes').get('lists')
@@ -90,7 +90,7 @@ class sources(BrowserBase):
                     lang = 0 if link.get('type') == 'sub' else 2
                     server = link.get('server')
                     url = link.get('link')
-                    if '/crunchyroll/' in url:
+                    if any(x in url for x in ['/crunchyroll/', '/gogoanime/', '/allanime/']):
                         slink = self._get_redirect_url(url, headers=headers)
                         host, slink = slink.split('#')
                         slink = self._bdecode(slink) + '|Origin={0}&Referer={0}/&User-Agent=iPad'.format(self._get_origin(host))
