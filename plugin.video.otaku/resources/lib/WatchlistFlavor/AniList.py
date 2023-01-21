@@ -202,7 +202,7 @@ class AniListWLF(WatchlistFlavorBase):
         return anime_entry
 
     def _process_status_view(self, query, variables, next_up, base_plugin_url, page):
-        result = self._post_request(self._URL, self.__headers(), json={'query': query, 'variables': variables})
+        result = self._post_request(self._URL, headers=self.__headers(), json={'query': query, 'variables': variables})
         results = json.loads(result)
 
         if "errors" in results.keys():
