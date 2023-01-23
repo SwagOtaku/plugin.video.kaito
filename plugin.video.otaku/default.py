@@ -39,31 +39,31 @@ MENU_ITEMS = [
     (control.lang(50007), "completed", 'completed_01.png'),
     (control.lang(50008), "upcoming", 'upcoming.png'),
     (control.lang(50013), "anilist_trending_last_year", 'trending.png'),
-	(control.lang(50014), "anilist_popular_last_year", 'popular.png'),
-	(control.lang(50015), "anilist_voted_last_year", 'voted.png'),
-	(control.lang(50016), "anilist_completed_last_year", 'completed_01.png'),
-	(control.lang(50017), "anilist_upcoming_last_year", 'upcoming.png'),
-	(control.lang(50018), "anilist_trending_this_year", 'trending.png'),
-	(control.lang(50019), "anilist_popular_this_year", 'popular.png'),
-	(control.lang(50020), "anilist_voted_this_year", 'voted.png'),
-	(control.lang(50021), "anilist_completed_this_year", 'completed_01.png'),
-	(control.lang(50022), "anilist_upcoming_this_year", 'upcoming.png'),
-	(control.lang(50023), "anilist_upcoming_next_year", 'upcoming.png'),
-	(control.lang(50024), "anilist_trending_last_season", 'trending.png'),
-	(control.lang(50025), "anilist_popular_last_season", 'popular.png'),
-	(control.lang(50026), "anilist_voted_last_season", 'voted.png'),
-	(control.lang(50027), "anilist_completed_last_season", 'completed_01.png'),
-	(control.lang(50028), "anilist_upcoming_last_season", 'upcoming.png'),
-	(control.lang(50029), "anilist_trending_this_season", 'trending.png'),
-	(control.lang(50030), "anilist_popular_this_season", 'popular.png'),
-	(control.lang(50031), "anilist_voted_this_season", 'voted.png'),
-	(control.lang(50032), "anilist_completed_this_season", 'completed_01.png'),
-	(control.lang(50033), "anilist_upcoming_this_season", 'upcoming.png'),
-	(control.lang(50034), "anilist_upcoming_next_season", 'upcoming.png'),
-	(control.lang(50035), "anilist_all_time_trending", 'trending.png'),
-	(control.lang(50036), "anilist_all_time_popular", 'popular.png'),
-	(control.lang(50037), "anilist_all_time_voted", 'voted.png'),
-	(control.lang(50009), "anilist_top_100_anime", 'top_100_anime.png'),
+    (control.lang(50014), "anilist_popular_last_year", 'popular.png'),
+    (control.lang(50015), "anilist_voted_last_year", 'voted.png'),
+    (control.lang(50016), "anilist_completed_last_year", 'completed_01.png'),
+    (control.lang(50017), "anilist_upcoming_last_year", 'upcoming.png'),
+    (control.lang(50018), "anilist_trending_this_year", 'trending.png'),
+    (control.lang(50019), "anilist_popular_this_year", 'popular.png'),
+    (control.lang(50020), "anilist_voted_this_year", 'voted.png'),
+    (control.lang(50021), "anilist_completed_this_year", 'completed_01.png'),
+    (control.lang(50022), "anilist_upcoming_this_year", 'upcoming.png'),
+    (control.lang(50023), "anilist_upcoming_next_year", 'upcoming.png'),
+    (control.lang(50024), "anilist_trending_last_season", 'trending.png'),
+    (control.lang(50025), "anilist_popular_last_season", 'popular.png'),
+    (control.lang(50026), "anilist_voted_last_season", 'voted.png'),
+    (control.lang(50027), "anilist_completed_last_season", 'completed_01.png'),
+    (control.lang(50028), "anilist_upcoming_last_season", 'upcoming.png'),
+    (control.lang(50029), "anilist_trending_this_season", 'trending.png'),
+    (control.lang(50030), "anilist_popular_this_season", 'popular.png'),
+    (control.lang(50031), "anilist_voted_this_season", 'voted.png'),
+    (control.lang(50032), "anilist_completed_this_season", 'completed_01.png'),
+    (control.lang(50033), "anilist_upcoming_this_season", 'upcoming.png'),
+    (control.lang(50034), "anilist_upcoming_next_season", 'upcoming.png'),
+    (control.lang(50035), "anilist_all_time_trending", 'trending.png'),
+    (control.lang(50036), "anilist_all_time_popular", 'popular.png'),
+    (control.lang(50037), "anilist_all_time_voted", 'voted.png'),
+    (control.lang(50009), "anilist_top_100_anime", 'top_100_anime.png'),
     (control.lang(50010), "anilist_genres", 'genres_&_tags.png'),
     (control.lang(50011), "search_history", 'search.png'),
     (control.lang(50012), "tools", 'tools.png'),
@@ -76,35 +76,35 @@ _ANILIST_BROWSER = AniListBrowser(_TITLE_LANG)
 @route('movies')
 def MOVIES_MENU(payload, params):
     MOVIES_ITEMS = [
-		(control.lang(50001), "anilist_airing_anime_movie", 'airing_anime.png'),
-		(control.lang(50013), "anilist_trending_last_year_movie", 'trending.png'),
-		(control.lang(50014), "anilist_popular_last_year_movie", 'popular.png'),
-		(control.lang(50015), "anilist_voted_last_year_movie", 'voted.png'),
-		(control.lang(50016), "anilist_completed_last_year_movie", 'completed_01.png'),
-		(control.lang(50017), "anilist_upcoming_last_year_movie", 'upcoming.png'),
-		(control.lang(50018), "anilist_trending_this_year_movie", 'trending.png'),
-		(control.lang(50019), "anilist_popular_this_year_movie", 'popular.png'),
-		(control.lang(50020), "anilist_voted_this_year_movie", 'voted.png'),
-		(control.lang(50021), "anilist_completed_this_year_movie", 'completed_01.png'),
-		(control.lang(50022), "anilist_upcoming_this_year_movie", 'upcoming.png'),
-		(control.lang(50023), "anilist_upcoming_next_year_movie", 'upcoming.png'),
-		(control.lang(50024), "anilist_trending_last_season_movie", 'trending.png'),
-		(control.lang(50025), "anilist_popular_last_season_movie", 'popular.png'),
-		(control.lang(50026), "anilist_voted_last_season_movie", 'voted.png'),
-		(control.lang(50027), "anilist_completed_last_season_movie", 'completed_01.png'),
-		(control.lang(50028), "anilist_upcoming_last_season_movie", 'upcoming.png'),
-		(control.lang(50029), "anilist_trending_this_season_movie", 'trending.png'),
-		(control.lang(50030), "anilist_popular_this_season_movie", 'popular.png'),
-		(control.lang(50031), "anilist_voted_this_season_movie", 'voted.png'),
-		(control.lang(50032), "anilist_completed_this_season_movie", 'completed_01.png'),
-		(control.lang(50033), "anilist_upcoming_this_season_movie", 'upcoming.png'),
-		(control.lang(50034), "anilist_upcoming_next_season_movie", 'upcoming.png'),
-		(control.lang(50035), "anilist_all_time_trending_movie", 'trending.png'),
-		(control.lang(50036), "anilist_all_time_popular_movie", 'popular.png'),
-		(control.lang(50037), "anilist_all_time_voted_movie", 'voted.png'),
-		(control.lang(50009), "anilist_top_100_anime_movie", 'top_100_anime.png'),
-		(control.lang(50010), "anilist_genres", 'genres_&_tags.png'),
-		(control.lang(50011), "search_history", 'search.png'),
+        (control.lang(50001), "anilist_airing_anime_movie", 'airing_anime.png'),
+        (control.lang(50013), "anilist_trending_last_year_movie", 'trending.png'),
+        (control.lang(50014), "anilist_popular_last_year_movie", 'popular.png'),
+        (control.lang(50015), "anilist_voted_last_year_movie", 'voted.png'),
+        (control.lang(50016), "anilist_completed_last_year_movie", 'completed_01.png'),
+        (control.lang(50017), "anilist_upcoming_last_year_movie", 'upcoming.png'),
+        (control.lang(50018), "anilist_trending_this_year_movie", 'trending.png'),
+        (control.lang(50019), "anilist_popular_this_year_movie", 'popular.png'),
+        (control.lang(50020), "anilist_voted_this_year_movie", 'voted.png'),
+        (control.lang(50021), "anilist_completed_this_year_movie", 'completed_01.png'),
+        (control.lang(50022), "anilist_upcoming_this_year_movie", 'upcoming.png'),
+        (control.lang(50023), "anilist_upcoming_next_year_movie", 'upcoming.png'),
+        (control.lang(50024), "anilist_trending_last_season_movie", 'trending.png'),
+        (control.lang(50025), "anilist_popular_last_season_movie", 'popular.png'),
+        (control.lang(50026), "anilist_voted_last_season_movie", 'voted.png'),
+        (control.lang(50027), "anilist_completed_last_season_movie", 'completed_01.png'),
+        (control.lang(50028), "anilist_upcoming_last_season_movie", 'upcoming.png'),
+        (control.lang(50029), "anilist_trending_this_season_movie", 'trending.png'),
+        (control.lang(50030), "anilist_popular_this_season_movie", 'popular.png'),
+        (control.lang(50031), "anilist_voted_this_season_movie", 'voted.png'),
+        (control.lang(50032), "anilist_completed_this_season_movie", 'completed_01.png'),
+        (control.lang(50033), "anilist_upcoming_this_season_movie", 'upcoming.png'),
+        (control.lang(50034), "anilist_upcoming_next_season_movie", 'upcoming.png'),
+        (control.lang(50035), "anilist_all_time_trending_movie", 'trending.png'),
+        (control.lang(50036), "anilist_all_time_popular_movie", 'popular.png'),
+        (control.lang(50037), "anilist_all_time_voted_movie", 'voted.png'),
+        (control.lang(50009), "anilist_top_100_anime_movie", 'top_100_anime.png'),
+        (control.lang(50010), "anilist_genres", 'genres_&_tags.png'),
+        (control.lang(50011), "search_history", 'search.png'),
     ]
 
     MOVIES_ITEMS_SETTINGS = MOVIES_ITEMS[:]
@@ -122,35 +122,35 @@ def MOVIES_MENU(payload, params):
 @route('tv_shows')
 def TV_SHOWS_MENU(payload, params):
     TV_SHOWS_ITEMS = [
-		(control.lang(50001), "anilist_airing_anime_tv", 'airing_anime.png'),
-		(control.lang(50013), "anilist_trending_last_year_tv", 'trending.png'),
-		(control.lang(50014), "anilist_popular_last_year_tv", 'popular.png'),
-		(control.lang(50015), "anilist_voted_last_year_tv", 'voted.png'),
-		(control.lang(50016), "anilist_completed_last_year_tv", 'completed_01.png'),
-		(control.lang(50017), "anilist_upcoming_last_year_tv", 'upcoming.png'),
-		(control.lang(50018), "anilist_trending_this_year_tv", 'trending.png'),
-		(control.lang(50019), "anilist_popular_this_year_tv", 'popular.png'),
-		(control.lang(50020), "anilist_voted_this_year_tv", 'voted.png'),
-		(control.lang(50021), "anilist_completed_this_year_tv", 'completed_01.png'),
-		(control.lang(50022), "anilist_upcoming_this_year_tv", 'upcoming.png'),
-		(control.lang(50023), "anilist_upcoming_next_year_tv", 'upcoming.png'),
-		(control.lang(50024), "anilist_trending_last_season_tv", 'trending.png'),
-		(control.lang(50025), "anilist_popular_last_season_tv", 'popular.png'),
-		(control.lang(50026), "anilist_voted_last_season_tv", 'voted.png'),
-		(control.lang(50027), "anilist_completed_last_season_tv", 'completed_01.png'),
-		(control.lang(50028), "anilist_upcoming_last_season_tv", 'upcoming.png'),
-		(control.lang(50029), "anilist_trending_this_season_tv", 'trending.png'),
-		(control.lang(50030), "anilist_popular_this_season_tv", 'popular.png'),
-		(control.lang(50031), "anilist_voted_this_season_tv", 'voted.png'),
-		(control.lang(50032), "anilist_completed_this_season_tv", 'completed_01.png'),
-		(control.lang(50033), "anilist_upcoming_this_season_tv", 'upcoming.png'),
-		(control.lang(50034), "anilist_upcoming_next_season_tv", 'upcoming.png'),
-		(control.lang(50035), "anilist_all_time_trending_tv", 'trending.png'),
-		(control.lang(50036), "anilist_all_time_popular_tv", 'popular.png'),
-		(control.lang(50037), "anilist_all_time_voted_tv", 'voted.png'),
-		(control.lang(50009), "anilist_top_100_anime_tv", 'top_100_anime.png'),
-		(control.lang(50010), "anilist_genres", 'genres_&_tags.png'),
-		(control.lang(50011), "search_history", 'search.png'),
+        (control.lang(50001), "anilist_airing_anime_tv", 'airing_anime.png'),
+        (control.lang(50013), "anilist_trending_last_year_tv", 'trending.png'),
+        (control.lang(50014), "anilist_popular_last_year_tv", 'popular.png'),
+        (control.lang(50015), "anilist_voted_last_year_tv", 'voted.png'),
+        (control.lang(50016), "anilist_completed_last_year_tv", 'completed_01.png'),
+        (control.lang(50017), "anilist_upcoming_last_year_tv", 'upcoming.png'),
+        (control.lang(50018), "anilist_trending_this_year_tv", 'trending.png'),
+        (control.lang(50019), "anilist_popular_this_year_tv", 'popular.png'),
+        (control.lang(50020), "anilist_voted_this_year_tv", 'voted.png'),
+        (control.lang(50021), "anilist_completed_this_year_tv", 'completed_01.png'),
+        (control.lang(50022), "anilist_upcoming_this_year_tv", 'upcoming.png'),
+        (control.lang(50023), "anilist_upcoming_next_year_tv", 'upcoming.png'),
+        (control.lang(50024), "anilist_trending_last_season_tv", 'trending.png'),
+        (control.lang(50025), "anilist_popular_last_season_tv", 'popular.png'),
+        (control.lang(50026), "anilist_voted_last_season_tv", 'voted.png'),
+        (control.lang(50027), "anilist_completed_last_season_tv", 'completed_01.png'),
+        (control.lang(50028), "anilist_upcoming_last_season_tv", 'upcoming.png'),
+        (control.lang(50029), "anilist_trending_this_season_tv", 'trending.png'),
+        (control.lang(50030), "anilist_popular_this_season_tv", 'popular.png'),
+        (control.lang(50031), "anilist_voted_this_season_tv", 'voted.png'),
+        (control.lang(50032), "anilist_completed_this_season_tv", 'completed_01.png'),
+        (control.lang(50033), "anilist_upcoming_this_season_tv", 'upcoming.png'),
+        (control.lang(50034), "anilist_upcoming_next_season_tv", 'upcoming.png'),
+        (control.lang(50035), "anilist_all_time_trending_tv", 'trending.png'),
+        (control.lang(50036), "anilist_all_time_popular_tv", 'popular.png'),
+        (control.lang(50037), "anilist_all_time_voted_tv", 'voted.png'),
+        (control.lang(50009), "anilist_top_100_anime_tv", 'top_100_anime.png'),
+        (control.lang(50010), "anilist_genres", 'genres_&_tags.png'),
+        (control.lang(50011), "search_history", 'search.png'),
     ]
 
     TV_SHOWS_ITEMS_SETTINGS = TV_SHOWS_ITEMS[:]
@@ -168,11 +168,11 @@ def TV_SHOWS_MENU(payload, params):
 @route('trending')
 def TRENDING_MENU(payload, params):
     TRENDING_ITEMS = [
-		(control.lang(50013), "anilist_trending_last_year_trending_trending", 'trending.png'),
-		(control.lang(50018), "anilist_trending_this_year_trending_trending", 'trending.png'),
-		(control.lang(50024), "anilist_trending_last_season_trending", 'trending.png'),
-		(control.lang(50029), "anilist_trending_this_season_trending", 'trending.png'),
-		(control.lang(50035), "anilist_all_time_trending_trending", 'trending.png'),
+        (control.lang(50013), "anilist_trending_last_year_trending_trending", 'trending.png'),
+        (control.lang(50018), "anilist_trending_this_year_trending_trending", 'trending.png'),
+        (control.lang(50024), "anilist_trending_last_season_trending", 'trending.png'),
+        (control.lang(50029), "anilist_trending_this_season_trending", 'trending.png'),
+        (control.lang(50035), "anilist_all_time_trending_trending", 'trending.png'),
     ]
 
     TRENDING_ITEMS_SETTINGS = TRENDING_ITEMS[:]
@@ -190,11 +190,11 @@ def TRENDING_MENU(payload, params):
 @route('popular')
 def POPULAR_MENU(payload, params):
     POPULAR_ITEMS = [
-		(control.lang(50014), "anilist_popular_last_year_popular", 'popular.png'),
-		(control.lang(50019), "anilist_popular_this_year_popular", 'popular.png'),
-		(control.lang(50025), "anilist_popular_last_season_popular", 'popular.png'),
-		(control.lang(50030), "anilist_popular_this_season_popular", 'popular.png'),
-		(control.lang(50036), "anilist_all_time_popular_popular", 'all_time_popular.png'),
+        (control.lang(50014), "anilist_popular_last_year_popular", 'popular.png'),
+        (control.lang(50019), "anilist_popular_this_year_popular", 'popular.png'),
+        (control.lang(50025), "anilist_popular_last_season_popular", 'popular.png'),
+        (control.lang(50030), "anilist_popular_this_season_popular", 'popular.png'),
+        (control.lang(50036), "anilist_all_time_popular_popular", 'popular.png'),
     ]
 
     POPULAR_ITEMS_SETTINGS = POPULAR_ITEMS[:]
@@ -212,11 +212,11 @@ def POPULAR_MENU(payload, params):
 @route('voted')
 def VOTED_MENU(payload, params):
     VOTED_ITEMS = [
-		(control.lang(50015), "anilist_voted_last_year_voted", 'voted.png'),
-		(control.lang(50020), "anilist_voted_this_year_voted", 'voted.png'),
-		(control.lang(50026), "anilist_voted_last_season_voted", 'voted.png'),
-		(control.lang(50031), "anilist_voted_this_season_voted", 'voted.png'),
-		(control.lang(50037), "anilist_all_time_voted_voted", 'voted.png'), 
+        (control.lang(50015), "anilist_voted_last_year_voted", 'voted.png'),
+        (control.lang(50020), "anilist_voted_this_year_voted", 'voted.png'),
+        (control.lang(50026), "anilist_voted_last_season_voted", 'voted.png'),
+        (control.lang(50031), "anilist_voted_this_season_voted", 'voted.png'),
+        (control.lang(50037), "anilist_all_time_voted_voted", 'voted.png'),
     ]
 
     VOTED_ITEMS_SETTINGS = VOTED_ITEMS[:]
@@ -234,10 +234,10 @@ def VOTED_MENU(payload, params):
 @route('completed')
 def COMPLETED_MENU(payload, params):
     COMPLETED_ITEMS = [
-		(control.lang(50016), "anilist_completed_last_year_completed", 'completed_01.png'),
-		(control.lang(50021), "anilist_completed_this_year_completed", 'completed_01.png'),
-		(control.lang(50027), "anilist_completed_last_season_completed", 'completed_01.png'),
-		(control.lang(50032), "anilist_completed_this_season_completed", 'completed_01.png'),
+        (control.lang(50016), "anilist_completed_last_year_completed", 'completed_01.png'),
+        (control.lang(50021), "anilist_completed_this_year_completed", 'completed_01.png'),
+        (control.lang(50027), "anilist_completed_last_season_completed", 'completed_01.png'),
+        (control.lang(50032), "anilist_completed_this_season_completed", 'completed_01.png'),
     ]
 
     COMPLETED_ITEMS_SETTINGS = COMPLETED_ITEMS[:]
@@ -1397,13 +1397,13 @@ def ANILIST_VOTED_THIS_SEASON_VOTED_PAGES(payload, params):
 
 
 @route('anilist_all_time_voted_voted')
-def ANILIST_ALL_TIME_VOTED_VOTED (payload, params):
-    return control.draw_items(_ANILIST_BROWSER.get_all_time_voted_voted ())
+def ANILIST_ALL_TIME_VOTED_VOTED(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_all_time_voted_voted())
 
 
 @route('anilist_all_time_voted_voted/*')
 def ANILIST_ALL_TIME_VOTED_VOTED_PAGES(payload, params):
-    return control.draw_items(_ANILIST_BROWSER.get_all_time_voted_voted (int(payload)))
+    return control.draw_items(_ANILIST_BROWSER.get_all_time_voted_voted(int(payload)))
 
 
 @route('anilist_completed_last_year_completed')

@@ -1,7 +1,7 @@
 import datetime
 import json
 import pickle
-import re
+# import re
 
 from resources.lib import pages
 from resources.lib.debrid import (all_debrid, debrid_link, premiumize,
@@ -38,8 +38,8 @@ class OtakuBrowser(BrowserBase):
     # TODO: Not sure i want this here..
     def search_history(self, search_array):
         result = list(map(self._parse_history_view, search_array))
-        result.insert(0, utils.allocate_item("New Search", "search", True, 'new search.png'))
-        result.insert(len(result), utils.allocate_item("Clear Search History...", "clear_history", True, 'clear search history.png'))
+        result.insert(0, utils.allocate_item("New Search", "search", True, 'new_search.png'))
+        result.insert(len(result), utils.allocate_item("Clear Search History...", "clear_history", True, 'clear_search_history.png'))
         return result
 
     def get_airing_dub(self):

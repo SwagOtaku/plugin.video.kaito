@@ -69,7 +69,6 @@ class AniListBrowser():
             'year': str(year) + '%',
             'status': "RELEASING",
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -83,11 +82,8 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year-1) + '%',
-            
+            'year': str(year - 1) + '%',
             'sort': "TRENDING_DESC",
-            
         }
 
         if self.format_in_type:
@@ -101,11 +97,8 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year-1) + '%',
-            
+            'year': str(year - 1) + '%',
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -119,11 +112,8 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year-1) + '%',
-            
+            'year': str(year - 1) + '%',
             'sort': "FAVOURITES_DESC",
-            
         }
 
         if self.format_in_type:
@@ -137,11 +127,9 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year-1) + '%',
+            'year': str(year - 1) + '%',
             'status': "FINISHED",
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -155,11 +143,8 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year-1) + '%',
-            
+            'year': str(year - 1) + '%',
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -175,9 +160,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "TRENDING_DESC",
-            
         }
 
         if self.format_in_type:
@@ -193,9 +176,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -211,9 +192,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "FAVOURITES_DESC",
-            
         }
 
         if self.format_in_type:
@@ -227,11 +206,9 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
             'year': str(year) + '%',
             'status': "FINISHED",
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -245,11 +222,8 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -263,11 +237,8 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year+1) + '%',
-            
+            'year': str(year + 1) + '%',
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -283,9 +254,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "TRENDING_DESC",
-            
         }
 
         if self.format_in_type:
@@ -301,9 +270,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -319,9 +286,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "FAVOURITES_DESC",
-            
         }
 
         if self.format_in_type:
@@ -339,7 +304,6 @@ class AniListBrowser():
             'year': str(year) + '%',
             'status': "FINISHED",
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -355,9 +319,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -373,9 +335,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "TRENDING_DESC",
-            
         }
 
         if self.format_in_type:
@@ -391,9 +351,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -409,9 +367,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "FAVOURITES_DESC",
-            
         }
 
         if self.format_in_type:
@@ -429,7 +385,6 @@ class AniListBrowser():
             'year': str(year) + '%',
             'status': "FINISHED",
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -445,9 +400,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -463,9 +416,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -479,11 +430,7 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            
-            
             'sort': "TRENDING_DESC",
-            
         }
 
         if self.format_in_type:
@@ -497,11 +444,7 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            
-            
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -515,11 +458,7 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            
-            
             'sort': "FAVOURITES_DESC",
-            
         }
 
         if self.format_in_type:
@@ -533,11 +472,7 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            
-            
             'sort': "SCORE_DESC",
-            
         }
 
         if self.format_in_type:
@@ -569,9 +504,7 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year-1) + '%',
-            
+            'year': str(year - 1) + '%',
             'sort': "TRENDING_DESC",
             'format': "MOVIE"
         }
@@ -587,9 +520,7 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year-1) + '%',
-            
+            'year': str(year - 1) + '%',
             'sort': "POPULARITY_DESC",
             'format': "MOVIE"
         }
@@ -605,9 +536,7 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year-1) + '%',
-            
+            'year': str(year - 1) + '%',
             'sort': "FAVOURITES_DESC",
             'format': "MOVIE"
         }
@@ -623,8 +552,7 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year-1) + '%',
+            'year': str(year - 1) + '%',
             'status': "FINISHED",
             'sort': "POPULARITY_DESC",
             'format': "MOVIE"
@@ -641,9 +569,7 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year-1) + '%',
-            
+            'year': str(year - 1) + '%',
             'sort': "POPULARITY_DESC",
             'format': "MOVIE"
         }
@@ -661,7 +587,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "TRENDING_DESC",
             'format': "MOVIE"
         }
@@ -679,7 +604,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
             'format': "MOVIE"
         }
@@ -697,7 +621,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "FAVOURITES_DESC",
             'format': "MOVIE"
         }
@@ -713,7 +636,6 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
             'year': str(year) + '%',
             'status': "FINISHED",
             'sort': "POPULARITY_DESC",
@@ -731,9 +653,7 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
             'format': "MOVIE"
         }
@@ -749,9 +669,7 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year+1) + '%',
-            
+            'year': str(year + 1) + '%',
             'sort': "POPULARITY_DESC",
             'format': "MOVIE"
         }
@@ -769,7 +687,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "TRENDING_DESC",
             'format': "MOVIE"
         }
@@ -787,7 +704,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
             'format': "MOVIE"
         }
@@ -805,7 +721,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "FAVOURITES_DESC",
             'format': "MOVIE"
         }
@@ -841,7 +756,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
             'format': "MOVIE"
         }
@@ -859,7 +773,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "TRENDING_DESC",
             'format': "MOVIE"
         }
@@ -877,7 +790,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
             'format': "MOVIE"
         }
@@ -895,7 +807,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "FAVOURITES_DESC",
             'format': "MOVIE"
         }
@@ -931,7 +842,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
             'format': "MOVIE"
         }
@@ -949,7 +859,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
             'format': "MOVIE"
         }
@@ -965,9 +874,6 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            
-            
             'sort': "TRENDING_DESC",
             'format': "MOVIE"
         }
@@ -983,9 +889,6 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            
-            
             'sort': "POPULARITY_DESC",
             'format': "MOVIE"
         }
@@ -1001,9 +904,6 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-           
-           
-            
             'sort': "FAVOURITES_DESC",
             'format': "MOVIE"
         }
@@ -1019,9 +919,6 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            
-            
             'sort': "SCORE_DESC",
             'format': "MOVIE"
         }
@@ -1049,15 +946,13 @@ class AniListBrowser():
 
         airing = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(airing, "anilist_airing_anime_tv/%d", page)
-    
+
     def get_trending_last_year_tv(self, page=1, format_in=''):
         season, year = self.get_season_year('')
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year-1) + '%',
-            
+            'year': str(year - 1) + '%',
             'sort': "TRENDING_DESC",
             'format': "TV"
         }
@@ -1073,9 +968,7 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year-1) + '%',
-            
+            'year': str(year - 1) + '%',
             'sort': "POPULARITY_DESC",
             'format': "TV"
         }
@@ -1091,9 +984,7 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year-1) + '%',
-            
+            'year': str(year - 1) + '%',
             'sort': "FAVOURITES_DESC",
             'format': "TV"
         }
@@ -1109,8 +1000,7 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year-1) + '%',
+            'year': str(year - 1) + '%',
             'status': "FINISHED",
             'sort': "POPULARITY_DESC",
             'format': "TV"
@@ -1127,9 +1017,7 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year-1) + '%',
-            
+            'year': str(year - 1) + '%',
             'sort': "POPULARITY_DESC",
             'format': "TV"
         }
@@ -1147,7 +1035,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "TRENDING_DESC",
             'format': "TV"
         }
@@ -1165,7 +1052,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
             'format': "TV"
         }
@@ -1183,7 +1069,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "FAVOURITES_DESC",
             'format': "TV"
         }
@@ -1199,7 +1084,6 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
             'year': str(year) + '%',
             'status': "FINISHED",
             'sort': "POPULARITY_DESC",
@@ -1217,9 +1101,7 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
             'format': "TV"
         }
@@ -1235,9 +1117,7 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year+1) + '%',
-            
+            'year': str(year + 1) + '%',
             'sort': "POPULARITY_DESC",
             'format': "TV"
         }
@@ -1255,7 +1135,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "TRENDING_DESC",
             'format': "TV"
         }
@@ -1273,7 +1152,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
             'format': "TV"
         }
@@ -1291,7 +1169,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "FAVOURITES_DESC",
             'format': "TV"
         }
@@ -1327,7 +1204,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
             'format': "TV"
         }
@@ -1345,7 +1221,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "TRENDING_DESC",
             'format': "TV"
         }
@@ -1363,7 +1238,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
             'format': "TV"
         }
@@ -1381,7 +1255,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "FAVOURITES_DESC",
             'format': "TV"
         }
@@ -1417,7 +1290,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
             'format': "TV"
         }
@@ -1435,7 +1307,6 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
             'format': "TV"
         }
@@ -1451,9 +1322,6 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            
-            
             'sort': "TRENDING_DESC",
             'format': "TV"
         }
@@ -1469,9 +1337,6 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            
-            
             'sort': "POPULARITY_DESC",
             'format': "TV"
         }
@@ -1487,9 +1352,6 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            
-            
             'sort': "FAVOURITES_DESC",
             'format': "TV"
         }
@@ -1505,9 +1367,6 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            
-            
             'sort': "SCORE_DESC",
             'format': "TV"
         }
@@ -1523,11 +1382,8 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year-1) + '%',
-            
+            'year': str(year - 1) + '%',
             'sort': "TRENDING_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1543,9 +1399,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "TRENDING_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1561,9 +1415,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "TRENDING_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1579,9 +1431,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "TRENDING_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1595,11 +1445,7 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            
-            
             'sort': "TRENDING_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1613,11 +1459,8 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year-1) + '%',
-            
+            'year': str(year - 1) + '%',
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1633,9 +1476,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1651,9 +1492,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1669,9 +1508,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1685,11 +1522,7 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            
-            
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1703,11 +1536,8 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year-1) + '%',
-            
+            'year': str(year - 1) + '%',
             'sort': "FAVOURITES_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1723,9 +1553,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "FAVOURITES_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1741,9 +1569,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "FAVOURITES_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1759,9 +1585,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "FAVOURITES_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1770,16 +1594,12 @@ class AniListBrowser():
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_this_season_voted/%d", page)
 
-    def get_all_time_voted_voted (self, page=1, format_in=''):
+    def get_all_time_voted_voted(self, page=1, format_in=''):
         season, year = self.get_season_year('time')
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            
-            
             'sort': "FAVOURITES_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1793,11 +1613,9 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year-1) + '%',
+            'year': str(year - 1) + '%',
             'status': "FINISHED",
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1811,11 +1629,9 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
             'year': str(year) + '%',
             'status': "FINISHED",
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1833,7 +1649,6 @@ class AniListBrowser():
             'year': str(year) + '%',
             'status': "FINISHED",
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1851,7 +1666,6 @@ class AniListBrowser():
             'year': str(year) + '%',
             'status': "FINISHED",
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1865,11 +1679,8 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year-1) + '%',
-            
+            'year': str(year - 1) + '%',
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1883,11 +1694,8 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1901,11 +1709,8 @@ class AniListBrowser():
         variables = {
             'page': page,
             'type': "ANIME",
-            
-            'year': str(year+1) + '%',
-            
+            'year': str(year + 1) + '%',
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1921,9 +1726,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1939,9 +1742,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DESC",
-            
         }
 
         if self.format_in_type:
@@ -1957,9 +1758,7 @@ class AniListBrowser():
             'type': "ANIME",
             'season': season,
             'year': str(year) + '%',
-            
             'sort': "POPULARITY_DES",
-            
         }
 
         if self.format_in_type:
