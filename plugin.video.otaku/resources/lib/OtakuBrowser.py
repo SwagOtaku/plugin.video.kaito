@@ -6,7 +6,7 @@ import re
 from resources.lib import pages
 from resources.lib.debrid import (all_debrid, debrid_link, premiumize,
                                   real_debrid)
-from resources.lib.indexers import simkl, trakt
+from resources.lib.indexers import simkl, trakt, consumet
 from resources.lib.ui import client, control, database, utils
 from resources.lib.ui.BrowserBase import BrowserBase
 
@@ -135,12 +135,14 @@ class OtakuBrowser(BrowserBase):
             trakt_id = pickle.loads(show_meta.get('meta_ids'))
 
         kodi_meta = pickle.loads(show.get('kodi_meta'))
-        title = kodi_meta.get('ename') or kodi_meta.get('name')
-        p = re.search(r'(?:part|cour)\s*\d', title, re.I)
-        if not trakt_id or p:
+        # title = kodi_meta.get('ename') or kodi_meta.get('name')
+        # p = re.search(r'(?:part|cour)\s*\d', title, re.I)
+        # if not trakt_id or p:
+        if not trakt_id:
             return self.get_anime_simkl(anilist_id, filter_lang)
 
-        return self.get_anime_trakt(anilist_id, filter_lang=filter_lang)
+        # return self.get_anime_trakt(anilist_id, filter_lang=filter_lang)
+        return consumet.CONSUMETAPI().get_episodes(anilist_id, filter_lang)  # (anilist_id, filter_lang=filter_lang)
 
     def get_episodeList(self, show_id, pass_idx, filter_lang=None, rescrape=False):
         show = database.get_show(show_id)
@@ -150,7 +152,8 @@ class OtakuBrowser(BrowserBase):
             if show['simkl_id']:
                 items = simkl.SIMKLAPI().get_episodes(show_id)
             else:
-                items = trakt.TRAKTAPI()._process_trakt_episodes(show_id, '', episodes, '')
+                # items = trakt.TRAKTAPI()._process_trakt_episodes(show_id, '', episodes, '')
+                items = consumet.CONSUMETAPI()._process_episodes(show_id, episodes, '')
         else:
             items = simkl.SIMKLAPI().get_episodes(show_id)
 

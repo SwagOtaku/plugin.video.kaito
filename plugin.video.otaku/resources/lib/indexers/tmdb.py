@@ -172,12 +172,20 @@ class TMDBAPI:
 
         return art
 
-    def getArt(self, traktItem, mtype):
+    def getArt(self, meta_ids, mtype):
         art = {}
-        mid = traktItem.get('tmdb')
+        mid = meta_ids.get('themoviedb') or meta_ids.get('tmdb')
+        if mid is None:
+            tvdb = meta_ids.get('thetvdb') or meta_ids.get('tvdb')
+            if tvdb:
+                url = 'find/{0}?external_source=tvdb_id'.format(tvdb)
+                res = self.get_request(url)
+                res = res.get('tv_results')
+                if res:
+                    mid = res[0].get('id')
 
         if mid:
-            url = '{0}/{1}/images?include_image_language=en,ja,null'.format(mtype[0:5], traktItem['tmdb'])
+            url = '{0}/{1}/images?include_image_language=en,ja,null'.format(mtype[0:5], mid)
             res = self.get_request(url)
             if res:
                 if res.get('backdrops'):

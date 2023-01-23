@@ -1,7 +1,7 @@
 import threading
 import time
 
-from resources.lib.pages import animixplay, debrid_cloudfiles, gogoanime, nyaa
+from resources.lib.pages import animixplay, debrid_cloudfiles, gogoanime, nyaa, animepahe
 from resources.lib.ui import control
 from resources.lib.windows.get_sources_window import \
     GetSources as DisplayWindow
@@ -40,7 +40,7 @@ class Sources(DisplayWindow):
         self.embedSources = []
         self.hosterSources = []
         self.cloud_files = []
-        self.remainingProviders = ['nyaa', 'gogo', 'animix']
+        self.remainingProviders = ['nyaa', 'gogo', 'animix', 'animepahe']
         self.allTorrents = {}
         self.allTorrents_len = 0
         self.hosterDomains = {}
@@ -99,6 +99,12 @@ class Sources(DisplayWindow):
         else:
             self.remainingProviders.remove('animix')
 
+        if control.getSetting('provider.animepahe') == 'true':
+            self.threads.append(
+                threading.Thread(target=self.animepahe_worker, args=(anilist_id, episode, get_backup, rescrape,)))
+        else:
+            self.remainingProviders.remove('animepahe')
+
         self.threads.append(
             threading.Thread(target=self.user_cloud_inspection, args=(query, anilist_id, episode, media_type, rescrape)))
 
@@ -147,6 +153,7 @@ class Sources(DisplayWindow):
         sourcesList = self.sortSources(self.torrentCacheSources, self.embedSources, filter_lang)
         self.return_data = sourcesList
         self.close()
+        # control.log('Sorted sources :\n {0}'.format(sourcesList), 'info')
         return
 
     def nyaa_worker(self, query, anilist_id, episode, status, media_type, rescrape):
@@ -165,6 +172,12 @@ class Sources(DisplayWindow):
             self.animixplaySources = animixplay.sources().get_sources(anilist_id, episode, get_backup)
             self.embedSources += self.animixplaySources
         self.remainingProviders.remove('animix')
+
+    def animepahe_worker(self, anilist_id, episode, get_backup, rescrape):
+        if not rescrape:
+            self.animepaheSources = animepahe.sources().get_sources(anilist_id, episode, get_backup)
+            self.embedSources += self.animepaheSources
+        self.remainingProviders.remove('animepahe')
 
     def user_cloud_inspection(self, query, anilist_id, episode, media_type, rescrape):
         self.remainingProviders.append('Cloud Inspection')

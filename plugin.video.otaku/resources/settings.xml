@@ -34,6 +34,7 @@
 		<setting id="provider.nyaa" type="bool" label="Nyaa Alt" default="false" />
 		<setting id="provider.gogo" type="bool" label="Gogo" default="true" />
 		<setting id="provider.animix" type="bool" label="Animix" default="true" />
+		<setting id="provider.animepahe" type="bool" label="Animepahe" default="true" />
 	</category>
 
 	<!-- Playback -->

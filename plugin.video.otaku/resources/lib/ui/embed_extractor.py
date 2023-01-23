@@ -340,7 +340,8 @@ __register_extractor(["https://dood.wf/",
 
 __register_extractor(["https://goload.io/",
                       "https://goload.pro/",
-                      "https://gogohd.net/"],
+                      "https://gogohd.net/",
+                      "https://gogohd.pro/"],
                      __extract_goload)
 
 __register_extractor(["https://streamlare.com/",

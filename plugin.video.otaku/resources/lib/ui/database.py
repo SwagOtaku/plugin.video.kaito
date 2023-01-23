@@ -411,7 +411,7 @@ def _update_season(show_id, season):
         control.try_release_lock(control.anilistSyncDB_lock)
 
 
-def _update_episode(show_id, season, number, number_abs, update_time, kodi_meta):
+def _update_episode(show_id, season=0, number=0, number_abs=0, update_time='', kodi_meta={}):
     control.anilistSyncDB_lock.acquire()
     cursor = _get_cursor()
     if isinstance(kodi_meta, dict):

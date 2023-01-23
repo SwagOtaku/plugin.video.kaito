@@ -334,7 +334,11 @@ def xbmc_add_dir(name, url, art={}, info={}, draw_cm=None):
 
 def draw_items(video_data, contentType="tvshows", viewType=None, draw_cm=None, bulk_add=False):
     if isinstance(video_data, tuple):
-        video_data, contentType = video_data
+        contentType = video_data[1]
+        video_data = video_data[0]
+
+    if not isinstance(video_data, list):
+        video_data = [video_data]
 
     for vid in video_data:
         if vid['is_dir']:
