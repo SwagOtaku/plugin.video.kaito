@@ -1,3 +1,14 @@
+Changelog 0.3.0 [20230123]:
+- Made Episode Meta Very Consistant
+- Made Artwork Very Consistant
+- Added New Embeds
+- Added Consumet Api
+- Added Extra Menu Settings
+- Added Last Year Menu Items
+- Added Last Season Menu Items
+- Added Categorie Menu Items
+- Big Thanks to the Consumet Team and to everyone for helping us make this release possible. 
+
 Changelog 0.2.39 [20230121]:
 - Added missing headers on login and watchlist requests
 
