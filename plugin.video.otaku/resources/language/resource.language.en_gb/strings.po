@@ -591,14 +591,36 @@ msgctxt "#40402"
 msgid "TV Show Items"
 msgstr ""
 
-# empty strings from id 40403 to 40408
+msgctxt "#40403"
+msgid "Main Menu Items 2"
+msgstr ""
+
+msgctxt "#40404"
+msgid "Trending Items"
+msgstr ""
+
+msgctxt "#40405"
+msgid "Popular Items"
+msgstr ""
+
+msgctxt "#40406"
+msgid "Voted Items"
+msgstr ""
+
+msgctxt "#40407"
+msgid "Completed Items"
+msgstr ""
+
+msgctxt "#40408"
+msgid "Upcoming Items"
+msgstr ""
 
 msgctxt "#40409"
 msgid "Search Filter"
 msgstr ""
 
 msgctxt "#40410"
-msgid "Enable searching mature titles"
+msgid "Enable searching mature titles only"
 msgstr ""
 
 msgctxt "#40411"
@@ -631,81 +653,149 @@ msgid "Airing Anime Calendar"
 msgstr ""
 
 msgctxt "#50001"
-msgid "Movies"
-msgstr ""
-
-msgctxt "#50002"
-msgid "TV Shows"
-msgstr ""
-
-msgctxt "#50003"
-msgid "Genres & Tags"
-msgstr ""
-
-msgctxt "#50004"
-msgid "Search"
-msgstr ""
-
-msgctxt "#50005"
-msgid "Tools"
-msgstr ""
-
-msgctxt "#50006"
 msgid "Airing Anime"
 msgstr ""
 
-msgctxt "#50007"
-msgid "Trending This Year"
+msgctxt "#50002"
+msgid "Movies"
 msgstr ""
+
+msgctxt "#50003"
+msgid "TV Shows"
+msgstr ""
+
+msgctxt "#50004"
+msgid "Trending"
+msgstr "
+
+msgctxt "#50005"
+msgid "Popular"
+msgstr "
+
+msgctxt "#50006"
+msgid "Voted"
+msgstr "
+
+msgctxt "#50007"
+msgid "Completed"
+msgstr "
 
 msgctxt "#50008"
-msgid "Popular This Year"
-msgstr ""
+msgid "Upcoming"
+msgstr "
 
 msgctxt "#50009"
-msgid "Voted This Year"
+msgid "Top 100 Anime"
 msgstr ""
 
 msgctxt "#50010"
-msgid "Completed This Year"
+msgid "Genres & Tags"
 msgstr ""
 
 msgctxt "#50011"
-msgid "Upcoming Next Year"
+msgid "Search"
 msgstr ""
 
 msgctxt "#50012"
-msgid "Trending This Season"
+msgid "Tools"
 msgstr ""
 
 msgctxt "#50013"
-msgid "Popular This Season"
+msgid "Trending Last year"
 msgstr ""
 
 msgctxt "#50014"
-msgid "Voted This Season"
+msgid "Popular Last year"
 msgstr ""
 
 msgctxt "#50015"
-msgid "Completed This Season"
+msgid "Voted Last year"
 msgstr ""
 
 msgctxt "#50016"
-msgid "Upcoming Next Season"
+msgid "Completed Last year"
 msgstr ""
 
 msgctxt "#50017"
-msgid "All Time Trending"
+msgid "Upcoming Last year"
 msgstr ""
 
 msgctxt "#50018"
-msgid "All Time Popular"
+msgid "Trending This year"
 msgstr ""
 
 msgctxt "#50019"
-msgid "All Time Voted"
+msgid "Popular This year"
 msgstr ""
 
 msgctxt "#50020"
-msgid "Top 100 Anime"
+msgid "Voted This year"
+msgstr ""
+
+msgctxt "#50021"
+msgid "Completed This year"
+msgstr ""
+
+msgctxt "#50022"
+msgid "Upcoming This year"
+msgstr ""
+
+msgctxt "#50023"
+msgid "Upcoming Next year"
+msgstr ""
+
+msgctxt "#50024"
+msgid "Trending Last Season"
+msgstr ""
+
+msgctxt "#50025"
+msgid "Popular Last Season"
+msgstr ""
+
+msgctxt "#50026"
+msgid "Voted Last Season"
+msgstr ""
+
+msgctxt "#50027"
+msgid "Completed Last Season"
+msgstr ""
+
+msgctxt "#50028"
+msgid "Upcoming Last Season"
+msgstr ""
+
+msgctxt "#50029"
+msgid "Trending This Season"
+msgstr ""
+
+msgctxt "#50030"
+msgid "Popular This Season"
+msgstr ""
+
+msgctxt "#50031"
+msgid "Voted This Season"
+msgstr ""
+
+msgctxt "#50032"
+msgid "Completed This Season"
+msgstr ""
+
+msgctxt "#50033"
+msgid "Upcoming This Season"
+msgstr ""
+
+msgctxt "#50034"
+msgid "Upcoming Next Season"
+msgstr ""
+
+msgctxt "#50035"
+msgid "All Time Trending"
+msgstr ""
+
+msgctxt "#50036"
+msgid "All Time Popular"
+msgstr ""
+
+msgctxt "#50037"
+msgid "All Time Voted"
 msgstr ""

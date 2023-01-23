@@ -29,27 +29,44 @@ from resources.lib.WatchlistIntegration import (add_watchlist, set_browser,
                                                 watchlist_update)
 
 MENU_ITEMS = [
-    (control.lang(50000), "anilist_airing", 'airing anime calendar.png'),
-    (control.lang(50006), "anilist_airing_anime", 'airing anime.png'),
-    (control.lang(50001), "movies", 'movies.png'),
-    (control.lang(50002), "tv_shows", 'tv shows.png'),
-    (control.lang(50007), "anilist_trending_this_year", 'trending this year.png'),
-    (control.lang(50008), "anilist_popular_this_year", 'popular this year.png'),
-    (control.lang(50009), "anilist_voted_this_year", 'voted this year.png'),
-    (control.lang(50010), "anilist_completed_this_year", 'completed this year.png'),
-    (control.lang(50011), "anilist_upcoming_next_year", 'upcoming next year.png'),
-    (control.lang(50012), "anilist_trending_this_season", 'trending this season.png'),
-    (control.lang(50013), "anilist_popular_this_season", 'popular this season.png'),
-    (control.lang(50014), "anilist_voted_this_season", 'voted this season.png'),
-    (control.lang(50015), "anilist_completed_this_season", 'completed this season.png'),
-    (control.lang(50016), "anilist_upcoming_next_season", 'upcoming next season.png'),
-    (control.lang(50017), 'anilist_all_time_trending', 'all time trending.png'),
-    (control.lang(50018), 'anilist_all_time_popular', 'all time popular.png'),
-    (control.lang(50019), 'anilist_all_time_voted', 'all time voted.png'),
-    (control.lang(50020), 'anilist_top_100_anime', 'top 100 anime.png'),
-    (control.lang(50003), "anilist_genres", 'genres & tags.png'),
-    (control.lang(50004), "search_history", 'search.png'),
-    (control.lang(50005), "tools", 'tools.png'),
+    (control.lang(50000), "anilist_airing", 'airing_anime_calendar.png'),
+    (control.lang(50001), "anilist_airing_anime", 'airing_anime.png'),
+    (control.lang(50002), "movies", 'movies.png'),
+    (control.lang(50003), "tv_shows", 'tv_shows.png'),
+    (control.lang(50004), "trending", 'trending.png'),
+    (control.lang(50005), "popular", 'popular.png'),
+    (control.lang(50006), "voted", 'voted.png'),
+    (control.lang(50007), "completed", 'completed_1.png'),
+    (control.lang(50008), "upcoming", 'upcoming.png'),
+    (control.lang(50013), "anilist_trending_last_year", 'trending.png'),
+	(control.lang(50014), "anilist_popular_last_year", 'popular.png'),
+	(control.lang(50015), "anilist_voted_last_year", 'voted.png'),
+	(control.lang(50016), "anilist_completed_last_year", 'completed_01.png'),
+	(control.lang(50017), "anilist_upcoming_last_year", 'upcoming.png'),
+	(control.lang(50018), "anilist_trending_this_year", 'trending.png'),
+	(control.lang(50019), "anilist_popular_this_year", 'popular.png'),
+	(control.lang(50020), "anilist_voted_this_year", 'voted.png'),
+	(control.lang(50021), "anilist_completed_this_year", 'completed_01.png'),
+	(control.lang(50022), "anilist_upcoming_this_year", 'upcoming.png'),
+	(control.lang(50023), "anilist_upcoming_next_year", 'upcoming.png'),
+	(control.lang(50024), "anilist_trending_last_season", 'trending.png'),
+	(control.lang(50025), "anilist_popular_last_season", 'popular.png'),
+	(control.lang(50026), "anilist_voted_last_season", 'voted.png'),
+	(control.lang(50027), "anilist_completed_last_season", 'completed_01.png'),
+	(control.lang(50028), "anilist_upcoming_last_season", 'upcoming.png'),
+	(control.lang(50029), "anilist_trending_this_season", 'trending.png'),
+	(control.lang(50030), "anilist_popular_this_season", 'popular.png'),
+	(control.lang(50031), "anilist_voted_this_season", 'voted.png'),
+	(control.lang(50032), "anilist_completed_this_season", 'completed_01.png'),
+	(control.lang(50033), "anilist_upcoming_this_season", 'upcoming.png'),
+	(control.lang(50034), "anilist_upcoming_next_season", 'upcoming.png'),
+	(control.lang(50035), "anilist_all_time_trending", 'trending.png'),
+	(control.lang(50036), "anilist_all_time_popular", 'popular.png'),
+	(control.lang(50037), "anilist_all_time_voted", 'voted.png'),
+	(control.lang(50009), "anilist_top_100_anime", 'top_100_anime.png'),
+    (control.lang(50010), "anilist_genres", 'genres_&_tags.png'),
+    (control.lang(50011), "search_history", 'search.png'),
+    (control.lang(50012), "tools", 'tools.png'),
 ]
 _TITLE_LANG = control.getSetting("titlelanguage")
 _BROWSER = OtakuBrowser()
@@ -59,23 +76,35 @@ _ANILIST_BROWSER = AniListBrowser(_TITLE_LANG)
 @route('movies')
 def MOVIES_MENU(payload, params):
     MOVIES_ITEMS = [
-        (control.lang(50006), "anilist_airing_anime_movie", 'airing anime.png'),
-        (control.lang(50007), "anilist_trending_this_year_movie", 'trending this year.png'),
-        (control.lang(50008), "anilist_popular_this_year_movie", 'popular this year.png'),
-        (control.lang(50009), "anilist_voted_this_year_movie", 'voted this year.png'),
-        (control.lang(50010), "anilist_completed_this_year_movie", 'completed this year.png'),
-        (control.lang(50011), "anilist_upcoming_next_year_movie", 'upcoming next year.png'),
-        (control.lang(50012), "anilist_trending_this_season_movie", 'trending this season.png'),
-        (control.lang(50013), "anilist_popular_this_season_movie", 'popular this season.png'),
-        (control.lang(50014), "anilist_voted_this_season_movie", 'voted this season.png'),
-        (control.lang(50015), "anilist_completed_this_season_movie", 'completed this season.png'),
-        (control.lang(50016), "anilist_upcoming_next_season_movie", 'upcoming next season.png'),
-        (control.lang(50017), 'anilist_all_time_trending_movie', 'all time trending.png'),
-        (control.lang(50018), 'anilist_all_time_popular_movie', 'all time popular.png'),
-        (control.lang(50019), 'anilist_all_time_voted_movie', 'all time voted.png'),
-        (control.lang(50020), 'anilist_top_100_anime_movie', 'top 100 anime.png'),
-        (control.lang(50003), "anilist_genres", 'genres & tags.png'),
-        (control.lang(50004), "search_history", 'search.png'),
+		(control.lang(50001), "anilist_airing_anime_movie", 'airing_anime.png'),
+		(control.lang(50013), "anilist_trending_last_year_movie", 'trending.png'),
+		(control.lang(50014), "anilist_popular_last_year_movie", 'popular.png'),
+		(control.lang(50015), "anilist_voted_last_year_movie", 'voted.png'),
+		(control.lang(50016), "anilist_completed_last_year_movie", 'completed_01.png'),
+		(control.lang(50017), "anilist_upcoming_last_year_movie", 'upcoming.png'),
+		(control.lang(50018), "anilist_trending_this_year_movie", 'trending.png'),
+		(control.lang(50019), "anilist_popular_this_year_movie", 'popular.png'),
+		(control.lang(50020), "anilist_voted_this_year_movie", 'voted.png'),
+		(control.lang(50021), "anilist_completed_this_year_movie", 'completed_01.png'),
+		(control.lang(50022), "anilist_upcoming_this_year_movie", 'upcoming.png'),
+		(control.lang(50023), "anilist_upcoming_next_year_movie", 'upcoming.png'),
+		(control.lang(50024), "anilist_trending_last_season_movie", 'trending.png'),
+		(control.lang(50025), "anilist_popular_last_season_movie", 'popular.png'),
+		(control.lang(50026), "anilist_voted_last_season_movie", 'voted.png'),
+		(control.lang(50027), "anilist_completed_last_season_movie", 'completed_01.png'),
+		(control.lang(50028), "anilist_upcoming_last_season_movie", 'upcoming.png'),
+		(control.lang(50029), "anilist_trending_this_season_movie", 'trending.png'),
+		(control.lang(50030), "anilist_popular_this_season_movie", 'popular.png'),
+		(control.lang(50031), "anilist_voted_this_season_movie", 'voted.png'),
+		(control.lang(50032), "anilist_completed_this_season_movie", 'completed_01.png'),
+		(control.lang(50033), "anilist_upcoming_this_season_movie", 'upcoming.png'),
+		(control.lang(50034), "anilist_upcoming_next_season_movie", 'upcoming.png'),
+		(control.lang(50035), "anilist_all_time_trending_movie", 'trending.png'),
+		(control.lang(50036), "anilist_all_time_popular_movie", 'popular.png'),
+		(control.lang(50037), "anilist_all_time_voted_movie", 'voted.png'),
+		(control.lang(50009), "anilist_top_100_anime_movie", 'top_100_anime.png'),
+		(control.lang(50010), "anilist_genres", 'genres_&_tags.png'),
+		(control.lang(50011), "search_history", 'search.png'),
     ]
 
     MOVIES_ITEMS_SETTINGS = MOVIES_ITEMS[:]
@@ -93,23 +122,35 @@ def MOVIES_MENU(payload, params):
 @route('tv_shows')
 def TV_SHOWS_MENU(payload, params):
     TV_SHOWS_ITEMS = [
-        (control.lang(50006), "anilist_airing_anime_tv", 'airing anime.png'),
-        (control.lang(50007), "anilist_trending_this_year_tv", 'trending this year.png'),
-        (control.lang(50008), "anilist_popular_this_year_tv", 'popular this year.png'),
-        (control.lang(50009), "anilist_voted_this_year_tv", 'voted this year.png'),
-        (control.lang(50010), "anilist_completed_this_year_tv", 'completed this year.png'),
-        (control.lang(50011), "anilist_upcoming_next_year_tv", 'upcoming next year.png'),
-        (control.lang(50012), "anilist_trending_this_season_tv", 'trending this season.png'),
-        (control.lang(50013), "anilist_popular_this_season_tv", 'popular this season.png'),
-        (control.lang(50014), "anilist_voted_this_season_tv", 'voted this season.png'),
-        (control.lang(50015), "anilist_completed_this_season_tv", 'completed this season.png'),
-        (control.lang(50016), "anilist_upcoming_next_season_tv", 'upcoming next season.png'),
-        (control.lang(50017), 'anilist_all_time_trending_tv', 'all time trending.png'),
-        (control.lang(50018), 'anilist_all_time_popular_tv', 'all time popular.png'),
-        (control.lang(50019), 'anilist_all_time_voted_tv', 'all time voted.png'),
-        (control.lang(50020), 'anilist_top_100_anime_tv', 'top 100 anime.png'),
-        (control.lang(50003), "anilist_genres", 'genres & tags.png'),
-        (control.lang(50004), "search_history", 'search.png'),
+		(control.lang(50001), "anilist_airing_anime_tv", 'airing_anime.png'),
+		(control.lang(50013), "anilist_trending_last_year_tv", 'trending.png'),
+		(control.lang(50014), "anilist_popular_last_year_tv", 'popular.png'),
+		(control.lang(50015), "anilist_voted_last_year_tv", 'voted.png'),
+		(control.lang(50016), "anilist_completed_last_year_tv", 'completed_01.png'),
+		(control.lang(50017), "anilist_upcoming_last_year_tv", 'upcoming.png'),
+		(control.lang(50018), "anilist_trending_this_year_tv", 'trending.png'),
+		(control.lang(50019), "anilist_popular_this_year_tv", 'popular.png'),
+		(control.lang(50020), "anilist_voted_this_year_tv", 'voted.png'),
+		(control.lang(50021), "anilist_completed_this_year_tv", 'completed_01.png'),
+		(control.lang(50022), "anilist_upcoming_this_year_tv", 'upcoming.png'),
+		(control.lang(50023), "anilist_upcoming_next_year_tv", 'upcoming.png'),
+		(control.lang(50024), "anilist_trending_last_season_tv", 'trending.png'),
+		(control.lang(50025), "anilist_popular_last_season_tv", 'popular.png'),
+		(control.lang(50026), "anilist_voted_last_season_tv", 'voted.png'),
+		(control.lang(50027), "anilist_completed_last_season_tv", 'completed_01.png'),
+		(control.lang(50028), "anilist_upcoming_last_season_tv", 'upcoming.png'),
+		(control.lang(50029), "anilist_trending_this_season_tv", 'trending.png'),
+		(control.lang(50030), "anilist_popular_this_season_tv", 'popular.png'),
+		(control.lang(50031), "anilist_voted_this_season_tv", 'voted.png'),
+		(control.lang(50032), "anilist_completed_this_season_tv", 'completed_01.png'),
+		(control.lang(50033), "anilist_upcoming_this_season_tv", 'upcoming.png'),
+		(control.lang(50034), "anilist_upcoming_next_season_tv", 'upcoming.png'),
+		(control.lang(50035), "anilist_all_time_trending_tv", 'trending.png'),
+		(control.lang(50036), "anilist_all_time_popular_tv", 'popular.png'),
+		(control.lang(50037), "anilist_all_time_voted_tv", 'voted.png'),
+		(control.lang(50009), "anilist_top_100_anime_tv", 'top_100_anime.png'),
+		(control.lang(50010), "anilist_genres", 'genres_&_tags.png'),
+		(control.lang(50011), "search_history", 'search.png'),
     ]
 
     TV_SHOWS_ITEMS_SETTINGS = TV_SHOWS_ITEMS[:]
@@ -119,6 +160,116 @@ def TV_SHOWS_MENU(payload, params):
 
     return control.draw_items(
         [utils.allocate_item(name, url, True, image) for name, url, image in TV_SHOWS_ITEMS_SETTINGS],
+        contentType="addons",
+        draw_cm=False
+    )
+
+
+@route('trending')
+def TRENDING_MENU(payload, params):
+    TRENDING_ITEMS = [
+		(control.lang(50013), "anilist_trending_last_year_trending_trending", 'trending.png'),
+		(control.lang(50018), "anilist_trending_this_year_trending_trending", 'trending.png'),
+		(control.lang(50024), "anilist_trending_last_season_trending", 'trending.png'),
+		(control.lang(50029), "anilist_trending_this_season_trending", 'trending.png'),
+		(control.lang(50035), "anilist_all_time_trending_trending", 'trending.png'),
+    ]
+
+    TRENDING_ITEMS_SETTINGS = TRENDING_ITEMS[:]
+    for i in TRENDING_ITEMS:
+        if control.getSetting(i[1]) != 'true':
+            TRENDING_ITEMS_SETTINGS.remove(i)
+
+    return control.draw_items(
+        [utils.allocate_item(name, url, True, image) for name, url, image in TRENDING_ITEMS],
+        contentType="addons",
+        draw_cm=False
+    )
+
+
+@route('popular')
+def POPULAR_MENU(payload, params):
+    POPULAR_ITEMS = [
+		(control.lang(50014), "anilist_popular_last_year_popular", 'popular.png'),
+		(control.lang(50019), "anilist_popular_this_year_popular", 'popular.png'),
+		(control.lang(50025), "anilist_popular_last_season_popular", 'popular.png'),
+		(control.lang(50030), "anilist_popular_this_season_popular", 'popular.png'),
+		(control.lang(50036), "anilist_all_time_popular_popular", 'all_time_popular.png'),
+    ]
+
+    POPULAR_ITEMS_SETTINGS = POPULAR_ITEMS[:]
+    for i in POPULAR_ITEMS:
+        if control.getSetting(i[1]) != 'true':
+            POPULAR_ITEMS_SETTINGS.remove(i)
+
+    return control.draw_items(
+        [utils.allocate_item(name, url, True, image) for name, url, image in POPULAR_ITEMS],
+        contentType="addons",
+        draw_cm=False
+    )
+
+
+@route('voted')
+def VOTED_MENU(payload, params):
+    VOTED_ITEMS = [
+		(control.lang(50015), "anilist_voted_last_year_voted", 'voted.png'),
+		(control.lang(50020), "anilist_voted_this_year_voted", 'voted.png'),
+		(control.lang(50026), "anilist_voted_last_season_voted", 'voted.png'),
+		(control.lang(50031), "anilist_voted_this_season_voted", 'voted.png'),
+		(control.lang(50037), "anilist_all_time_voted_voted", 'voted.png'), 
+    ]
+
+    VOTED_ITEMS_SETTINGS = VOTED_ITEMS[:]
+    for i in VOTED_ITEMS:
+        if control.getSetting(i[1]) != 'true':
+            VOTED_ITEMS_SETTINGS.remove(i)
+
+    return control.draw_items(
+        [utils.allocate_item(name, url, True, image) for name, url, image in VOTED_ITEMS],
+        contentType="addons",
+        draw_cm=False
+    )
+
+
+@route('completed')
+def COMPLETED_MENU(payload, params):
+    COMPLETED_ITEMS = [
+		(control.lang(50016), "anilist_completed_last_year_completed", 'completed_01.png'),
+		(control.lang(50021), "anilist_completed_this_year_completed", 'completed_01.png'),
+		(control.lang(50027), "anilist_completed_last_season_completed", 'completed_01.png'),
+		(control.lang(50032), "anilist_completed_this_season_completed", 'completed_01.png'),
+    ]
+
+    COMPLETED_ITEMS_SETTINGS = COMPLETED_ITEMS[:]
+    for i in COMPLETED_ITEMS:
+        if control.getSetting(i[1]) != 'true':
+            COMPLETED_ITEMS_SETTINGS.remove(i)
+
+    return control.draw_items(
+        [utils.allocate_item(name, url, True, image) for name, url, image in COMPLETED_ITEMS],
+        contentType="addons",
+        draw_cm=False
+    )
+
+
+@route('upcoming')
+def UPCOMING_MENU(payload, params):
+    UPCOMING_ITEMS = [
+        (control.lang(50017), "anilist_upcoming_last_year_upcoming", 'upcoming.png'),
+        (control.lang(50022), "anilist_upcoming_this_year_upcoming", 'upcoming.png'),
+        (control.lang(50023), "anilist_upcoming_next_year_upcoming", 'upcoming.png'),
+        (control.lang(50028), "anilist_upcoming_last_season_upcoming", 'upcoming.png'),
+        (control.lang(50033), "anilist_upcoming_this_season_upcoming", 'upcoming.png'),
+        (control.lang(50034), "anilist_upcoming_next_season_upcoming", 'upcoming.png'),
+    ]
+
+    UPCOMING_ITEMS_SETTINGS = UPCOMING_ITEMS[:]
+    for i in UPCOMING_ITEMS:
+        if control.getSetting(i[1]) != 'true':
+            UPCOMING_ITEMS_SETTINGS.remove(i)
+
+    return control.draw_items(
+        [utils.allocate_item(name, url, True, image) for name, url, image in UPCOMING_ITEMS],
         contentType="addons",
         draw_cm=False
     )
@@ -161,7 +312,7 @@ def on_stopped():
 
 # Will be called on genre page
 def genre_dialog(genre_display_list):
-    return control.multiselect_dialog(control.lang(50003), genre_display_list)
+    return control.multiselect_dialog(control.lang(50010), genre_display_list)
 
 
 @route('season_correction/*')
@@ -305,6 +456,56 @@ def ANILIST_AIRING_ANIME_PAGES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_airing_anime(int(payload)))
 
 
+@route('anilist_trending_last_year')
+def ANILIST_TRENDING_LAST_YEAR(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_trending_last_year())
+
+
+@route('anilist_trending_last_year/*')
+def ANILIST_TRENDING_LAST_YEAR_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_trending_last_year(int(payload)))
+
+
+@route('anilist_popular_last_year')
+def ANILIST_POPULAR_LAST_YEAR(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_popular_last_year())
+
+
+@route('anilist_popular_last_year/*')
+def ANILIST_POPULAR_LAST_YEAR_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_popular_last_year(int(payload)))
+
+
+@route('anilist_voted_last_year')
+def ANILIST_VOTED_LAST_YEAR(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted_last_year())
+
+
+@route('anilist_voted_last_year/*')
+def ANILIST_VOTED_LAST_YEAR_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted_last_year(int(payload)))
+
+
+@route('anilist_completed_last_year')
+def ANILIST_COMPLETED_LAST_YEAR(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_last_year())
+
+
+@route('anilist_completed_last_year/*')
+def ANILIST_COMPLETED_LAST_YEAR_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_last_year(int(payload)))
+
+
+@route('anilist_upcoming_last_year')
+def ANILIST_UPCOMING_LAST_YEAR(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_last_year())
+
+
+@route('anilist_upcoming_last_year/*')
+def ANILIST_UPCOMING_LAST_YEAR_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_last_year(int(payload)))
+
+
 @route('anilist_trending_this_year')
 def ANILIST_TRENDING_THIS_YEAR(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_trending_this_year())
@@ -345,6 +546,16 @@ def ANILIST_COMPLETED_THIS_YEAR_PAGES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_completed_this_year(int(payload)))
 
 
+@route('anilist_upcoming_this_year')
+def ANILIST_UPCOMING_THIS_YEAR(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_this_year())
+
+
+@route('anilist_upcoming_this_year/*')
+def ANILIST_UPCOMING_THIS_YEAR_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_this_year(int(payload)))
+
+
 @route('anilist_upcoming_next_year')
 def ANILIST_UPCOMING_NEXT_YEAR(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_upcoming_next_year())
@@ -353,6 +564,56 @@ def ANILIST_UPCOMING_NEXT_YEAR(payload, params):
 @route('anilist_upcoming_next_year/*')
 def ANILIST_UPCOMING_NEXT_YEAR_PAGES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_upcoming_next_year(int(payload)))
+
+
+@route('anilist_trending_last_season')
+def ANILIST_TRENDING_LAST_SEASON(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_trending_last_season())
+
+
+@route('anilist_trending_last_season/*')
+def ANILIST_TRENDING_LAST_SEASON_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_trending_last_season(int(payload)))
+
+
+@route('anilist_popular_last_season')
+def ANILIST_POPULAR_LAST_SEASON(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_popular_last_season())
+
+
+@route('anilist_popular_last_season/*')
+def ANILIST_POPULAR_LAST_SEASON_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_popular_last_season(int(payload)))
+
+
+@route('anilist_voted_last_season')
+def ANILIST_VOTED_LAST_SEASON(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted_last_season())
+
+
+@route('anilist_voted_last_season/*')
+def ANILIST_VOTED_LAST_SEASON_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted_last_season(int(payload)))
+
+
+@route('anilist_completed_last_season')
+def ANILIST_COMPLETED_LAST_SEASON(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_last_season())
+
+
+@route('anilist_completed_last_season/*')
+def ANILIST_COMPLETED_LAST_SEASON_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_last_season(int(payload)))
+
+
+@route('anilist_upcoming_last_season')
+def ANILIST_UPCOMING_LAST_SEASON(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_last_season())
+
+
+@route('anilist_upcoming_last_season/*')
+def ANILIST_UPCOMING_LAST_SEASON_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_last_season(int(payload)))
 
 
 @route('anilist_trending_this_season')
@@ -393,6 +654,16 @@ def ANILIST_COMPLETED_THIS_SEASON(payload, params):
 @route('anilist_completed_this_season/*')
 def ANILIST_COMPLETED_THIS_SEASON_PAGES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_completed_this_season(int(payload)))
+
+
+@route('anilist_upcoming_this_season')
+def ANILIST_UPCOMING_THIS_SEASON(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_this_season())
+
+
+@route('anilist_upcoming_this_season/*')
+def ANILIST_UPCOMING_THIS_SEASON_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_this_season(int(payload)))
 
 
 @route('anilist_upcoming_next_season')
@@ -455,6 +726,56 @@ def ANILIST_AIRING_ANIME_MOVIE_PAGES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_airing_anime_movie(int(payload)))
 
 
+@route('anilist_trending_last_year_movie')
+def ANILIST_TRENDING_LAST_YEAR_MOVIE(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_trending_last_year_movie())
+
+
+@route('anilist_trending_last_year_movie/*')
+def ANILIST_TRENDING_LAST_YEAR_MOVIE_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_trending_last_year_movie(int(payload)))
+
+
+@route('anilist_popular_last_year_movie')
+def ANILIST_POPULAR_LAST_YEAR_MOVIE(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_popular_last_year_movie())
+
+
+@route('anilist_popular_last_year_movie/*')
+def ANILIST_POPULAR_LAST_YEAR_MOVIE_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_popular_last_year_movie(int(payload)))
+
+
+@route('anilist_voted_last_year_movie')
+def ANILIST_VOTED_LAST_YEAR_MOVIE(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted_last_year_movie())
+
+
+@route('anilist_voted_last_year_movie/*')
+def ANILIST_VOTED_LAST_YEAR_MOVIE_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted_last_year_movie(int(payload)))
+
+
+@route('anilist_completed_last_year_movie')
+def ANILIST_COMPLETED_LAST_YEAR_MOVIE(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_last_year_movie())
+
+
+@route('anilist_completed_last_year_movie/*')
+def ANILIST_COMPLETED_LAST_YEAR_MOVIE_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_last_year_movie(int(payload)))
+
+
+@route('anilist_upcoming_last_year_movie')
+def ANILIST_UPCOMING_LAST_YEAR_MOVIE(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_last_year_movie())
+
+
+@route('anilist_upcoming_last_year_movie/*')
+def ANILIST_UPCOMING_LAST_YEAR_MOVIE_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_last_year_movie(int(payload)))
+
+
 @route('anilist_trending_this_year_movie')
 def ANILIST_TRENDING_THIS_YEAR_MOVIE(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_trending_this_year_movie())
@@ -495,6 +816,16 @@ def ANILIST_COMPLETED_THIS_YEAR_MOVIE_PAGES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_completed_this_year_movie(int(payload)))
 
 
+@route('anilist_upcoming_this_year_movie')
+def ANILIST_UPCOMING_THIS_YEAR_MOVIE(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_this_year_movie())
+
+
+@route('anilist_upcoming_this_year_movie/*')
+def ANILIST_UPCOMING_THIS_YEAR_MOVIE_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_this_year_movie(int(payload)))
+
+
 @route('anilist_upcoming_next_year_movie')
 def ANILIST_UPCOMING_NEXT_YEAR_MOVIE(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_upcoming_next_year_movie())
@@ -503,6 +834,56 @@ def ANILIST_UPCOMING_NEXT_YEAR_MOVIE(payload, params):
 @route('anilist_upcoming_next_year_movie/*')
 def ANILIST_UPCOMING_NEXT_YEAR_MOVIE_PAGES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_upcoming_next_year_movie(int(payload)))
+
+
+@route('anilist_trending_last_season_movie')
+def ANILIST_TRENDING_LAST_SEASON_MOVIE(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_trending_last_season_movie())
+
+
+@route('anilist_trending_last_season_movie/*')
+def ANILIST_TRENDING_LAST_SEASON_MOVIE_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_trending_last_season_movie(int(payload)))
+
+
+@route('anilist_popular_last_season_movie')
+def ANILIST_POPULAR_LAST_SEASON_MOVIE(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_popular_last_season_movie())
+
+
+@route('anilist_popular_last_season_movie/*')
+def ANILIST_POPULAR_LAST_SEASON_MOVIE_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_popular_last_season_movie(int(payload)))
+
+
+@route('anilist_voted_last_season_movie')
+def ANILIST_VOTED_LAST_SEASON_MOVIE(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted_last_season_movie())
+
+
+@route('anilist_voted_last_season_movie/*')
+def ANILIST_VOTED_LAST_SEASON_MOVIE_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted_last_season_movie(int(payload)))
+
+
+@route('anilist_completed_last_season_movie')
+def ANILIST_COMPLETED_LAST_SEASON_MOVIE(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_last_season_movie())
+
+
+@route('anilist_completed_last_season_movie/*')
+def ANILIST_COMPLETED_LAST_SEASON_MOVIE_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_last_season_movie(int(payload)))
+
+
+@route('anilist_upcoming_last_season_movie')
+def ANILIST_UPCOMING_LAST_SEASON_MOVIE(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_last_season_movie())
+
+
+@route('anilist_upcoming_last_season_movie/*')
+def ANILIST_UPCOMING_LAST_SEASON_MOVIE_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_last_season_movie(int(payload)))
 
 
 @route('anilist_trending_this_season_movie')
@@ -543,6 +924,16 @@ def ANILIST_COMPLETED_THIS_SEASON_MOVIE(payload, params):
 @route('anilist_completed_this_season_movie/*')
 def ANILIST_COMPLETED_THIS_SEASON_MOVIE_PAGES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_completed_this_season_movie(int(payload)))
+
+
+@route('anilist_upcoming_this_season_movie')
+def ANILIST_UPCOMING_THIS_SEASON_MOVIE(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_this_season_movie())
+
+
+@route('anilist_upcoming_this_season_movie/*')
+def ANILIST_UPCOMING_THIS_SEASON_MOVIE_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_this_season_movie(int(payload)))
 
 
 @route('anilist_upcoming_next_season_movie')
@@ -605,6 +996,56 @@ def ANILIST_AIRING_ANIME_TV_PAGES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_airing_anime_tv(int(payload)))
 
 
+@route('anilist_trending_last_year_tv')
+def ANILIST_TRENDING_LAST_YEAR_TV(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_trending_last_year_tv())
+
+
+@route('anilist_trending_last_year_tv/*')
+def ANILIST_TRENDING_LAST_YEAR_TV_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_trending_last_year_tv(int(payload)))
+
+
+@route('anilist_popular_last_year_tv')
+def ANILIST_POPULAR_LAST_YEAR_TV(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_popular_last_year_tv())
+
+
+@route('anilist_popular_last_year_tv/*')
+def ANILIST_POPULAR_LAST_YEAR_TV_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_popular_last_year_tv(int(payload)))
+
+
+@route('anilist_voted_last_year_tv')
+def ANILIST_VOTED_LAST_YEAR_TV(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted_last_year_tv())
+
+
+@route('anilist_voted_last_year_tv/*')
+def ANILIST_VOTED_LAST_YEAR_TV_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted_last_year_tv(int(payload)))
+
+
+@route('anilist_completed_last_year_tv')
+def ANILIST_COMPLETED_LAST_YEAR_TV(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_last_year_tv())
+
+
+@route('anilist_completed_last_year_tv/*')
+def ANILIST_COMPLETED_LAST_YEAR_TV_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_last_year_tv(int(payload)))
+
+
+@route('anilist_upcoming_last_year_tv')
+def ANILIST_UPCOMING_LAST_YEAR_TV(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_last_year_tv())
+
+
+@route('anilist_upcoming_last_year_tv/*')
+def ANILIST_UPCOMING_LAST_YEAR_TV_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_last_year_tv(int(payload)))
+
+
 @route('anilist_trending_this_year_tv')
 def ANILIST_TRENDING_THIS_YEAR_TV(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_trending_this_year_tv())
@@ -645,6 +1086,16 @@ def ANILIST_COMPLETED_THIS_YEAR_TV_PAGES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_completed_this_year_tv(int(payload)))
 
 
+@route('anilist_upcoming_this_year_tv')
+def ANILIST_UPCOMING_THIS_YEAR_TV(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_this_year_tv())
+
+
+@route('anilist_upcoming_this_year_tv/*')
+def ANILIST_UPCOMING_THIS_YEAR_TV_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_this_year_tv(int(payload)))
+
+
 @route('anilist_upcoming_next_year_tv')
 def ANILIST_UPCOMING_NEXT_YEAR_TV(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_upcoming_next_year_tv())
@@ -653,6 +1104,56 @@ def ANILIST_UPCOMING_NEXT_YEAR_TV(payload, params):
 @route('anilist_upcoming_next_year_tv/*')
 def ANILIST_UPCOMING_NEXT_YEAR_TV_PAGES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_upcoming_next_year_tv(int(payload)))
+
+
+@route('anilist_trending_last_season_tv')
+def ANILIST_TRENDING_LAST_SEASON_TV(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_trending_last_season_tv())
+
+
+@route('anilist_trending_last_season_tv/*')
+def ANILIST_TRENDING_LAST_SEASON_TV_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_trending_last_season_tv(int(payload)))
+
+
+@route('anilist_popular_last_season_tv')
+def ANILIST_POPULAR_LAST_SEASON_TV(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_popular_last_season_tv())
+
+
+@route('anilist_popular_last_season_tv/*')
+def ANILIST_POPULAR_LAST_SEASON_TV_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_popular_last_season_tv(int(payload)))
+
+
+@route('anilist_voted_last_season_tv')
+def ANILIST_VOTED_LAST_SEASON_TV(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted_last_season_tv())
+
+
+@route('anilist_voted_last_season_tv/*')
+def ANILIST_VOTED_LAST_SEASON_TV_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted_last_season_tv(int(payload)))
+
+
+@route('anilist_completed_last_season_tv')
+def ANILIST_COMPLETED_LAST_SEASON_TV(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_last_season_tv())
+
+
+@route('anilist_completed_last_season_tv/*')
+def ANILIST_COMPLETED_LAST_SEASON_TV_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_last_season_tv(int(payload)))
+
+
+@route('anilist_upcoming_last_season_tv')
+def ANILIST_UPCOMING_LAST_SEASON_TV(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_last_season_tv())
+
+
+@route('anilist_upcoming_last_season_tv/*')
+def ANILIST_UPCOMING_LAST_SEASON_TV_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_last_season_tv(int(payload)))
 
 
 @route('anilist_trending_this_season_tv')
@@ -693,6 +1194,16 @@ def ANILIST_COMPLETED_THIS_SEASON_TV(payload, params):
 @route('anilist_completed_this_season_tv/*')
 def ANILIST_COMPLETED_THIS_SEASON_TV_PAGES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_completed_this_season_tv(int(payload)))
+
+
+@route('anilist_upcoming_this_season_tv')
+def ANILIST_UPCOMING_THIS_SEASON_TV(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_this_season_tv())
+
+
+@route('anilist_upcoming_this_season_tv/*')
+def ANILIST_UPCOMING_THIS_SEASON_TV_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_this_season_tv(int(payload)))
 
 
 @route('anilist_upcoming_next_season_tv')
@@ -745,6 +1256,256 @@ def ANILIST_TOP_100_ANIME_TV_PAGES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_top_100_anime_tv(int(payload)))
 
 
+@route('anilist_trending_last_year_trending_trending')
+def ANILIST_TRENDING_LAST_YEAR_TRENDING_TRENDING(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_trending_last_year_trending_trending())
+
+
+@route('anilist_trending_last_year_trending_trending/*')
+def ANILIST_TRENDING_LAST_YEAR_TRENDING_TRENDING_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_trending_last_year_trending_trending(int(payload)))
+
+
+@route('anilist_trending_this_year_trending_trending')
+def ANILIST_TRENDING_THIS_YEAR_TRENDING_TRENDING(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_trending_this_year_trending_trending())
+
+
+@route('anilist_trending_this_year_trending_trending/*')
+def ANILIST_TRENDING_THIS_YEAR_TRENDING_TRENDING_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_trending_this_year_trending_trending(int(payload)))
+
+
+@route('anilist_trending_last_season_trending')
+def ANILIST_TRENDING_LAST_SEASON_TRENDING(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_trending_last_season_trending())
+
+
+@route('anilist_trending_last_season_trending/*')
+def ANILIST_TRENDING_LAST_SEASON_TRENDING_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_trending_last_season_trending(int(payload)))
+
+
+@route('anilist_trending_this_season_trending')
+def ANILIST_TRENDING_THIS_SEASON_TRENDING(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_trending_this_season_trending())
+
+
+@route('anilist_trending_this_season_trending/*')
+def ANILIST_TRENDING_THIS_SEASON_TRENDING_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_trending_this_season_trending(int(payload)))
+
+
+@route('anilist_all_time_trending_trending')
+def ANILIST_ALL_TIME_TRENDING_TRENDING(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_all_time_trending_trending())
+
+
+@route('anilist_all_time_trending_trending/*')
+def ANILIST_ALL_TIME_TRENDING_TRENDING_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_all_time_trending_trending(int(payload)))
+
+
+@route('anilist_popular_last_year_popular')
+def ANILIST_POPULAR_LAST_YEAR_POPULAR(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_popular_last_year_popular())
+
+
+@route('anilist_popular_last_year_popular/*')
+def ANILIST_POPULAR_LAST_YEAR_POPULAR_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_popular_last_year_popular(int(payload)))
+
+
+@route('anilist_popular_this_year_popular')
+def ANILIST_POPULAR_THIS_YEAR_POPULAR(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_popular_this_year_popular())
+
+
+@route('anilist_popular_this_year_popular/*')
+def ANILIST_POPULAR_THIS_YEAR_POPULAR_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_popular_this_year_popular(int(payload)))
+
+
+@route('anilist_popular_last_season_popular')
+def ANILIST_POPULAR_LAST_SEASON_POPULAR(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_popular_last_season_popular())
+
+
+@route('anilist_popular_last_season_popular/*')
+def ANILIST_POPULAR_LAST_SEASON_POPULAR_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_popular_last_season_popular(int(payload)))
+
+
+@route('anilist_popular_this_season_popular')
+def ANILIST_POPULAR_THIS_SEASON_POPULAR(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_popular_this_season_popular())
+
+
+@route('anilist_popular_this_season_popular/*')
+def ANILIST_POPULAR_THIS_SEASON_POPULAR_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_popular_this_season_popular(int(payload)))
+
+
+@route('anilist_all_time_popular_popular')
+def ANILIST_ALL_TIME_POPULAR_POPULAR(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_all_time_popular_popular())
+
+
+@route('anilist_all_time_popular_popular/*')
+def ANILIST_ALL_TIME_POPULAR_POPULAR_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_all_time_popular_popular(int(payload)))
+
+
+@route('anilist_voted_last_year_voted')
+def ANILIST_VOTED_LAST_YEAR_VOTED(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted_last_year_voted())
+
+
+@route('anilist_voted_last_year_voted/*')
+def ANILIST_VOTED_LAST_YEAR_VOTED_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted_last_year_voted(int(payload)))
+
+
+@route('anilist_voted_this_year_voted')
+def ANILIST_VOTED_THIS_YEAR_VOTED(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted_this_year_voted())
+
+
+@route('anilist_voted_this_year_voted/*')
+def ANILIST_VOTED_THIS_YEAR_VOTED_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted_this_year_voted(int(payload)))
+
+
+@route('anilist_voted_last_season_voted')
+def ANILIST_VOTED_LAST_SEASON_VOTED(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted_last_season_voted())
+
+
+@route('anilist_voted_last_season_voted/*')
+def ANILIST_VOTED_LAST_SEASON_VOTED_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted_last_season_voted(int(payload)))
+
+
+@route('anilist_voted_this_season_voted')
+def ANILIST_VOTED_THIS_SEASON_VOTED(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted_this_season_voted())
+
+
+@route('anilist_voted_this_season_voted/*')
+def ANILIST_VOTED_THIS_SEASON_VOTED_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_voted_this_season_voted(int(payload)))
+
+
+@route('anilist_all_time_voted_voted')
+def ANILIST_ALL_TIME_VOTED_VOTED (payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_all_time_voted_voted ())
+
+
+@route('anilist_all_time_voted_voted/*')
+def ANILIST_ALL_TIME_VOTED_VOTED_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_all_time_voted_voted (int(payload)))
+
+
+@route('anilist_completed_last_year_completed')
+def ANILIST_COMPLETED_LAST_YEAR_COMPLETED(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_last_year_completed())
+
+
+@route('anilist_completed_last_year_completed/*')
+def ANILIST_COMPLETED_LAST_YEAR_COMPLETED_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_last_year_completed(int(payload)))
+
+
+@route('anilist_completed_this_year_completed')
+def ANILIST_COMPLETED_THIS_YEAR_COMPLETED(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_this_year_completed())
+
+
+@route('anilist_completed_this_year_completed/*')
+def ANILIST_COMPLETED_THIS_YEAR_COMPLETED_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_this_year_completed(int(payload)))
+
+
+@route('anilist_completed_last_season_completed')
+def ANILIST_COMPLETED_LAST_SEASON_COMPLETED(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_last_season_completed())
+
+
+@route('anilist_completed_last_season_completed/*')
+def ANILIST_COMPLETED_LAST_SEASON_COMPLETED_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_last_season_completed(int(payload)))
+
+
+@route('anilist_completed_this_season_completed')
+def ANILIST_COMPLETED_THIS_SEASON_COMPLETED(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_this_season_completed())
+
+
+@route('anilist_completed_this_season_completed/*')
+def ANILIST_COMPLETED_THIS_SEASON_COMPLETED_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_completed_this_season_completed(int(payload)))
+
+
+@route('anilist_upcoming_last_year_upcoming')
+def ANILIST_UPCOMING_LAST_YEAR_UPCOMING(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_last_year_upcoming())
+
+
+@route('anilist_upcoming_last_year_upcoming/*')
+def ANILIST_UPCOMING_LAST_YEAR_UPCOMING_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_last_year_upcoming(int(payload)))
+
+
+@route('anilist_upcoming_this_year_upcoming')
+def ANILIST_UPCOMING_THIS_YEAR_UPCOMING(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_this_year_upcoming())
+
+
+@route('anilist_upcoming_this_year_upcoming/*')
+def ANILIST_UPCOMING_THIS_YEAR_UPCOMING_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_this_year_upcoming(int(payload)))
+
+
+@route('anilist_upcoming_next_year_upcoming')
+def ANILIST_UPCOMING_NEXT_YEAR_UPCOMING(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_next_year_upcoming())
+
+
+@route('anilist_upcoming_next_year_upcoming/*')
+def ANILIST_UPCOMING_NEXT_YEAR_UPCOMING_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_next_year_upcoming(int(payload)))
+
+
+@route('anilist_upcoming_last_season_upcoming')
+def ANILIST_UPCOMING_LAST_SEASON_UPCOMING(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_last_season_upcoming())
+
+
+@route('anilist_upcoming_last_season_upcoming/*')
+def ANILIST_UPCOMING_LAST_SEASON_UPCOMING_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_last_season_upcoming(int(payload)))
+
+
+@route('anilist_upcoming_this_season_upcoming')
+def ANILIST_UPCOMING_THIS_SEASON_UPCOMING(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_this_season_upcoming())
+
+
+@route('anilist_upcoming_this_season_upcoming/*')
+def ANILIST_UPCOMING_THIS_SEASON_UPCOMING_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_this_season_upcoming(int(payload)))
+
+
+@route('anilist_upcoming_next_season_upcomin')
+def ANILIST_UPCOMING_NEXT_SEASON_UPCOMIN(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_next_season_upcomin())
+
+
+@route('anilist_upcoming_next_season_upcomin/*')
+def ANILIST_UPCOMING_NEXT_SEASON_UPCOMIN_PAGES(payload, params):
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_next_season_upcomin(int(payload)))
+
+
 @route('anilist_genres')
 def ANILIST_GENRES(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_genres(genre_dialog))
@@ -791,7 +1552,7 @@ def SEARCH(payload, params):
     if isinstance(action_args, dict):
         query = action_args.get('query')
     else:
-        query = control.keyboard(control.lang(50004))
+        query = control.keyboard(control.lang(50011))
     if not query:
         return False
 
