@@ -203,6 +203,8 @@
 		<setting id="anilist_all_time_popular" label="50036" type="bool" default="false"/>
 		<setting id="anilist_all_time_voted" label="50037" type="bool" default="false"/>
 		<setting id="anilist_top_100_anime" label="50009" type="bool" default="true"/>
+		<setting id="anilist_genres" label="50010" type="bool" default="true" visible="false"/>/>
+		<setting id="search_history" label="50011" type="bool" default="true" visible="false"/>/>
 		<setting id="tools" label="50012" type="bool" default="true"/>
 		
 		<!-- Trending Items -->	
