@@ -1,3 +1,6 @@
+Changelog 0.3.2 [20230124]:
+- Fixed Episode Airedates in Next Up
+
 Changelog 0.3.1 [20230123]:
 - Remove all incorrect use of tabs
 - Fix missing icons
