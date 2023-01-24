@@ -238,7 +238,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
             base_title = res['node'].get('alternative_titles').get('en') or base_title
         title = '%s - %s/%s' % (base_title, next_up, episode_count)
         poster = image = res['node']['main_picture'].get('large', res['node']['main_picture']['medium'])
-        plot = None
+        plot = aired = None
 
         anilist_id, next_up_meta = self._get_next_up_meta(mal_id, int(progress))
         if next_up_meta:
@@ -248,20 +248,18 @@ class MyAnimeListWLF(WatchlistFlavorBase):
             if next_up_meta.get('image'):
                 image = next_up_meta.get('image')
             plot = next_up_meta.get('plot')
+            aired = next_up_meta.get('aired')
 
         info = {}
 
         info['episode'] = next_up
-
         info['title'] = title
-
         info['tvshowtitle'] = res['node']['title']
-
         info['duration'] = res['node']['average_episode_duration']
-
         info['plot'] = plot
-
         info['mediatype'] = 'episode'
+        info['aired'] = aired
+        
 
         base = {
             "name": title,

@@ -346,7 +346,7 @@ class AniListWLF(WatchlistFlavorBase):
         base_title = res['title'].get(self._title_lang) or res['title'].get('userPreferred')
         title = '%s - %s/%s' % (base_title, next_up, episode_count)
         poster = image = res['coverImage']['extraLarge']
-        plot = None
+        plot = aired = None
 
         if episode_count > 0 and next_up > episode_count:
             return None
@@ -362,6 +362,7 @@ class AniListWLF(WatchlistFlavorBase):
             if next_up_meta.get('image'):
                 image = next_up_meta.get('image')
             plot = next_up_meta.get('plot')
+            aired = next_up_meta.get('aired')
 
         info = {}
 
@@ -371,14 +372,11 @@ class AniListWLF(WatchlistFlavorBase):
             pass
 
         info['episode'] = next_up
-
         info['title'] = title
-
         info['tvshowtitle'] = res['title']['userPreferred']
-
         info['plot'] = plot
-
         info['mediatype'] = 'episode'
+        info['aired'] = aired
 
         base = {
             "name": title,
