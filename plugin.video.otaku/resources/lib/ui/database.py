@@ -411,7 +411,7 @@ def _update_season(show_id, season):
         control.try_release_lock(control.anilistSyncDB_lock)
 
 
-def _update_episode(show_id, season=0, number=0, number_abs=0, update_time='', kodi_meta={}):
+def _update_episode(show_id, season=0, number=0, number_abs=0, update_time='', kodi_meta={}, air_date=''):
     control.anilistSyncDB_lock.acquire()
     cursor = _get_cursor()
     if isinstance(kodi_meta, dict):
@@ -422,7 +422,7 @@ def _update_episode(show_id, season=0, number=0, number_abs=0, update_time='', k
             "anilist_id, season, kodi_meta, last_updated, number, number_abs, air_date)"
             "VALUES "
             "(?, ?, ?, ?, ?, ?, ?)",
-            (show_id, season, kodi_meta, update_time, number, number_abs, ''))
+            (show_id, season, kodi_meta, update_time, number, number_abs, air_date))
         cursor.connection.commit()
         cursor.close()
 

@@ -4,9 +4,6 @@ import pickle
 from functools import partial
 from resources.lib.ui import client, database, utils
 
-from functools import partial
-from resources.lib.ui import client, database, utils
-
 
 class CONSUMETAPI:
     def __init__(self):
@@ -40,21 +37,23 @@ class CONSUMETAPI:
                 info['playcount'] = 1
         except:
             pass
-        if res.get('airDate'):
-            info['aired'] = res.get('airDate')[:10]
+        info['aired'] = res.get('airDate')[:10] if res.get('airDate') else ''
 
         info['tvshowtitle'] = pickle.loads(database.get_show(show_id)['kodi_meta'])['title_userPreferred']
         info['mediatype'] = 'episode'
         parsed = utils.allocate_item(name, "play/" + str(url), False, image, info, fanart, poster)
-        database._update_episode(show_id, number=res['number'], update_time=update_time, kodi_meta=parsed)
+        database._update_episode(show_id, number=res['number'], update_time=update_time, kodi_meta=parsed, air_date=info['aired'])
         return parsed
 
     def _process_episode_view(self, anilist_id, show_meta, poster, fanart, eps_watched):
         from datetime import date
         update_time = date.today().isoformat()
-        result = self.get_anilist_meta(anilist_id).get('episodes')
-        mapfunc = partial(self._parse_episode_view, show_id=anilist_id, show_meta=show_meta, poster=poster, fanart=fanart, eps_watched=eps_watched, update_time=update_time)
-        all_results = list(map(mapfunc, result))
+        all_results = []
+        result = self.get_anilist_meta(anilist_id)
+        if result:
+            result = result.get('episodes')
+            mapfunc = partial(self._parse_episode_view, show_id=anilist_id, show_meta=show_meta, poster=poster, fanart=fanart, eps_watched=eps_watched, update_time=update_time)
+            all_results = list(map(mapfunc, result))
         return all_results
 
     def _parse_episodes(self, res, show_id, eps_watched):

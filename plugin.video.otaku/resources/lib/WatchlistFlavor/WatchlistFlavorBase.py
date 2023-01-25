@@ -114,7 +114,7 @@ class WatchlistFlavorBase(object):
                     next_up_meta['title'] = episode_meta['info']['title']
                     next_up_meta['image'] = episode_meta['image']['thumb']
                     next_up_meta['plot'] = episode_meta['info']['plot']
-                    next_up_meta['aired'] = episode_meta['info']['aired']
+                    next_up_meta['aired'] = episodes[next_up]['air_date']
                 except:
                     pass
 
