@@ -52,7 +52,7 @@ class sources(BrowserBase):
         elif qual < 1081:
             quality = '1080p'
         else:
-            qual = '4K'
+            quality = '4K'
 
         source = {
             'release_title': title,

@@ -1,7 +1,7 @@
 import threading
 import time
 
-from resources.lib.pages import animixplay, debrid_cloudfiles, gogoanime, nyaa, animepahe
+from resources.lib.pages import animixplay, debrid_cloudfiles, gogoanime, nyaa, animepahe, zoro
 from resources.lib.ui import control
 from resources.lib.windows.get_sources_window import \
     GetSources as DisplayWindow
@@ -40,7 +40,7 @@ class Sources(DisplayWindow):
         self.embedSources = []
         self.hosterSources = []
         self.cloud_files = []
-        self.remainingProviders = ['nyaa', 'gogo', 'animix', 'animepahe']
+        self.remainingProviders = ['nyaa', 'gogo', 'animix', 'animepahe', 'zoro']
         self.allTorrents = {}
         self.allTorrents_len = 0
         self.hosterDomains = {}
@@ -68,6 +68,8 @@ class Sources(DisplayWindow):
         self.nyaaSources = []
         self.gogoSources = []
         self.animixplaySources = []
+        self.animepaheSources = []
+        self.zoroSources = []
         self.threads = []
 
     def getSources(self, args):
@@ -104,6 +106,12 @@ class Sources(DisplayWindow):
                 threading.Thread(target=self.animepahe_worker, args=(anilist_id, episode, get_backup, rescrape,)))
         else:
             self.remainingProviders.remove('animepahe')
+
+        if control.getSetting('provider.zoro') == 'true':
+            self.threads.append(
+                threading.Thread(target=self.zoro_worker, args=(anilist_id, episode, get_backup, rescrape,)))
+        else:
+            self.remainingProviders.remove('zoro')
 
         self.threads.append(
             threading.Thread(target=self.user_cloud_inspection, args=(query, anilist_id, episode, media_type, rescrape)))
@@ -178,6 +186,12 @@ class Sources(DisplayWindow):
             self.animepaheSources = animepahe.sources().get_sources(anilist_id, episode, get_backup)
             self.embedSources += self.animepaheSources
         self.remainingProviders.remove('animepahe')
+
+    def zoro_worker(self, anilist_id, episode, get_backup, rescrape):
+        if not rescrape:
+            self.zoroSources = zoro.sources().get_sources(anilist_id, episode, get_backup)
+            self.embedSources += self.zoroSources
+        self.remainingProviders.remove('zoro')
 
     def user_cloud_inspection(self, query, anilist_id, episode, media_type, rescrape):
         self.remainingProviders.append('Cloud Inspection')
