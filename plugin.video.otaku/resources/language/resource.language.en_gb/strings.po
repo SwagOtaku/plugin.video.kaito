@@ -660,19 +660,19 @@ msgid "Country"
 msgstr ""
 
 msgctxt "#40420"
-msgid "JP"
+msgid "Japan"
 msgstr ""
 
 msgctxt "#40421"
-msgid "KR"
+msgid "South Korea"
 msgstr ""
 
 msgctxt "#40422"
-msgid "CN"
+msgid "China"
 msgstr ""
 
 msgctxt "#40423"
-msgid "TW"
+msgid "Taiwan"
 msgstr ""
 
 ######MAIN Category DIRECTORY#######

@@ -19,7 +19,7 @@
 		<setting id="contentformat.menu" type="labelenum" subsetting="true" label="40392" lvalues="40393|40394|40395|40396|40397|40398|40399" default="40393" visible="eq(-1,true)"/>
 		<setting id="sep"/>
 		<setting id="contentorigin.bool" label="40418" type="bool" default="false"/>
-		<setting id="contentorigin.menu" type="labelenum" subsetting="true" label="40419" lvalues="40420|40421|40422|40423" default="40420" visible="eq(-1,true)"/>
+		<setting id="contentorigin.menu" type="enum" subsetting="true" label="40419" lvalues="40420|40421|40422|40423" default="0" visible="eq(-1,true)"/>
 		<setting id="sep"/>
 		<setting id="general.icons" type="enum" label="40388" lvalues="40389|40390" default="0"/>
 		<!--
