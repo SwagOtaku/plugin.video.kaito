@@ -647,6 +647,10 @@ msgctxt "#40416"
 msgid "Maintenance"
 msgstr ""
 
+msgctxt "#40417"
+msgid "Hide Sub Sources"
+msgstr ""
+
 ######MAIN Category DIRECTORY#######
 msgctxt "#50000"
 msgid "Airing Anime Calendar"
