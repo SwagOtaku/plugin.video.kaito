@@ -1,3 +1,6 @@
+Changelog 0.3.3 [20230125]:
+- Populate episodes table in databse with air_dates 
+
 Changelog 0.3.2 [20230124]:
 - Fixed Episode Airedates in Next Up
 
