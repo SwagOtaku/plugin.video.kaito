@@ -25,6 +25,15 @@ class AniListBrowser():
         if filterEnable:
             self.format_in_type = control.getSetting('contentformat.menu')
 
+        elif title_key:
+            self._TITLE_LANG = self._title_lang(title_key)
+        else:
+            self._TITLE_LANG = "userPreferred"
+        self.countryOfOrigin_type = ''
+        filterEnable = control.getSetting('contentorigin.bool') == "true"
+        if filterEnable:
+            self.countryOfOrigin_type = control.getSetting('contentorigin.menu')
+
     def _title_lang(self, title_key):
         title_lang = {
             "40370": "userPreferred",
@@ -74,6 +83,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         airing = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(airing, "anilist_airing_anime/%d", page)
 
@@ -88,6 +100,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_last_year/%d", page)
@@ -104,6 +119,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_last_year/%d", page)
 
@@ -118,6 +136,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_last_year/%d", page)
@@ -135,6 +156,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         completed = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_last_year/%d", page)
 
@@ -149,6 +173,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_last_year/%d", page)
@@ -166,6 +193,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_this_year/%d", page)
 
@@ -181,6 +211,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_this_year/%d", page)
@@ -198,6 +231,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_this_year/%d", page)
 
@@ -214,6 +250,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         completed = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_this_year/%d", page)
 
@@ -229,6 +268,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_this_year/%d", page)
 
@@ -243,6 +285,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_next_year/%d", page)
@@ -260,6 +305,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_last_season/%d", page)
 
@@ -276,6 +324,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_last_season/%d", page)
 
@@ -291,6 +342,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_last_season/%d", page)
@@ -309,6 +363,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         completed = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_last_season/%d", page)
 
@@ -324,6 +381,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_last_season/%d", page)
@@ -341,6 +401,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_this_season/%d", page)
 
@@ -357,6 +420,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_this_season/%d", page)
 
@@ -372,6 +438,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_this_season/%d", page)
@@ -390,6 +459,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         completed = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_this_season/%d", page)
 
@@ -405,6 +477,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_this_season/%d", page)
@@ -422,6 +497,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_next_season/%d", page)
 
@@ -435,6 +513,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_all_time_trending/%d", page)
@@ -450,6 +531,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_all_time_popular/%d", page)
 
@@ -464,6 +548,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_all_time_voted/%d", page)
 
@@ -477,6 +564,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         top_100_anime = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(top_100_anime, "anilist_top_100_anime/%d", page)
@@ -496,6 +586,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         airing = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(airing, "anilist_airing_anime_movie/%d", page)
 
@@ -511,6 +604,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_last_year_movie/%d", page)
@@ -528,6 +624,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_last_year_movie/%d", page)
 
@@ -543,6 +642,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_last_year_movie/%d", page)
@@ -561,6 +663,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         completed = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_last_year_movie/%d", page)
 
@@ -576,6 +681,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_last_year_movie/%d", page)
@@ -594,6 +702,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_this_year_movie/%d", page)
 
@@ -610,6 +721,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_this_year_movie/%d", page)
@@ -628,6 +742,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_this_year_movie/%d", page)
 
@@ -645,6 +762,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         completed = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_this_year_movie/%d", page)
 
@@ -661,6 +781,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_this_year_movie/%d", page)
 
@@ -676,6 +799,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_next_year_movie/%d", page)
@@ -694,6 +820,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_last_season_movie/%d", page)
 
@@ -711,6 +840,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_last_season_movie/%d", page)
 
@@ -727,6 +859,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_last_season_movie/%d", page)
@@ -746,6 +881,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         completed = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_last_season_movie/%d", page)
 
@@ -762,6 +900,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_last_season_movie/%d", page)
@@ -780,6 +921,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_this_season_movie/%d", page)
 
@@ -797,6 +941,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_this_season_movie/%d", page)
 
@@ -813,6 +960,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_this_season_movie/%d", page)
@@ -832,6 +982,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         completed = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_this_season_movie/%d", page)
 
@@ -848,6 +1001,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_this_season_movie/%d", page)
@@ -866,6 +1022,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_next_season_movie/%d", page)
 
@@ -880,6 +1039,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_all_time_trending_movie/%d", page)
@@ -896,6 +1058,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_all_time_popular_movie/%d", page)
 
@@ -911,6 +1076,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_all_time_voted_movie/%d", page)
 
@@ -925,6 +1093,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         top_100_anime = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(top_100_anime, "anilist_top_100_anime_movie/%d", page)
@@ -944,6 +1115,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         airing = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(airing, "anilist_airing_anime_tv/%d", page)
 
@@ -959,6 +1133,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_last_year_tv/%d", page)
@@ -976,6 +1153,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_last_year_tv/%d", page)
 
@@ -991,6 +1171,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_last_year_tv/%d", page)
@@ -1009,6 +1192,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         completed = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_last_year_tv/%d", page)
 
@@ -1024,6 +1210,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_last_year_tv/%d", page)
@@ -1042,6 +1231,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_this_year_tv/%d", page)
 
@@ -1058,6 +1250,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_this_year_tv/%d", page)
@@ -1076,6 +1271,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_this_year_tv/%d", page)
 
@@ -1093,6 +1291,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         completed = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_this_year_tv/%d", page)
 
@@ -1109,6 +1310,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_this_year_tv/%d", page)
 
@@ -1124,6 +1328,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_next_year_tv/%d", page)
@@ -1142,6 +1349,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_last_season_tv/%d", page)
 
@@ -1159,6 +1369,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_last_season_tv/%d", page)
 
@@ -1175,6 +1388,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_last_season_tv/%d", page)
@@ -1194,6 +1410,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         completed = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_last_season_tv/%d", page)
 
@@ -1210,6 +1429,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_last_season_tv/%d", page)
@@ -1228,6 +1450,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_this_season_tv/%d", page)
 
@@ -1245,6 +1470,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_this_season_tv/%d", page)
 
@@ -1261,6 +1489,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_this_season_tv/%d", page)
@@ -1280,6 +1511,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         completed = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_this_season_tv/%d", page)
 
@@ -1296,6 +1530,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_this_season_tv/%d", page)
@@ -1314,6 +1551,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_next_season_tv/%d", page)
 
@@ -1328,6 +1568,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_all_time_trending_tv/%d", page)
@@ -1344,6 +1587,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_all_time_popular_tv/%d", page)
 
@@ -1358,6 +1604,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_all_time_voted_tv/%d", page)
@@ -1374,6 +1623,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         top_100_anime = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(top_100_anime, "anilist_top_100_anime_tv/%d", page)
 
@@ -1388,6 +1640,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_last_year_trending_trending/%d", page)
@@ -1405,6 +1660,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_this_year_trending_trending/%d", page)
 
@@ -1420,6 +1678,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_last_season_trending/%d", page)
@@ -1437,6 +1698,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_this_season_trending/%d", page)
 
@@ -1450,6 +1714,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         trending = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(trending, "anilist_all_time_trending_trending/%d", page)
@@ -1465,6 +1732,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_last_year_popular/%d", page)
@@ -1482,6 +1752,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_this_year_popular/%d", page)
 
@@ -1497,6 +1770,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_last_season_popular/%d", page)
@@ -1514,6 +1790,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_this_season_popular/%d", page)
 
@@ -1527,6 +1806,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         popular = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(popular, "anilist_all_time_popular_popular/%d", page)
@@ -1542,6 +1824,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_last_year_voted/%d", page)
@@ -1559,6 +1844,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_this_year_voted/%d", page)
 
@@ -1574,6 +1862,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_last_season_voted/%d", page)
@@ -1591,6 +1882,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_this_season_voted/%d", page)
 
@@ -1604,6 +1898,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         voted = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(voted, "anilist_all_time_voted_voted /%d", page)
@@ -1621,6 +1918,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         completed = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_last_year_completed/%d", page)
 
@@ -1636,6 +1936,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         completed = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_this_year_completed/%d", page)
@@ -1654,6 +1957,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         completed = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_last_season_completed/%d", page)
 
@@ -1671,6 +1977,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         completed = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_this_season_completed/%d", page)
 
@@ -1685,6 +1994,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_last_year_upcoming/%d", page)
@@ -1701,6 +2013,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_this_year_upcoming/%d", page)
 
@@ -1715,6 +2030,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_next_year_upcoming/%d", page)
@@ -1732,6 +2050,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_last_season_upcoming/%d", page)
 
@@ -1748,6 +2069,9 @@ class AniListBrowser():
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
 
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
+
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_this_season_upcoming/%d", page)
 
@@ -1763,6 +2087,9 @@ class AniListBrowser():
 
         if self.format_in_type:
             variables['format'] = [self.format_in_type.upper()]
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = [self.countryOfOrigin_type.upper()]
 
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_next_season_upcoming/%d", page)
