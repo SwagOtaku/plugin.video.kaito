@@ -302,6 +302,9 @@ class Sources(DisplayWindow):
         if control.getSetting('general.hidedub') == 'true':
             sortedList = [i for i in sortedList if i['lang'] != 2]
 
+        if control.getSetting('general.hidesub') == 'true':
+            sortedList = [i for i in sortedList if i['lang'] != 0]
+
         return sortedList
 
     def colorNumber(self, number):
