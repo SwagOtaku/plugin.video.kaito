@@ -124,25 +124,26 @@ class OtakuBrowser(BrowserBase):
             show = AniListBrowser().get_anilist(anilist_id)
 
         show_meta = database.get_show_meta(anilist_id)
-        if not show_meta:
-            kodi_meta = pickle.loads(show['kodi_meta'])
-            name = kodi_meta['ename'] or kodi_meta['name']
-            mtype = 'movie' if kodi_meta.get('format') == 'MOVIE' else 'tv'
-            trakt_id = trakt.TRAKTAPI().get_trakt_id(name, mtype=mtype)
-            if trakt_id:
-                database.add_meta_ids(anilist_id, trakt_id)
-        else:
-            trakt_id = pickle.loads(show_meta.get('meta_ids'))
+        # if not show_meta:
+        #     kodi_meta = pickle.loads(show['kodi_meta'])
+        #     name = kodi_meta['ename'] or kodi_meta['name']
+        #     mtype = 'movie' if kodi_meta.get('format') == 'MOVIE' else 'tv'
+        #     trakt_id = trakt.TRAKTAPI().get_trakt_id(name, mtype=mtype)
+        #     if trakt_id:
+        #         database.add_meta_ids(anilist_id, trakt_id)
+        # else:
+        #     trakt_id = pickle.loads(show_meta.get('meta_ids'))
 
-        kodi_meta = pickle.loads(show.get('kodi_meta'))
+        # kodi_meta = pickle.loads(show.get('kodi_meta'))
         # title = kodi_meta.get('ename') or kodi_meta.get('name')
         # p = re.search(r'(?:part|cour)\s*\d', title, re.I)
         # if not trakt_id or p:
-        if not trakt_id:
+        # if not trakt_id:
+        if not show_meta:
             return self.get_anime_simkl(anilist_id, filter_lang)
 
         # return self.get_anime_trakt(anilist_id, filter_lang=filter_lang)
-        return consumet.CONSUMETAPI().get_episodes(anilist_id, filter_lang)  # (anilist_id, filter_lang=filter_lang)
+        return consumet.CONSUMETAPI().get_episodes(anilist_id, filter_lang=filter_lang)
 
     def get_episodeList(self, show_id, pass_idx, filter_lang=None, rescrape=False):
         show = database.get_show(show_id)

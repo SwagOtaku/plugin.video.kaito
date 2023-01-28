@@ -1,5 +1,7 @@
 import json
 import pickle
+import re
+import six
 
 from functools import partial
 from resources.lib.ui import client, database, utils
@@ -11,19 +13,22 @@ class CONSUMETAPI:
         self.episodesUrl = 'meta/anilist/episodes/{0}?provider={1}'
         self.streamUrl = 'anime/{0}/watch/{1}'
         self.streamUrl2 = 'anime/{0}/watch?episodeId={1}'
+        self.synurl = 'https://find-my-anime.dtimur.de/api?id={0}&provider=Anilist'
 
     def _json_request(self, url):
-        url = self.baseUrl + url
+        if not url.startswith('http'):
+            url = self.baseUrl + url
         response = database.get(
             client.request,
             4,
-            url
+            url,
+            error=True
         )
         if response:
             response = json.loads(response)
         return response
 
-    def _parse_episode_view(self, res, show_id, show_meta, poster, fanart, eps_watched, update_time):
+    def _parse_episode_view(self, res, show_id, show_meta, season, poster, fanart, eps_watched, update_time):
         url = "%s/%s/" % (show_id, res['number'])
         name = 'Ep. %d (%s)' % (res['number'], res.get('title', ''))
         image = res.get('image')
@@ -31,7 +36,7 @@ class CONSUMETAPI:
         info = {}
         info['plot'] = res.get('description', '')
         info['title'] = res.get('title', '')
-        # info['season'] = int(season)
+        info['season'] = int(season)
         info['episode'] = res['number']
         try:
             if int(eps_watched) >= res['number']:
@@ -43,8 +48,43 @@ class CONSUMETAPI:
         info['tvshowtitle'] = pickle.loads(database.get_show(show_id)['kodi_meta'])['title_userPreferred']
         info['mediatype'] = 'episode'
         parsed = utils.allocate_item(name, "play/" + str(url), False, image, info, fanart, poster)
-        database._update_episode(show_id, number=res['number'], update_time=update_time, kodi_meta=parsed, air_date=info['aired'])
+        database._update_episode(show_id, season=season, number=res['number'], update_time=update_time, kodi_meta=parsed, air_date=info['aired'])
         return parsed
+
+    def _get_season(self, res):
+        regexes = [r'season\s(\d+)', r'\s(\d+)st\sseason\s', r'\s(\d+)nd\sseason\s',
+                   r'\s(\d+)rd\sseason\s', r'\s(\d+)th\sseason\s']
+        s_ids = []
+        for regex in regexes:
+            if isinstance(res.get('title'), dict):
+                s_ids += [re.findall(regex, name, re.IGNORECASE) for lang, name in six.iteritems(res.get('title'))]
+            else:
+                s_ids += [re.findall(regex, name, re.IGNORECASE) for name in res.get('title')]
+            s_ids += [re.findall(regex, name, re.IGNORECASE) for name in res.get('synonyms')]
+        s_ids = [s[0] for s in s_ids if s]
+        if not s_ids:
+            regex = r'\s(\d+)$'
+            if isinstance(res.get('title'), dict):
+                cour = False
+                for lang, name in six.iteritems(res.get('title')):
+                    if ' part ' in name.lower() or ' cour ' in name.lower():
+                        cour = True
+                        break
+                if not cour:
+                    s_ids += [re.findall(regex, name, re.IGNORECASE) for lang, name in six.iteritems(res.get('title'))]
+                    s_ids += [re.findall(regex, name, re.IGNORECASE) for name in res.get('synonyms')]
+            else:
+                cour = False
+                for name in res.get('title'):
+                    if ' part ' in name.lower() or ' cour ' in name.lower():
+                        cour = True
+                        break
+                if not cour:
+                    s_ids += [re.findall(regex, name, re.IGNORECASE) for name in res.get('title')]
+                    s_ids += [re.findall(regex, name, re.IGNORECASE) for name in res.get('synonyms')]
+            s_ids = [s[0] for s in s_ids if s]
+
+        return s_ids
 
     def _process_episode_view(self, anilist_id, show_meta, poster, fanart, eps_watched):
         from datetime import date
@@ -52,8 +92,16 @@ class CONSUMETAPI:
         all_results = []
         result = self.get_anilist_meta(anilist_id)
         if result:
+            season = 1
+            s_id = self._get_season(result)
+            # if not s_id:
+            #     res = self._json_request(self.synurl.format(anilist_id))
+            #     if res:
+            #         s_id = self._get_season(res[0])
+            if s_id:
+                season = s_id[0]
             result = result.get('episodes')
-            mapfunc = partial(self._parse_episode_view, show_id=anilist_id, show_meta=show_meta, poster=poster, fanart=fanart, eps_watched=eps_watched, update_time=update_time)
+            mapfunc = partial(self._parse_episode_view, show_id=anilist_id, show_meta=show_meta, season=season, poster=poster, fanart=fanart, eps_watched=eps_watched, update_time=update_time)
             all_results = list(map(mapfunc, result))
         return all_results
 
@@ -106,12 +154,3 @@ class CONSUMETAPI:
             sources = self._json_request(surl.format(provider, episode_id))
 
         return sources
-
-    def get_size(self, size=0):
-        power = 1024.0
-        n = 0
-        power_labels = {0: 'B', 1: 'KB', 2: 'MB', 3: 'GB'}
-        while size > power:
-            size /= power
-            n += 1
-        return '{0:.2f} {1}'.format(size, power_labels[n])

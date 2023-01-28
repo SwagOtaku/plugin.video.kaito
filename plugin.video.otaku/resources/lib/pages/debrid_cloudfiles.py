@@ -95,11 +95,11 @@ class sources(BrowserBase):
         self.cloud_files.append({
             'quality': source_utils.getQuality(item['name']),
             'lang': source_utils.getAudio_lang(item['name']),
-            'hash': premiumize.Premiumize()._fetch_transcode_or_standard(item),
+            'hash': item['link'],  # premiumize.Premiumize()._fetch_transcode_or_standard(item),
             'provider': 'Cloud',
             'type': 'cloud',
             'release_title': item['name'],
             'info': source_utils.getInfo(item['name']),
             'debrid_provider': 'premiumize',
-            'size': '.%d GB' % ((int(item['size']) / 1024) / 1024)
+            'size': self._get_size(int(item['size']))
         })

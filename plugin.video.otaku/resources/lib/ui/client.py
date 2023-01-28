@@ -211,7 +211,7 @@ def request(
                     req.get_method = lambda: 'POST'
                     req.has_header = lambda header_name: (
                         header_name == 'Content-type'
-                        or urllib_request.Request.has_header(request, header_name)
+                        # or urllib_request.Request.has_header(request, header_name)
                     )
 
         if limit == '0':

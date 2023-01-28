@@ -83,7 +83,7 @@ class Premiumize:
 
     def list_folder(self, folderID):
         url = "/folder/list"
-        postData = {'id': folderID}
+        postData = {'id': folderID} if folderID else ''
         response = self.post_url(url, postData)
         return response['content']
 

@@ -45,3 +45,12 @@ class BrowserBase(object):
     def _get_origin(self, url):
         purl = urllib_parse.urlparse(url)
         return '{0}://{1}'.format(purl.scheme, purl.netloc)
+
+    def _get_size(self, size=0):
+        power = 1024.0
+        n = 0
+        power_labels = {0: 'B', 1: 'KB', 2: 'MB', 3: 'GB'}
+        while size > power:
+            size /= power
+            n += 1
+        return '{0:.2f} {1}'.format(size, power_labels[n])

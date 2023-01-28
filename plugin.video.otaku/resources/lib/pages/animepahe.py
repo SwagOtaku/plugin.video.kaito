@@ -61,7 +61,7 @@ class sources(BrowserBase):
             'quality': quality,
             'debrid_provider': '',
             'provider': 'animepahe',
-            'size': consumet.CONSUMETAPI().get_size(item.get('size', 0)),
+            'size': self._get_size(item.get('size', 0)),
             'info': [item.get('type'), 'HLS' if item.get('isM3U8') else ''],
             'lang': 0 if item.get('type') == 'SUB' else 2
         }
