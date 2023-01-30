@@ -57,24 +57,23 @@ class CONSUMETAPI:
         s_ids = []
         for regex in regexes:
             if isinstance(res.get('title'), dict):
-                s_ids += [re.findall(regex, name, re.IGNORECASE) for lang, name in six.iteritems(res.get('title'))]
+                s_ids += [re.findall(regex, name, re.IGNORECASE) for lang, name in six.iteritems(res.get('title')) if name is not None]
             else:
                 s_ids += [re.findall(regex, name, re.IGNORECASE) for name in res.get('title')]
             s_ids += [re.findall(regex, name, re.IGNORECASE) for name in res.get('synonyms')]
         s_ids = [s[0] for s in s_ids if s]
         if not s_ids:
             regex = r'\s(\d+)$'
+            cour = False
             if isinstance(res.get('title'), dict):
-                cour = False
                 for lang, name in six.iteritems(res.get('title')):
-                    if ' part ' in name.lower() or ' cour ' in name.lower():
+                    if name is not None and (' part ' in name.lower() or ' cour ' in name.lower()):
                         cour = True
                         break
                 if not cour:
-                    s_ids += [re.findall(regex, name, re.IGNORECASE) for lang, name in six.iteritems(res.get('title'))]
+                    s_ids += [re.findall(regex, name, re.IGNORECASE) for lang, name in six.iteritems(res.get('title')) if name is not None]
                     s_ids += [re.findall(regex, name, re.IGNORECASE) for name in res.get('synonyms')]
             else:
-                cour = False
                 for name in res.get('title'):
                     if ' part ' in name.lower() or ' cour ' in name.lower():
                         cour = True
