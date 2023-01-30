@@ -76,6 +76,12 @@ class sources(BrowserBase):
         url = slug.replace('/anime/', '/watch/')
         r = database.get(self._get_request, 8, url, headers=headers)
         mdata = re.search(r"var\s*anime\s*=\s*(.+?});", r)
+        if not mdata:
+            r = database.get(self._get_request, 8, slug, headers=headers)
+            url = re.search(r'<a\s*href="([^"]+)">\s*Ep', r, re.DOTALL)
+            if url:
+                r = database.get(self._get_request, 8, url.group(1), headers=headers)
+                mdata = re.search(r"var\s*anime\s*=\s*(.+?});", r)
         if mdata:
             mdata = json.loads(mdata.group(1))
             eps = mdata.get('episodes').get('lists')
