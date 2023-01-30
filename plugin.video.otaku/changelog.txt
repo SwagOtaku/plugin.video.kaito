@@ -1,5 +1,9 @@
+Changelog 0.3.8 [20230130]:
+- Added animix search fallback
+- Handle error when anilist title is null
+
 Changelog 0.3.7 [20230128]:
-- Record season number for the epidoes
+- Record season number for the episodes
 
 Changelog 0.3.6 [20230126]:
 - Added Set Country Of Origin
