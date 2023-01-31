@@ -38,6 +38,7 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 - Widgets: No information shows during the playback
 
 **_Optional_**: 
+- Embeds: A Setting Catagory to sort your embeds.
 - TMDB Players: Need to add an Otaku openplayer for tmdb helper. (Examples: [a4k-openproject](https://github.com/a4k-openproject/json.openplayers))
 
 ## Help needed with maintaining
