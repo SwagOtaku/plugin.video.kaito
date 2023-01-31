@@ -31,6 +31,9 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 ## Todo List
 
 **_Function_**:
+- Context Menu: Source Select needs a recode
+- Context Menu: Find Similar needs to be fixed
+- Context Menu: We should get rid of context.otaku
 - Context Menu: Anime title and Episode Plot does not show during playback when using select source.
 - Widgets: No information shows during the playback
 
