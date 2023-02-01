@@ -299,10 +299,10 @@ class Sources(DisplayWindow):
         if control.getSetting('general.disable265') == 'true':
             sortedList = [i for i in sortedList if 'HEVC' not in i['info']]
 
-        if control.getSetting('general.hidedub') == 'true':
-            sortedList = [i for i in sortedList if i['lang'] != 2]
-        elif control.getSetting('general.hidesub') == 'true':
-            sortedList = [i for i in sortedList if i['lang'] != 0]
+        preferences = control.getSetting("general.source")
+        lang_preferences = {'Dub': 0, 'Sub': 2}
+        if preferences in lang_preferences:
+            sortedList = [i for i in sortedList if i['lang'] != lang_preferences[preferences]]
 
         return sortedList
 

@@ -1,4 +1,5 @@
 import sys
+import time
 
 from kodi_six import xbmc, xbmcgui, xbmcplugin
 from resources.lib.ui import client, control
@@ -218,9 +219,12 @@ class PlayerDialogs(xbmc.Player):
     def _show_skip_intro(self):
         from resources.lib.windows.skip_intro import SkipIntro
 
+        delay_time = int(control.getSetting("set_delay_time"))
+        time.sleep(delay_time)
+
         SkipIntro(*('skip_intro.xml', control.ADDON_PATH),
                   actionArgs={'item_type': 'skip_intro'}).doModal()
-
+ 
     def _show_still_watching(self):
         return True
 

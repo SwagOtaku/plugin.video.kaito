@@ -192,11 +192,11 @@ msgid "Interface"
 msgstr ""
 
 msgctxt "#40303"
-msgid "Set content types"
+msgid "Set view types"
 msgstr ""
 
 msgctxt "#40304"
-msgid "Menu content type"
+msgid "Menu view type"
 msgstr ""
 
 msgctxt "#40305"
@@ -232,7 +232,7 @@ msgid "Auto try next link on resolve failure (Source Select)"
 msgstr ""
 
 msgctxt "#40313"
-msgid "Audio"
+msgid "Preferences"
 msgstr ""
 
 msgctxt "#40314"
@@ -240,11 +240,11 @@ msgid "Preferred Audio Stream (Dual Audio)"
 msgstr ""
 
 msgctxt "#40315"
-msgid "jpn"
+msgid "Jpn"
 msgstr ""
 
 msgctxt "#40316"
-msgid "eng"
+msgid "Eng"
 msgstr ""
 
 msgctxt "#40317"
@@ -300,7 +300,7 @@ msgid "Hide HEVC Items"
 msgstr ""
 
 msgctxt "#40330"
-msgid "Hide Dub Sources"
+msgid "Preferred Source"
 msgstr ""
 
 msgctxt "#40331"
@@ -544,7 +544,7 @@ msgid "White"
 msgstr ""
 
 msgctxt "#40391"
-msgid "Set content format"
+msgid "Set Content Format"
 msgstr ""
 
 msgctxt "#40392"
@@ -673,6 +673,10 @@ msgstr ""
 
 msgctxt "#40423"
 msgid "Taiwan"
+msgstr ""
+
+msgctxt "#40424"
+msgid "Set Delay in Seconds Before Showing Dialog"
 msgstr ""
 
 ######MAIN Category DIRECTORY#######

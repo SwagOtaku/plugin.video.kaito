@@ -3,17 +3,14 @@
 	<!-- General -->
 	<category label="40300">
 		<!-- General -->
-		<setting id="titlelanguage" type="labelenum" label="40369" lvalues="40370|40371" default ="40370"/>
+		<setting id="titlelanguage" type="labelenum" label="40369" lvalues="40370|40371" default ="40371"/>
 		<setting id="searchhistory" type="labelenum" label="40301" values="Yes|No" default="Yes"/>
 
 		<!-- Interface -->
 		<setting type="lsep" label="40302"/>
 		<setting id="sep"/>
-		<setting id="general.divflavors" label="Seperate Subs and Dubs" type="bool" default="true"/>
+		<setting id="general.divflavors" label="Seperate Subs and Dubs" type="bool" default="false" visible="false"/>/>
 
-		<setting id="sep"/>
-		<setting id="contenttype.bool" label="40303" type="bool" default="false"/>
-		<setting id="contenttype.menu" type="labelenum" subsetting="true" label="40304" lvalues="40305|40306|40368" default="40305" visible="eq(-1,true)"/>
 		<setting id="sep"/>
 		<setting id="contentformat.bool" label="40391" type="bool" default="false"/>
 		<setting id="contentformat.menu" type="labelenum" subsetting="true" label="40392" lvalues="40393|40394|40395|40396|40397|40398|40399" default="40393" visible="eq(-1,true)"/>
@@ -34,7 +31,7 @@
 
 	<!-- Provider -->
 	<category label="40226">
-		<setting id="provider.nyaa" type="bool" label="Nyaa Alt" default="false" />
+		<setting id="provider.nyaa" type="bool" label="Nyaa Alt (For Verizon Users)" default="false" />
 		<setting id="provider.animix" type="bool" label="Animix" default="true" />
 		<setting id="provider.animepahe" type="bool" label="Animepahe" default="true" />
 		<setting id="provider.gogo" type="bool" label="Gogo" default="true" />
@@ -49,10 +46,11 @@
 		<setting id="general.playstyle.episode" type="enum" label="40309" lvalues="40310|40311" default="0" />
 		<setting id="general.autotrynext" type="bool" label="40312" default="true" />
 
-		<!-- Audio -->
+		<!-- Preferences -->
 		<setting type="lsep" label="40313" />
 		<setting type="sep"/>
 		<setting id="general.audio" type="labelenum" label="40314" lvalues="40315|40316" default="40315" />
+		<setting id="general.source" type="labelenum" label="40330" default="Sub" values="Dub|Sub|Both" />
 
 		<!-- Next Episode Dialog -->
 		<setting type="lsep" label="40317" />
@@ -67,6 +65,7 @@
 		<setting type="sep" />
 		<setting id="smartplay.skipintrodialog" type="bool" label="40324" default="true" />
 		<setting id="skipintro.time" type="slider" subsetting="true" label="40325" option="int" range="10,100" default="86" visible="eq(-1,true)" />
+		<setting id="set_delay_time" type="slider" subsetting="true" label="40424" option="int" range="1,100" default="2" visible="eq(-2,true)" />
 	</category>
 
 	<!-- Sort & Filter -->
@@ -75,8 +74,6 @@
 		<setting type="lsep" label="40327"/>
 		<setting id="general.maxResolution" type="enum" label="40328" values="4k|1080p|720p|NA" default="0" />
 		<setting id="general.disable265" type="bool" label="40329" default="false" />
-		<setting id="general.hidedub" type="bool" label="40330" default="false" />
-		<setting id="general.hidesub" type="bool" label="40417" default="false" />
 		<setting type="sep" />
 		<!-- Source Sorting -->
 		<setting type="lsep" label="40331"/>
