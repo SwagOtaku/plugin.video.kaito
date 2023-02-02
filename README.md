@@ -31,15 +31,17 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 ## Todo List
 
 **_Function_**:
-- Context Menu: Source Select needs a recode
-- Context Menu: Find Similar needs to be fixed
+- Maintnance: During every update, i want to have Otaku Clear Cache, Clear Torrent Cache, and Rebuild Database. 
+- Context Menu: Context Menu needs a recode
+- Context Menu: Want to add "Find Similar" or "Find Relations"
 - Context Menu: We should get rid of context.otaku
 - Context Menu: Anime title and Episode Plot does not show during playback when using select source.
 - Widgets: No information shows during the playback
 
 **_Optional_**: 
 - Embeds: A Setting Catagory to sort your embeds.
-- TMDB Players: Need to add an Otaku openplayer for tmdb helper. (Examples: [a4k-openproject](https://github.com/a4k-openproject/json.openplayers))
+- Trakt: Want to get rid of Trakt Fallback and keep Simkl as our Fallback if possible. 
+- Want to have a Set Viewtypes options for Menu View, Anime Viewm, Episode View
 
 ## Help needed with maintaining
 
