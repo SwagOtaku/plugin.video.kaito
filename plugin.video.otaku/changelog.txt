@@ -1,3 +1,11 @@
+Changelog 0.3.9 [20230202]:
+- Added New Setting "Preffed Source" for Preferences
+- Added New Setting "Set Delay in Seconds Before Showing Dialog" for Skip Intro
+- Removed "Seperate Subs and Dubs" 
+- Removed "Set content types"
+- Removed "Hide Dub/Sub"
+- Removed "Season Correction" 
+
 Changelog 0.3.8 [20230130]:
 - Added animix search fallback
 - Handle error when anilist title is null
