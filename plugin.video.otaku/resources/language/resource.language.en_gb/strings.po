@@ -32,7 +32,7 @@ msgid "Clear Search History"
 msgstr ""
 
 msgctxt "#30024"
-msgid "Wipe addon data"
+msgid "Wipe Addon Data"
 msgstr ""
 
 msgctxt "#30025"
