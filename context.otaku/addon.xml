@@ -17,10 +17,6 @@
         <label>Find Similar</label>
         <visible>String.StartsWith(ListItem.path,plugin://plugin.video.otaku/)+[String.IsEqual(ListItem.dbtype,tvshow)|String.IsEqual(ListItem.dbtype,movie)]</visible>
       </item>
-      <item library="seasonCorrection.py">
-        <label>Season Correction</label>
-        <visible>String.StartsWith(ListItem.path,plugin://plugin.video.otaku/)+[String.IsEqual(ListItem.dbtype,tvshow)]</visible>
-      </item>
       <item library="watchlistLogout.py">
         <label>Logout</label>
         <visible>String.StartsWith(ListItem.path,plugin://plugin.video.otaku/)+[String.Contains(ListItem.folderpath,/watchlist/)]</visible>
