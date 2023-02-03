@@ -679,6 +679,10 @@ msgctxt "#40424"
 msgid "Set Delay in Seconds Before Showing Dialog"
 msgstr ""
 
+msgctxt "#40425"
+msgid "Timeout for finding sources (seconds)"
+msgstr ""
+
 ######MAIN Category DIRECTORY#######
 msgctxt "#50000"
 msgid "Airing Anime Calendar"
