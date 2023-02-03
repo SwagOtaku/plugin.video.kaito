@@ -31,7 +31,7 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 ## Todo List
 
 **_Function_**:
-- Maintnance: During every update, i want to have Otaku Clear Cache, Clear Torrent Cache, and Rebuild Database. 
+- Maintnance: During every update, i want to have Otaku Clear Cache and Clear Torrent Cache. 
 - Context Menu: Context Menu needs a recode
 - Context Menu: Want to add "Find Similar" or "Find Relations"
 - Context Menu: We should get rid of context.otaku
@@ -40,7 +40,6 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 
 **_Optional_**: 
 - Embeds: A Setting Catagory to sort your embeds.
-- Trakt: Want to get rid of Trakt Fallback and keep Simkl as our Fallback if possible. 
 - Want to have a Set Viewtypes options for Menu View, Anime Viewm, Episode View
 
 ## Help needed with maintaining
