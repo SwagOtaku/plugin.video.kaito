@@ -45,6 +45,7 @@
 		<setting id="general.playstyle.movie" type="enum" label="40308" lvalues="40310|40311" default="0" />
 		<setting id="general.playstyle.episode" type="enum" label="40309" lvalues="40310|40311" default="0" />
 		<setting id="general.autotrynext" type="bool" label="40312" default="true" />
+		<setting id="general.timeout" type="slider" label="Timeout for finding sources (seconds)" option="int" range="1, 60" default="30" />
 
 		<!-- Preferences -->
 		<setting type="lsep" label="40313" />

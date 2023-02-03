@@ -119,7 +119,7 @@ class Sources(DisplayWindow):
         for i in self.threads:
             i.start()
 
-        timeout = 60
+        timeout = int(control.getSetting('general.timeout'))
         start_time = time.time()
         runtime = 0
 
