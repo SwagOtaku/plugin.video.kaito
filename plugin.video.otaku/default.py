@@ -1657,7 +1657,8 @@ def PLAY(payload, params):
                        watchlist_update,
                        _BROWSER.get_episodeList,
                        int(episode),
-                       filter_lang)
+                       filter_lang,
+                      source_select=params.get('source_select'))
 
 
 @route('rescrape_play/*')

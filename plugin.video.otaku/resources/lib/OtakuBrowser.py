@@ -145,7 +145,7 @@ class OtakuBrowser(BrowserBase):
         # return self.get_anime_trakt(anilist_id, filter_lang=filter_lang)
         return consumet.CONSUMETAPI().get_episodes(anilist_id, filter_lang=filter_lang)
 
-    def get_episodeList(self, show_id, pass_idx, filter_lang=None, rescrape=False):
+    def get_episodeList(self, show_id, pass_idx, filter_lang=None, rescrape=False, source_select=False):
         show = database.get_show(show_id)
         episodes = database.get_episode_list(int(show_id))
 
@@ -158,7 +158,7 @@ class OtakuBrowser(BrowserBase):
         else:
             items = simkl.SIMKLAPI().get_episodes(show_id)
 
-        if rescrape:
+        if rescrape or source_select:
             return items
 
         items = [i for i in items if self.is_aired(i['info'])]
