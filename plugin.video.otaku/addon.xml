@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.10">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.11">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -24,8 +24,8 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.3.10 [20230202]:
-- Added New Setting "Timeout for finding sources" for General Playback
+Changelog 0.3.11 [20230204]:
+- Fix source select not showing anime titles
     </news>
   </extension>
 </addon>
