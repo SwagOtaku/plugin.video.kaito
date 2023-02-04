@@ -276,7 +276,7 @@ def _prefetch_play_link(link):
     }
 
 
-def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=None, episode=None, filter_lang=None, rescrape=False):
+def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=None, episode=None, filter_lang=None, rescrape=False, source_select=False):
     try:
         linkInfo = _prefetch_play_link(link)
         if not linkInfo:
@@ -293,7 +293,11 @@ def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=Non
         episode_info = build_playlist(anilist_id, '', filter_lang, rescrape=True)[episode - 1]
         item.setInfo('video', infoLabels=episode_info['info'])
         item.setArt(episode_info['image'])
-
+    elif source_select:
+        episode_info = build_playlist(anilist_id, '', filter_lang, sourceselect=True)[episode - 1]
+        item.setInfo('video', infoLabels=episode_info['info'])
+        item.setArt(episode_info['image'])
+        
     if 'Content-Type' in linkInfo['headers'].keys():
         item.setProperty('MimeType', linkInfo['headers']['Content-Type'])
         # Run any mimetype hook
