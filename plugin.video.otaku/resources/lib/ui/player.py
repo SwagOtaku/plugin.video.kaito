@@ -294,7 +294,7 @@ def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=Non
         item.setInfo('video', infoLabels=episode_info['info'])
         item.setArt(episode_info['image'])
     elif source_select:
-        episode_info = build_playlist(anilist_id, '', filter_lang, sourceselect=True)[episode - 1]
+        episode_info = build_playlist(anilist_id, '', filter_lang, source_select=True)[episode - 1]
         item.setInfo('video', infoLabels=episode_info['info'])
         item.setArt(episode_info['image'])
         
