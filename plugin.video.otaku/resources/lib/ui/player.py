@@ -64,9 +64,11 @@ class watchlistPlayer(xbmc.Player):
             self._build_playlist(self._anilist_id, self._episode, self._filter_lang)
 
         current_ = playList.getposition()
-        self.media_type = playList[current_].getVideoInfoTag().getMediaType()
+        try:
+            self.media_type = playList[current_].getVideoInfoTag().getMediaType()
+        except:
+            self.media_type = ''
         control.setSetting('addon.last_watched', self._anilist_id)
-        pass
 
     # def onAVStarted(self):
     #     self.AVStarted = True
