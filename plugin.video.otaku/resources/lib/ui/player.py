@@ -146,11 +146,10 @@ class watchlistPlayer(xbmc.Player):
 
         audio_lang = self.getAvailableAudioStreams()
         if len(audio_lang) > 1:
-            preferred_audio = control.getSetting('general.audio')
-            if len(preferred_audio) == 5:
-                preferred_audio = control.lang(int(preferred_audio))
-            audio_int = audio_lang.index(preferred_audio)
-            self.setAudioStream(audio_int)
+            preferred_audio = control.getSetting('General.audio').lower()
+            if preferred_audio in audio_lang:
+                audio_int = audio_lang.index(preferred_audio)
+                self.setAudioStream(audio_int)
 
         if self.media_type == 'movie':
             return self.onWatchedPercent()
