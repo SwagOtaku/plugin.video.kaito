@@ -1,0 +1,8 @@
+Major Updates:
+- New Changelog for every update
+- Wanted to make the changelog better
+- Added the Consumet Api
+- Added Season Numbers
+- Added Zoro (Dubs)
+- Added Animepahe
+- Restored Animix

@@ -12,6 +12,7 @@ class TextViewerXML(BaseDialog):
         self.window_id = 2060
         self.heading = kwargs.get('heading')
         self.text = kwargs.get('text')
+        self.text_2 = kwargs.get('text_2')
 
     def run(self):
         self.doModal()
@@ -26,5 +27,6 @@ class TextViewerXML(BaseDialog):
             self.close()
 
     def set_properties(self):
+        self.setProperty('otaku.text_2', self.text_2)
         self.setProperty('otaku.text', self.text)
         self.setProperty('otaku.heading', self.heading)

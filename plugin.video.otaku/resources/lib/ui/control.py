@@ -389,17 +389,35 @@ def getKodiVersion():
 def getChangeLog():
     addon_version = xbmcaddon.Addon('plugin.video.otaku').getAddonInfo('version')
     changelog_file = os.path.join(ADDON_PATH, 'changelog.txt')
-    if not xbmcvfs.exists(changelog_file):
-        return xbmc.executebuiltin('Notification(%s, %s, %d, %s)' % ('Otaku', 'Changelog file not found.', 5000, xbmcgui.NOTIFICATION_ERROR))
-    if PY2:
-        f = open(changelog_file, 'r')
+    news_file = os.path.join(ADDON_PATH, 'news.txt')
+
+    # Read changelog file
+    changelog_text = ""
+    if xbmcvfs.exists(changelog_file):
+        if PY2:
+            f = open(changelog_file, 'r')
+        else:
+            f = open(changelog_file, 'r', encoding='utf-8', errors='ignore')
+        changelog_text = f.read()
+        f.close()
     else:
-        f = open(changelog_file, 'r', encoding='utf-8', errors='ignore')
-    text = f.read()
-    f.close()
-    heading = '[B]%s -  v%s - ChangeLog[/B]' % ('Otaku', addon_version)
+        return xbmc.executebuiltin('Notification(%s, %s, %d, %s)' % ('Otaku', 'Changelog file not found.', 5000, xbmcgui.NOTIFICATION_ERROR))
+
+    # Read news file
+    news_text = ""
+    if xbmcvfs.exists(news_file):
+        if PY2:
+            f = open(news_file, 'r')
+        else:
+            f = open(news_file, 'r', encoding='utf-8', errors='ignore')
+        news_text = f.read()
+        f.close()
+
+    # Combine changelog and news text
+    text = changelog_text
+    text_2 = news_text
+    heading = '[B]%s -  v%s - ChangeLog & News[/B]' % ('Otaku', addon_version)
     from resources.lib.windows.textviewer import TextViewerXML
-    windows = TextViewerXML('textviewer.xml', ADDON_PATH, heading=heading, text=text)
-    # windows = TextViewerXML(*('textviewer.xml', ADDON_PATH),heading=heading, text=text).doModal()
+    windows = TextViewerXML('textviewer.xml', ADDON_PATH, heading=heading, text=text, text_2=text_2)
     windows.run()
     del windows

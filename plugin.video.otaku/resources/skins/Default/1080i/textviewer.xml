@@ -22,6 +22,16 @@
 					<align>left</align>
 					<aligny>top</aligny>
 					<aspectratio aligny="top">keep</aspectratio>
+					<texture>common/changelog.png</texture>
+				</control>
+				<control type="image">
+					<left>-10</left>
+					<top>370</top>
+					<width>700</width>
+					<height>1000</height>
+					<align>left</align>
+					<aligny>bottom</aligny>
+					<aspectratio aligny="top">keep</aspectratio>
 					<texture>common/trans-goku.png</texture>
 				</control>
 				<control type="label">
@@ -36,9 +46,9 @@
 					<label>$INFO[Window().Property(otaku.heading)]</label>
 				</control>
 				<control type="textbox" id="2000">
-					<left>45</left>
+					<left>672</left>
 					<top>114</top>
-					<width>1254</width>
+					<width>600</width>
 					<height>830</height>
 					<onup>2000</onup>
 					<ondown>2000</ondown>
@@ -47,6 +57,19 @@
 					<textcolor>white</textcolor>
 					<label>$INFO[Window().Property(otaku.text)]</label>
 					<pagecontrol>2060</pagecontrol>
+				</control>
+				<control type="textbox" id="2000">
+					<left>45</left>
+					<top>114</top>
+					<width>600</width>
+					<height>350</height>
+					<onup>2000</onup>
+					<ondown>2000</ondown>
+					<scrolltime tween="sine">400</scrolltime>
+					<font>font14</font>
+					<textcolor>white</textcolor>
+					<label>$INFO[Window().Property(otaku.text_2)]</label>
+					<pagecontrol>1940</pagecontrol>
 				</control>
 				<control type="scrollbar" id="2060">
 					<left>1320</left>
