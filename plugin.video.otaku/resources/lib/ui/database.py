@@ -141,7 +141,7 @@ def cache_clear():
                 cursor.connection.commit()
             except:
                 pass
-        control.showDialog.notification('{}: {}'.format(control.ADDON_NAME, control.lang(30200)), control.lang(30201), time=5000)
+        control.showDialog.notification('{}: {}'.format(control.ADDON_NAME, control.lang(30200)), control.lang(30201), time=5000, sound=False)
     except:
         pass
     finally:
@@ -703,9 +703,9 @@ def updateSlugs(anilist_id, sources):
 
 
 def torrent_cache_clear():
-    confirmation = control.yesno_dialog(control.ADDON_NAME, "Are you sure you wish to clear the cache?")
-    if not confirmation:
-        return
+    # confirmation = control.yesno_dialog(control.ADDON_NAME, "Are you sure you wish to clear the cache?")
+    # if not confirmation:
+    #     return
     try:
         control.torrentScrapeCacheFile_lock.acquire()
         cursor = _get_connection_cursor(control.torrentScrapeCacheFile)
@@ -726,7 +726,7 @@ def torrent_cache_clear():
     finally:
         control.try_release_lock(control.torrentScrapeCacheFile_lock)
 
-    control.showDialog.notification('{}: {}'.format(control.ADDON_NAME, control.lang(30200)), control.lang(30202), time=5000)
+    control.showDialog.notification('{}: {}'.format(control.ADDON_NAME, control.lang(30200)), control.lang(30202), time=5000, sound=False)
 
 
 def clearSearchHistory():

@@ -72,6 +72,12 @@ _TITLE_LANG = control.getSetting("titlelanguage")
 _BROWSER = OtakuBrowser()
 _ANILIST_BROWSER = AniListBrowser(_TITLE_LANG)
 
+if control.ADDON_VERSION != control.getSetting('version'):
+    control.setSetting('version', control.ADDON_VERSION)
+    database.cache_clear()
+    database.torrent_cache_clear()
+    control.getChangeLog()
+
 
 @route('movies')
 def MOVIES_MENU(payload, params):
@@ -1658,7 +1664,7 @@ def PLAY(payload, params):
                        _BROWSER.get_episodeList,
                        int(episode),
                        filter_lang,
-                      source_select=params.get('source_select'))
+                       source_select=params.get('source_select'))
 
 
 @route('rescrape_play/*')
