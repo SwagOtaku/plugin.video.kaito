@@ -31,7 +31,6 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 ## Todo List
 
 **_Function_**:
-- Maintnance: During every update, i want to have Otaku Clear Cache and Clear Torrent Cache. 
 - Context Menu: Context Menu needs a recode
 - Context Menu: Want to add "Find Similar" or "Find Relations"
 - Context Menu: We should get rid of context.otaku
