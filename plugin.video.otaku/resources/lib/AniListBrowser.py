@@ -2793,6 +2793,9 @@ class AniListBrowser():
         if mal_dub and mal_dub.get(mal_id):
             dub = True
 
+        if dub:
+            info['title'] = f"{info['title']} (Dub)"
+
         base = {
             "name": title,
             "url": "animes/%s/%s/" % (res['id'], res.get('idMal')),

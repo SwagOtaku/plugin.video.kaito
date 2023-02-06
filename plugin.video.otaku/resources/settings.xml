@@ -9,7 +9,7 @@
 		<!-- Interface -->
 		<setting type="lsep" label="40302"/>
 		<setting id="sep"/>
-		<setting id="general.divflavors" label="Seperate Subs and Dubs" type="bool" default="false" visible="false"/>/>
+		<setting id="general.divflavors" label="Separate Subs and Dubs" type="bool" default="false" />
 
 		<setting id="sep"/>
 		<setting id="contentformat.bool" label="40391" type="bool" default="false"/>

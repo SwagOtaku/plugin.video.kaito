@@ -1,3 +1,6 @@
+Changelog 0.3.15 [20230206]:
+- Brought back "Separate Subs and Dubs" 
+
 Changelog 0.3.14 [20230204]:
 - Improved the changelog with a news section.
 

@@ -1,8 +1,5 @@
-Major Updates:
-- New Changelog for every update
-- Wanted to make the changelog better
-- Added the Consumet Api
-- Added Season Numbers
-- Added Zoro (Dubs)
-- Added Animepahe
-- Restored Animix
+Inportant Information:
+- We have brought back the "Separate Subs and Dubs" option but in the future, we will be improving this option to either show only dubs, subs, and both.
+
+Note:
+- If you guys see two of the same animes, that means the the anime has dubs
