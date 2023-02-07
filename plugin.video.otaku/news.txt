@@ -1,5 +1,7 @@
 Inportant Information:
-- We have brought back the "Separate Subs and Dubs" option but in the future, we will be improving this option to either show only dubs, subs, and both.
+- For the people that are using the nvidia shield, There has been a few bugs for some people that are using Kodi 20.
 
-Note:
-- If you guys see two of the same animes, that means the the anime has dubs
+Note: 
+- If you are experiencing bugs such as Scrapping, Play Next, Pls report on Github on Issue #69
+
+github.com/Goldenfreddy0703/Otaku/issues/69
