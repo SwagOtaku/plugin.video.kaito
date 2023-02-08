@@ -138,30 +138,23 @@ class watchlistPlayer(xbmc.Player):
                 break
             xbmc.sleep(250)
 
+        # for i in range(0, 480):
+        #     if self.AVStarted:
+        #         break
+
         control.closeAllDialogs()
 
-        try:
-            audio_lang = self.getAvailableAudioStreams()
-            if len(audio_lang) > 1:
-                preferred_audio = control.getSetting('General.audio')
-                if preferred_audio == 'Japanese':
-                    try:
-                        audio_int = audio_lang.index('jpn')
-                        self.setAudioStream(audio_int)
-                    except:
-                        pass
-                    try:
-                        self.setSubtitleStream(1)
-                    except:
-                        pass
-                else:
-                    try:
-                        audio_int = audio_lang.index(preferred_audio.lower())
-                        self.setAudioStream(audio_int)
-                    except:
-                        pass
-        except:
-            pass
+        audio_lang = self.getAvailableAudioStreams()
+        if len(audio_lang) > 1:
+            preferred_audio = control.getSetting('general.audio')
+            if len(preferred_audio) == 5:
+                preferred_audio = control.lang(int(preferred_audio))
+            audio_int = audio_lang.index(preferred_audio)
+            self.setAudioStream(audio_int)
+            if preferred_audio == "eng":
+                self.showSubtitles(False)
+            else:
+                self.showSubtitles(True)
 
         if self.media_type == 'movie':
             return self.onWatchedPercent()
@@ -176,21 +169,6 @@ class watchlistPlayer(xbmc.Player):
                     break
                 else:
                     xbmc.sleep(250)
-
-        scrobble = self.onWatchedPercent()
-
-        if control.getSetting('smartplay.playingnextdialog') == 'true':
-            endpoint = int(control.getSetting('playingnext.time'))
-        else:
-            endpoint = False
-
-        if endpoint:
-            while self.isPlaying():
-                if int(self.getTotalTime()) - int(self.getTime()) <= endpoint:
-                    xbmc.executebuiltin('RunPlugin("plugin://plugin.video.otaku/run_player_dialogs")')
-                    break
-                else:
-                    xbmc.sleep(1000)
     
 class PlayerDialogs(xbmc.Player):
 
