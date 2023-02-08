@@ -5,6 +5,7 @@
 		<!-- General -->
 		<setting id="titlelanguage" type="labelenum" label="40369" lvalues="40370|40371" default ="40371"/>
 		<setting id="searchhistory" type="labelenum" label="40301" values="Yes|No" default="Yes"/>
+		<setting id="showchangelog" type="labelenum" label="40426" values="Yes|No" default="Yes"/>>
 
 		<!-- Interface -->
 		<setting type="lsep" label="40302"/>

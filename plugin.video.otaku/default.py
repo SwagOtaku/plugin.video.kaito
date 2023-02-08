@@ -17,7 +17,7 @@
 """
 
 import pickle
-
+import xbmcaddon
 import six
 from resources.lib.AniListBrowser import AniListBrowser
 from resources.lib.OtakuBrowser import OtakuBrowser
@@ -73,10 +73,14 @@ _BROWSER = OtakuBrowser()
 _ANILIST_BROWSER = AniListBrowser(_TITLE_LANG)
 
 if control.ADDON_VERSION != control.getSetting('version'):
+    addon = xbmcaddon.Addon('plugin.video.otaku')
+    showchangelog = addon.getSetting("showchangelog")
+    if showchangelog == "Yes":
+        control.getChangeLog()
+
     control.setSetting('version', control.ADDON_VERSION)
     database.cache_clear()
     database.torrent_cache_clear()
-    control.getChangeLog()
 
 
 @route('movies')

@@ -1,3 +1,6 @@
+Changelog 0.3.17 [20230207]:
+- Added New Setting "Show Changelog every update" 
+
 Changelog 0.3.16 [20230207]:
 - Fixed Preferred Audio Stream for torrents.
 

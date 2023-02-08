@@ -683,6 +683,10 @@ msgctxt "#40425"
 msgid "Timeout for finding sources (seconds)"
 msgstr ""
 
+msgctxt "#40426"
+msgid "Show Changelog every update"
+msgstr ""
+
 ######MAIN Category DIRECTORY#######
 msgctxt "#50000"
 msgid "Airing Anime Calendar"
