@@ -1,3 +1,6 @@
+Changelog 0.3.18 [20230208]:
+- Fixed a small bug that is hardcoded.
+
 Changelog 0.3.17 [20230207]:
 - Added New Setting "Show Changelog every update" 
 
