@@ -156,6 +156,9 @@ class watchlistPlayer(xbmc.Player):
             else:
                 self.showSubtitles(True)
 
+        if control.getSetting('general.subtitles') == 'true':
+            self.showSubtitles(True)
+
         if self.media_type == 'movie':
             return self.onWatchedPercent()
 

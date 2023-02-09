@@ -687,6 +687,10 @@ msgctxt "#40426"
 msgid "Show Changelog every update"
 msgstr ""
 
+msgctxt "#40427"
+msgid "Enable Automatic Subtitles for Dub Streams"
+msgstr ""
+
 ######MAIN Category DIRECTORY#######
 msgctxt "#50000"
 msgid "Airing Anime Calendar"

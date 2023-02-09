@@ -53,6 +53,7 @@
 		<setting type="sep"/>
 		<setting id="general.audio" type="labelenum" label="40314" default="40315" lvalues="40315|40316" />
 		<setting id="general.source" type="labelenum" label="40330" default="Sub" values="Dub|Sub|Both" />
+		<setting id="general.subtitles" type="bool" label="40427" default="false" />
 
 		<!-- Next Episode Dialog -->
 		<setting type="lsep" label="40317" />
