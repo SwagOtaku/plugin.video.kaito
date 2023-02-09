@@ -169,6 +169,21 @@ class watchlistPlayer(xbmc.Player):
                     break
                 else:
                     xbmc.sleep(250)
+
+        scrobble = self.onWatchedPercent()
+
+        if control.getSetting('smartplay.playingnextdialog') == 'true':
+            endpoint = int(control.getSetting('playingnext.time'))
+        else:
+            endpoint = False
+
+        if endpoint:
+            while self.isPlaying():
+                if int(self.getTotalTime()) - int(self.getTime()) <= endpoint:
+                    xbmc.executebuiltin('RunPlugin("plugin://plugin.video.otaku/run_player_dialogs")')
+                    break
+                else:
+                    xbmc.sleep(1000)
     
 class PlayerDialogs(xbmc.Player):
 
