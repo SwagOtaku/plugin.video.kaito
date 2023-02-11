@@ -30,7 +30,7 @@ class CONSUMETAPI:
 
     def _parse_episode_view(self, res, show_id, show_meta, season, poster, fanart, eps_watched, update_time):
         url = "%s/%s/" % (show_id, res['number'])
-        name = 'Ep. %d (%s)' % (res['number'], res.get('title', ''))
+        name = res.get('title')
         image = res.get('image')
 
         info = {}

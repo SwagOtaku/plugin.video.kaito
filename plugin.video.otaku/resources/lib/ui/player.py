@@ -124,10 +124,10 @@ class watchlistPlayer(xbmc.Player):
             except:
                 import traceback
                 traceback.print_exc()
-                xbmc.sleep(1000)
+                xbmc.sleep(5000)
                 continue
 
-            xbmc.sleep(1000)
+            xbmc.sleep(5000)
 
         else:
             return
@@ -151,13 +151,10 @@ class watchlistPlayer(xbmc.Player):
                 preferred_audio = control.lang(int(preferred_audio))
             audio_int = audio_lang.index(preferred_audio)
             self.setAudioStream(audio_int)
-            if preferred_audio == "eng":
+            if preferred_audio == "eng" and control.getSetting('general.subtitles') == 'false':
                 self.showSubtitles(False)
             else:
                 self.showSubtitles(True)
-
-        if control.getSetting('general.subtitles') == 'true':
-            self.showSubtitles(True)
 
         if self.media_type == 'movie':
             return self.onWatchedPercent()
@@ -173,7 +170,7 @@ class watchlistPlayer(xbmc.Player):
                 else:
                     xbmc.sleep(250)
 
-        scrobble = self.onWatchedPercent()
+        _ = self.onWatchedPercent()
 
         if control.getSetting('smartplay.playingnextdialog') == 'true':
             endpoint = int(control.getSetting('playingnext.time'))
@@ -186,8 +183,9 @@ class watchlistPlayer(xbmc.Player):
                     xbmc.executebuiltin('RunPlugin("plugin://plugin.video.otaku/run_player_dialogs")')
                     break
                 else:
-                    xbmc.sleep(1000)
-    
+                    xbmc.sleep(5000)
+
+
 class PlayerDialogs(xbmc.Player):
 
     def __init__(self):
@@ -231,7 +229,7 @@ class PlayerDialogs(xbmc.Player):
 
         SkipIntro(*('skip_intro.xml', control.ADDON_PATH),
                   actionArgs={'item_type': 'skip_intro'}).doModal()
- 
+
     def _show_still_watching(self):
         return True
 
@@ -304,7 +302,7 @@ def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=Non
         episode_info = build_playlist(anilist_id, '', filter_lang, source_select=True)[episode - 1]
         item.setInfo('video', infoLabels=episode_info['info'])
         item.setArt(episode_info['image'])
-        
+
     if 'Content-Type' in linkInfo['headers'].keys():
         item.setProperty('MimeType', linkInfo['headers']['Content-Type'])
         # Run any mimetype hook
@@ -337,13 +335,16 @@ def _HLS_HOOK(item):
     import inputstreamhelper
     is_helper = inputstreamhelper.Helper('hls')
     if is_helper.check_inputstream():
-        if control.getKodiVersion() < 19:
+        if control._kodiver < 19:
             item.setProperty('inputstreamaddon', is_helper.inputstream_addon)
         else:
             item.setProperty('inputstream', is_helper.inputstream_addon)
         if '|' in stream_url:
             stream_url, strhdr = stream_url.split('|')
-            item.setProperty('inputstream.adaptive.stream_headers', strhdr)
+            if control._kodiver > 19.8:
+                item.setProperty('inputstream.adaptive.manifest_headers', strhdr)
+            else:
+                item.setProperty('inputstream.adaptive.stream_headers', strhdr)
             item.setPath(stream_url)
         item.setProperty('inputstream.adaptive.manifest_type', 'hls')
         item.setProperty('MimeType', 'application/vnd.apple.mpegurl')

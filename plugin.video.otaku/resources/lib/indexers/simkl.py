@@ -33,7 +33,7 @@ class SIMKLAPI:
         if filter_lang:
             url += filter_lang
 
-        name = 'Ep. %d (%s)' % (res['episode'], res.get('title'))
+        name = 'Ep.%d %s' % (res['episode'], res.get('title'))
 
         if res['img'] is not None:
             image = self.imagePath % res['img']
