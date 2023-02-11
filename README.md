@@ -22,9 +22,9 @@ _You can install it via repository to provide automatic updates (future updates 
 
 _or install it manually in the following order (future updates should not be installed manually and these download links could be outdated)_
 
-- [context.otaku](https://github.com/Goldenfreddy0703/repository.hooty/raw/master/repo/zips/context.otaku/context.otaku-0.0.6.zip)
-- [script.otaku.themepak](https://github.com/Goldenfreddy0703/repository.hooty/raw/master/repo/zips/script.otaku.themepak/script.otaku.themepak-0.0.4.zip)
-- [plugin.video.otaku](https://github.com/Goldenfreddy0703/repository.hooty/raw/master/repo/zips/plugin.video.otaku/plugin.video.otaku-0.2.26.zip)
+- [context.otaku](https://github.com/Goldenfreddy0703/repository.hooty/raw/master/repo/zips/context.otaku/context.otaku-0.0.7.zip)
+- [script.otaku.themepak](https://github.com/Goldenfreddy0703/repository.hooty/raw/master/repo/zips/script.otaku.themepak/script.otaku.themepak-0.0.7.zip)
+- [plugin.video.otaku](https://github.com/Goldenfreddy0703/repository.hooty/raw/master/repo/zips/plugin.video.otaku/plugin.video.otaku-0.3.22.zip)
 
 After each update, it is recommended that you clear cache/rebuild database to make sure changes take effect.
 
