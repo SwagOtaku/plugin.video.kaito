@@ -1,4 +1,4 @@
-[![Kodi version](https://img.shields.io/badge/kodi%20versions18/19-blue)](https://kodi.tv/)
+[![Kodi version](https://img.shields.io/badge/kodi%20versions18/19/20/21-blue)](https://kodi.tv/)
 [![License: GPL3](https://img.shields.io/badge/License-GPL3-yellow.svg)](https://opensource.org/licenses/GPL-3.0)
 
 # Otaku Repository
@@ -10,7 +10,7 @@ All credit goes to SwagOtaku.
 ## Requires
 
 Kodi 18 Leia or later versions.
-Works fine on Kodi 20 Nexus Alpha 3
+Works fine on Kodi 20+
 
 # Installation & Updates
 
@@ -24,7 +24,7 @@ _or install it manually in the following order (future updates should not be ins
 
 - [context.otaku](https://github.com/Goldenfreddy0703/repository.hooty/raw/master/repo/zips/context.otaku/context.otaku-0.0.7.zip)
 - [script.otaku.themepak](https://github.com/Goldenfreddy0703/repository.hooty/raw/master/repo/zips/script.otaku.themepak/script.otaku.themepak-0.0.7.zip)
-- [plugin.video.otaku](https://github.com/Goldenfreddy0703/repository.hooty/raw/master/repo/zips/plugin.video.otaku/plugin.video.otaku-0.3.22.zip)
+- [plugin.video.otaku](https://github.com/Goldenfreddy0703/repository.hooty/raw/master/repo/zips/plugin.video.otaku/plugin.video.otaku-0.3.23.zip)
 
 After each update, it is recommended that you clear cache/rebuild database to make sure changes take effect.
 
