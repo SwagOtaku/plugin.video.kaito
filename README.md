@@ -31,7 +31,7 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 ## Todo List
 
 **_Function_**:
-- Watchlist: Adding an Easy News Debrid Provider
+- Accounts: Adding an Easy News Debrid Provider
 - Context Menu: Context Menu needs a recode
 - Context Menu: Want to add "Find Similar" or "Find Relations"
 - Context Menu: We should get rid of context.otaku
