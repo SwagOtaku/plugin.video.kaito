@@ -31,6 +31,7 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 ## Todo List
 
 **_Function_**:
+- Watchlist: Adding an Easy News Debrid Provider
 - Context Menu: Context Menu needs a recode
 - Context Menu: Want to add "Find Similar" or "Find Relations"
 - Context Menu: We should get rid of context.otaku
@@ -38,7 +39,7 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 - Widgets: No information shows during the playback
 
 **_Optional_**: 
-- Embeds: A Setting catagory to sort your embeds.
+- Embeds: A Setting catagory to sort your embeds
 - Want to have a Set Viewtypes options for Menu View, Anime Viewm, Episode View
 
 ## Help needed with maintaining
