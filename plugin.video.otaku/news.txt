@@ -1,5 +1,2 @@
-Inportant Information:
-- If you guys have been experiencing issues with Next Up, That was on me. 
-- If you guys are still experiencing issues, pls report on issue #69
-
-github.com/Goldenfreddy0703/Otaku/issues/69
+New Amazing Setting Addded
+- Hey everyone, we have finally added a filter for Subs and Dubs so now you guys can access dub amine menus. Big Thanks to joezito129 for adding this option and big thanks to the Mal Dub project for providing a list of Dubs. 

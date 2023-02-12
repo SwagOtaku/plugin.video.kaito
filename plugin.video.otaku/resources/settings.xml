@@ -10,8 +10,8 @@
 		<!-- Interface -->
 		<setting type="lsep" label="40302"/>
 		<setting id="sep"/>
-		<setting id="general.divflavors" label="Separate Subs and Dubs" type="bool" default="false" />
-
+		<setting id="divflavors.bool" label="40428" type="bool" default="false"/>
+		<setting id="divflavors.menu" type="labelenum" subsetting="true" label="40429" values="Sub|Dub|Both" default="Sub" visible="eq(-1,true)"/>
 		<setting id="sep"/>
 		<setting id="contentformat.bool" label="40391" type="bool" default="false"/>
 		<setting id="contentformat.menu" type="labelenum" subsetting="true" label="40392" lvalues="40393|40394|40395|40396|40397|40398|40399" default="40393" visible="eq(-1,true)"/>

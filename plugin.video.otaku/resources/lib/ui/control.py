@@ -308,6 +308,8 @@ def make_listitem(name, labels):
             vtag.setFirstAired(labels.get('aired'))
         if labels.get('mediatype'):
             vtag.setMediaType(labels.get('mediatype'))
+        if labels.get('playcount'):
+            vtag.setPlaycount(labels.get('playcount'))
 
         if cast2:
             cast2 = [xbmc.Actor(p['name'], p['role'], cast2.index(p), p['thumbnail']) for p in cast2]

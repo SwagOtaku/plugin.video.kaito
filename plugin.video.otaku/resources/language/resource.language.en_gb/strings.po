@@ -691,6 +691,14 @@ msgctxt "#40427"
 msgid "Enable Automatic Subtitles for Dub Streams"
 msgstr ""
 
+msgctxt "#40428"
+msgid "Filter Subs and Dubs"
+msgstr ""
+
+msgctxt "#40429"
+msgid "Filter"
+msgstr ""
+
 ######MAIN Category DIRECTORY#######
 msgctxt "#50000"
 msgid "Airing Anime Calendar"

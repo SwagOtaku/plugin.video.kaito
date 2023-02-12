@@ -1,5 +1,8 @@
+Changelog 0.3.23 [20230212]:
+- Added Special Setting "Filter Subs and Dubs"
+
 Changelog 0.3.22 [20230211]:
-- Use InfoTagVideo for Kodi 20
+- Use InfoTagVideo for Kodi 20+
 
 Changelog 0.3.21 [20230209]:
 - Added New Setting "Enable Automatic Subtitles for Dub Streams"

@@ -2641,11 +2641,11 @@ class AniListBrowser():
         return json_res
 
     @div_flavor
-    def _process_anilist_view(self, json_res, base_plugin_url, page, dub=False):
+    def _process_anilist_view(self, json_res, base_plugin_url, page, dub=False, dubsub_filter=None):
         hasNextPage = json_res['pageInfo']['hasNextPage']
 
         if dub:
-            mapfunc = partial(self._base_anilist_view, mal_dub=dub)
+            mapfunc = partial(self._base_anilist_view, mal_dub=dub, dubsub_filter=dubsub_filter)
         else:
             mapfunc = self._base_anilist_view
 
@@ -2688,7 +2688,7 @@ class AniListBrowser():
 
         return database.get_show(str(res['id']))
 
-    def _base_anilist_view(self, res, mal_dub=None):
+    def _base_anilist_view(self, res, mal_dub=None, dubsub_filter=None):
         in_database = database.get_show(res['id'])
 
         if not in_database:
@@ -2794,7 +2794,7 @@ class AniListBrowser():
             dub = True
 
         if dub:
-            info['title'] = f"{info['title']} (Dub)"
+            info['title'] = "%s (Dub)" % info['title']
 
         base = {
             "name": title,
@@ -2818,9 +2818,9 @@ class AniListBrowser():
         if res['format'] in ['MOVIE', 'ONA'] and res['episodes'] == 1:
             base['url'] = "play_movie/%s/1/" % (res['id'])
             base['info']['mediatype'] = 'movie'
-            return self._parse_view(base, False, dub=dub)
+            return self._parse_view(base, False, dub=dub, dubsub_filter=dubsub_filter)
 
-        return self._parse_view(base, dub=dub)
+        return self._parse_view(base, dub=dub, dubsub_filter=dubsub_filter)
 
     def _base_airing_view(self, res, ts):
         airingAt = datetime.datetime.fromtimestamp(res['airingAt'])
@@ -2915,11 +2915,68 @@ class AniListBrowser():
 
         return start_date
 
-    def _parse_view(self, base, is_dir=True, dub=False):
-        if dub:
-            return self._parse_div_view(base, is_dir)
-        return [
-            utils.allocate_item(
+    @staticmethod
+    def _parse_view(base, is_dir=True, dub=False, dubsub_filter=None):
+        if dubsub_filter == "Both":
+            if dub:
+                parsed_view = [utils.allocate_item(
+                    "%s (Sub)" % base["name"],
+                    base["url"] + '2',
+                    is_dir,
+                    image=base["image"],
+                    info=base["info"],
+                    fanart=base["fanart"],
+                    poster=base["image"],
+                    landscape=base.get("landscape"),
+                    banner=base.get("banner"),
+                    clearart=base.get("clearart"),
+                    clearlogo=base.get("clearlogo")
+                ), utils.allocate_item(
+                    "%s (Dub)" % base["name"],
+                    base["url"] + '0',
+                    is_dir,
+                    image=base["image"],
+                    info=base["info"],
+                    fanart=base["fanart"],
+                    poster=base["image"],
+                    landscape=base.get("landscape"),
+                    banner=base.get("banner"),
+                    clearart=base.get("clearart"),
+                    clearlogo=base.get("clearlogo")
+                )]
+            else:
+                parsed_view = [utils.allocate_item(
+                    "%s (Sub)" % base["name"],
+                    base["url"],
+                    is_dir=is_dir,
+                    image=base["image"],
+                    info=base["info"],
+                    fanart=base["fanart"],
+                    poster=base["image"],
+                    landscape=base.get("landscape"),
+                    banner=base.get("banner"),
+                    clearart=base.get("clearart"),
+                    clearlogo=base.get("clearlogo")
+                )]
+        elif dubsub_filter == 'Dub':
+            if dub:
+                parsed_view = [utils.allocate_item(
+                    "%s" % base["name"],
+                    base["url"] + '0',
+                    is_dir,
+                    image=base["image"],
+                    info=base["info"],
+                    fanart=base["fanart"],
+                    poster=base["image"],
+                    landscape=base.get("landscape"),
+                    banner=base.get("banner"),
+                    clearart=base.get("clearart"),
+                    clearlogo=base.get("clearlogo")
+                )]
+            else:
+                parsed_view = []
+        else:
+            parsed_view = [utils.allocate_item(
                 base["name"],
                 base["url"],
                 is_dir=is_dir,
@@ -2931,42 +2988,7 @@ class AniListBrowser():
                 banner=base.get("banner"),
                 clearart=base.get("clearart"),
                 clearlogo=base.get("clearlogo")
-            )
-        ]
-
-    def _parse_div_view(self, base, is_dir):
-        parsed_view = [
-            utils.allocate_item(
-                "%s" % base["name"],
-                base["url"] + '2',
-                is_dir,
-                image=base["image"],
-                info=base["info"],
-                fanart=base["fanart"],
-                poster=base["image"],
-                landscape=base.get("landscape"),
-                banner=base.get("banner"),
-                clearart=base.get("clearart"),
-                clearlogo=base.get("clearlogo")
-            )
-        ]
-
-        parsed_view.append(
-            utils.allocate_item(
-                "%s (Dub)" % base["name"],
-                base["url"] + '0',
-                is_dir,
-                image=base["image"],
-                info=base["info"],
-                fanart=base["fanart"],
-                poster=base["image"],
-                landscape=base.get("landscape"),
-                banner=base.get("banner"),
-                clearart=base.get("clearart"),
-                clearlogo=base.get("clearlogo")
-            )
-        )
-
+            )]
         return parsed_view
 
     def get_genres(self, genre_dialog):
@@ -3111,7 +3133,7 @@ class AniListBrowser():
         return self._process_genre_view(query, variables, "anilist_genres/%s/%s/%%d" % (genre_list, tag_list), page)
 
     @div_flavor
-    def _process_genre_view(self, query, variables, base_plugin_url, page, dub=False):
+    def _process_genre_view(self, query, variables, base_plugin_url, page, dub=False, dubsub_filter=None):
         result = client.request(self._URL, post={'query': query, 'variables': variables}, jpost=True)
         results = json.loads(result)
 
@@ -3122,7 +3144,7 @@ class AniListBrowser():
         hasNextPage = results['data']['Page']['pageInfo']['hasNextPage']
 
         if dub:
-            mapfunc = partial(self._base_anilist_view, mal_dub=dub)
+            mapfunc = partial(self._base_anilist_view, mal_dub=dub, dubsub_filter=dubsub_filter)
         else:
             mapfunc = self._base_anilist_view
 
