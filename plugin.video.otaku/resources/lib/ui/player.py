@@ -151,10 +151,13 @@ class watchlistPlayer(xbmc.Player):
                 preferred_audio = control.lang(int(preferred_audio))
             audio_int = audio_lang.index(preferred_audio)
             self.setAudioStream(audio_int)
-            if preferred_audio == "eng" and control.getSetting('general.subtitles') == 'false':
+            if preferred_audio == "eng":
                 self.showSubtitles(False)
             else:
                 self.showSubtitles(True)
+
+        if control.getSetting('general.subtitles') == 'true':
+            self.showSubtitles(True)
 
         if self.media_type == 'movie':
             return self.onWatchedPercent()

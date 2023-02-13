@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 
 from resources.lib.ui import control
 from kodi_six import xbmcvfs
@@ -226,6 +227,12 @@ class AnilistSyncDatabase:
             if confirm == 0:
                 return
 
+        # Delete mal_dub.json from app data
+        try:
+            os.remove(os.path.join(control.dataPath, 'mal_dub.json'))
+        except:
+            pass
+        
         path = control.anilistSyncDB
         xbmcvfs.delete(path)
         file = open(path, 'a+')
@@ -239,6 +246,7 @@ class AnilistSyncDatabase:
 
         self._set_base_activites()
         self._refresh_activites()
+
 
         # from resources.lib.modules.trakt_sync import activities
         # sync_errors = activities.TraktSyncDatabase().sync_activities(silent)
