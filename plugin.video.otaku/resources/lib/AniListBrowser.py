@@ -8,6 +8,8 @@ import time
 from functools import partial
 
 import six
+import copy
+
 from resources.lib.ui import client, control, database, get_meta, utils
 from resources.lib.ui.divide_flavors import div_flavor
 
@@ -2729,31 +2731,25 @@ class AniListBrowser():
             desc = desc.replace('<br>', '[CR]')
             desc = desc.replace('\n', '')
             info['plot'] = desc
-
         try:
             info['title'] = title
         except:
             pass
-
         try:
             info['duration'] = res.get('duration') * 60
         except:
             pass
-
         try:
             start_date = res.get('startDate')
             info['premiered'] = '{}-{:02}-{:02}'.format(start_date['year'], start_date['month'], start_date['day'])
             info['year'] = start_date['year']
         except:
             pass
-
         try:
             info['status'] = res.get('status')
         except:
             pass
-
         info['mediatype'] = 'tvshow'
-
         info['country'] = res.get('countryOfOrigin', '')
 
         try:
@@ -2769,7 +2765,6 @@ class AniListBrowser():
             info['cast2'] = cast2
         except:
             pass
-
         try:
             info['studio'] = [x.get('node').get('name') for x in res.get('studios').get('edges')]
         except:
@@ -2790,11 +2785,9 @@ class AniListBrowser():
 
         dub = False
         mal_id = str(res.get('idMal', 0))
+
         if mal_dub and mal_dub.get(mal_id):
             dub = True
-
-        if dub:
-            info['title'] = "%s (Dub)" % info['title']
 
         base = {
             "name": title,
@@ -2918,6 +2911,7 @@ class AniListBrowser():
     @staticmethod
     def _parse_view(base, is_dir=True, dub=False, dubsub_filter=None):
         if dubsub_filter == "Both":
+            base['info']['title'] = "%s (Sub)" % base['name']
             if dub:
                 parsed_view = [utils.allocate_item(
                     "%s (Sub)" % base["name"],
@@ -2931,19 +2925,24 @@ class AniListBrowser():
                     banner=base.get("banner"),
                     clearart=base.get("clearart"),
                     clearlogo=base.get("clearlogo")
-                ), utils.allocate_item(
+                )]
+
+                base2 = copy.deepcopy(base)
+                base2['info']['title'] = "%s (Dub)" % base['name']
+                parsed_view.append(utils.allocate_item(
                     "%s (Dub)" % base["name"],
                     base["url"] + '0',
                     is_dir,
                     image=base["image"],
-                    info=base["info"],
+                    info=base2["info"],
                     fanart=base["fanart"],
                     poster=base["image"],
                     landscape=base.get("landscape"),
                     banner=base.get("banner"),
                     clearart=base.get("clearart"),
                     clearlogo=base.get("clearlogo")
-                )]
+                ))
+
             else:
                 parsed_view = [utils.allocate_item(
                     "%s (Sub)" % base["name"],
