@@ -1,3 +1,6 @@
+Changelog 0.3.26 [20230217]:
+- Add Zoro Sub sources
+
 Changelog 0.3.25 [20230214]:
 - Fixed sub and dub skin bug
 
