@@ -92,6 +92,8 @@ class Resolver(BaseWindow):
                             continue
                         else:
                             self.return_data = stream_link
+                            if i.get('subs'):
+                                self.return_data = (stream_link, i.get('subs'))
                             self.close()
                             return
 

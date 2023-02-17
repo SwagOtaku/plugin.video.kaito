@@ -16,24 +16,28 @@ class sources(BrowserBase):
         title = self._clean_title(title)
         title = '{0} Ep-{1}'.format(title, episode)
 
-        r = database.get(
-            consumet.CONSUMETAPI().get_sources,
-            8,
-            anilist_id,
-            episode,
-            'zoro',
-            'dub'
-        )
+        for x in ['sub', 'dub']:
+            r = database.get(
+                consumet.CONSUMETAPI().get_sources,
+                8,
+                anilist_id,
+                episode,
+                'zoro',
+                x
+            )
 
-        if r.get('sources'):
-            srcs = r.get('sources')
-            mapfunc = partial(self._process_ap, title=title, lang=2)
-            all_results = list(map(mapfunc, srcs))
-            all_results = list(itertools.chain(*all_results))
-
+            if r.get('sources'):
+                srcs = r.get('sources')
+                subs = r.get('subtitles')
+                if subs:
+                    subs = [x for x in subs if x.get('lang') != 'Thumbnails']
+                mapfunc = partial(self._process_ap, title=title, lang=2 if x == 'dub' else 0, subs=subs)
+                results = list(map(mapfunc, srcs))
+                results = list(itertools.chain(*results))
+                all_results += results
         return all_results
 
-    def _process_ap(self, item, title='', lang=0):
+    def _process_ap(self, item, title='', lang=0, subs=[]):
         sources = []
         slink = item.get('url')
         qual = item.get('quality')
@@ -57,7 +61,8 @@ class sources(BrowserBase):
                 'provider': 'zoro',
                 'size': 'NA',
                 'info': ['DUB' if lang == 2 else 'SUB', 'HLS' if item.get('isM3U8') else ''],
-                'lang': lang
+                'lang': lang,
+                'subs': subs
             }
             sources.append(source)
         return sources

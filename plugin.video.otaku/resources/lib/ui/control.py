@@ -306,8 +306,6 @@ def make_listitem(name, labels):
             vtag.setEpisode(labels.get('episode'))
         if labels.get('aired'):
             vtag.setFirstAired(labels.get('aired'))
-        if labels.get('mediatype'):
-            vtag.setMediaType(labels.get('mediatype'))
         if labels.get('playcount'):
             vtag.setPlaycount(labels.get('playcount'))
 

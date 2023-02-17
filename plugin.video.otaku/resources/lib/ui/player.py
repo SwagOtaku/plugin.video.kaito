@@ -2,7 +2,7 @@ import sys
 import time
 
 from kodi_six import xbmc, xbmcgui, xbmcplugin
-from resources.lib.ui import client, control
+from resources.lib.ui import client, control, utils
 from six.moves import urllib_parse
 
 try:
@@ -284,8 +284,10 @@ def _prefetch_play_link(link):
     }
 
 
-def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=None, episode=None, filter_lang=None, rescrape=False, source_select=False):
+def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=None, episode=None, filter_lang=None, rescrape=False, source_select=False, subs=[]):
     try:
+        if isinstance(link, tuple):
+            link, subs = link
         linkInfo = _prefetch_play_link(link)
         if not linkInfo:
             cancelPlayback()
@@ -296,6 +298,14 @@ def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=Non
         return
 
     item = xbmcgui.ListItem(path=linkInfo['url'])
+    if subs:
+        utils.del_subs()
+        subtitles = []
+        for sub in subs:
+            sub_url = sub.get('url')
+            sub_lang = sub.get('lang')
+            subtitles.append(utils.get_sub(sub_url, sub_lang))
+        item.setSubtitles(subtitles)
 
     if rescrape:
         episode_info = build_playlist(anilist_id, '', filter_lang, rescrape=True)[episode - 1]

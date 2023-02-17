@@ -141,9 +141,13 @@ def WATCHLIST_TO_MOVIE(payload, params):
     link = SourceSelect(*('source_select.xml', control.ADDON_PATH),
                         actionArgs=_mock_args, sources=sources).doModal()
 
+    subs = []
+    if isinstance(link, tuple):
+        link, subs = link
+
     from resources.lib.ui import player
 
-    player.play_source(link)
+    player.play_source(link, subs=subs)
 
 
 def watchlist_update(anilist_id, episode):
