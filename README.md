@@ -31,7 +31,7 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 ## Todo List
 
 **_Function_**:
-- Accounts: Adding an Easy News Debrid Provider
+- Watchlist: Automatically mark an anime as completed when the whole series is watched. 
 - Context Menu: Context Menu needs a recode
 - Context Menu: Want to add "Find Similar" or "Find Relations"
 - Context Menu: We should get rid of context.otaku
@@ -40,7 +40,8 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 
 **_Optional_**: 
 - Embeds: A Setting catagory to sort your embeds
-- Want to have a Set Viewtypes options for Menu View, Anime Viewm, Episode View
+- Viewtypes: Want to have a Set Viewtypes options for Menu View, Anime Viewm, Episode View
+- Accounts: Adding an Easy News Debrid Provider
 
 ## Help needed with maintaining
 
