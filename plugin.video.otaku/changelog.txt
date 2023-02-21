@@ -1,3 +1,6 @@
+Changelog 0.3.28 [20230221]:
+- Fix zoro subtitles not displaying correctly
+
 Changelog 0.3.27 [20230218]:
 - Changed a few default settings
 
