@@ -37,34 +37,39 @@ def allocate_item(name, url, is_dir=False, image='', info='', fanart=None, poste
 
 def get_sub(sub_url, sub_lang):
     content = client.request(sub_url)
-    if sub_url.endswith('.vtt'):
-        replacement = re.sub(r'([\d]+)\.([\d]+)', r'\1,\2', content)
-        replacement = re.sub(r'WEBVTT\n\n', '', replacement)
-        replacement = re.sub(r'^\d+\n', '', replacement)
-        replacement = re.sub(r'\n\d+\n', '\n', replacement)
-        replacement = StringIO(replacement)
-        idx = 1
-        content = ''
-        for line in replacement:
-            if '-->' in line:
-                if len(line.split(' --> ')[0]) < 12:
-                    line = re.sub(
-                        r'([\d]+):([\d]+),([\d]+)', r'00:\1:\2,\3', line)
-                content += '%s\n%s' % (idx, line)
-                idx += 1
-            else:
-                content += line
-
     subtitle = control.TRANSLATEPATH('special://temp/')
-    subtitle = os.path.join(subtitle, 'TemporarySubs.{0}.srt'.format(sub_lang))
+    fname = 'TemporarySubs.{0}.srt'.format(sub_lang)
+    fpath = os.path.join(subtitle, fname)
+    if sub_url.endswith('.vtt'):
+        if control._kodiver > 19.8:
+            fname = fname.replace('.srt', '.vtt')
+            fpath = fpath.replace('.srt', '.vtt')
+        else:
+            replacement = re.sub(r'([\d]+)\.([\d]+)', r'\1,\2', content)
+            replacement = re.sub(r'WEBVTT\n\n', '', replacement)
+            replacement = re.sub(r'^\d+\n', '', replacement)
+            replacement = re.sub(r'\n\d+\n', '\n', replacement)
+            replacement = StringIO(replacement)
+            idx = 1
+            content = ''
+            for line in replacement:
+                if '-->' in line:
+                    if len(line.split(' --> ')[0]) < 12:
+                        line = re.sub(
+                            r'([\d]+):([\d]+),([\d]+)', r'00:\1:\2,\3', line)
+                    content += '%s\n%s' % (idx, line)
+                    idx += 1
+                else:
+                    content += line
+
     if control.PY3:
-        with open(subtitle, 'w', encoding='utf-8') as f:
+        with open(fpath, 'w', encoding='utf-8') as f:
             f.write(content)
     else:
-        with open(subtitle, 'w') as f:
+        with open(fpath, 'w') as f:
             f.write(content.encode('utf8'))
 
-    return subtitle
+    return 'special://temp/' + fname
 
 
 def del_subs():

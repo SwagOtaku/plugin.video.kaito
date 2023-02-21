@@ -320,6 +320,9 @@ def request(
         if 'charset=' in content_type:
             encoding = content_type.split('charset=')[-1]
 
+        if 'text/vtt' in content_type:
+            encoding = 'utf8'
+
         if encoding is None:
             epatterns = [r'<meta\s+http-equiv="Content-Type"\s+content="(?:.+?);\s+charset=(.+?)"',
                          r'xml\s*version.+encoding="([^"]+)']

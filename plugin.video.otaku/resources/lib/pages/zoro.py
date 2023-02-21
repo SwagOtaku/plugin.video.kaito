@@ -26,7 +26,7 @@ class sources(BrowserBase):
                 x
             )
 
-            if r.get('sources'):
+            if r and r.get('sources'):
                 srcs = r.get('sources')
                 subs = r.get('subtitles')
                 if subs:
