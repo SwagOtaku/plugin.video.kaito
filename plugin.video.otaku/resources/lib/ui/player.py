@@ -227,7 +227,7 @@ class PlayerDialogs(xbmc.Player):
     def _show_skip_intro(self):
         from resources.lib.windows.skip_intro import SkipIntro
 
-        delay_time = int(control.getSetting("set_delay_time"))
+        delay_time = int(control.getSetting("skipintro.delay"))
         time.sleep(delay_time)
 
         SkipIntro(*('skip_intro.xml', control.ADDON_PATH),

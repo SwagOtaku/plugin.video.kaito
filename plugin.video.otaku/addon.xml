@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.28">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.29">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -24,8 +24,8 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.3.28 [20230221]:
-- Fix zoro subtitles not displaying correctly
+Changelog 0.3.29 [20230223]:
+- Added New Duration Setting for Intro Dialog
     </news>
   </extension>
 </addon>

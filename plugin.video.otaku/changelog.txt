@@ -1,3 +1,6 @@
+Changelog 0.3.29 [20230223]:
+- Added New Duration Setting for Intro Dialog
+
 Changelog 0.3.28 [20230221]:
 - Fix zoro subtitles not displaying correctly
 

@@ -3,7 +3,7 @@
 from kodi_six import xbmc
 from resources.lib.ui import control
 from resources.lib.windows.base_window import BaseWindow
-
+from threading import Timer
 
 def run_once(f):
     def wrapper(*args, **kwargs):
@@ -13,24 +13,39 @@ def run_once(f):
     wrapper.has_run = False
     return wrapper
 
-
 class SkipIntro(BaseWindow):
 
     def __init__(self, xml_file, xml_location, actionArgs=None):
-
         try:
             super(SkipIntro, self).__init__(xml_file, xml_location, actionArgs=actionArgs)
             self.player = control.player()
             self.playing_file = self.player.getPlayingFile()
             self.duration = self.player.getTotalTime() - self.player.getTime()
             self.skip = int(control.getSetting('skipintro.time'))
+
+            # Convert duration setting to seconds
+            duration = control.getSetting('skipintro.duration')
+            if duration == "0":
+                self.duration_seconds = None
+            elif duration == "1":
+                self.duration_seconds = 60
+            elif duration == "2":
+                self.duration_seconds = 120
+            elif duration == "3":
+                self.duration_seconds = 180
+            elif duration == "4":
+                self.duration_seconds = 240
+            elif duration == "5":
+                self.duration_seconds = 300
+
+            self.total = self.duration_seconds
             self.closed = False
             self.actioned = None
             self.default_action = '0'
         except:
             import traceback
             traceback.print_exc()
-
+    
     def onInit(self):
         self.background_tasks()
 
@@ -44,11 +59,19 @@ class SkipIntro(BaseWindow):
             except:
                 progress_bar = None
 
+            # Start a timer to close the dialog after a delay
+            close_timer = Timer(self.duration_seconds, self.close)
+            close_timer.start()
+
             while int(self.player.getTotalTime()) - int(self.player.getTime()) > 2 and not self.closed \
                     and self.playing_file == self.player.getPlayingFile():
                 xbmc.sleep(500)
                 if progress_bar is not None:
                     progress_bar.setPercent(self.calculate_percent())
+
+            # Cancel the timer if the dialog is closed by another event
+            if close_timer.is_alive():
+                close_timer.cancel()
 
             if self.default_action == '1' and\
                     self.playing_file == self.player.getPlayingFile() and\

@@ -68,7 +68,8 @@
 		<setting type="sep" />
 		<setting id="smartplay.skipintrodialog" type="bool" label="40324" default="true" />
 		<setting id="skipintro.time" type="slider" subsetting="true" label="40325" option="int" range="10,100" default="86" visible="eq(-1,true)" />
-		<setting id="set_delay_time" type="slider" subsetting="true" label="40424" option="int" range="1,100" default="2" visible="eq(-2,true)" />
+		<setting id="skipintro.delay" type="slider" subsetting="true" label="40424" option="int" range="1,100" default="2" visible="eq(-2,true)" />
+		<setting id="skipintro.duration" type="enum" subsetting="true" label="40430" lvalues="40431|40432|40433|40434|40435|40436" default="40431" visible="eq(-3,true)" />
 	</category>
 
 	<!-- Sort & Filter -->
