@@ -1,2 +1,2 @@
-New Amazing Setting Addded
-- Hey everyone, we have finally added a filter for Subs and Dubs so now you guys can access dub amine menus. Big Thanks to joezito129 for adding this option and big thanks to the Mal Dub project for providing a list of Dubs. 
+Update from the Consumet Team!
+- Hey everyone, we’re currently receiving a high amount of traffic, so there are slowdowns/a higher proportion of failed request. The Consumet team are currently working on a fix, so we’ll keep you updated! Thank you for your patience!
