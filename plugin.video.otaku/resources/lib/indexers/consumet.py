@@ -149,7 +149,7 @@ class CONSUMETAPI:
             episode_id = [x.get('id') for x in episodes if x.get('number') == int(episode)][0]
             if lang == 'dub':
                 episode_id = episode_id.replace('$sub', '$dub')
-            surl = self.streamUrl if provider == 'animepahe' else self.streamUrl2
+            surl = self.streamUrl if provider in ['animepahe', 'gogoanime'] else self.streamUrl2
             sources = self._json_request(surl.format(provider, episode_id))
 
         return sources

@@ -240,11 +240,11 @@ msgid "Preferred Audio Stream (Dual Audio)"
 msgstr ""
 
 msgctxt "#40315"
-msgid "Jpn"
+msgid "Japanese"
 msgstr ""
 
 msgctxt "#40316"
-msgid "Eng"
+msgid "English"
 msgstr ""
 
 msgctxt "#40317"

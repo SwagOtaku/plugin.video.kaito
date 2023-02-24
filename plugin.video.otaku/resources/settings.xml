@@ -36,6 +36,7 @@
 		<setting id="provider.animix" type="bool" label="Animix" default="true" />
 		<setting id="provider.animepahe" type="bool" label="Animepahe" default="true" />
 		<setting id="provider.gogo" type="bool" label="Gogo" default="true" />
+		<setting id="provider.gogohd" type="bool" label="Gogo HD" default="true" />
 		<setting id="provider.zoro" type="bool" label="Zoro" default="true" />
 	</category>
 

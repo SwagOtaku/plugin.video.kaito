@@ -1,7 +1,7 @@
 import threading
 import time
 
-from resources.lib.pages import animixplay, debrid_cloudfiles, gogoanime, nyaa, animepahe, zoro
+from resources.lib.pages import animixplay, debrid_cloudfiles, gogoanime, gogohd, nyaa, animepahe, zoro
 from resources.lib.ui import control
 from resources.lib.windows.get_sources_window import \
     GetSources as DisplayWindow
@@ -40,7 +40,7 @@ class Sources(DisplayWindow):
         self.embedSources = []
         self.hosterSources = []
         self.cloud_files = []
-        self.remainingProviders = ['nyaa', 'gogo', 'animix', 'animepahe', 'zoro']
+        self.remainingProviders = ['nyaa', 'gogo', 'gogohd', 'animix', 'animepahe', 'zoro']
         self.allTorrents = {}
         self.allTorrents_len = 0
         self.hosterDomains = {}
@@ -67,6 +67,7 @@ class Sources(DisplayWindow):
         self.remainingSources = ['1', '2', '3']
         self.nyaaSources = []
         self.gogoSources = []
+        self.gogohdSources = []
         self.animixplaySources = []
         self.animepaheSources = []
         self.zoroSources = []
@@ -94,6 +95,12 @@ class Sources(DisplayWindow):
                 threading.Thread(target=self.gogo_worker, args=(anilist_id, episode, get_backup, rescrape)))
         else:
             self.remainingProviders.remove('gogo')
+
+        if control.getSetting('provider.gogohd') == 'true':
+            self.threads.append(
+                threading.Thread(target=self.gogohd_worker, args=(anilist_id, episode, get_backup, rescrape)))
+        else:
+            self.remainingProviders.remove('gogohd')
 
         if control.getSetting('provider.animix') == 'true':
             self.threads.append(
@@ -174,6 +181,12 @@ class Sources(DisplayWindow):
             self.gogoSources = gogoanime.sources().get_sources(anilist_id, episode, get_backup)
             self.embedSources += self.gogoSources
         self.remainingProviders.remove('gogo')
+
+    def gogohd_worker(self, anilist_id, episode, get_backup, rescrape):
+        if not rescrape:
+            self.gogohdSources = gogohd.sources().get_sources(anilist_id, episode, get_backup)
+            self.embedSources += self.gogohdSources
+        self.remainingProviders.remove('gogohd')
 
     def animixplay_worker(self, anilist_id, episode, get_backup, rescrape):
         if not rescrape:
