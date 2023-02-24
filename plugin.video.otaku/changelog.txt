@@ -1,4 +1,7 @@
-Changelog 0.3.30 [20230224]:
+Changelog 0.3.31 [20230223]:
+- Fixed Setting Types
+
+Changelog 0.3.30 [20230223]:
 - Updated The News
 
 Changelog 0.3.29 [20230223]:

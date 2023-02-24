@@ -147,6 +147,11 @@ class watchlistPlayer(xbmc.Player):
         audio_lang = self.getAvailableAudioStreams()
         if len(audio_lang) > 1:
             preferred_audio = control.getSetting('general.audio')
+            if preferred_audio == "0":
+                preferred_audio = "jpn"
+            elif preferred_audio == "1":
+                preferred_audio = "eng"
+
             if len(preferred_audio) == 5:
                 preferred_audio = control.lang(int(preferred_audio))
             audio_int = audio_lang.index(preferred_audio)

@@ -1,2 +1,2 @@
-Update from the Consumet Team!
-- Hey everyone, we’re currently receiving a high amount of traffic, so there are slowdowns/a higher proportion of failed request. The Consumet team are currently working on a fix, so we’ll keep you updated! Thank you for your patience!
+Api is working again!
+- Hey everyone, Thank you everyone for your patience! Api is back up and faster then ever. Today I made some setting changes for Content Format and Preferred Audio, Pls Test that for me and if you guys encounter audio errors, pls report to github. Thank you

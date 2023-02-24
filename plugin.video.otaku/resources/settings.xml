@@ -14,7 +14,7 @@
 		<setting id="divflavors.menu" type="labelenum" subsetting="true" label="40429" values="Sub|Dub|Both" default="Sub" visible="eq(-1,true)"/>
 		<setting id="sep"/>
 		<setting id="contentformat.bool" label="40391" type="bool" default="false"/>
-		<setting id="contentformat.menu" type="labelenum" subsetting="true" label="40392" lvalues="40393|40394|40395|40396|40397|40398|40399" default="40393" visible="eq(-1,true)"/>
+		<setting id="contentformat.menu" type="enum" subsetting="true" label="40392" lvalues="40393|40394|40395|40396|40397|40398|40399" default="40393" visible="eq(-1,true)"/>
 		<setting id="sep"/>
 		<setting id="contentorigin.bool" label="40418" type="bool" default="false"/>
 		<setting id="contentorigin.menu" type="enum" subsetting="true" label="40419" lvalues="40420|40421|40422|40423" default="0" visible="eq(-1,true)"/>
@@ -51,7 +51,7 @@
 		<!-- Preferences -->
 		<setting type="lsep" label="40313" />
 		<setting type="sep"/>
-		<setting id="general.audio" type="labelenum" label="40314" default="40315" lvalues="40315|40316" />
+		<setting id="general.audio" type="enum" label="40314" default="40315" lvalues="40315|40316" />
 		<setting id="general.source" type="labelenum" label="40330" default="Sub" values="Dub|Sub|Both" />
 		<setting id="general.subtitles" type="bool" label="40427" default="false" />
 

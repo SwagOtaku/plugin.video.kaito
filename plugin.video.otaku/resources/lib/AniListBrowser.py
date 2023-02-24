@@ -25,7 +25,8 @@ class AniListBrowser():
         self.format_in_type = ''
         filterEnable = control.getSetting('contentformat.bool') == "true"
         if filterEnable:
-            self.format_in_type = control.getSetting('contentformat.menu')
+            formats = ['TV', 'MOVIE', 'TV_SHORT', 'SPECIAL', 'OVA', 'ONA', 'MUSIC']
+            self.format_in_type = formats[int(control.getSetting('contentformat.menu'))]
 
         elif title_key:
             self._TITLE_LANG = self._title_lang(title_key)
@@ -84,7 +85,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -102,7 +103,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -120,7 +121,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -138,7 +139,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -157,7 +158,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -175,7 +176,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -194,7 +195,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -213,7 +214,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -232,7 +233,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -251,7 +252,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -269,7 +270,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -287,7 +288,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -306,7 +307,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -325,7 +326,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -344,7 +345,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -364,7 +365,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -383,7 +384,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -402,7 +403,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -421,7 +422,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -440,7 +441,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -460,7 +461,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -479,7 +480,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -498,7 +499,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -515,7 +516,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -532,7 +533,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -549,7 +550,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -566,7 +567,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -587,7 +588,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -606,7 +607,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -625,7 +626,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -644,7 +645,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -664,7 +665,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -683,7 +684,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -703,7 +704,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -723,7 +724,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -743,7 +744,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -763,7 +764,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -782,7 +783,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -801,7 +802,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -821,7 +822,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -841,7 +842,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -861,7 +862,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -882,7 +883,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -902,7 +903,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -922,7 +923,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -942,7 +943,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -962,7 +963,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -983,7 +984,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1003,7 +1004,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1023,7 +1024,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1041,7 +1042,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1059,7 +1060,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1077,7 +1078,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1095,7 +1096,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1116,7 +1117,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1135,7 +1136,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1154,7 +1155,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1173,7 +1174,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1193,7 +1194,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1212,7 +1213,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1232,7 +1233,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1252,7 +1253,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1272,7 +1273,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1292,7 +1293,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1311,7 +1312,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1330,7 +1331,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1350,7 +1351,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1370,7 +1371,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1390,7 +1391,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1411,7 +1412,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1431,7 +1432,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1451,7 +1452,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1471,7 +1472,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1491,7 +1492,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1512,7 +1513,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1532,7 +1533,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1552,7 +1553,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1570,7 +1571,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1588,7 +1589,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1606,7 +1607,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1624,7 +1625,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1642,7 +1643,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1661,7 +1662,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1680,7 +1681,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1699,7 +1700,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1716,7 +1717,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1734,7 +1735,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1753,7 +1754,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1772,7 +1773,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1791,7 +1792,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1808,7 +1809,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1826,7 +1827,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1845,7 +1846,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1864,7 +1865,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1883,7 +1884,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1900,7 +1901,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1919,7 +1920,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1938,7 +1939,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1958,7 +1959,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1978,7 +1979,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -1996,7 +1997,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -2014,7 +2015,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -2032,7 +2033,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -2051,7 +2052,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -2070,7 +2071,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
@@ -2089,7 +2090,7 @@ class AniListBrowser():
         }
 
         if self.format_in_type:
-            variables['format'] = [self.format_in_type.upper()]
+            variables['format'] = self.format_in_type
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
