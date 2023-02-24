@@ -17,31 +17,27 @@ class sources(BrowserBase):
         title = self._clean_title(title)
         title = '{0} Ep-{1}'.format(title, episode)
 
-        r = database.get(
-            consumet.CONSUMETAPI().get_sources,
-            8,
-            anilist_id,
-            episode,
-            'gogoanime'
-        )
+        for x in ['sub', 'dub']:
+            r = database.get(
+                consumet.CONSUMETAPI().get_sources,
+                8,
+                anilist_id,
+                episode,
+                'gogoanime',
+                x
+            )
 
-        if r.get('sources'):
-            srcs = r.get('sources')
-            quals = []
-            for i in range(len(srcs)):
-                src = srcs[i]
-                if src.get('quality') in quals:
-                    srcs[i].update({'type': 'DUB'})
-                else:
-                    quals.append(src.get('quality'))
-                    srcs[i].update({'type': 'SUB'})
-            referer = r.get('headers', {}).get('Referer', '')
-            if referer:
-                referer = urllib_parse.urljoin(referer, '/')
-            mapfunc = partial(self._process_ap, title=title, referer=referer)
-            all_results = list(map(mapfunc, srcs))
-            all_results = list(itertools.chain(*all_results))
-
+            if r and r.get('sources'):
+                srcs = r.get('sources')
+                for i in range(len(srcs)):
+                    srcs[i].update({'type': x.upper()})
+                referer = r.get('headers', {}).get('Referer', '')
+                if referer:
+                    referer = urllib_parse.urljoin(referer, '/')
+                mapfunc = partial(self._process_ap, title=title, referer=referer)
+                results = list(map(mapfunc, srcs))
+                results = list(itertools.chain(*results))
+                all_results += results
         return all_results
 
     def _process_ap(self, item, title='', referer=''):
@@ -50,7 +46,9 @@ class sources(BrowserBase):
         qual = item.get('quality')
         if qual.endswith('0p'):
             qual = int(qual[:-1])
-            if qual < 577:
+            if qual < 361:
+                quality = 'EQ'
+            elif qual < 577:
                 quality = 'NA'
             elif qual < 721:
                 quality = '720p'

@@ -142,12 +142,15 @@ class CONSUMETAPI:
 
     def get_sources(self, anilist_id, episode, provider, lang=None):
         sources = []
-        episodes = self._json_request(self.episodesUrl.format(anilist_id, provider))
+        eurl = self.episodesUrl.format(anilist_id, provider)
+        if provider == 'gogoanime':
+            eurl += '&{0}=true'.format(lang)
+        episodes = self._json_request(eurl)
         if episodes:
             if episodes[0].get('number') != 1:
                 episode = episodes[0].get('number') - 1 + int(episode)
             episode_id = [x.get('id') for x in episodes if x.get('number') == int(episode)][0]
-            if lang == 'dub':
+            if provider == 'zoro' and lang == 'dub':
                 episode_id = episode_id.replace('$sub', '$dub')
             surl = self.streamUrl if provider in ['animepahe', 'gogoanime'] else self.streamUrl2
             sources = self._json_request(surl.format(provider, episode_id))
