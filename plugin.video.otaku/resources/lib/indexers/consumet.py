@@ -22,11 +22,13 @@ class CONSUMETAPI:
             client.request,
             4,
             url,
-            error=True
+            error=True,
+            output='extended'
         )
-        if response:
-            response = json.loads(response)
-        return response
+        data = []
+        if int(response[1]) < 300:
+            data = json.loads(response[0])
+        return data
 
     def _parse_episode_view(self, res, show_id, show_meta, season, poster, fanart, eps_watched, update_time):
         url = "%s/%s/" % (show_id, res['number'])

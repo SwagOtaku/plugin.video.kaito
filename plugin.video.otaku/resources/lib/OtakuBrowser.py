@@ -139,11 +139,15 @@ class OtakuBrowser(BrowserBase):
         # p = re.search(r'(?:part|cour)\s*\d', title, re.I)
         # if not trakt_id or p:
         # if not trakt_id:
-        if not show_meta:
-            return self.get_anime_simkl(anilist_id, filter_lang)
+        data = ([], 'episodes')
+        if show_meta:
+            data = consumet.CONSUMETAPI().get_episodes(anilist_id, filter_lang=filter_lang)
+
+        if not data[0]:
+            data = self.get_anime_simkl(anilist_id, filter_lang)
 
         # return self.get_anime_trakt(anilist_id, filter_lang=filter_lang)
-        return consumet.CONSUMETAPI().get_episodes(anilist_id, filter_lang=filter_lang)
+        return data
 
     def get_episodeList(self, show_id, pass_idx, filter_lang=None, rescrape=False, source_select=False):
         show = database.get_show(show_id)

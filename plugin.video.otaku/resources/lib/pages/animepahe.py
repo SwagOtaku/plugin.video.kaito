@@ -24,7 +24,7 @@ class sources(BrowserBase):
             'animepahe'
         )
 
-        if r.get('sources'):
+        if r and r.get('sources'):
             srcs = r.get('sources')
             quals = []
             for i in range(len(srcs)):
