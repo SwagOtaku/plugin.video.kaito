@@ -1,3 +1,6 @@
+Changelog 0.3.35 [20230228]:
+- Add 9anime provider
+
 Changelog 0.3.34 [20230226]:
 - Fix simkl fallback
 
