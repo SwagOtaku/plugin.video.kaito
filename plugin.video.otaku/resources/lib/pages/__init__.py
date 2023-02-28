@@ -1,7 +1,7 @@
 import threading
 import time
 
-from resources.lib.pages import animixplay, debrid_cloudfiles, gogoanime, gogohd, nyaa, animepahe, zoro
+from resources.lib.pages import animixplay, debrid_cloudfiles, nineanime, gogoanime, gogohd, nyaa, animepahe, zoro
 from resources.lib.ui import control
 from resources.lib.windows.get_sources_window import \
     GetSources as DisplayWindow
@@ -40,7 +40,7 @@ class Sources(DisplayWindow):
         self.embedSources = []
         self.hosterSources = []
         self.cloud_files = []
-        self.remainingProviders = ['nyaa', 'gogo', 'gogohd', 'animix', 'animepahe', 'zoro']
+        self.remainingProviders = ['nyaa', '9anime', 'gogo', 'gogohd', 'animix', 'animepahe', 'zoro']
         self.allTorrents = {}
         self.allTorrents_len = 0
         self.hosterDomains = {}
@@ -68,6 +68,7 @@ class Sources(DisplayWindow):
         self.nyaaSources = []
         self.gogoSources = []
         self.gogohdSources = []
+        self.nineSources = []
         self.animixplaySources = []
         self.animepaheSources = []
         self.zoroSources = []
@@ -95,6 +96,12 @@ class Sources(DisplayWindow):
                 threading.Thread(target=self.gogo_worker, args=(anilist_id, episode, get_backup, rescrape)))
         else:
             self.remainingProviders.remove('gogo')
+
+        if control.getSetting('provider.nineanime') == 'true':
+            self.threads.append(
+                threading.Thread(target=self.nine_worker, args=(anilist_id, episode, get_backup, rescrape)))
+        else:
+            self.remainingProviders.remove('9anime')
 
         if control.getSetting('provider.gogohd') == 'true':
             self.threads.append(
@@ -187,6 +194,12 @@ class Sources(DisplayWindow):
             self.gogohdSources = gogohd.sources().get_sources(anilist_id, episode, get_backup)
             self.embedSources += self.gogohdSources
         self.remainingProviders.remove('gogohd')
+
+    def nine_worker(self, anilist_id, episode, get_backup, rescrape):
+        if not rescrape:
+            self.nineSources = nineanime.sources().get_sources(anilist_id, episode, get_backup)
+            self.embedSources += self.nineSources
+        self.remainingProviders.remove('9anime')
 
     def animixplay_worker(self, anilist_id, episode, get_backup, rescrape):
         if not rescrape:
