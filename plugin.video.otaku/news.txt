@@ -1,2 +1,5 @@
 9anime has been added!
 - Hey everyone, we have added the most complicated provider 9anime, Huge thanks to the Consumet Team for adding 9anime and we hope you all enjoy.
+
+For Verizon Users:
+If you guys are not getting any streams, a label was changed so go to provider setting and make sure Nya Alt is enabled. 

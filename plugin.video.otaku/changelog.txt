@@ -1,3 +1,6 @@
+Changelog 0.3.36 [20230228]:
+- Add Nyaa provider
+
 Changelog 0.3.35 [20230228]:
 - Add 9anime provider
 

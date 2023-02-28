@@ -16,7 +16,10 @@ from six.moves import filter, urllib_parse
 
 
 class sources(BrowserBase):
-    _BASE_URL = 'https://nyaa.si/' if control.getSetting('provider.nyaa') == 'false' else 'https://nyaa.iss.ink/'
+    if control.getSetting('provider.nyaa') == 'true':
+        _BASE_URL = 'https://nyaa.si/'
+    if control.getSetting('provider.nyaaalt') == 'true':
+        _BASE_URL = 'https://nyaa.iss.ink/'
 
     def _parse_anime_view(self, res):
         info = {}
