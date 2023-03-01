@@ -46,11 +46,17 @@ class BaseWindow(control.xmlWindow):
 
         fanart = self.item_information.get('fanart')
         if isinstance(fanart, list):
-            fanart = random.choice(fanart)
+            if control.getSetting('scraping.fanart') == 'true':
+                fanart = control.OTAKU_FANART_PATH
+            else:
+                fanart = random.choice(fanart)
 
         clearlogo = self.item_information.get('clearlogo', control.OTAKU_LOGO2_PATH)
         if clearlogo and isinstance(clearlogo, list):
-            clearlogo = random.choice(clearlogo)
+            if control.getSetting('scraping.clearlogo') == 'true':
+                clearlogo = control.OTAKU_LOGO2_PATH
+            else:
+                clearlogo = random.choice(clearlogo)
 
         self.setProperty('item.art.thumb', thumb if thumb else fanart)
         self.setProperty('item.art.poster', self.item_information.get('poster'))

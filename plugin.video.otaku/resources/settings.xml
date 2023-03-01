@@ -20,6 +20,8 @@
 		<setting id="contentorigin.menu" type="enum" subsetting="true" label="40419" lvalues="40420|40421|40422|40423" default="0" visible="eq(-1,true)"/>
 		<setting id="sep"/>
 		<setting id="general.icons" type="enum" label="40388" lvalues="40389|40390" default="0"/>
+		<setting id="scraping.fanart" type="bool" label="40437" default="false" />
+		<setting id="scraping.clearlogo" type="bool" label="40438" default="false" />
 		<!--
 		<setting id="contenttype.seasons" type="labelenum" label="- Seasons content type" values="seasons|tvshows" default="tvshows" visible="eq(-2,true)"/>
 		<setting id="contenttype.episodes" type="labelenum" label="- Episodes content type" values="episodes|tvshows" default="tvshows" visible="eq(-3,true)"/>

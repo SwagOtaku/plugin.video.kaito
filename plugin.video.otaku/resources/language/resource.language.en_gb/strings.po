@@ -727,6 +727,14 @@ msgctxt "#40436"
 msgid "5 min"
 msgstr ""
 
+msgctxt "#40437"
+msgid "Disable Scraping Screen Fanart"
+msgstr ""
+
+msgctxt "#40438"
+msgid "Disable Scraping Screen Clearlogo"
+msgstr ""
+
 ######MAIN Category DIRECTORY#######
 msgctxt "#50000"
 msgid "Airing Anime Calendar"
