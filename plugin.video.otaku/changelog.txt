@@ -1,3 +1,6 @@
+Changelog 0.3.38 [20230301]:
+- Disable Nyaa properly based on settings
+
 Changelog 0.3.37 [20230301]:
 - Added New Setting "Disable Scraping Screen Fanart" 
 - Added New Setting "Disable Scraping Screen Clearlogo"
