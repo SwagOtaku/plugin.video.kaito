@@ -5,7 +5,7 @@
 		<!-- General -->
 		<setting id="titlelanguage" type="labelenum" label="40369" lvalues="40370|40371" default ="40371"/>
 		<setting id="searchhistory" type="labelenum" label="40301" values="Yes|No" default="Yes"/>
-		<setting id="showchangelog" type="labelenum" label="40426" values="Yes|No" default="Yes"/>>
+		<setting id="showchangelog" type="labelenum" label="40426" values="Yes|No" default="Yes"/>
 
 		<!-- Interface -->
 		<setting type="lsep" label="40302"/>
@@ -35,7 +35,7 @@
 	<!-- Provider -->
 	<category label="40226">
 		<setting id="provider.nyaa" type="bool" label="Nyaa" default="true" />
-		<setting id="provider.nyaaalt" type="bool" label="Nyaa Alt (For Verizon Users)" default="false" />
+		<setting id="provider.nyaaalt" type="bool" label="Nyaa Alt (For Verizon Users)" default="false" visible="eq(-1,false)"/>
 		<setting id="provider.animix" type="bool" label="Animix" default="true" />
 		<setting id="provider.animepahe" type="bool" label="Animepahe" default="true" />
 		<setting id="provider.gogo" type="bool" label="Gogo" default="true" />

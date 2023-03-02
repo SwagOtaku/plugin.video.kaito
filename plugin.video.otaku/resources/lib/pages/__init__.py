@@ -86,8 +86,11 @@ class Sources(DisplayWindow):
         self.setProperty('process_started', 'true')
 
         if control.real_debrid_enabled() or control.all_debrid_enabled() or control.debrid_link_enabled() or control.premiumize_enabled():
-            self.threads.append(
-                threading.Thread(target=self.nyaa_worker, args=(query, anilist_id, episode, status, media_type, rescrape)))
+            if control.getSetting('provider.nyaa') == 'true' or control.getSetting('provider.nyaaalt') == 'true':
+                self.threads.append(
+                    threading.Thread(target=self.nyaa_worker, args=(query, anilist_id, episode, status, media_type, rescrape)))
+            else:
+                self.remainingProviders.remove('nyaa')
         else:
             self.remainingProviders.remove('nyaa')
 
