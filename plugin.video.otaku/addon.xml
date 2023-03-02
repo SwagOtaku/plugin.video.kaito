@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.38">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.39">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -24,8 +24,8 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.3.38 [20230301]:
-- Disable Nyaa properly based on settings
+Changelog 0.3.39 [20230302]:
+- Moved Enable Teritary Dub Sort Preferences
     </news>
   </extension>
 </addon>

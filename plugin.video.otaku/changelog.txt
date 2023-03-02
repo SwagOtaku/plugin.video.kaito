@@ -1,3 +1,6 @@
+Changelog 0.3.39 [20230302]:
+- Moved Enable Teritary Dub Sort Preferences
+
 Changelog 0.3.38 [20230301]:
 - Disable Nyaa properly based on settings
 
