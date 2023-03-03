@@ -300,7 +300,7 @@ msgid "Hide HEVC Items"
 msgstr ""
 
 msgctxt "#40330"
-msgid "Preferred Source"
+msgid "Preferred Stream Source"
 msgstr ""
 
 msgctxt "#40331"
