@@ -292,10 +292,22 @@ class Sources(DisplayWindow):
 
             embed_list = [i for i in embed_list if i['lang'] != filter_lang]
 
-        elif control.getSetting('general.dubsort') == 'true':
+        # Get the value of the 'sourcesort.menu' setting
+        sort_option = control.getSetting('general.sourcesort')
+
+        # Apply sorting based on the selected option
+        if sort_option == 'Sub':
+            # Sort by dubs (modified code)
+            torrent_list = sorted(torrent_list, key=lambda x: x['lang'] == 0, reverse=True)
+            embed_list = sorted(embed_list, key=lambda x: x['lang'] == 0, reverse=True)
+        elif sort_option == 'Dub':
+            # Sort by subs (original code)
             torrent_list = sorted(torrent_list, key=lambda x: x['lang'] > 0, reverse=True)
             embed_list = sorted(embed_list, key=lambda x: x['lang'] > 0, reverse=True)
-
+        else:
+            # No sorting needed (default behavior)
+            pass
+        
         debrid_priorities = self.debrid_priority()
 
         for resolution in resolutions:

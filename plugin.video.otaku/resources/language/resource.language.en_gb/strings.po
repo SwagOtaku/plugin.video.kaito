@@ -312,7 +312,7 @@ msgid "Sort Sources Method"
 msgstr ""
 
 msgctxt "#40333"
-msgid "Enable Teritary Dub Sort Preference"
+msgid "Teritary Sort Preferences"
 msgstr ""
 
 msgctxt "#40334"
@@ -692,7 +692,7 @@ msgid "Enable Automatic Subtitles for Dub Streams"
 msgstr ""
 
 msgctxt "#40428"
-msgid "Filter Subs and Dubs"
+msgid "Set Anime Filter"
 msgstr ""
 
 msgctxt "#40429"
