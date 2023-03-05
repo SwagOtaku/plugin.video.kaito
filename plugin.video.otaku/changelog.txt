@@ -1,3 +1,6 @@
+Changelog 0.3.42 [20230305]:
+- re-added "Find Similar" to the context menu
+
 Changelog 0.3.41 [20230303]:
 - Renamed Preferred Source
 

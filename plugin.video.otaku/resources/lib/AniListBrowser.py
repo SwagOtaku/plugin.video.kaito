@@ -2414,77 +2414,79 @@ class AniListBrowser():
 
     def get_recommendations_res(self, variables, page=1):
         query = '''
-        query media($id:Int,$page:Int){Media(id:$id) {
+        query ($id: Int, $page: Int) {
+          Media(id: $id, type: ANIME) {
             id
-            recommendations (page:$page, perPage: 20, sort:[RATING_DESC,ID]) {
-                pageInfo {
-                    hasNextPage
-                }
-                nodes {
-                    mediaRecommendation {
-                        id
-                        idMal
-                        title {
-                            userPreferred,
-                            romaji,
-                            english
-                        }
-                        format
-                        type
-                        status
-                        coverImage {
-                            extraLarge
-                        }
-                        bannerImage
-                        startDate {
-                            year,
-                            month,
-                            day
-                        }
-                        description
-                        duration
-                        genres
-                        synonyms
-                        episodes
-                        countryOfOrigin
-                        averageScore
-                        characters (
-                            page: 1,
-                            sort: ROLE,
-                            perPage: 10,
-                        ) {
-                            edges {
-                                node {
-                                    name {
-                                        userPreferred
-                                    }
-                                }
-                                voiceActors (language: JAPANESE) {
-                                    name {
-                                        userPreferred
-                                    }
-                                    image {
-                                        large
-                                    }
-                                }
-                            }
-                        }
-                        studios {
-                            edges {
-                                node {
-                                    name
-                                }
-                            }
-                        }
-                        trailer {
-                            id
-                            site
-                        }
+            recommendations(page: $page, perPage: 20, sort: [RATING_DESC, ID]) {
+              pageInfo {
+                hasNextPage
+              }
+              edges {
+                node {
+                  id
+                  rating
+                  mediaRecommendation {
+                    id
+                    title {
+                      romaji
+                      english
+                      native
                     }
+                    genres
+                    averageScore
+                    description(asHtml: false)
+                    coverImage {
+                      extraLarge
+                    }
+                    bannerImage
+                    startDate {
+                      year
+                      month
+                      day
+                    }
+                    format
+                    episodes
+                    duration
+                    status
+                    studios {
+                      edges {
+                        node {
+                          name
+                        }
+                      }
+                    }
+                    trailer {
+                      id
+                      site
+                    }
+                    characters (perPage: 10) {
+                      edges {
+                        node {
+                          name {
+                            full
+                            native
+                            userPreferred
+                          }
+                        }
+                        voiceActors(language: JAPANESE) {
+                          id
+                          name {
+                            full
+                            native
+                            userPreferred
+                          }
+                          image {
+                            large
+                          }
+                        }
+                      }
+                    }
+                  }
                 }
+              }
             }
+          }
         }
-                                       }
         '''
 
         result = client.request(self._URL, post={'query': query, 'variables': variables}, jpost=True)
@@ -2670,18 +2672,18 @@ class AniListBrowser():
     @div_flavor
     def _process_recommendation_view(self, json_res, base_plugin_url, page, dub=False):
         hasNextPage = json_res['pageInfo']['hasNextPage']
-        res = [i['mediaRecommendation'] for i in json_res['nodes']]
+        res = [edge['node']['mediaRecommendation'] for edge in json_res['edges']]   
 
         if dub:
             mapfunc = partial(self._base_anilist_view, mal_dub=dub)
         else:
-            mapfunc = self._base_anilist_view
+            mapfunc = self._base_anilist_view   
 
         all_results = list(map(mapfunc, res))
-        all_results = list(itertools.chain(*all_results))
+        all_results = list(itertools.chain(*all_results))   
 
         all_results += self._handle_paging(hasNextPage, base_plugin_url, page)
-        return all_results
+        return all_results  
 
     def _process_mal_to_anilist(self, res):
         # titles = self._get_titles(res)
