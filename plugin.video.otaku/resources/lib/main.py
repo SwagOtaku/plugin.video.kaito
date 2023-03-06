@@ -344,10 +344,16 @@ def traktCorrection(payload, params):
     return
 
 
-@route('find_similar/*')
-def FIND_SIMILAR(payload, params):
+@route('find_recommendations/*')
+def FIND_RECOMMENDATIONS(payload, params):
     anilist_id, mal_id, filter_lang = payload.split("/")[1:]
-    return control.draw_items(_ANILIST_BROWSER.get_recommendation(anilist_id))
+    return control.draw_items(_ANILIST_BROWSER.get_recommendations(anilist_id))
+
+
+@route('find_relations/*')
+def FIND_RELATIONS(payload, params):
+    anilist_id, mal_id, filter_lang = payload.split("/")[1:]
+    return control.draw_items(_ANILIST_BROWSER.get_relations(anilist_id))
 
 
 @route('authAllDebrid')
@@ -1505,12 +1511,12 @@ def ANILIST_UPCOMING_THIS_SEASON_UPCOMING_PAGES(payload, params):
 
 @route('anilist_upcoming_next_season_upcomin')
 def ANILIST_UPCOMING_NEXT_SEASON_UPCOMIN(payload, params):
-    return control.draw_items(_ANILIST_BROWSER.get_upcoming_next_season_upcomin())
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_next_season_upcoming())
 
 
 @route('anilist_upcoming_next_season_upcomin/*')
 def ANILIST_UPCOMING_NEXT_SEASON_UPCOMIN_PAGES(payload, params):
-    return control.draw_items(_ANILIST_BROWSER.get_upcoming_next_season_upcomin(int(payload)))
+    return control.draw_items(_ANILIST_BROWSER.get_upcoming_next_season_upcoming(int(payload)))
 
 
 @route('anilist_genres')

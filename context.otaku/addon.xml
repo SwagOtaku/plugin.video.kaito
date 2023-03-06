@@ -13,8 +13,12 @@
         <label>Source Select</label>
         <visible>String.StartsWith(ListItem.path,plugin://plugin.video.otaku/)+[String.IsEqual(ListItem.dbtype,episode)|String.IsEqual(ListItem.dbtype,movie)]</visible>
       </item>
-      <item library="findSimilar.py">
-        <label>Find Similar</label>
+      <item library="findRecommendations.py">
+        <label>Find Recommendations</label>
+        <visible>String.StartsWith(ListItem.path,plugin://plugin.video.otaku/)+[String.IsEqual(ListItem.dbtype,tvshow)|String.IsEqual(ListItem.dbtype,movie)]</visible>
+      </item>
+      <item library="findRelations.py">
+        <label>Find Relations</label>
         <visible>String.StartsWith(ListItem.path,plugin://plugin.video.otaku/)+[String.IsEqual(ListItem.dbtype,tvshow)|String.IsEqual(ListItem.dbtype,movie)]</visible>
       </item>
       <item library="watchlistLogout.py">
