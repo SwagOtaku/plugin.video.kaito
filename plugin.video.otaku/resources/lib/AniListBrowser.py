@@ -2149,7 +2149,7 @@ class AniListBrowser():
         }
 
         recommendations = database.get(self.get_recommendations_res, 0.125, variables, page)
-        return self._process_recommendation_view(recommendations, "find_recommendations/%d", page)
+        return self._process_recommendations_view(recommendations, "find_recommendations/%d", page)
     
     def get_relations(self, anilist_id):
         variables = {
@@ -2763,7 +2763,7 @@ class AniListBrowser():
         return all_results
 
     @div_flavor
-    def _process_recommendation_view(self, json_res, base_plugin_url, page, dub=False):
+    def _process_recommendations_view(self, json_res, base_plugin_url, page, dub=False):
         hasNextPage = json_res['pageInfo']['hasNextPage']
         res = [edge['node']['mediaRecommendation'] for edge in json_res['edges']]   
 
@@ -2772,6 +2772,7 @@ class AniListBrowser():
         else:
             mapfunc = self._base_anilist_view   
 
+        _ = get_meta.collect_meta(res)
         all_results = list(map(mapfunc, res))
         all_results = list(itertools.chain(*all_results))   
 
