@@ -2150,14 +2150,14 @@ class AniListBrowser():
 
         recommendations = database.get(self.get_recommendations_res, 0.125, variables, page)
         return self._process_recommendations_view(recommendations, "find_recommendations/%d", page)
-    
+
     def get_relations(self, anilist_id):
         variables = {
             'id': anilist_id
         }
 
         relations = database.get(self.get_relations_res, 0.125, variables)
-        return self._process_relations_view(relations)
+        return self._process_relations_view(relations, "find_relations/%d")
 
     def get_anilist(self, mal_id):
         variables = {
@@ -2436,9 +2436,9 @@ class AniListBrowser():
                   mediaRecommendation {
                     id
                     title {
+                      userPreferred
                       romaji
                       english
-                      native
                     }
                     genres
                     averageScore
@@ -2505,75 +2505,69 @@ class AniListBrowser():
 
         json_res = results['data']['Media']['recommendations']
         return json_res
-    
+
     def get_relations_res(self, variables):
         query = '''
         query ($id: Int) {
           Media(id: $id, type: ANIME) {
-            id
-            title {
-              english
-              romaji
-              native
-            }
             relations {
               edges {
                 relationType
                 node {
                   id
                   title {
-                    english
+                    userPreferred
                     romaji
-                    native
+                    english
                   }
-                }
-              }
-            }
-            genres
-            averageScore
-            description(asHtml: false)
-            coverImage {
-              extraLarge
-            }
-            bannerImage
-            startDate {
-              year
-              month
-              day
-            }
-            format
-            episodes
-            duration
-            status
-            studios {
-              edges {
-                node {
-                  name
-                }
-              }
-            }
-            trailer {
-              id
-              site
-            }
-            characters (perPage: 10) {
-              edges {
-                node {
-                  name {
-                    full
-                    native
-                    userPreferred
+                  genres
+                  averageScore
+                  description(asHtml: false)
+                  coverImage {
+                    extraLarge
                   }
-                }
-                voiceActors(language: JAPANESE) {
-                  id
-                  name {
-                    full
-                    native
-                    userPreferred
+                  bannerImage
+                  startDate {
+                    year
+                    month
+                    day
                   }
-                  image {
-                    large
+                  format
+                  episodes
+                  duration
+                  status
+                  studios {
+                    edges {
+                      node {
+                        name
+                      }
+                    }
+                  }
+                  trailer {
+                    id
+                    site
+                  }
+                  characters (perPage: 10) {
+                    edges {
+                      node {
+                        name {
+                          full
+                          native
+                          userPreferred
+                        }
+                      }
+                      voiceActors(language: JAPANESE) {
+                        id
+                        name {
+                          full
+                          native
+                          userPreferred
+                        }
+                        image {
+                          large
+                        }
+                      }
+                    }
                   }
                 }
               }
@@ -2765,32 +2759,32 @@ class AniListBrowser():
     @div_flavor
     def _process_recommendations_view(self, json_res, base_plugin_url, page, dub=False):
         hasNextPage = json_res['pageInfo']['hasNextPage']
-        res = [edge['node']['mediaRecommendation'] for edge in json_res['edges']]   
+        res = [edge['node']['mediaRecommendation'] for edge in json_res['edges']]
 
         if dub:
             mapfunc = partial(self._base_anilist_view, mal_dub=dub)
         else:
-            mapfunc = self._base_anilist_view   
+            mapfunc = self._base_anilist_view
 
         _ = get_meta.collect_meta(res)
         all_results = list(map(mapfunc, res))
-        all_results = list(itertools.chain(*all_results))   
+        all_results = list(itertools.chain(*all_results))
 
         all_results += self._handle_paging(hasNextPage, base_plugin_url, page)
-        return all_results  
-    
+        return all_results
+
     def _process_relations_view(self, json_res, base_plugin_url, dub=False):
-        res = [edge['node']['mediaRelations'] for edge in json_res['data']['Media']['relations']['edges']]
+        res = [edge['node'] for edge in json_res['edges'] if edge['relationType'] != 'ADAPTATION']
 
         if dub:
             mapfunc = partial(self._base_anilist_view, mal_dub=dub)
         else:
-            mapfunc = self._base_anilist_view   
+            mapfunc = self._base_anilist_view
 
         all_results = list(map(mapfunc, res))
         all_results = list(itertools.chain(*all_results))
 
-        return all_results  
+        return all_results
 
     def _process_mal_to_anilist(self, res):
         # titles = self._get_titles(res)
