@@ -2942,7 +2942,7 @@ class AniListBrowser():
             'ep_airingAt': airingAt_time,
             'averageScore': res['media']['averageScore'],
             'rank': rank,
-            'plot': res['media']['description'],
+            'plot': res['media']['description'].replace('<br><br>', '[CR]').replace('<br>', '').replace('<i>', '[I]').replace('</i>', '[/I]') if res['media']['description'] else res['media']['description'],
             'genres': genres,
             'id': res['media']['id']
         }
