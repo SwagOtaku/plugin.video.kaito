@@ -22,9 +22,9 @@ _You can install it via repository to provide automatic updates (future updates 
 
 _or install it manually in the following order (future updates should not be installed manually and these download links could be outdated)_
 
-- [context.otaku](https://github.com/Goldenfreddy0703/repository.otaku/raw/master/repo/zips/context.otaku/context.otaku-0.0.7.zip)
+- [context.otaku](https://github.com/Goldenfreddy0703/repository.otaku/raw/master/repo/zips/context.otaku/context.otaku-0.0.9.zip)
 - [script.otaku.themepak](https://github.com/Goldenfreddy0703/repository.otaku/raw/master/repo/zips/script.otaku.themepak/script.otaku.themepak-0.0.7.zip)
-- [plugin.video.otaku](https://github.com/Goldenfreddy0703/repository.otaku/raw/master/repo/zips/plugin.video.otaku/plugin.video.otaku-0.3.36.zip)
+- [plugin.video.otaku](https://github.com/Goldenfreddy0703/repository.otaku/raw/master/repo/zips/plugin.video.otaku/plugin.video.otaku-0.3.44.zip)
 
 After each update, it is recommended that you clear cache/rebuild database to make sure changes take effect.
 
@@ -32,11 +32,9 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 
 **_Function_**:
 - Watchlist: Automatically mark an anime as completed when the whole series is watched. 
-- Context Menu: Context Menu needs a recode
-- Context Menu: Want to add "Find Similar" or "Find Relations"
-- Context Menu: We should get rid of context.otaku
 - Context Menu: Anime title and Episode Plot does not show during playback when using select source.
 - Widgets: No information shows during the playback
+- Playback: We Should add Aniskip in the future
 
 **_Optional_**: 
 - Embeds: A Setting catagory to sort your embeds
