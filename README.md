@@ -53,6 +53,10 @@ Discord: The Steampunk Owl#3126
 
 Keybase: [Goldenfreddy0703](https://keybase.io/goldenfreddy0703)
 
+## Disclaimer 
+
+Otaku is and always will be free and open-source. None of its code and resources may be sold or redistributed for any commercial purposes. This addon and its developers **DO NOT** host, create, or distribute any of the content displayed in the addon, it simply scrapes ad financed public websites. It is the responsibility of the user to ensure that they are following all applicable laws and regulations in their country. This addon and its developers are not in any way affiliated with Team Kodi or any of the sites and providers used in the addon.
+
 ## License
 
 Licensed under The GPL License.
