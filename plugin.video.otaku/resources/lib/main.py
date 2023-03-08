@@ -350,6 +350,12 @@ def FIND_RECOMMENDATIONS(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_recommendations(anilist_id))
 
 
+@route('recommendations_next/*')
+def RECOMMENDATIONS_NEXT(payload, params):
+    anilist_id, page = payload.split("/")
+    return control.draw_items(_ANILIST_BROWSER.get_recommendations(anilist_id, int(page)))
+
+
 @route('find_relations/*')
 def FIND_RELATIONS(payload, params):
     anilist_id, mal_id, filter_lang = payload.split("/")[1:]

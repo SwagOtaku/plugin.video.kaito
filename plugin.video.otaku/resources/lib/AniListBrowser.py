@@ -2149,7 +2149,7 @@ class AniListBrowser():
         }
 
         recommendations = database.get(self.get_recommendations_res, 0.125, variables, page)
-        return self._process_recommendations_view(recommendations, "find_recommendations/%d", page)
+        return self._process_recommendations_view(recommendations, "recommendations_next/{}/%d".format(anilist_id), page)
 
     def get_relations(self, anilist_id):
         variables = {
@@ -2425,7 +2425,7 @@ class AniListBrowser():
         query ($id: Int, $page: Int) {
           Media(id: $id, type: ANIME) {
             id
-            recommendations(page: $page, perPage: 20, sort: [RATING_DESC, ID]) {
+            recommendations(page: $page, perPage: 25, sort: [RATING_DESC, ID]) {
               pageInfo {
                 hasNextPage
               }
