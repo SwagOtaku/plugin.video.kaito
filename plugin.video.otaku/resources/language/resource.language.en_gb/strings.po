@@ -704,27 +704,27 @@ msgid "Duration of how long the Dialog will appear"
 msgstr ""
 
 msgctxt "#40431"
-msgid "No Duration"
+msgid "Enable Aniskip [COLOR yellow]BETA[/COLOR]"
 msgstr ""
 
 msgctxt "#40432"
-msgid "1 min"
+msgid "Offset for Aniskip (seconds)"
 msgstr ""
 
 msgctxt "#40433"
-msgid "2 min"
+msgid ""
 msgstr ""
 
 msgctxt "#40434"
-msgid "3 min"
+msgid ""
 msgstr ""
 
 msgctxt "#40435"
-msgid "4 min"
+msgid ""
 msgstr ""
 
 msgctxt "#40436"
-msgid "5 min"
+msgid ""
 msgstr ""
 
 msgctxt "#40437"

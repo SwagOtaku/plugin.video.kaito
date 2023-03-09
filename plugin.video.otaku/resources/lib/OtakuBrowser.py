@@ -15,7 +15,7 @@ class OtakuBrowser(BrowserBase):
 
     def _parse_history_view(self, res):
         name = res
-        return utils.allocate_item(name, "search/" + name + "/1", True)
+        return utils.allocate_item(name, "search/%s/1" % name, True)
 
     def _parse_airing_dub_view(self, res):
         name = list(res.values())[0]

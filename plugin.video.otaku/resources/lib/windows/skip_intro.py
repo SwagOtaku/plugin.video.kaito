@@ -3,7 +3,7 @@
 from kodi_six import xbmc
 from resources.lib.ui import control
 from resources.lib.windows.base_window import BaseWindow
-from threading import Timer
+
 
 def run_once(f):
     def wrapper(*args, **kwargs):
@@ -21,27 +21,21 @@ class SkipIntro(BaseWindow):
             self.player = control.player()
             self.playing_file = self.player.getPlayingFile()
             self.duration = self.player.getTotalTime() - self.player.getTime()
-            self.skip = int(control.getSetting('skipintro.time'))
-
+            self.skip_time = int(control.getSetting('skipintro.time'))
             # Convert duration setting to seconds
-            duration = control.getSetting('skipintro.duration')
-            if duration == "0":
-                self.duration_seconds = None
-            elif duration == "1":
-                self.duration_seconds = 60
-            elif duration == "2":
-                self.duration_seconds = 120
-            elif duration == "3":
-                self.duration_seconds = 180
-            elif duration == "4":
-                self.duration_seconds = 240
-            elif duration == "5":
-                self.duration_seconds = 300
+            self.close_durration = int(control.getSetting('skipintro.duration')) * 60
 
-            self.total = self.duration_seconds
             self.closed = False
             self.actioned = None
             self.default_action = '0'
+
+            self.current_time = None
+            self.total_time = self.player.getTotalTime()
+            self.delay_time = int(control.getSetting('skipintro.delay'))
+
+            self.start_skip_time = None
+            self.end_skip_time = None
+
         except:
             import traceback
             traceback.print_exc()
@@ -53,25 +47,27 @@ class SkipIntro(BaseWindow):
         return ((int(self.player.getTotalTime()) - int(self.player.getTime())) / float(self.duration)) * 100
 
     def background_tasks(self):
+        self.start_skip_time = int(control.getSetting('start.skip.time'))
+        self.end_skip_time = int(control.getSetting('end.skip.time'))
+
         try:
-            try:
-                progress_bar = self.getControl(3014)
-            except:
-                progress_bar = None
-
-            # Start a timer to close the dialog after a delay
-            close_timer = Timer(self.duration_seconds, self.close)
-            close_timer.start()
-
-            while int(self.player.getTotalTime()) - int(self.player.getTime()) > 2 and not self.closed \
-                    and self.playing_file == self.player.getPlayingFile():
+            # try:
+            #     progress_bar = self.getControl(3014)
+            #     control.print(progress_bar)
+            # except:
+            #     progress_bar = None
+            self.current_time = int(self.player.getTime())
+            while int(self.total_time) - int(self.current_time) > 2 and not self.closed and self.playing_file == self.player.getPlayingFile():
+                self.current_time = int(self.player.getTime())
+                if self.current_time > self.end_skip_time:
+                    self.close()
+                    break
+                elif self.current_time > self.close_durration > 0 and self.end_skip_time == 9999:
+                    self.close()
+                    break
                 xbmc.sleep(500)
-                if progress_bar is not None:
-                    progress_bar.setPercent(self.calculate_percent())
-
-            # Cancel the timer if the dialog is closed by another event
-            if close_timer.is_alive():
-                close_timer.cancel()
+                # if progress_bar is not None:
+                #     progress_bar.setPercent(self.calculate_percent())
 
             if self.default_action == '1' and\
                     self.playing_file == self.player.getPlayingFile() and\
@@ -80,9 +76,6 @@ class SkipIntro(BaseWindow):
         except:
             import traceback
             traceback.print_exc()
-            pass
-
-        self.close()
 
     def doModal(self):
         try:
@@ -105,7 +98,10 @@ class SkipIntro(BaseWindow):
 
         if control_id == 3001:
             self.actioned = True
-            self.player.seekTime(self.player.getTime() + self.skip)
+            if self.end_skip_time == 9999:
+                self.player.seekTime(int(self.player.getTime()) + self.skip_time)
+            else:
+                self.player.seekTime(self.end_skip_time)
             self.close()
         if control_id == 3002:
             self.actioned = True

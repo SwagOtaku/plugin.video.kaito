@@ -1,6 +1,3 @@
-Find Relations has been added!
-- Hey everyone, we have added "Find Relations" on the context menu so that way its easier to find all your seasons from one anime. 
-Big Thanks to @Gujal00 for helping me fix related anime.
-
-For Users using Find Recommendations:
-- We do have Recommendations working but Next Page will need to be worked on in the future.
+Aniskip has been added!
+- Hey everyone, we have added a beta feature called Aniskip, it skips the intro for almost any anime on point. 
+Big Thanks to @joezito129 for adding Aniskip to Otaku.

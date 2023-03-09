@@ -45,11 +45,11 @@ dialogWindow = xbmcgui.WindowDialog
 xmlWindow = xbmcgui.WindowXMLDialog
 condVisibility = xbmc.getCondVisibility
 sleep = xbmc.sleep
-fanart_ = ADDON_PATH + "/fanart.jpg"
+fanart_ = "%s/fanart.jpg" % ADDON_PATH
 IMAGES_PATH = os.path.join(ADDON_PATH, 'resources', 'images')
 OTAKU_LOGO_PATH = os.path.join(IMAGES_PATH, 'trans-goku.png')
 OTAKU_LOGO2_PATH = os.path.join(IMAGES_PATH, 'trans-goku-small.png')
-OTAKU_FANART_PATH = ADDON_PATH + "/fanart.jpg"
+OTAKU_FANART_PATH = "%s/fanart.jpg" % ADDON_PATH
 menuItem = xbmcgui.ListItem
 execute = xbmc.executebuiltin
 
@@ -150,9 +150,8 @@ def copy2clip(txt):
 
     if platform == 'win32':
         try:
-            cmd = 'echo ' + txt.strip() + '|clip'
+            cmd = 'echo %s|clip' % txt.strip()
             return subprocess.check_call(cmd, shell=True)
-            pass
         except:
             pass
     elif platform == 'linux2':
@@ -222,6 +221,10 @@ def ok_dialog(title, text):
     return xbmcgui.Dialog().ok(title, text)
 
 
+def textviewer_dialog(title, text):
+    return xbmcgui.Dialog().textviewer(title, text)
+
+
 def yesno_dialog(title, text, nolabel=None, yeslabel=None):
     return xbmcgui.Dialog().yesno(title, text, nolabel=nolabel, yeslabel=yeslabel)
 
@@ -275,39 +278,39 @@ def make_listitem(name, labels):
     if _kodiver > 19.8 and isinstance(labels, dict):
         vtag = li.getVideoInfoTag()
         if labels.get('mediatype'):
-            vtag.setMediaType(labels.get('mediatype'))
+            vtag.setMediaType(labels['mediatype'])
         if labels.get('title'):
-            vtag.setTitle(labels.get('title'))
+            vtag.setTitle(labels['title'])
         if labels.get('tvshowtitle'):
-            vtag.setTvShowTitle(labels.get('tvshowtitle'))
+            vtag.setTvShowTitle(labels['tvshowtitle'])
         if labels.get('plot'):
-            vtag.setPlot(labels.get('plot'))
+            vtag.setPlot(labels['plot'])
         if labels.get('year'):
-            vtag.setYear(int(labels.get('year')))
+            vtag.setYear(int(labels['year']))
         if labels.get('premiered'):
-            vtag.setPremiered(labels.get('premiered'))
+            vtag.setPremiered(labels['premiered'])
         if labels.get('status'):
-            vtag.setTvShowStatus(labels.get('status'))
+            vtag.setTvShowStatus(labels['status'])
         if labels.get('duration'):
-            vtag.setDuration(labels.get('duration'))
+            vtag.setDuration(labels['duration'])
         if labels.get('country'):
-            vtag.setCountries([labels.get('country')])
+            vtag.setCountries([labels['country']])
         if labels.get('genre'):
-            vtag.setGenres(labels.get('genre'))
+            vtag.setGenres(labels['genre'])
         if labels.get('studio'):
-            vtag.setStudios(labels.get('studio'))
+            vtag.setStudios(labels['studio'])
         if labels.get('rating'):
-            vtag.setRating(labels.get('rating'))
+            vtag.setRating(labels['rating'])
         if labels.get('trailer'):
-            vtag.setTrailer(labels.get('trailer'))
+            vtag.setTrailer(labels['trailer'])
         if labels.get('season'):
-            vtag.setSeason(labels.get('season'))
+            vtag.setSeason(labels['season'])
         if labels.get('episode'):
-            vtag.setEpisode(labels.get('episode'))
+            vtag.setEpisode(labels['episode'])
         if labels.get('aired'):
-            vtag.setFirstAired(labels.get('aired'))
+            vtag.setFirstAired(labels['aired'])
         if labels.get('playcount'):
-            vtag.setPlaycount(labels.get('playcount'))
+            vtag.setPlaycount(labels['playcount'])
 
         if cast2:
             cast2 = [xbmc.Actor(p['name'], p['role'], cast2.index(p), p['thumbnail']) for p in cast2]
@@ -317,7 +320,6 @@ def make_listitem(name, labels):
         li.setInfo(type='Video', infoLabels=labels)
         if cast2:
             li.setCast(cast2)
-
     return li
 
 
@@ -341,7 +343,7 @@ def xbmc_add_player_item(name, url, art={}, info={}, draw_cm=None, bulk_add=Fals
     liz.setProperty("IsPlayable", "true")
     liz.addContextMenuItems(cm)
     if bulk_add:
-        return (u, liz, False)
+        return u, liz, False
     else:
         return xbmcplugin.addDirectoryItem(handle=HANDLE, url=u, listitem=liz, isFolder=False)
 
@@ -405,7 +407,6 @@ def bulk_draw_items(video_data, draw_cm=None, bulk_add=True):
         item = xbmc_add_player_item(vid['name'], vid['url'], vid['image'],
                                     vid['info'], draw_cm, bulk_add)
         item_list.append(item)
-
     return item_list
 
 
@@ -459,3 +460,9 @@ def getChangeLog():
     windows = TextViewerXML('textviewer.xml', ADDON_PATH, heading=heading, text=text, text_2=text_2)
     windows.run()
     del windows
+
+def print(string, *args):
+    for i in list(args):
+        string = f'{string} {i}'
+    textviewer_dialog('print', f'{string}')
+    del args, string

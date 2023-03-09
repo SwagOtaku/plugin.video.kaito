@@ -346,7 +346,13 @@ def traktCorrection(payload, params):
 
 @route('find_recommendations/*')
 def FIND_RECOMMENDATIONS(payload, params):
-    anilist_id, mal_id, filter_lang = payload.split("/")[1:]
+    payload_list = payload.split("/")[1:]
+    if len(payload_list) == 2:
+        mal_id, x = payload_list
+        show_meta = database.get_show_mal(mal_id)
+        anilist_id = show_meta['anilist_id']
+    else:
+        anilist_id, mal_id, filter_lang = payload_list
     return control.draw_items(_ANILIST_BROWSER.get_recommendations(anilist_id))
 
 
@@ -358,7 +364,13 @@ def RECOMMENDATIONS_NEXT(payload, params):
 
 @route('find_relations/*')
 def FIND_RELATIONS(payload, params):
-    anilist_id, mal_id, filter_lang = payload.split("/")[1:]
+    payload_list = payload.split("/")[1:]
+    if len(payload_list) == 2:
+        mal_id, x = payload_list
+        show_meta = database.get_show_mal(mal_id)
+        anilist_id = show_meta['anilist_id']
+    else:
+        anilist_id, mal_id, filter_lang = payload_list
     return control.draw_items(_ANILIST_BROWSER.get_relations(anilist_id))
 
 
@@ -442,11 +454,6 @@ def RUN_PLAYER_DIALOGS(payload, params):
     except:
         import traceback
         traceback.print_exc()
-
-
-@route('test')
-def TEST(payload, params):
-    return
 
 
 @route('anilist_airing')
