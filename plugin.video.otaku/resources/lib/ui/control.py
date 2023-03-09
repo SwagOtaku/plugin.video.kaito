@@ -461,6 +461,7 @@ def getChangeLog():
     windows.run()
     del windows
 
+
 def print(string, *args):
     for i in list(args):
         string = f'{string} {i}'

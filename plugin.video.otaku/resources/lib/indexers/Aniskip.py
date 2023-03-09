@@ -16,4 +16,3 @@ def get_skip_times(mal_id, episodenum, skip_type):
     if r:
         r = json.loads(r)
     return r
-

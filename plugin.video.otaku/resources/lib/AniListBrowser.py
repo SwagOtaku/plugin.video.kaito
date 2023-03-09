@@ -2774,7 +2774,12 @@ class AniListBrowser():
         return all_results
 
     def _process_relations_view(self, json_res, base_plugin_url, dub=False):
-        res = [edge['node'] for edge in json_res['edges'] if edge['relationType'] != 'ADAPTATION']
+        res = []
+        for edge in json_res['edges']:
+            if edge['relationType'] != 'ADAPTATION':
+                tnode = edge['node']
+                tnode.update({'relationType': edge['relationType']})
+                res.append(tnode)
 
         if dub:
             mapfunc = partial(self._base_anilist_view, mal_dub=dub)
@@ -2823,6 +2828,9 @@ class AniListBrowser():
         title = res.get('title').get(self._TITLE_LANG)
         if not title:
             title = res.get('title').get('userPreferred')
+
+        if res.get('relationType'):
+            title += ' [COLOR limegreen][I]{0}[/I][/COLOR]'.format(res.get('relationType'))
 
         info = {}
 

@@ -3,7 +3,7 @@ import pickle
 from functools import partial
 from six.moves import urllib_parse
 
-from resources.lib.ui import database
+from resources.lib.ui import control, database
 from resources.lib.ui.BrowserBase import BrowserBase
 from resources.lib.indexers import consumet
 
@@ -16,8 +16,13 @@ class sources(BrowserBase):
         title = kodi_meta.get('ename') or kodi_meta.get('name')
         title = self._clean_title(title)
         title = '{0} Ep-{1}'.format(title, episode)
+        srcs = ['sub', 'dub']
+        if control.getSetting('general.source') == 'Sub':
+            srcs.remove('dub')
+        elif control.getSetting('general.source') == 'Dub':
+            srcs.remove('sub')
 
-        for x in ['sub', 'dub']:
+        for x in srcs:
             r = database.get(
                 consumet.CONSUMETAPI().get_sources,
                 8,
