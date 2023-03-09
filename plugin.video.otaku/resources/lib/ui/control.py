@@ -461,9 +461,9 @@ def getChangeLog():
     windows.run()
     del windows
 
-
-def print(string, *args):
-    for i in list(args):
-        string = f'{string} {i}'
-    textviewer_dialog('print', f'{string}')
-    del args, string
+#
+# def print(string, *args):
+#     for i in list(args):
+#         string = f'{string} {i}'
+#     textviewer_dialog('print', f'{string}')
+#     del args, string
