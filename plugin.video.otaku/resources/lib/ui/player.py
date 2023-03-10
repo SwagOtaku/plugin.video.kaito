@@ -206,6 +206,8 @@ class watchlistPlayer(xbmc.Player):
         if self.media_type == 'movie':
             return self.onWatchedPercent()
 
+        self.total_time = int(self.getTotalTime())
+
         if control.getSetting('smartplay.skipintrodialog') == 'true':
             if self.skipintro_aniskip_enable:
                 while self.isPlaying():
@@ -238,7 +240,7 @@ class watchlistPlayer(xbmc.Player):
         else:
             endpoint = False
 
-        self.total_time = int(self.getTotalTime())
+
         if endpoint:
             self.current_time = int(self.getTime())
             while self.isPlaying():
