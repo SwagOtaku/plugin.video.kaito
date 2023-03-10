@@ -15,6 +15,7 @@ class PlayingNext(BaseWindow):
             self.closed = False
             self.actioned = None
             self.default_action = control.getSetting('playingnext.defaultaction')
+
         except:
             import traceback
             traceback.print_exc()
@@ -45,7 +46,6 @@ class PlayingNext(BaseWindow):
         except:
             import traceback
             traceback.print_exc()
-            pass
 
         self.close()
 
@@ -74,6 +74,12 @@ class PlayingNext(BaseWindow):
             self.close()
         if control_id == 3002:
             self.actioned = True
+            self.close()
+        if control_id == 3003:
+            self.actioned = True
+            skipoutro_end_skip_time = int(control.getSetting('skipoutro.end.skip.time'))
+            if skipoutro_end_skip_time != 0:
+                self.player.seekTime(skipoutro_end_skip_time)
             self.close()
 
     def onAction(self, action):

@@ -52,11 +52,16 @@ class watchlistPlayer(xbmc.Player):
         self.media_type = None
         # self.AVStarted = False
 
+        self.total_time = None
         self.delay_time = int(control.getSetting('skipintro.delay'))
-        self.aniskip_enable = control.getSetting('skipintro.aniskip.enable') == 'true'
-        self.start_skip_time = 0
-        self.end_skip_time = 9999
-        self.anikip_offset = int(control.getSetting('skipintro.aniskip.offset'))
+        self.skipintro_aniskip_enable = control.getSetting('skipintro.aniskip.enable') == 'true'
+        self.skipoutro_aniskip_enable = control.getSetting('skipoutro.aniskip.enable') == 'true'
+        self.skipintro_start_skip_time = 0
+        self.skipintro_end_skip_time = 9999
+        self.skipoutro_start_skip_time = 0
+        self.skipoutro_end_skip_time = 0
+        self.skipintro_aniskip_offset = int(control.getSetting('skipintro.aniskip.offset'))
+        self.skipoutro_aniskip_offset = int(control.getSetting('skipoutro.aniskip.offset'))
 
     def handle_player(self, anilist_id, watchlist_update, build_playlist, episode, filter_lang):
         self._anilist_id = anilist_id
@@ -68,17 +73,29 @@ class watchlistPlayer(xbmc.Player):
         self._episode = episode
         self._filter_lang = filter_lang
 
-        if self.aniskip_enable:
+        if self.skipintro_aniskip_enable:
             mal_id = database.get_show(anilist_id)['mal_id']
-            aniskip_res = Aniskip.get_skip_times(mal_id, episode, 'op')
+            skipintro_aniskip_res = Aniskip.get_skip_times(mal_id, episode, 'op')
 
-            if aniskip_res:
-                skip_times = aniskip_res['results'][0]['interval']
-                self.start_skip_time = int(skip_times['startTime']) + int(self.anikip_offset)
-                self.end_skip_time = int(skip_times['endTime']) + int(self.anikip_offset)
+            if skipintro_aniskip_res:
+                skip_times = skipintro_aniskip_res['results'][0]['interval']
+                self.skipintro_start_skip_time = int(skip_times['startTime']) + int(self.skipintro_aniskip_offset)
+                self.skipintro_end_skip_time = int(skip_times['endTime']) + int(self.skipintro_aniskip_offset)
 
-        control.setSetting('start.skip.time', str(self.start_skip_time))
-        control.setSetting('end.skip.time', str(self.end_skip_time))
+        if self.skipoutro_aniskip_enable:
+            mal_id = database.get_show(anilist_id)['mal_id']
+            skipoutro_aniskip_res = Aniskip.get_skip_times(mal_id, episode, 'ed')
+
+            if skipoutro_aniskip_res:
+                skip_times = skipoutro_aniskip_res['results'][0]['interval']
+                self.skipoutro_start_skip_time = int(skip_times['startTime']) + int(self.skipoutro_aniskip_offset)
+                self.skipoutro_end_skip_time = int(skip_times['endTime']) + int(self.skipoutro_aniskip_offset)
+
+        control.setSetting('skipintro.start.skip.time', str(self.skipintro_start_skip_time))
+        control.setSetting('skipintro.end.skip.time', str(self.skipintro_end_skip_time))
+
+        control.setSetting('skipoutro.start.skip.time', str(self.skipoutro_start_skip_time))
+        control.setSetting('skipoutro.end.skip.time', str(self.skipoutro_end_skip_time))
 
         self.keepAlive()
 
@@ -190,16 +207,16 @@ class watchlistPlayer(xbmc.Player):
             return self.onWatchedPercent()
 
         if control.getSetting('smartplay.skipintrodialog') == 'true':
-            if self.aniskip_enable:
+            if self.skipintro_aniskip_enable:
                 while self.isPlaying():
                     self.current_time = int(self.getTime())
                     if self.current_time > 240:
                         break
-                    elif self.end_skip_time == 9999:
+                    elif self.skipintro_end_skip_time == 9999:
                         if self.current_time >= self.delay_time:
                             PlayerDialogs()._show_skip_intro()
                             break
-                    elif self.current_time > self.start_skip_time:
+                    elif self.current_time > self.skipintro_start_skip_time:
                         PlayerDialogs()._show_skip_intro()
                         break
 
@@ -221,13 +238,15 @@ class watchlistPlayer(xbmc.Player):
         else:
             endpoint = False
 
+        self.total_time = int(self.getTotalTime())
         if endpoint:
+            self.current_time = int(self.getTime())
             while self.isPlaying():
-                if int(self.getTotalTime()) - int(self.getTime()) <= endpoint:
+                self.current_time = int(self.getTime())
+                if self.total_time - self.current_time <= endpoint and self.skipoutro_start_skip_time == 0 or self.current_time >= self.skipoutro_start_skip_time > 0:
                     xbmc.executebuiltin('RunPlugin("plugin://plugin.video.otaku/run_player_dialogs")')
                     break
-                else:
-                    xbmc.sleep(5000)
+                xbmc.sleep(5000)
 
 
 class PlayerDialogs(xbmc.Player):
@@ -258,10 +277,16 @@ class PlayerDialogs(xbmc.Player):
     def _show_playing_next(self):
         from resources.lib.windows.playing_next import PlayingNext
 
-        PlayingNext(*('playing_next.xml', control.ADDON_PATH),
-                    actionArgs=self._get_next_item_args()).doModal()
+        if control.getSetting('skipoutro.aniskip.enable') == 'true' and\
+                int(control.getSetting('skipoutro.end.skip.time')) != 0:
+            PlayingNext(*('playing_next_aniskip.xml', control.ADDON_PATH),
+                        actionArgs=self._get_next_item_args()).doModal()
+        else:
+            PlayingNext(*('playing_next.xml', control.ADDON_PATH),
+                        actionArgs=self._get_next_item_args()).doModal()
 
-    def _show_skip_intro(self):
+    @staticmethod
+    def _show_skip_intro():
         from resources.lib.windows.skip_intro import SkipIntro
         SkipIntro(*('skip_intro.xml', control.ADDON_PATH),
                   actionArgs={'item_type': 'skip_intro'}).doModal()
@@ -270,15 +295,15 @@ class PlayerDialogs(xbmc.Player):
     def _get_next_item_args():
         current_position = playList.getposition()
         _next_info = playList[current_position + 1]
-        next_info = {}
-        next_info['thumb'] = _next_info.getArt('thumb')
-        next_info['name'] = _next_info.getLabel()
-        next_info['playnext'] = True
+        next_info = {
+            'thumb': _next_info.getArt('thumb'),
+            'name': _next_info.getLabel(),
+            'playnext': True
+        }
         return next_info
 
     @staticmethod
     def _is_video_window_open():
-
         if xbmcgui.getCurrentWindowId() != 12005:
             return False
         return True

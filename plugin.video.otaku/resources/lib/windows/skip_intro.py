@@ -13,7 +13,6 @@ def run_once(f):
     wrapper.has_run = False
     return wrapper
 
-
 class SkipIntro(BaseWindow):
 
     def __init__(self, xml_file, xml_location, actionArgs=None):
@@ -34,13 +33,13 @@ class SkipIntro(BaseWindow):
             self.total_time = self.player.getTotalTime()
             self.delay_time = int(control.getSetting('skipintro.delay'))
 
-            self.start_skip_time = None
-            self.end_skip_time = None
+            self.skipintro_start_skip_time = None
+            self.skipintro_end_skip_time = None
 
         except:
             import traceback
             traceback.print_exc()
-
+    
     def onInit(self):
         self.background_tasks()
 
@@ -48,22 +47,21 @@ class SkipIntro(BaseWindow):
         return ((int(self.player.getTotalTime()) - int(self.player.getTime())) / float(self.duration)) * 100
 
     def background_tasks(self):
-        self.start_skip_time = int(control.getSetting('start.skip.time'))
-        self.end_skip_time = int(control.getSetting('end.skip.time'))
+        self.skipintro_start_skip_time = int(control.getSetting('skipintro.start.skip.time'))
+        self.skipintro_end_skip_time = int(control.getSetting('skipintro.end.skip.time'))
 
         try:
             # try:
             #     progress_bar = self.getControl(3014)
-            #     control.print(progress_bar)
             # except:
             #     progress_bar = None
             self.current_time = int(self.player.getTime())
             while int(self.total_time) - int(self.current_time) > 2 and not self.closed and self.playing_file == self.player.getPlayingFile():
                 self.current_time = int(self.player.getTime())
-                if self.current_time > self.end_skip_time:
+                if self.current_time > self.skipintro_end_skip_time:
                     self.close()
                     break
-                elif self.current_time > self.close_durration > 0 and self.end_skip_time == 9999:
+                elif self.current_time > self.close_durration > 0 and self.skipintro_end_skip_time == 9999:
                     self.close()
                     break
                 xbmc.sleep(500)
@@ -99,10 +97,10 @@ class SkipIntro(BaseWindow):
 
         if control_id == 3001:
             self.actioned = True
-            if self.end_skip_time == 9999:
+            if self.skipintro_end_skip_time == 9999:
                 self.player.seekTime(int(self.player.getTime()) + self.skip_time)
             else:
-                self.player.seekTime(self.end_skip_time)
+                self.player.seekTime(self.skipintro_end_skip_time)
             self.close()
         if control_id == 3002:
             self.actioned = True

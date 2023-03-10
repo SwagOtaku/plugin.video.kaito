@@ -65,9 +65,11 @@
 		<setting type="lsep" label="40317" />
 		<setting type="sep" />
 		<setting id="smartplay.playingnextdialog" type="bool" label="40318" default="true" />
-		<setting id="playingnext.time" type="slider" subsetting="true" label="40319" option="int" range="10,120" default="90" visible="eq(-1,true)" />
+		<setting id="skipoutro.aniskip.enable" type="bool" subsetting="true" label="40431" default="false" visible="eq(-1,true)" />
+		<setting id="skipoutro.aniskip.offset" type="slider" subsetting="true" label="40432" visible="eq(-1,true) + eq(-2,true)" range="-10,10" default="-3"/>
+		<setting id="playingnext.time" type="slider" subsetting="true" label="40319" option="int" range="10,120" default="90" visible="eq(-3,true)" />
 		<!--<setting id="playingnext.dialogstyle" type="enum" subsetting="true" label="40334" lvalues="40129|40335" default="0" visible="eq(-2,true)" />-->
-		<setting id="playingnext.defaultaction" type="enum" subsetting="true" label="40320" lvalues="40321|40322" default="0" visible="eq(-2,true)" />
+		<setting id="playingnext.defaultaction" type="enum" subsetting="true" label="40320" lvalues="40321|40322" default="0" visible="eq(-4,true)" />
 
 		<!-- Skip Intro Dialog -->
 		<setting type="lsep" label="40323" />
