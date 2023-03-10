@@ -242,7 +242,6 @@ class watchlistPlayer(xbmc.Player):
 
 
         if endpoint:
-            self.current_time = int(self.getTime())
             while self.isPlaying():
                 self.current_time = int(self.getTime())
                 if self.total_time - self.current_time <= endpoint and self.skipoutro_start_skip_time == 0 or self.current_time >= self.skipoutro_start_skip_time > 0:

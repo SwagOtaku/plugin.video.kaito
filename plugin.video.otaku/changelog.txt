@@ -1,3 +1,8 @@
+Changelog 0.3.46 [20230309]:
+- Added connection to the tile in find relation and linting
+- Added some fixes
+- Fixed Skip Outro
+
 Changelog 0.3.45 [20230309]:
 - Added Aniskip
 
