@@ -34,7 +34,6 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 - Watchlist: Automatically mark an anime as completed when the whole series is watched. 
 - Context Menu: Anime title and Episode Plot does not show during playback when using select source.
 - Widgets: No information shows during the playback
-- Playback: We Should add Aniskip in the future
 
 **_Optional_**: 
 - Embeds: A Setting catagory to sort your embeds
