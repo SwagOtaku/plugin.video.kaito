@@ -32,7 +32,7 @@ def refresh_apis():
             kitsu_expiry = int(float(control.getSetting('kitsu.expiry')))
             if time.time() > (kitsu_expiry - (10 * 60)):
                 from resources.lib.WatchlistFlavor import Kitsu
-                Kitsu.KitsuWLF().refresh_token(control)
+                Kitsu.KitsuWLF().refresh_token()
     except:
         pass
 
@@ -41,7 +41,7 @@ def refresh_apis():
             mal_expiry = int(float(control.getSetting('mal.expiry')))
             if time.time() > (mal_expiry - (10 * 60)):
                 from resources.lib.WatchlistFlavor import MyAnimeList
-                MyAnimeList.MyAnimeListWLF().refresh_token(control)
+                MyAnimeList.MyAnimeListWLF().refresh_token()
     except:
         pass
 

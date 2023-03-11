@@ -47,7 +47,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
 
         return login_data
 
-    def refresh_token(self, control):
+    def refresh_token(self):
         oauth_url = 'https://myanimelist.net/v1/oauth2/token'
         data = {
             'client_id': 'a8d85a4106b259b8c9470011ce2f76bc',
@@ -259,7 +259,6 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         info['plot'] = plot
         info['mediatype'] = 'episode'
         info['aired'] = aired
-        
 
         base = {
             "name": title,

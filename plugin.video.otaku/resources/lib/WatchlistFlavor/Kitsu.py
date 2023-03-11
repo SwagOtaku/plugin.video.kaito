@@ -41,7 +41,7 @@ class KitsuWLF(WatchlistFlavorBase):
 
         return login_data
 
-    def refresh_token(self, control):
+    def refresh_token(self):
         params = {
             "grant_type": "refresh_token",
             "refresh_token": control.getSetting('kitsu.refresh'),
