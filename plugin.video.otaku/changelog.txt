@@ -72,6 +72,9 @@ Changelog 0.3.26 [20230217]:
 Changelog 0.3.25 [20230214]:
 - Fixed sub and dub skin bug
 
+Changelog 0.3.49 [20230310]:
+- Fixed mal and kitsu token refresh
+
 Changelog 0.3.48 [20230310]:
 - Fixed crash on 9anime streams
 
