@@ -32,7 +32,6 @@ After each update, it is recommended that you clear cache/rebuild database to ma
 
 **_Function_**:
 - Watchlist: Automatically mark an anime as completed when the whole series is watched. 
-- Context Menu: Anime title and Episode Plot does not show during playback when using select source.
 - Widgets: No information shows during the playback
 
 **_Optional_**: 

@@ -236,7 +236,7 @@ msgid "Preferences"
 msgstr ""
 
 msgctxt "#40314"
-msgid "Preferred Audio Stream (Dual Audio)"
+msgid "Preferred Audio Playback (Dual Audio)"
 msgstr ""
 
 msgctxt "#40315"
@@ -300,7 +300,7 @@ msgid "Hide HEVC Items"
 msgstr ""
 
 msgctxt "#40330"
-msgid "Preferred Stream Source"
+msgid "Preferred Source Type"
 msgstr ""
 
 msgctxt "#40331"
@@ -712,27 +712,91 @@ msgid "Offset for Aniskip (seconds)"
 msgstr ""
 
 msgctxt "#40433"
-msgid ""
-msgstr ""
-
-msgctxt "#40434"
-msgid ""
-msgstr ""
-
-msgctxt "#40435"
-msgid ""
-msgstr ""
-
-msgctxt "#40436"
-msgid ""
-msgstr ""
-
-msgctxt "#40437"
 msgid "Disable Scraping Screen Fanart"
 msgstr ""
 
-msgctxt "#40438"
+msgctxt "#40434"
 msgid "Disable Scraping Screen Clearlogo"
+msgstr ""
+
+msgctxt "#40435"
+msgid "Preferred Subtitle Language"
+msgstr ""
+
+msgctxt "#40436"
+msgid "English"
+msgstr ""
+
+msgctxt "#40437"
+msgid "Japanese"
+msgstr ""
+
+msgctxt "#40438"
+msgid "Spanish"
+msgstr ""
+
+msgctxt "#40439"
+msgid "French"
+msgstr ""
+
+msgctxt "#40440"
+msgid "German"
+msgstr ""
+
+msgctxt "#40441"
+msgid "Italian"
+msgstr ""
+
+msgctxt "#40442"
+msgid "Dutch"
+msgstr ""
+
+msgctxt "#40443"
+msgid "Russian"
+msgstr ""
+
+msgctxt "#40444"
+msgid "Portuguese"
+msgstr ""
+
+msgctxt "#40445"
+msgid "Korean"
+msgstr ""
+
+msgctxt "#40446"
+msgid "Chinese"
+msgstr ""
+
+msgctxt "#40447"
+msgid "Arabic"
+msgstr ""
+
+msgctxt "#40448"
+msgid "Hindi"
+msgstr ""
+
+msgctxt "#40449"
+msgid "Turkish"
+msgstr ""
+
+msgctxt "#40450"
+msgid "Polish"
+msgstr ""
+
+msgctxt "#40451"
+msgid "Swedish"
+msgstr ""
+
+msgctxt "#40452"
+msgid "Norwegian"
+msgstr ""
+
+msgctxt "#40453"
+msgid "Danish"
+msgstr ""
+
+msgctxt "#40454"
+msgid "Finnish"
 msgstr ""
 
 ######MAIN Category DIRECTORY#######

@@ -72,6 +72,12 @@ Changelog 0.3.26 [20230217]:
 Changelog 0.3.25 [20230214]:
 - Fixed sub and dub skin bug
 
+Changelog 0.3.47 [20230310]:
+- Made Nya Alt easier for Verizon Users
+- Added New Setting "Preferred Subtitle Language"
+- Renamed "Preferred Audio Stream"
+- Renamed "Preferred Stream Source"
+
 Changelog 0.3.24 [20230213]:
 - Fixed a few small bugs
 

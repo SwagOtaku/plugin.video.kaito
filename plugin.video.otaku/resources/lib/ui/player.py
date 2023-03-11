@@ -183,6 +183,61 @@ class watchlistPlayer(xbmc.Player):
 
         control.closeAllDialogs()
 
+        subtitle_lang = self.getAvailableSubtitleStreams()
+        if len(subtitle_lang) > 1:
+            preferred_subtitle = control.getSetting('general.subtitles')
+            if preferred_subtitle == "0":
+                preferred_subtitle = "eng"
+            elif preferred_subtitle == "1":
+                preferred_subtitle = "jpn"
+            elif preferred_subtitle == "2":
+                preferred_subtitle = "spa"
+            elif preferred_subtitle == "3":
+                preferred_subtitle = "fre"
+            elif preferred_subtitle == "4":
+                preferred_subtitle = "ger"
+            elif preferred_subtitle == "5":
+                preferred_subtitle = "ita"
+            elif preferred_subtitle == "6":
+                preferred_subtitle = "dut"
+            elif preferred_subtitle == "7":
+                preferred_subtitle = "rus"
+            elif preferred_subtitle == "8":
+                preferred_subtitle = "por"
+            elif preferred_subtitle == "9":
+                preferred_subtitle = "kor"
+            elif preferred_subtitle == "10":
+                preferred_subtitle = "chi"
+            elif preferred_subtitle == "11":
+                preferred_subtitle = "ara"
+            elif preferred_subtitle == "12":
+                preferred_subtitle = "hin"
+            elif preferred_subtitle == "13":
+                preferred_subtitle = "tur"
+            elif preferred_subtitle == "14":
+                preferred_subtitle = "pol"
+            elif preferred_subtitle == "15":
+                preferred_subtitle = "swe"
+            elif preferred_subtitle == "16":
+                preferred_subtitle = "nor"
+            elif preferred_subtitle == "17":
+                preferred_subtitle = "dan"
+            elif preferred_subtitle == "18":
+                preferred_subtitle = "fin"
+
+            try:
+                subtitle_int = subtitle_lang.index(preferred_subtitle)
+                self.setSubtitleStream(subtitle_int)
+            except ValueError:
+                preferred_subtitle = "eng"
+                subtitle_int = subtitle_lang.index(preferred_subtitle)
+                self.setSubtitleStream(subtitle_int)
+
+            if len(preferred_subtitle) == 5:
+                preferred_subtitle = control.lang(int(preferred_subtitle))
+            subtitle_int = subtitle_lang.index(preferred_subtitle)
+            self.setSubtitleStream(subtitle_int)
+
         audio_lang = self.getAvailableAudioStreams()
         if len(audio_lang) > 1:
             preferred_audio = control.getSetting('general.audio')
@@ -199,8 +254,8 @@ class watchlistPlayer(xbmc.Player):
                 self.showSubtitles(False)
             else:
                 self.showSubtitles(True)
-
-        if control.getSetting('general.subtitles') == 'true':
+        
+        if control.getSetting('general.dubsubtitles') == 'true':
             self.showSubtitles(True)
 
         if self.media_type == 'movie':
