@@ -185,45 +185,13 @@ class watchlistPlayer(xbmc.Player):
 
         subtitle_lang = self.getAvailableSubtitleStreams()
         if len(subtitle_lang) > 1:
-            preferred_subtitle = control.getSetting('general.subtitles')
-            if preferred_subtitle == "0":
-                preferred_subtitle = "eng"
-            elif preferred_subtitle == "1":
-                preferred_subtitle = "jpn"
-            elif preferred_subtitle == "2":
-                preferred_subtitle = "spa"
-            elif preferred_subtitle == "3":
-                preferred_subtitle = "fre"
-            elif preferred_subtitle == "4":
-                preferred_subtitle = "ger"
-            elif preferred_subtitle == "5":
-                preferred_subtitle = "ita"
-            elif preferred_subtitle == "6":
-                preferred_subtitle = "dut"
-            elif preferred_subtitle == "7":
-                preferred_subtitle = "rus"
-            elif preferred_subtitle == "8":
-                preferred_subtitle = "por"
-            elif preferred_subtitle == "9":
-                preferred_subtitle = "kor"
-            elif preferred_subtitle == "10":
-                preferred_subtitle = "chi"
-            elif preferred_subtitle == "11":
-                preferred_subtitle = "ara"
-            elif preferred_subtitle == "12":
-                preferred_subtitle = "hin"
-            elif preferred_subtitle == "13":
-                preferred_subtitle = "tur"
-            elif preferred_subtitle == "14":
-                preferred_subtitle = "pol"
-            elif preferred_subtitle == "15":
-                preferred_subtitle = "swe"
-            elif preferred_subtitle == "16":
-                preferred_subtitle = "nor"
-            elif preferred_subtitle == "17":
-                preferred_subtitle = "dan"
-            elif preferred_subtitle == "18":
-                preferred_subtitle = "fin"
+            subtitles = [
+                "eng", "jpn", "spa", "fre", "ger", "ita",
+                "dut", "rus", "por", "kor", "chi", "ara",
+                "hin", "tur", "pol", "swe", "nor", "dan",
+                "fin"
+            ]
+            preferred_subtitle = subtitles[int(control.getSetting('general.subtitles'))]
 
             try:
                 subtitle_int = subtitle_lang.index(preferred_subtitle)
@@ -240,21 +208,15 @@ class watchlistPlayer(xbmc.Player):
 
         audio_lang = self.getAvailableAudioStreams()
         if len(audio_lang) > 1:
-            preferred_audio = control.getSetting('general.audio')
-            if preferred_audio == "0":
-                preferred_audio = "jpn"
-            elif preferred_audio == "1":
-                preferred_audio = "eng"
-
-            if len(preferred_audio) == 5:
-                preferred_audio = control.lang(int(preferred_audio))
+            audios = ['jpn', 'eng']
+            preferred_audio = audios[int(control.getSetting('general.audio'))]
             audio_int = audio_lang.index(preferred_audio)
             self.setAudioStream(audio_int)
             if preferred_audio == "eng":
                 self.showSubtitles(False)
             else:
                 self.showSubtitles(True)
-        
+
         if control.getSetting('general.dubsubtitles') == 'true':
             self.showSubtitles(True)
 
@@ -294,7 +256,6 @@ class watchlistPlayer(xbmc.Player):
             endpoint = int(control.getSetting('playingnext.time'))
         else:
             endpoint = False
-
 
         if endpoint:
             while self.isPlaying():
@@ -454,23 +415,14 @@ def _HLS_HOOK(item):
     stream_url = item.getPath()
     import inputstreamhelper
     is_helper = inputstreamhelper.Helper('hls')
-    if is_helper.check_inputstream():
+    if '|' not in stream_url and is_helper.check_inputstream():
         if control._kodiver < 19:
             item.setProperty('inputstreamaddon', is_helper.inputstream_addon)
         else:
             item.setProperty('inputstream', is_helper.inputstream_addon)
-        if '|' in stream_url:
-            stream_url, strhdr = stream_url.split('|')
-            if control._kodiver > 19.8:
-                item.setProperty('inputstream.adaptive.manifest_headers', strhdr)
-            else:
-                item.setProperty('inputstream.adaptive.stream_headers', strhdr)
-            item.setPath(stream_url)
         item.setProperty('inputstream.adaptive.manifest_type', 'hls')
-        item.setProperty('MimeType', 'application/vnd.apple.mpegurl')
-        item.setMimeType('application/vnd.apple.mpegstream_url')
-        item.setContentLookup(False)
-    else:
-        raise Exception("InputStream Adaptive is not supported.")
+    item.setProperty('MimeType', 'application/vnd.apple.mpegurl')
+    item.setMimeType('application/vnd.apple.mpegstream_url')
+    item.setContentLookup(False)
 
     return item
