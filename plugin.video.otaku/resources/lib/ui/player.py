@@ -296,16 +296,25 @@ class PlayerDialogs(xbmc.Player):
 
         if control.getSetting('skipoutro.aniskip.enable') == 'true' and\
                 int(control.getSetting('skipoutro.end.skip.time')) != 0:
-            PlayingNext(*('playing_next_aniskip.xml', control.ADDON_PATH),
+            selected_theme = int(control.getSetting('general.dialog'))
+            themes = ['playing_next_aniskip_default.xml', 'playing_next_aniskip_ah2.xml', 'playing_next_aniskip_auramod.xml']
+            selected_theme = themes[selected_theme]
+            PlayingNext(*(selected_theme, control.ADDON_PATH),
                         actionArgs=self._get_next_item_args()).doModal()
         else:
-            PlayingNext(*('playing_next.xml', control.ADDON_PATH),
+            selected_theme = int(control.getSetting('general.dialog'))
+            themes = ['playing_next_default.xml', 'playing_next_ah2.xml', 'playing_next_auramod.xml']
+            selected_theme = themes[selected_theme]
+            PlayingNext(*(selected_theme, control.ADDON_PATH),
                         actionArgs=self._get_next_item_args()).doModal()
 
     @staticmethod
     def _show_skip_intro():
         from resources.lib.windows.skip_intro import SkipIntro
-        SkipIntro(*('skip_intro.xml', control.ADDON_PATH),
+        selected_theme = int(control.getSetting('general.dialog'))
+        themes = ['skip_intro_default.xml', 'skip_intro_ah2.xml', 'skip_intro_auramod.xml']
+        selected_theme = themes[selected_theme]
+        SkipIntro(*(selected_theme, control.ADDON_PATH),
                   actionArgs={'item_type': 'skip_intro'}).doModal()
 
     @staticmethod

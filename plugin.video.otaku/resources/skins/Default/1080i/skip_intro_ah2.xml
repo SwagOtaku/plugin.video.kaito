@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<window>
+	<defaultcontrol always="true">3001</defaultcontrol>
+	<onload>Dialog.Close(fullscreeninfo,true)</onload>
+	<onload>Dialog.Close(videoosd,true)</onload>
+	<include>Animation_FadeIn</include>
+	<controls>
+		<control type="group">
+			<animation type="WindowOpen" reversible="false">
+				<effect type="fade" start="0" end="100" time="300" />
+				<effect type="slide" start="400%,0" end="0,0" time="400" />
+			</animation>
+			<animation type="WindowClose" reversible="false">
+				<effect type="fade" start="100" end="0" time="400" />
+				<effect type="slide" start="0,0" end="400%,0" time="400" />
+			</animation>
+			<control type="group">
+				<height>9%</height>
+				<width>30%</width>
+				<right>10%</right>
+				<bottom>10%</bottom>
+				<!-- Background -->
+				<!-- Thumb -->
+				<!-- Labels -->
+				<control type="group">
+					<top>2%</top>
+					<left>48%</left>
+					<width>100%</width>
+					<!-- Buttons -->
+					<control type="grouplist">
+                        <itemgap>-60</itemgap>
+                        <orientation>horizontal</orientation>
+                        <height>256</height>
+                        <centertop>50%</centertop>
+                        <include content="Object_Info_Button">
+                            <param name="id" value="3001" />
+                            <param name="groupid" value="5012" />
+                            <param name="sliceid" value="5112" />
+                            <param name="label" value="Skip Intro" />
+                            <param name="icon" value="special://skin/extras/icons/play3.png" />
+                            <param name="visible" value="true" />
+                        </include>
+                        <include content="Object_Info_Button">
+                            <param name="id" value="3002" />
+                            <param name="groupid" value="5013" />
+                            <param name="sliceid" value="5113" />
+                            <param name="label" value="Close" />
+                            <param name="icon" value="special://skin/extras/icons/disabled.png" />
+                            <param name="visible" value="true" />
+                            <onclick>SetFocus(3013)</onclick>
+                            <onclick>Action(Select)</onclick>
+                        </include>
+                    </control>
+                </control>
+            </control>
+        </control>
+        <include content="Object_Hidden_Button">
+            <param name="id" value="3013" />
+        </include>
+    </controls>
+</window>

@@ -1,3 +1,7 @@
+Changelog 0.3.50 [20230313]:
+- Added New Setting "Dialog Theme"
+- Added 2 New Themes for Skip Intro, Playing Next Dialog
+
 Changelog 0.3.49 [20230310]:
 - Fixed mal and kitsu token refresh
 

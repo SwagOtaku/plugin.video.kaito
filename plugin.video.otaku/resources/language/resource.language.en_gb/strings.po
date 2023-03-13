@@ -532,7 +532,7 @@ msgid "Search Subs For Language Other Than English"
 msgstr ""
 
 msgctxt "#40388"
-msgid "Theme"
+msgid "Icon Theme"
 msgstr ""
 
 msgctxt "#40389"
@@ -797,6 +797,22 @@ msgstr ""
 
 msgctxt "#40454"
 msgid "Finnish"
+msgstr ""
+
+msgctxt "#40455"
+msgid "Dialog Theme (Use only if you're on the skin)"
+msgstr ""
+
+msgctxt "#40456"
+msgid "Default"
+msgstr ""
+
+msgctxt "#40457"
+msgid "Arctic Horizon 2"
+msgstr ""
+
+msgctxt "#40458"
+msgid "AuraMod"
 msgstr ""
 
 ######MAIN Category DIRECTORY#######

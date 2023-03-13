@@ -1,3 +1,4 @@
-Aniskip has been added!
-- Hey everyone, we have added a beta feature called Aniskip, it skips the intro for almost any anime on point. 
-Big Thanks to @joezito129 for adding Aniskip to Otaku.
+New Themes has been added!
+- Hey everyone, we have added 2 new themes for skip intro dialog and playing next dialog. Our two thenmes are Ah2 and Auramod. 
+
+For people who are using Auramod Theme, they are a little buggy and out of place. Will work on them soon when i try Auramod again. 
