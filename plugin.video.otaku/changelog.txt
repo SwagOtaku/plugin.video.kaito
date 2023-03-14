@@ -1,3 +1,6 @@
+Changelog 0.3.51 [20230314]:
+- Fixed a major bug with the Playing Next Dialog
+
 Changelog 0.3.50 [20230313]:
 - Added New Setting "Dialog Theme"
 - Added 2 New Themes for Skip Intro, Playing Next Dialog
