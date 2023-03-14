@@ -53,13 +53,13 @@ class watchlistPlayer(xbmc.Player):
         # self.AVStarted = False
 
         self.total_time = None
-        self.delay_time = int(control.getSetting('skipintro.delay'))
+        self.skipintro_delay_time = int(control.getSetting('skipintro.delay'))
         self.skipintro_aniskip_enable = control.getSetting('skipintro.aniskip.enable') == 'true'
         self.skipoutro_aniskip_enable = control.getSetting('skipoutro.aniskip.enable') == 'true'
         self.skipintro_start_skip_time = 0
         self.skipintro_end_skip_time = 9999
         self.skipoutro_start_skip_time = 0
-        self.skipoutro_end_skip_time = 0
+        self.skipoutro_end_skip_time = 9999
         self.skipintro_aniskip_offset = int(control.getSetting('skipintro.aniskip.offset'))
         self.skipoutro_aniskip_offset = int(control.getSetting('skipoutro.aniskip.offset'))
 
@@ -183,6 +183,7 @@ class watchlistPlayer(xbmc.Player):
 
         control.closeAllDialogs()
 
+        # Subtitle Preferences
         subtitle_lang = self.getAvailableSubtitleStreams()
         if len(subtitle_lang) > 1:
             subtitles = [
@@ -206,6 +207,7 @@ class watchlistPlayer(xbmc.Player):
             subtitle_int = subtitle_lang.index(preferred_subtitle)
             self.setSubtitleStream(subtitle_int)
 
+        # Audio Preferences
         audio_lang = self.getAvailableAudioStreams()
         if len(audio_lang) > 1:
             audios = ['jpn', 'eng']
@@ -223,8 +225,7 @@ class watchlistPlayer(xbmc.Player):
         if self.media_type == 'movie':
             return self.onWatchedPercent()
 
-        self.total_time = int(self.getTotalTime())
-
+        # Skip Intro Code
         if control.getSetting('smartplay.skipintrodialog') == 'true':
             if self.skipintro_aniskip_enable:
                 while self.isPlaying():
@@ -232,7 +233,7 @@ class watchlistPlayer(xbmc.Player):
                     if self.current_time > 240:
                         break
                     elif self.skipintro_end_skip_time == 9999:
-                        if self.current_time >= self.delay_time:
+                        if self.current_time >= self.skipintro_delay_time:
                             PlayerDialogs()._show_skip_intro()
                             break
                     elif self.current_time > self.skipintro_start_skip_time:
@@ -245,27 +246,64 @@ class watchlistPlayer(xbmc.Player):
                     self.current_time = int(self.getTime())
                     if self.current_time > 240:
                         break
-                    elif self.current_time >= self.delay_time:
+                    elif self.current_time >= self.skipintro_delay_time:
                         PlayerDialogs()._show_skip_intro()
                         break
                     xbmc.sleep(250)
 
         _ = self.onWatchedPercent()
 
-        if control.getSetting('smartplay.playingnextdialog') == 'true':
-            endpoint = int(control.getSetting('playingnext.time'))
-        else:
-            endpoint = False
-
-        if endpoint:
+        # Skip Outro Code
+        if self.skipoutro_aniskip_enable:
             while self.isPlaying():
                 self.current_time = int(self.getTime())
-                if self.total_time - self.current_time <= endpoint and self.skipoutro_start_skip_time == 0 or self.current_time >= self.skipoutro_start_skip_time > 0:
-                    xbmc.executebuiltin('RunPlugin("plugin://plugin.video.otaku/run_player_dialogs")')
+                if self.skipoutro_start_skip_time == 0:
                     break
-                xbmc.sleep(5000)
+                elif self.skipoutro_end_skip_time == 9999:
+                    PlayerDialogs()._show_skip_outro()
+                    break
+                elif self.current_time > self.skipoutro_start_skip_time:
+                    PlayerDialogs()._show_skip_outro()
+                    break
+                
+                xbmc.sleep(250)
+        
+        _ = self.onWatchedPercent()
+        
+        # Play Next Code
+        if control.getSetting('skipoutro.aniskip.enable') == 'true':
+            # do not execute the code block
+            pass
+        else:
+            # execute the code block
+            if control.getSetting('smartplay.playingnextdialog') == 'true':
+                endpoint = int(control.getSetting('playingnext.time'))
+            else:
+                endpoint = False
+        
+            if endpoint:
+                while self.isPlaying():
+                    if int(self.getTotalTime()) - int(self.getTime()) <= endpoint:
+                        xbmc.executebuiltin('RunPlugin("plugin://plugin.video.otaku/run_player_dialogs")')
+                        break
+                    else:
+                        xbmc.sleep(5000)
 
-
+        if control.getSetting('skipoutro.aniskip.enable') == 'true':
+            if self.skipoutro_start_skip_time == 0:
+                if control.getSetting('smartplay.playingnextdialog') == 'true':
+                    endpoint = int(control.getSetting('playingnext.time'))
+                else:
+                    endpoint = False
+        
+                if endpoint:
+                    while self.isPlaying():
+                        if int(self.getTotalTime()) - int(self.getTime()) <= endpoint:
+                            xbmc.executebuiltin('RunPlugin("plugin://plugin.video.otaku/run_player_dialogs")')
+                            break
+                        else:
+                            xbmc.sleep(5000)
+        
 class PlayerDialogs(xbmc.Player):
 
     def __init__(self):
@@ -293,20 +331,11 @@ class PlayerDialogs(xbmc.Player):
 
     def _show_playing_next(self):
         from resources.lib.windows.playing_next import PlayingNext
-
-        if control.getSetting('skipoutro.aniskip.enable') == 'true' and\
-                int(control.getSetting('skipoutro.end.skip.time')) != 0:
-            selected_theme = int(control.getSetting('general.dialog'))
-            themes = ['playing_next_aniskip_default.xml', 'playing_next_aniskip_ah2.xml', 'playing_next_aniskip_auramod.xml']
-            selected_theme = themes[selected_theme]
-            PlayingNext(*(selected_theme, control.ADDON_PATH),
-                        actionArgs=self._get_next_item_args()).doModal()
-        else:
-            selected_theme = int(control.getSetting('general.dialog'))
-            themes = ['playing_next_default.xml', 'playing_next_ah2.xml', 'playing_next_auramod.xml']
-            selected_theme = themes[selected_theme]
-            PlayingNext(*(selected_theme, control.ADDON_PATH),
-                        actionArgs=self._get_next_item_args()).doModal()
+        selected_theme = int(control.getSetting('general.dialog'))
+        themes = ['playing_next_default.xml', 'playing_next_ah2.xml', 'playing_next_auramod.xml']
+        selected_theme = themes[selected_theme]
+        PlayingNext(*(selected_theme, control.ADDON_PATH),
+                    actionArgs=self._get_next_item_args()).doModal()
 
     @staticmethod
     def _show_skip_intro():
@@ -316,20 +345,28 @@ class PlayerDialogs(xbmc.Player):
         selected_theme = themes[selected_theme]
         SkipIntro(*(selected_theme, control.ADDON_PATH),
                   actionArgs={'item_type': 'skip_intro'}).doModal()
+            
+    def _show_skip_outro(self):
+        from resources.lib.windows.skip_outro import SkipOutro
+        selected_theme = int(control.getSetting('general.dialog'))
+        themes = ['skip_outro_default.xml', 'skip_outro_ah2.xml', 'skip_outro_auramod.xml']
+        selected_theme = themes[selected_theme]
+        SkipOutro(*(selected_theme, control.ADDON_PATH),
+                    actionArgs=self._get_next_item_args()).doModal()
 
     @staticmethod
     def _get_next_item_args():
         current_position = playList.getposition()
         _next_info = playList[current_position + 1]
-        next_info = {
-            'thumb': _next_info.getArt('thumb'),
-            'name': _next_info.getLabel(),
-            'playnext': True
-        }
+        next_info = {}
+        next_info['thumb'] = _next_info.getArt('thumb')
+        next_info['name'] = _next_info.getLabel()
+        next_info['playnext'] = True
         return next_info
-
+     
     @staticmethod
     def _is_video_window_open():
+
         if xbmcgui.getCurrentWindowId() != 12005:
             return False
         return True

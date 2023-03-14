@@ -31,7 +31,7 @@ class SkipIntro(BaseWindow):
 
             self.current_time = None
             self.total_time = self.player.getTotalTime()
-            self.delay_time = int(control.getSetting('skipintro.delay'))
+            self.skipintro_delay_time = int(control.getSetting('skipintro.delay'))
 
             self.skipintro_start_skip_time = None
             self.skipintro_end_skip_time = None
