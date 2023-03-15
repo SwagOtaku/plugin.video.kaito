@@ -265,9 +265,11 @@ class watchlistPlayer(xbmc.Player):
                 elif self.current_time > self.skipoutro_start_skip_time:
                     PlayerDialogs()._show_skip_outro()
                     break
-                
+                elif playList.getposition() == (playList.size() - 1):
+                    break
+                    
                 xbmc.sleep(250)
-        
+                
         _ = self.onWatchedPercent()
         
         # Play Next Code

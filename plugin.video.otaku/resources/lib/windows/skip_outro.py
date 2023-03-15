@@ -23,7 +23,7 @@ class SkipOutro(BaseWindow):
             self.duration = self.player.getTotalTime() - self.player.getTime()
             self.closed = False
             self.actioned = None
-            self.default_action = '0'
+            self.default_action = control.getSetting('playingnext.defaultaction')
             self.current_time = None
             self.total_time = self.player.getTotalTime()
             self.skipoutro_start_skip_time = None
