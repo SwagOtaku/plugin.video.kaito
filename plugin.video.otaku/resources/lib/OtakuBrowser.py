@@ -168,6 +168,8 @@ class OtakuBrowser(BrowserBase):
         items = [i for i in items if self.is_aired(i['info'])]
 
         playlist = control.bulk_draw_items(items)[pass_idx:]
+        if len(playlist) > 30:
+            playlist = playlist[:30]
 
         for i in playlist:
             url = i[0]
@@ -181,11 +183,13 @@ class OtakuBrowser(BrowserBase):
         try:
             try:
                 air_date = info['aired']
+                if air_date == '':
+                    return True
             except:
                 air_date = info.get('premiered')
             if not air_date:
                 return False
-            if int(air_date[:4]) < 2019:
+            if int(air_date[:4]) < 2022:
                 return True
 
             todays_date = datetime.datetime.today().strftime('%Y-%m-%d')

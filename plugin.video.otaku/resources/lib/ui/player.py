@@ -267,11 +267,11 @@ class watchlistPlayer(xbmc.Player):
                     break
                 elif playList.getposition() == (playList.size() - 1):
                     break
-                    
+
                 xbmc.sleep(250)
-                
+
         _ = self.onWatchedPercent()
-        
+
         # Play Next Code
         if control.getSetting('skipoutro.aniskip.enable') == 'true':
             # do not execute the code block
@@ -282,7 +282,7 @@ class watchlistPlayer(xbmc.Player):
                 endpoint = int(control.getSetting('playingnext.time'))
             else:
                 endpoint = False
-        
+
             if endpoint:
                 while self.isPlaying():
                     if int(self.getTotalTime()) - int(self.getTime()) <= endpoint:
@@ -297,7 +297,7 @@ class watchlistPlayer(xbmc.Player):
                     endpoint = int(control.getSetting('playingnext.time'))
                 else:
                     endpoint = False
-        
+
                 if endpoint:
                     while self.isPlaying():
                         if int(self.getTotalTime()) - int(self.getTime()) <= endpoint:
@@ -305,7 +305,8 @@ class watchlistPlayer(xbmc.Player):
                             break
                         else:
                             xbmc.sleep(5000)
-        
+
+
 class PlayerDialogs(xbmc.Player):
 
     def __init__(self):
@@ -347,14 +348,14 @@ class PlayerDialogs(xbmc.Player):
         selected_theme = themes[selected_theme]
         SkipIntro(*(selected_theme, control.ADDON_PATH),
                   actionArgs={'item_type': 'skip_intro'}).doModal()
-            
+
     def _show_skip_outro(self):
         from resources.lib.windows.skip_outro import SkipOutro
         selected_theme = int(control.getSetting('general.dialog'))
         themes = ['skip_outro_default.xml', 'skip_outro_ah2.xml', 'skip_outro_auramod.xml']
         selected_theme = themes[selected_theme]
         SkipOutro(*(selected_theme, control.ADDON_PATH),
-                    actionArgs=self._get_next_item_args()).doModal()
+                  actionArgs=self._get_next_item_args()).doModal()
 
     @staticmethod
     def _get_next_item_args():
@@ -365,7 +366,7 @@ class PlayerDialogs(xbmc.Player):
         next_info['name'] = _next_info.getLabel()
         next_info['playnext'] = True
         return next_info
-     
+
     @staticmethod
     def _is_video_window_open():
 
