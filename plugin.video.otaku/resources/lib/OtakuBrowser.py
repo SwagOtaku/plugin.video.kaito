@@ -1,6 +1,7 @@
 import datetime
 import json
 import pickle
+import random
 # import re
 
 from resources.lib import pages
@@ -165,12 +166,24 @@ class OtakuBrowser(BrowserBase):
         if rescrape or source_select:
             return items
 
-        items = [i for i in items if self.is_aired(i['info'])]
+        # items = [i for i in items if self.is_aired(i['info'])]
+        show_meta = database.get_show_meta(show_id)
+        show_art = pickle.loads(show_meta.get('art'))
+        eitems = []
+        for i in items:
+            if self.is_aired(i['info']):
+                addl_art = {}
+                if show_art.get('clearart'):
+                    addl_art.update({'clearart': random.choice(show_art['clearart'])})
+                if show_art.get('clearlogo'):
+                    addl_art.update({'clearlogo': random.choice(show_art['clearlogo'])})
+                i['image'].update(addl_art)
+                eitems.append(i)
 
-        playlist = control.bulk_draw_items(items)[pass_idx:]
-        if len(playlist) > 30:
-            playlist = playlist[:30]
-
+        playlist = control.bulk_draw_items(eitems)[pass_idx:]
+        if len(playlist) > int(control.getSetting('general.playlist_length')):
+            playlist = playlist[:int(control.getSetting('general.playlist_length'))]
+        
         for i in playlist:
             url = i[0]
 

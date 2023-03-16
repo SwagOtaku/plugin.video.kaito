@@ -1,3 +1,7 @@
+Changelog 0.3.53 [20230316]:
+- Fixed playlist not building if airdate not available
+- Added New Setting "Preferred Playlist Size"
+
 Changelog 0.3.52 [20230315]:
 - Fixed a small bug with Playing Next Dialog
 

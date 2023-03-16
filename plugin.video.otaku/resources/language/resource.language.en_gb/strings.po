@@ -815,6 +815,10 @@ msgctxt "#40458"
 msgid "AuraMod"
 msgstr ""
 
+msgctxt "#40459"
+msgid "Preferred Playlist Size"
+msgstr ""
+
 ######MAIN Category DIRECTORY#######
 msgctxt "#50000"
 msgid "Airing Anime Calendar"
