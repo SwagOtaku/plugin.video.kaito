@@ -819,6 +819,14 @@ msgctxt "#40459"
 msgid "Preferred Playlist Size"
 msgstr ""
 
+msgctxt "#40460"
+msgid "Enable Automatic Outro Skip"
+msgstr ""
+
+msgctxt "#40461"
+msgid "Enable Automatic Intro Skip"
+msgstr ""
+
 ######MAIN Category DIRECTORY#######
 msgctxt "#50000"
 msgid "Airing Anime Calendar"

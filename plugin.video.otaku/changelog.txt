@@ -1,3 +1,8 @@
+Changelog 0.3.54 [20230316]:
+- Added New Setting "Enable Automatic Outro Skip"
+- Added New Setting "Enable Automatic Intro Skip"
+- Recoded Skip Intro
+
 Changelog 0.3.53 [20230316]:
 - Fixed playlist not building if airdate not available
 - Added New Setting "Preferred Playlist Size"

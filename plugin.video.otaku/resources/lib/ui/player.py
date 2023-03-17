@@ -39,6 +39,7 @@ class watchlistPlayer(xbmc.Player):
 
     def __init__(self):
         super(watchlistPlayer, self).__init__()
+        self.player = xbmc.Player()
         self._filter_lang = None
         self._episode = None
         self._build_playlist = None
@@ -56,6 +57,8 @@ class watchlistPlayer(xbmc.Player):
         self.skipintro_delay_time = int(control.getSetting('skipintro.delay'))
         self.skipintro_aniskip_enable = control.getSetting('skipintro.aniskip.enable') == 'true'
         self.skipoutro_aniskip_enable = control.getSetting('skipoutro.aniskip.enable') == 'true'
+        self.skipintro_auto_aniskip = control.getSetting('skipintro.aniskip.auto') == 'true'
+        self.skipoutro_auto_aniskip = control.getSetting('skipoutro.aniskip.auto') == 'true'
         self.skipintro_start_skip_time = 0
         self.skipintro_end_skip_time = 9999
         self.skipoutro_start_skip_time = 0
@@ -226,22 +229,44 @@ class watchlistPlayer(xbmc.Player):
             return self.onWatchedPercent()
 
         # Skip Intro Code
-        if control.getSetting('smartplay.skipintrodialog') == 'true':
-            if self.skipintro_aniskip_enable:
-                while self.isPlaying():
-                    self.current_time = int(self.getTime())
-                    if self.current_time > 240:
-                        break
-                    elif self.skipintro_end_skip_time == 9999:
-                        if self.current_time >= self.skipintro_delay_time:
-                            PlayerDialogs()._show_skip_intro()
-                            break
-                    elif self.current_time > self.skipintro_start_skip_time:
-                        PlayerDialogs()._show_skip_intro()
-                        break
+        if self.skipintro_aniskip_enable:
+            while self.isPlaying():
+                self.current_time = int(self.getTime())
+                if self.skipintro_start_skip_time == 0:
+                    break
+                elif self.skipintro_auto_aniskip:
+                    # Get the current playback time
+                    current_time = self.player.getTime()
 
-                    xbmc.sleep(250)
+                    # Check if we're still in the intro
+                    if current_time < self.skipintro_start_skip_time:
+                        # If we're before the start skip time, wait and check again
+                        xbmc.sleep(250)
+                        continue
+                    elif current_time < self.skipintro_end_skip_time:
+                        # If we're in the intro, seek to the end of the intro
+                        self.player.seekTime(self.skipintro_end_skip_time)
+                        break
+                elif self.skipintro_end_skip_time == 9999:
+                    PlayerDialogs()._show_skip_intro()
+                    break
+                elif self.current_time > self.skipintro_start_skip_time:
+                    PlayerDialogs()._show_skip_intro()
+                    break
+
+                xbmc.sleep(250)
+
+        if control.getSetting('skipintro.aniskip.enable') == 'true':
+            # do not execute the code block
+            pass
+        else:
+            # execute the code block
+            if control.getSetting('smartplay.skipintrodialog') == 'true':
+                endpoint = int(control.getSetting('skipintro.time'))
             else:
+                endpoint = False
+
+            if endpoint:
                 while self.isPlaying():
                     self.current_time = int(self.getTime())
                     if self.current_time > 240:
@@ -251,13 +276,39 @@ class watchlistPlayer(xbmc.Player):
                         break
                     xbmc.sleep(250)
 
-        _ = self.onWatchedPercent()
+        if control.getSetting('skipintro.aniskip.enable') == 'true':
+            if self.skipintro_start_skip_time == 0:
+                if control.getSetting('smartplay.skipintrodialog') == 'true':
+                    endpoint = int(control.getSetting('skipintro.time'))
+                else:
+                    endpoint = False
 
+                if endpoint:
+                    while self.isPlaying():
+                        self.current_time = int(self.getTime())
+                        if self.current_time > 240:
+                            break
+                        elif self.current_time >= self.skipintro_delay_time:
+                            PlayerDialogs()._show_skip_intro()
+                            break
+                        xbmc.sleep(250)
+
+        _ = self.onWatchedPercent()
+        
         # Skip Outro Code
         if self.skipoutro_aniskip_enable:
             while self.isPlaying():
                 self.current_time = int(self.getTime())
                 if self.skipoutro_start_skip_time == 0:
+                    break
+                elif self.skipoutro_auto_aniskip:
+                    skipoutro_start_skip_time = int(control.getSetting('skipoutro.start.skip.time'))
+                    skipoutro_end_skip_time = int(control.getSetting('skipoutro.end.skip.time'))
+                    
+                    if skipoutro_end_skip_time == 9999 and playList.getposition() < (playList.size() - 1):
+                        self.player.seekTime(int(self.player.getTime()) + skipoutro_start_skip_time)
+                    elif playList.getposition() < (playList.size() - 1):
+                        self.player.seekTime(skipoutro_end_skip_time)
                     break
                 elif self.skipoutro_end_skip_time == 9999:
                     PlayerDialogs()._show_skip_outro()

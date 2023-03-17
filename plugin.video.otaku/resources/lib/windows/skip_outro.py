@@ -96,7 +96,7 @@ class SkipOutro(BaseWindow):
         if control_id == 3003:
             self.actioned = True
             if self.skipoutro_end_skip_time == 9999:
-                self.player.seekTime(int(self.player.getTime()) + self.skip_time)
+                self.player.seekTime(int(self.player.getTime()))
             else:
                 self.player.seekTime(self.skipoutro_end_skip_time)
             self.close()

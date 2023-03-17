@@ -61,7 +61,7 @@ class SkipIntro(BaseWindow):
                 if self.current_time > self.skipintro_end_skip_time:
                     self.close()
                     break
-                elif self.current_time > self.close_durration > 0 and self.skipintro_end_skip_time == 9999:
+                elif self.current_time > self.close_durration + self.skipintro_delay_time > 0 and self.skipintro_end_skip_time == 9999:
                     self.close()
                     break
                 xbmc.sleep(500)
