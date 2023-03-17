@@ -1,3 +1,6 @@
+Changelog 0.3.55 [20230317]:
+- Small Fixes with Playback
+
 Changelog 0.3.54 [20230316]:
 - Added New Setting "Enable Automatic Outro Skip"
 - Added New Setting "Enable Automatic Intro Skip"

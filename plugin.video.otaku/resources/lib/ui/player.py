@@ -235,8 +235,14 @@ class watchlistPlayer(xbmc.Player):
                 if self.skipintro_start_skip_time == 0:
                     break
                 elif self.skipintro_auto_aniskip:
-                    # Get the current playback time
-                    current_time = self.player.getTime()
+                    # Add a delay of 5 seconds before checking for the skipoutro condition
+                    xbmc.sleep(3000)
+                    try:
+                        # Get the current playback time
+                        current_time = self.player.getTime()
+                    except RuntimeError:
+                        # Handle the error gracefully, for example:
+                        current_time = 0
 
                     # Check if we're still in the intro
                     if current_time < self.skipintro_start_skip_time:
@@ -302,14 +308,23 @@ class watchlistPlayer(xbmc.Player):
                 if self.skipoutro_start_skip_time == 0:
                     break
                 elif self.skipoutro_auto_aniskip:
-                    skipoutro_start_skip_time = int(control.getSetting('skipoutro.start.skip.time'))
-                    skipoutro_end_skip_time = int(control.getSetting('skipoutro.end.skip.time'))
-                    
-                    if skipoutro_end_skip_time == 9999 and playList.getposition() < (playList.size() - 1):
-                        self.player.seekTime(int(self.player.getTime()) + skipoutro_start_skip_time)
-                    elif playList.getposition() < (playList.size() - 1):
-                        self.player.seekTime(skipoutro_end_skip_time)
-                    break
+                    # Add a delay of 5 seconds before checking for the skipoutro condition
+                    try:
+                        # Get the current playback time
+                        current_time = self.player.getTime()
+                    except RuntimeError:
+                        # Handle the error gracefully, for example:
+                        current_time = 0
+
+                    # Check if we're still in the outro
+                    if current_time < self.skipoutro_start_skip_time:
+                        # If we're before the start skip time, wait and check again
+                        xbmc.sleep(250)
+                        continue
+                    elif current_time < self.skipoutro_end_skip_time:
+                        # If we're in the outro, seek to the end of the outro
+                        self.player.seekTime(self.skipoutro_end_skip_time)
+                        break
                 elif self.skipoutro_end_skip_time == 9999:
                     PlayerDialogs()._show_skip_outro()
                     break
