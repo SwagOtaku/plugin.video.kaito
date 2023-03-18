@@ -64,6 +64,8 @@ class SkipIntro(BaseWindow):
                 elif self.current_time > self.close_durration + self.skipintro_delay_time > 0 and self.skipintro_end_skip_time == 9999:
                     self.close()
                     break
+                elif self.close_durration == 0:
+                    break
                 xbmc.sleep(500)
                 # if progress_bar is not None:
                 #     progress_bar.setPercent(self.calculate_percent())

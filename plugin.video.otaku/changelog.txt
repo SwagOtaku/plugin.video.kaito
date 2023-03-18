@@ -1,3 +1,7 @@
+Changelog 0.3.56 [20230318]:
+- Fixed Small Bug with Skip Intro Duration
+- Moved two settings
+
 Changelog 0.3.55 [20230317]:
 - Small Fixes with Playback
 
