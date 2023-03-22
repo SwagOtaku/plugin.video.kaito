@@ -39,6 +39,10 @@ def getQuality(release_title):
 def getInfo(release_title):
     info = []
     release_title = cleanTitle(release_title)
+    # info.subtitles
+    if any(i in release_title for i in ['multi-sub', 'multi sub', 'multiple subtitle']):
+        info.append('MULTI-SUBS')
+
     # info.video
     if any(i in release_title for i in ['x264', 'x 264', 'h264', 'h 264', 'avc']):
         info.append('AVC')
@@ -60,6 +64,8 @@ def getInfo(release_title):
         info.append('HDR')
     if any(i in release_title for i in [' sdr ']):
         info.append('SDR')
+    if any(i in release_title for i in ['batch']):
+        info.append('BATCH')
 
     # info.audio
     if any(i in release_title for i in ['aac']):

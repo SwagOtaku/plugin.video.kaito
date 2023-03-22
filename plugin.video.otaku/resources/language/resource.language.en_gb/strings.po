@@ -827,6 +827,22 @@ msgctxt "#40461"
 msgid "Enable Automatic Intro Skip"
 msgstr ""
 
+msgctxt "#40462"
+msgid "Prioritize Dual-Audio Sources"
+msgstr ""
+
+msgctxt "#40463"
+msgid "Prioritize Multisubs Sources"
+msgstr ""
+
+msgctxt "#40464"
+msgid "Prioritize Batch Sources"
+msgstr ""
+
+msgctxt "#40465"
+msgid "Prioritized Source Sorting"
+msgstr ""
+
 ######MAIN Category DIRECTORY#######
 msgctxt "#50000"
 msgid "Airing Anime Calendar"

@@ -1,3 +1,8 @@
+Changelog 0.3.57 [20230318]:
+- Added New Setting "Prioritize Dual-Audio Sources"
+- Added New Setting "Prioritize Multisubs Sources"
+- Added New Setting "Prioritize Batch Sources"
+
 Changelog 0.3.56 [20230318]:
 - Fixed Small Bug with Skip Intro Duration
 - Moved two settings
