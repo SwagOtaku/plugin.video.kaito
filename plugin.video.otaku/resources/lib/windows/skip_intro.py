@@ -13,6 +13,7 @@ def run_once(f):
     wrapper.has_run = False
     return wrapper
 
+
 class SkipIntro(BaseWindow):
 
     def __init__(self, xml_file, xml_location, actionArgs=None):
@@ -37,9 +38,10 @@ class SkipIntro(BaseWindow):
             self.skipintro_end_skip_time = None
 
         except:
-            import traceback
-            traceback.print_exc()
-    
+            # import traceback
+            # traceback.print_exc()
+            pass
+
     def onInit(self):
         self.background_tasks()
 

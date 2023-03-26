@@ -13,6 +13,7 @@ def run_once(f):
     wrapper.has_run = False
     return wrapper
 
+
 class SkipOutro(BaseWindow):
 
     def __init__(self, xml_file, xml_location, actionArgs=None):
@@ -37,17 +38,17 @@ class SkipOutro(BaseWindow):
         self.background_tasks()
 
     def calculate_percent(self):
-        return ((int(self.player.getTotalTime()) - int(self.player.getTime())) / float(self.duration)) * 100    
+        return ((int(self.player.getTotalTime()) - int(self.player.getTime())) / float(self.duration)) * 100
 
     def background_tasks(self):
         self.skipoutro_start_skip_time = int(control.getSetting('skipoutro.start.skip.time'))
-        self.skipoutro_end_skip_time = int(control.getSetting('skipoutro.end.skip.time'))   
+        self.skipoutro_end_skip_time = int(control.getSetting('skipoutro.end.skip.time'))
 
         try:
             try:
                 progress_bar = self.getControl(3014)
             except:
-                progress_bar = None 
+                progress_bar = None
 
             self.current_time = int(self.player.getTime())
             while int(self.total_time) - int(self.current_time) > 2 and not self.closed and self.playing_file == self.player.getPlayingFile():
@@ -57,7 +58,7 @@ class SkipOutro(BaseWindow):
                     break
                 if progress_bar is not None:
                     progress_bar.setPercent(self.calculate_percent())
-                xbmc.sleep(500) 
+                xbmc.sleep(500)
 
             if self.default_action == '1' and\
                     self.playing_file == self.player.getPlayingFile() and\
@@ -67,7 +68,7 @@ class SkipOutro(BaseWindow):
             import traceback
             traceback.print_exc()
             pass
-        self.close()    
+        self.close()
 
     def doModal(self):
         try:

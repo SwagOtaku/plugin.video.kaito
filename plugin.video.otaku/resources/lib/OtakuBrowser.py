@@ -183,7 +183,7 @@ class OtakuBrowser(BrowserBase):
         playlist = control.bulk_draw_items(eitems)[pass_idx:]
         if len(playlist) > int(control.getSetting('general.playlist_length')):
             playlist = playlist[:int(control.getSetting('general.playlist_length'))]
-        
+
         for i in playlist:
             url = i[0]
 

@@ -311,14 +311,14 @@ class Sources(DisplayWindow):
         prioritize_dualaudio = False
         prioritize_multisubs = False
         prioritize_batches = False
-        
+
         if control.getSetting('general.sortsources') == '0':  # Torrents selected
             prioritize_dualaudio = control.getSetting('general.prioritize_dualaudio') == 'true'
             prioritize_multisubs = control.getSetting('general.prioritize_multisubs') == 'true'
             prioritize_batches = control.getSetting('general.prioritize_batches') == 'true'
-        
+
         debrid_priorities = self.debrid_priority()
-        
+
         if prioritize_dualaudio:
             torrent_list_dualaudio = [i for i in torrent_list if 'DUAL-AUDIO' in i['info']]
             torrent_list_no_dualaudio = [i for i in torrent_list if 'DUAL-AUDIO' not in i['info']]
@@ -362,7 +362,6 @@ class Sources(DisplayWindow):
                     if file['quality'] == resolution:
                         sortedList.append(file)
         else:
-        
             # Sort Souces Medthod: Torrents
             # Torrents: Sub or Dub
             # - Helps Gets Torrents
@@ -373,16 +372,16 @@ class Sources(DisplayWindow):
                             if debrid['slug'] == torrent['debrid_provider']:
                                 if torrent['quality'] == resolution:
                                     sortedList.append(torrent)
-                                    
+
             # Sort Souces Medthod: Embeds
-            # Emebeds: Dual Audio or Dub 
+            # Emebeds: Dual Audio or Dub
             # - Helps Gets Embeds
             if sort_method == 1 or sort_method == 2:
                 for resolution in resolutions:
                     for file in embed_list:
                         if file['quality'] == resolution:
                             sortedList.append(file)
-    
+
             # Sort Souces Medthod: Embeds
             # Torrents: Dual Audio
             # - Helps Gets Torrents
@@ -393,7 +392,7 @@ class Sources(DisplayWindow):
                             if torrent['debrid_provider'] == debrid['slug']:
                                 if torrent['quality'] == resolution:
                                     sortedList.append(torrent)
-    
+
             # Sort Souces Medthod: Torrents
             # Emebeds: Sub
             # - Helps Gets Embeds

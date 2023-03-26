@@ -300,7 +300,7 @@ class watchlistPlayer(xbmc.Player):
                         xbmc.sleep(250)
 
         _ = self.onWatchedPercent()
-        
+
         # Skip Outro Code
         if self.skipoutro_aniskip_enable:
             while self.isPlaying():
