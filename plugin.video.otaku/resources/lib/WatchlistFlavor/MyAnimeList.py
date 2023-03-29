@@ -16,11 +16,11 @@ class MyAnimeListWLF(WatchlistFlavorBase):
 
     def login(self):
         try:
-            from six.moves import urllib_parse   # Importing urllib_parse from Six's module 
-            parsed = urllib_parse.urlparse(self._auth_var)   # Parsing self._auth_var
-            params = dict(urllib_parse.parse_qsl(parsed.query))   # Extracting parameters from parsed query and creating a dictionary
-            code = params['code']   # Assigning the value of 'code' key to variable 'code'
-            code_verifier = params['state']   # Assigning the value of 'state' key to variable 'code_verifier'
+            from six.moves import urllib_parse  # Importing urllib_parse from Six's module
+            parsed = urllib_parse.urlparse(self._auth_var)  # Parsing self._auth_var
+            params = dict(urllib_parse.parse_qsl(parsed.query))  # Extracting parameters from parsed query and creating a dictionary
+            code = params['code']  # Assigning the value of 'code' key to variable 'code'
+            code_verifier = params['state']  # Assigning the value of 'state' key to variable 'code_verifier'
         except:   # Exception handler in case of error
             return   # Returns None
 
@@ -45,11 +45,11 @@ class MyAnimeListWLF(WatchlistFlavorBase):
             'username': user['name']
         }
 
-        return login_data   # Returning the dictionary 'login_data' 
+        return login_data   # Returning the dictionary 'login_data'
 
     def refresh_token(self):
         oauth_url = 'https://myanimelist.net/v1/oauth2/token'   # Oauth URL
-        data = {   #  Data required for making an API call
+        data = {  # Data required for making an API call
             'client_id': 'a8d85a4106b259b8c9470011ce2f76bc',
             'grant_type': 'refresh_token',
             'refresh_token': control.getSetting('mal.refresh')
@@ -133,7 +133,6 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         # make GET request and return results using helper method
         return self._process_status_view(url, params, next_up, "watchlist_status_type_pages/mal/%s/%%s/%%d" % status, page)
 
-
     def get_watchlist_anime_entry(self, anilist_id):
         # get MAL mapping ID for the given AniList ID
         mal_id = self._get_mapping_id(anilist_id, 'mal_id')
@@ -160,7 +159,6 @@ class MyAnimeListWLF(WatchlistFlavorBase):
 
         return anime_entry
 
-
     def _process_status_view(self, url, params, next_up, base_plugin_url, page):
         # make GET request and parse JSON response
         results = self._get_request(url, headers=self.__headers(), params=params)
@@ -176,7 +174,6 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         all_results += self._handle_paging(results['paging'].get('next'), base_plugin_url, page)
 
         return all_results
-
 
     def _base_watchlist_status_view(self, res):
         info = {}
@@ -249,32 +246,32 @@ class MyAnimeListWLF(WatchlistFlavorBase):
             return self._parse_view(base, False)
 
         return self._parse_view(base)
-    
+
     # This function takes in a dictionary as an argument 'res' and returns a view for the next episode of an anime series.
     def _base_next_up_view(self, res):
-    
+
         # Extracting necessary details from 'res' dictionary
         mal_id = res['node']['id']
         progress = res['list_status']["num_episodes_watched"]
         next_up = progress + 1
         episode_count = res['node']["num_episodes"]
         base_title = res['node'].get('title')
-    
+
         # Checking if the language is English and altering the title accordingly
         if self._title_lang == 'english':
             base_title = res['node'].get('alternative_titles').get('en') or base_title
-    
+
         title = '%s - %s/%s' % (base_title, next_up, episode_count)
         poster = image = res['node']['main_picture'].get('large', res['node']['main_picture']['medium'])
         plot = aired = None
-    
+
         # Calling a private method '_get_next_up_meta' for getting more information about the next episode
         anilist_id, next_up_meta = self._get_next_up_meta(mal_id, int(progress))
-    
+
         # Checking if meta information was returned by '_get_next_up_meta'
         if next_up_meta:
             url = 'play/%d/%d/' % (anilist_id, next_up)
-    
+
             # Altering title, image, plot and aired variables based on the meta information
             if next_up_meta.get('title'):
                 title = '%s - %s' % (title, next_up_meta.get('title'))
@@ -282,7 +279,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
                 image = next_up_meta.get('image')
             plot = next_up_meta.get('plot')
             aired = next_up_meta.get('aired')
-    
+
         # Creating a dictionary 'info' with the extracted details
         info = {}
         info['episode'] = next_up
@@ -292,7 +289,7 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         info['plot'] = plot
         info['mediatype'] = 'episode'
         info['aired'] = aired
-    
+
         # Creating a dictionary 'base' with the extracted and altered information
         base = {
             "name": title,
@@ -302,60 +299,60 @@ class MyAnimeListWLF(WatchlistFlavorBase):
             "fanart": image,
             "poster": poster,
         }
-    
+
         # Checking if meta information was returned by '_get_next_up_meta'
         if next_up_meta:
             base['url'] = url
             return self._parse_view(base, False)
-    
+
         # Checking if the series is a movie and altering the dictionary 'base' accordingly
         if res['node']['media_type'] == 'movie' and res['node']["num_episodes"] == 1:
             base['url'] = "watchlist_to_movie/%s" % (res['node']['id'])
             base['plot']['mediatype'] = 'movie'
             return self._parse_view(base, False)
-    
+
         return self._parse_view(base)
-    
+
     # A private method '__headers' that returns the required headers for API calls
     def __headers(self):
         header = {
             'Authorization': "Bearer {}".format(self._token),
             'Content-Type': 'application/x-www-form-urlencoded'
         }
-    
+
         return header
-    
+
     # A method '_kitsu_to_mal_id' that takes in an argument 'kitsu_id' and returns the corresponding MAL ID
     def _kitsu_to_mal_id(self, kitsu_id):
         arm_resp = self._get_request("https://arm.now.sh/api/v1/search?type=kitsu&id=" + kitsu_id)
         if not arm_resp:
             raise Exception("AnimeID not found")
-    
+
         mal_id = json.loads(arm_resp)["services"]["mal"]
         return mal_id
-    
+
     # A method 'watchlist_update' that takes in an argument 'anilist_id' and 'episode' and updates the watchlist accordingly
     def watchlist_update(self, anilist_id, episode):
-    
+
         # Getting MAL ID from AniList ID using a private method '_get_mapping_id'
         mal_id = self._get_mapping_id(anilist_id, 'mal_id')
-    
+
         # If no mapping exists, return
         if not mal_id:
             return
-    
+
         # Creating URL and data for PUT request and returning a lambda function that calls a private method '__update_watchlist'
         url = self._to_url("anime/%s/my_list_status" % (mal_id))
         data = {
             'num_watched_episodes': int(episode)
         }
-    
+
         return lambda: self.__update_watchlist(anilist_id, episode, url, data)
-    
+
     # A private method '__update_watchlist' that updates the watchlist
     def __update_watchlist(self, anilist_id, episode, url, data):
         _ = self._put_request(url, data=data, headers=self.__headers())
-    
+
     # A private method '__get_sort' that returns the sort type based on the current sorting preference
     def __get_sort(self):
         sort_types = {
@@ -364,37 +361,36 @@ class MyAnimeListWLF(WatchlistFlavorBase):
             "Anime Start Date": "anime_start_date",
             "List Score": "list_score"
         }
-    
+
         return sort_types[self._sort]
-    
+
     # A method 'watchlist_append' that takes in an argument 'anilist_id' and adds it to the watchlist
     def watchlist_append(self, anilist_id):
-    
+
         # Getting MAL ID from AniList ID using a private method '_get_mapping_id'
         mal_id = self._get_mapping_id(anilist_id, 'mal_id')
-    
+
         # If no mapping exists, return
         if not mal_id:
             return
-    
+
         # Creating URL and data for PUT request and adding it to the watchlist
         url = self._to_url("anime/%s/my_list_status" % (mal_id))
         data = {'status': 'plan_to_watch'}
         result = json.loads(self._put_request(url, data=data, headers=self.__headers()))
-        
+
         # Notifying the user that the anime was added to the watchlist
         if result.get('status'):
             control.notify('Added to Watchlist')
         return
-    
+
     # A method 'watchlist_remove' that removes an anime from the watchlist
     def watchlist_remove(self, mal_id):
         url = self._to_url("anime/%s/my_list_status" % (mal_id))
-    
+
         # Making a DELETE request to remove the anime from the watchlist
         _ = self._delete_request(url, headers=self.__headers())
-    
+
         # Notifying the user that the anime was removed from the watchlist
         control.notify('Removed from Watchlist')
         return
-    

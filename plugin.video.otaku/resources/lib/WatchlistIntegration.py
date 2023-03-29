@@ -7,10 +7,12 @@ from resources.lib.WatchlistFlavor import WatchlistFlavor
 # define a global variable _BROWSER, initially set to None
 _BROWSER = None
 
+
 # function that sets the _BROWSER global variable
 def set_browser(browser):
     global _BROWSER
     _BROWSER = browser
+
 
 # function that gets anime metadata from AniList using MAL ID as input
 def get_anilist_res(mal_id):
@@ -20,6 +22,7 @@ def get_anilist_res(mal_id):
     from resources.lib.AniListBrowser import AniListBrowser
     # return the retrieved data
     return AniListBrowser(title_lang).get_mal_to_anilist(mal_id)
+
 
 # function that returns an authentication dialog for the user to enter login credentials
 # flavor parameter specifies which type of authentication dialog to return
@@ -42,6 +45,7 @@ def get_auth_dialog(flavor):
     else:
         return
 
+
 # route decorator for login page
 @route('watchlist_login/*')
 def WL_LOGIN(payload, params):
@@ -51,17 +55,20 @@ def WL_LOGIN(payload, params):
     # else, return login request for flavor specified in payload
     return WatchlistFlavor.login_request(payload)
 
+
 # route decorator for logout page
 @route('watchlist_logout/*')
 def WL_LOGOUT(payload, params):
     # return logout request for specified flavor
     return WatchlistFlavor.logout_request(payload)
 
+
 # route decorator for watchlist page
 @route('watchlist/*')
 def WATCHLIST(payload, params):
     # return watchlist request for specified flavor
     return control.draw_items(WatchlistFlavor.watchlist_request(payload), contentType="addons")
+
 
 # route decorator for watchlist status/type page
 @route('watchlist_status_type/*')
@@ -73,6 +80,7 @@ def WATCHLIST_STATUS_TYPE(payload, params):
     # return watchlist status/type request with context menu
     return control.draw_items(WatchlistFlavor.watchlist_status_request(flavor, status, params), draw_cm=draw_cm)
 
+
 # route decorator for watchlist status/type pages
 @route('watchlist_status_type_pages/*')
 def WATCHLIST_STATUS_TYPE_PAGES(payload, params):
@@ -82,6 +90,7 @@ def WATCHLIST_STATUS_TYPE_PAGES(payload, params):
     draw_cm = ('Remove from Watchlist', 'remove_from_watchlist')
     # return watchlist status/type request with context menu
     return control.draw_items(WatchlistFlavor.watchlist_status_request_pages(flavor, status, params, offset, int(page)), draw_cm=draw_cm)
+
 
 # route decorator for query page
 @route('watchlist_query/*')
@@ -102,6 +111,7 @@ def WATCHLIST_QUERY(payload, params):
     # use _BROWSER to initialize anime data and return it
     anime_general, content_type = _BROWSER.get_anime_init(anilist_id)
     return control.draw_items(anime_general, content_type)
+
 
 # route decorator for watchlist-to-ep page
 @route('watchlist_to_ep/*')
@@ -131,6 +141,7 @@ def WATCHLIST_TO_EP(payload, params):
     # use _BROWSER to initialize anime data and return it
     anime_general, content_type = _BROWSER.get_anime_init(anilist_id)
     return control.draw_items(anime_general, content_type)
+
 
 # route decorator for watchlist-to-movie page
 @route('watchlist_to_movie/*')
@@ -165,12 +176,14 @@ def WATCHLIST_TO_MOVIE(payload, params):
     from resources.lib.ui import player
     player.play_source(link, subs=subs)
 
+
 # function that updates a show's episode count in the user's watchlist
 def watchlist_update(anilist_id, episode):
     flavor = WatchlistFlavor.get_update_flavor()
     if not flavor:
         return
     return WatchlistFlavor.watchlist_update_request(anilist_id, episode)
+
 
 # function that appends a show to the user's watchlist
 def watchlist_append(anilist_id):
@@ -179,12 +192,14 @@ def watchlist_append(anilist_id):
         return
     return WatchlistFlavor.watchlist_append_request(anilist_id)
 
+
 # function that removes a show from the user's watchlist
 def watchlist_remove(anilist_id):
     flavor = WatchlistFlavor.get_update_flavor()
     if not flavor:
         return
     return WatchlistFlavor.watchlist_remove_request(anilist_id)
+
 
 # function that adds enabled watchlists to the given items list
 def add_watchlist(items):

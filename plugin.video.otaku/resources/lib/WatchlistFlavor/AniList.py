@@ -17,7 +17,7 @@ class AniListWLF(WatchlistFlavorBase):
 
     # This function logs into the website and retrieves the userID for the watchlist
     def login(self):
-    
+
         # Define the GraphQL query to retrieve user id
         query = '''
         query ($name: String) {
@@ -26,36 +26,34 @@ class AniListWLF(WatchlistFlavorBase):
                 }
             }
         '''
-    
+
         # Define the variables for the GraphQL query
         variables = {
             "name": self._username
         }
-    
+
         # Make a POST request with the query and variables
         result = self._post_request(self._URL, headers=self.__headers(), json={'query': query, 'variables': variables})
         results = json.loads(result)
-    
+
         # Check if there are errors in the results
         if "errors" in results.keys():
             return
-    
+
         # Retrieve the user id from the results
         userId = results['data']['User']['id']
-    
+
         # Package up the user id for returning
         login_data = {
             'userid': str(userId)
         }
-    
+
         return login_data
-    
-    
+
     # This function retrieves the watchlist from the website
     def watchlist(self):
         return self._process_watchlist_view("watchlist/%d", page=1)
-    
-    
+
     # This function creates a base dictionary with information about an anime
     def _base_watchlist_view(self, res):
         base = {
@@ -64,17 +62,15 @@ class AniListWLF(WatchlistFlavorBase):
             "image": res[0].lower() + '.png',
             "plot": '',
         }
-    
+
         return self._parse_view(base)
-    
-    
+
     # This function processes the watchlist view by getting data for each anime in the user's status lists
     def _process_watchlist_view(self, base_plugin_url, page):
         all_results = list(map(self._base_watchlist_view, self.__anilist_statuses()))
         all_results = list(itertools.chain(*all_results))
         return all_results
-    
-    
+
     # This function retrieves all valid Anilist status types
     def __anilist_statuses(self):
         statuses = [
@@ -86,10 +82,9 @@ class AniListWLF(WatchlistFlavorBase):
             ("Completed", "COMPLETED"),
             ("Dropped", "DROPPED"),
         ]
-    
+
         return statuses
-    
-    
+
     # This function gets the watchlist status for a specific user and status type
     def get_watchlist_status(self, status, next_up):
         # Define the GraphQL query to retrieve watchlist status
@@ -102,7 +97,7 @@ class AniListWLF(WatchlistFlavorBase):
                         }
                     }
                 }
-    
+
         fragment mediaListEntry on MediaList {
             id
             mediaId
@@ -174,7 +169,7 @@ class AniListWLF(WatchlistFlavorBase):
             }
         }
         '''
-    
+
         # Define the variables for the GraphQL query
         variables = {
             'userId': int(self._user_id),
@@ -183,11 +178,10 @@ class AniListWLF(WatchlistFlavorBase):
             'type': 'ANIME',
             'sort': self.__get_sort()
         }
-    
+
         # Process the status view using the GraphQL query and variables
         return self._process_status_view(query, variables, next_up, "watchlist/%d", page=1)
-    
-    
+
     # This function gets the watchlist entry for a specific anime
     def get_watchlist_anime_entry(self, anilist_id):
         # Define the GraphQL query to retrieve the watchlist entry for an anime
@@ -209,24 +203,23 @@ class AniListWLF(WatchlistFlavorBase):
             }
         }
         '''
-    
+
         # Define the variables for the GraphQL query
         variables = {
             'mediaId': anilist_id
         }
-    
+
         # Make a POST request with the query and variables
         result = self._post_request(self._URL, headers=self.__headers(), json={'query': query, 'variables': variables})
         results = json.loads(result)['data']['Media']['mediaListEntry']
-    
+
         # Convert the results into a dictionary with relevant information about the anime
         anime_entry = {}
         anime_entry['eps_watched'] = results['progress']
         anime_entry['status'] = results['status'].title()
         anime_entry['score'] = results['score']
-    
+
         return anime_entry
-    
 
     # This method sends a post request to URL with 'query' and 'variables' as json payload,
     # then parses the result and returns a list containing entries from MediaListCollection['lists'].
@@ -394,11 +387,10 @@ class AniListWLF(WatchlistFlavorBase):
         # Return the parsed base dictionary.
         return self._parse_view(base)
 
-
     def _base_next_up_view(self, res):
         progress = res['progress']
         res = res['media']
-    
+
         # Assign values for next episode
         next_up = progress + 1
         episode_count = res['episodes'] if res['episodes'] is not None else 0
@@ -406,14 +398,14 @@ class AniListWLF(WatchlistFlavorBase):
         title = '%s - %s/%s' % (base_title, next_up, episode_count)
         poster = image = res['coverImage']['extraLarge']
         plot = aired = None
-    
+
         # Check if there are no more episodes or if the next episode is airing
         if episode_count > 0 and next_up > episode_count:
             return None
-    
+
         if res['nextAiringEpisode'] is not None and next_up == res['nextAiringEpisode']['episode']:
             return None
-    
+
         # Get metadata for the next episode
         anilist_id, next_up_meta = self._get_next_up_meta('', progress, res['id'])
         if next_up_meta:
@@ -424,9 +416,9 @@ class AniListWLF(WatchlistFlavorBase):
                 image = next_up_meta.get('image')
             plot = next_up_meta.get('plot')
             aired = next_up_meta.get('aired')
-    
+
         info = {}
-    
+
         # Add show information to dictionary
         try:
             info['genre'] = res.get('genres')
@@ -438,7 +430,7 @@ class AniListWLF(WatchlistFlavorBase):
         info['plot'] = plot
         info['mediatype'] = 'episode'
         info['aired'] = aired
-    
+
         # Create dictionary for base information
         base = {
             "name": title,
@@ -448,7 +440,7 @@ class AniListWLF(WatchlistFlavorBase):
             "fanart": image,
             "poster": poster,
         }
-    
+
         # Add metadata for show
         show_meta = database.get_show_meta(res['id'])
         if show_meta:
@@ -461,20 +453,19 @@ class AniListWLF(WatchlistFlavorBase):
                 base['clearart'] = random.choice(art.get('clearart'))
             if art.get('clearlogo'):
                 base['clearlogo'] = random.choice(art.get('clearlogo'))
-    
+
         # Check if there is metadata for next episode, and whether it's a movie with one episode
         if next_up_meta:
             base['url'] = url
             return self._parse_view(base, False)
-    
+
         if res['format'] == 'MOVIE' and res['episodes'] == 1:
             base['url'] = "watchlist_to_movie/?anilist_id=%s" % (res['id'])
             base['plot']['mediatype'] = 'movie'
             return self._parse_view(base, False)
-    
+
         return self._parse_view(base)
-    
-    
+
     def _get_titles(self, res):
         # Get titles of a show
         titles = list(set(res['title'].values())) + res.get('synonyms', [])[:2]
@@ -484,8 +475,7 @@ class AniListWLF(WatchlistFlavorBase):
         titles = [x for x in titles if (all(ord(char) < 128 for char in x) if x else [])]
         titles = '|'.join(titles[:3])
         return titles
-    
-    
+
     def __get_sort(self):
         # Sort types for the watchlist
         sort_types = {
@@ -497,8 +487,7 @@ class AniListWLF(WatchlistFlavorBase):
             "English Title": "MEDIA_TITLE_ENGLISH_DESC"
         }
         return sort_types[self._sort]
-    
-    
+
     def __headers(self):
         # Headers for authorization
         headers = {
@@ -507,8 +496,7 @@ class AniListWLF(WatchlistFlavorBase):
             'Accept': 'application/json',
         }
         return headers
-    
-    
+
     def _kitsu_to_anilist_id(self, kitsu_id):
         # Convert Kitsu ID to Anilist ID
         arm_resp = self._get_request("https://arm.now.sh/api/v1/search?type=kitsu&id=" + kitsu_id)
@@ -516,13 +504,11 @@ class AniListWLF(WatchlistFlavorBase):
             raise Exception("AnimeID not found")
         anilist_id = json.loads(arm_resp)["services"]["anilist"]
         return anilist_id
-    
-    
+
     def watchlist_update(self, anilist_id, episode):
         # Update the status of a show in the user's watchlist
         return lambda: self.__update_library(episode, anilist_id)
-    
-    
+
     def __update_library(self, episode, anilist_id):
         # Mutation to update the status of a show in the user's watchlist
         query = '''
@@ -540,16 +526,14 @@ class AniListWLF(WatchlistFlavorBase):
             'status': 'CURRENT'
         }
         self._post_request(self._URL, headers=self.__headers(), json={'query': query, 'variables': variables})
-    
-    
+
     def watchlist_append(self, anilist_id):
         # Add a show to the user's watchlist
         result = json.loads(self.__update_planning(anilist_id))
         if result.get('data').get('SaveMediaListEntry'):
             control.notify('Added to Watchlist')
         return
-    
-    
+
     def __update_planning(self, anilist_id):
         # Mutation to add a show to the user's watchlist
         query = '''
@@ -565,8 +549,7 @@ class AniListWLF(WatchlistFlavorBase):
             'status': 'PLANNING'
         }
         return self._post_request(self._URL, headers=self.__headers(), json={'query': query, 'variables': variables})
-    
-    
+
     def watchlist_remove(self, anilist_id):
         # Remove a show from the user's watchlist
         item_id = self.__get_item_id(anilist_id)
@@ -574,8 +557,7 @@ class AniListWLF(WatchlistFlavorBase):
         if result:
             control.notify('Removed from Watchlist')
         return
-    
-    
+
     def __get_item_id(self, anilist_id):
         # Get the item ID of a show in the user's watchlist
         query = '''
@@ -592,8 +574,7 @@ class AniListWLF(WatchlistFlavorBase):
         }
         res = json.loads(self._post_request(self._URL, headers=self.__headers(), json={'query': query, 'variables': variables}))
         return res.get('data').get('Media').get('mediaListEntry').get('id')
-    
-    
+
     def __delete_item(self, anilist_id):
         # Mutation to delete an item from the user's watchlist
         query = '''
@@ -608,4 +589,3 @@ class AniListWLF(WatchlistFlavorBase):
         }
         res = json.loads(self._post_request(self._URL, headers=self.__headers(), json={'query': query, 'variables': variables}))
         return res.get('data').get('DeleteMediaListEntry').get('deleted')
-    

@@ -185,7 +185,7 @@ class WatchlistFlavorBase(object):
         # Return the flavor id.
         return flavor_id
 
-    # This is a method to get mapping id for given flavor using MAL id. 
+    # This is a method to get mapping id for given flavor using MAL id.
     def _get_mapping_id_mal(self, mal_id, flavor):
 
         try:

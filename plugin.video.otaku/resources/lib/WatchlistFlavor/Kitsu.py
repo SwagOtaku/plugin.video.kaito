@@ -17,47 +17,46 @@ class KitsuWLF(WatchlistFlavorBase):
 
     # This function performs the login process for a user
     def login(self):
-           
-            # Set parameters for authentication request
-            params = {
-                "grant_type": "password",
-                "username": self._auth_var,
-                "password": self._password
-            }
-            
-            # Send post request to obtain token
-            resp = self._post_request(self._to_url("oauth/token"), params=params, json='')
-            
-            # If response is empty, return None
-            if not resp:
-                return
-            
-            # Load JSON data from response and set access token
-            data = json.loads(resp)
-            self._token = data['access_token']
-            
-            # Get user info
-            resp2 = self._get_request(self._to_url("edge/users"), headers=self.__headers(), params={'filter[self]': True})
-            data2 = json.loads(resp2)["data"][0]
-            
-            # Set login data object with relevant information
-            login_data = {
-                'username': data2["attributes"]["name"],
-                'userid': data2['id'],
-                'token': data['access_token'],
-                'refresh': data['refresh_token'],
-                'expiry': str(time.time() + int(data['expires_in']))
-            }
-            
-            # Return login data object
-            return login_data
-    
+        # Set parameters for authentication request
+        params = {
+            "grant_type": "password",
+            "username": self._auth_var,
+            "password": self._password
+        }
+
+        # Send post request to obtain token
+        resp = self._post_request(self._to_url("oauth/token"), params=params, json='')
+
+        # If response is empty, return None
+        if not resp:
+            return
+
+        # Load JSON data from response and set access token
+        data = json.loads(resp)
+        self._token = data['access_token']
+
+        # Get user info
+        resp2 = self._get_request(self._to_url("edge/users"), headers=self.__headers(), params={'filter[self]': True})
+        data2 = json.loads(resp2)["data"][0]
+
+        # Set login data object with relevant information
+        login_data = {
+            'username': data2["attributes"]["name"],
+            'userid': data2['id'],
+            'token': data['access_token'],
+            'refresh': data['refresh_token'],
+            'expiry': str(time.time() + int(data['expires_in']))
+        }
+
+        # Return login data object
+        return login_data
+
     # Define a function to refresh the token
     def refresh_token(self):
         # Create a dictionary with required parameters for refreshing the token
         params = {
             "grant_type": "refresh_token",
-            "refresh_token": control.getSetting('kitsu.refresh'), # Get the refresh token from the Kitsu platform
+            "refresh_token": control.getSetting('kitsu.refresh'),  # Get the refresh token from the Kitsu platform
         }
         # Send a post request to get the access token
         resp = self._post_request(self._to_url("oauth/token"), params=params, json='')
@@ -79,7 +78,7 @@ class KitsuWLF(WatchlistFlavorBase):
         headers = {
             'Content-Type': 'application/vnd.api+json',
             'Accept': 'application/vnd.api+json',
-            'Authorization': "Bearer {}".format(self._token), # Use the _token attribute as the value for the token key
+            'Authorization': "Bearer {}".format(self._token),  # Use the _token attribute as the value for the token key
         }
         # Return the headers dictionary
         return headers
@@ -91,7 +90,7 @@ class KitsuWLF(WatchlistFlavorBase):
             return []
         # Calculate the next page number
         next_page = page + 1
-        name = "Next Page (%d)" % (next_page) # Create a string with the format "Next Page (page_number)"
+        name = "Next Page (%d)" % (next_page)  # Create a string with the format "Next Page (page_number)"
         # Parse the url of the next page to retrieve the offset value
         parsed = urllib_parse.urlparse(hasNextPage)
         offset = urllib_parse.parse_qs(parsed.query)['page[offset]'][0]
@@ -141,12 +140,12 @@ class KitsuWLF(WatchlistFlavorBase):
         ]
         # Return the statuses list
         return statuses
-    
-    # This function gets the watchlist status of a user for a particular anime 
-    # based on their status (e.g. "current"), the next episode up, an offset value, 
+
+    # This function gets the watchlist status of a user for a particular anime
+    # based on their status (e.g. "current"), the next episode up, an offset value,
     # and a page number. It then processes the view with more information and returns it.
     def get_watchlist_status(self, status, next_up, offset=0, page=1):
-        # Set the URL to access certain fields for each anime entry in the library 
+        # Set the URL to access certain fields for each anime entry in the library
         url = self._to_url("edge/library-entries")
 
         # Set the parameters for the request to the API endpoint
@@ -166,9 +165,8 @@ class KitsuWLF(WatchlistFlavorBase):
             url, params, next_up,
             "watchlist_status_type_pages/kitsu/%s/%%s/%%d" % status, page)
 
-
     # This function is called by get_watchlist_status() to add additional information
-    # to the view that was retrieved from the API. It returns the modified results. 
+    # to the view that was retrieved from the API. It returns the modified results.
     def _process_watchlist_view(self, url, params, next_up, base_plugin_url, page):
         # Send a GET request to the URL with the given parameters
         result = self._get_request(url, headers=self.__headers(), params=params)
@@ -184,10 +182,10 @@ class KitsuWLF(WatchlistFlavorBase):
             result['included'] = []
 
         el = result["included"][:len(_list)]
-        
+
         # self._mapping = filter(lambda x: x['type'] == 'mappings', result['included'])
         # Use list comprehension to get the "mappings" objects from the included list
-        # This is used later to map the IDs of anime objects between sites like MyAnimeList and Kitsu. 
+        # This is used later to map the IDs of anime objects between sites like MyAnimeList and Kitsu.
         self._mapping = [x for x in result['included'] if x['type'] == 'mappings']
 
         # Run various functions based on whether or not the user has specified a value for "next_up"
@@ -200,14 +198,13 @@ class KitsuWLF(WatchlistFlavorBase):
         # Flatten the list of results with itertools.chain(*iterables), which returns a new iterator
         all_results = list(itertools.chain(*all_results))
 
-        # Add any additional pages to the view, as needed 
+        # Add any additional pages to the view, as needed
         all_results += self._handle_paging(result['links'].get('next'), base_plugin_url, page)
 
         return all_results
 
-
     # This function is called by _process_watchlist_view() for each anime entry that was found in the API response
-    # It creates a new dictionary with additional information for the given anime entry and returns it. 
+    # It creates a new dictionary with additional information for the given anime entry and returns it.
     def _base_watchlist_view(self, res, eres):
         # Get the ID of the mapping object for the current anime entry
         _id = eres['id']
@@ -216,7 +213,7 @@ class KitsuWLF(WatchlistFlavorBase):
         # Initialize a dictionary for various information about the anime entry
         info = {}
 
-        # Attempt to get and set various attributes of the anime. 
+        # Attempt to get and set various attributes of the anime.
         try:
             info['plot'] = eres['attributes'].get('synopsis')
         except:
@@ -273,7 +270,6 @@ class KitsuWLF(WatchlistFlavorBase):
 
         # Return the modified dictionary
         return self._parse_view(base)
-
 
     # This method generates the entry for the next episode of a show in the watchlist
     # It takes the response from the Kitsu API and the corresponding media ID from MyAnimeList
@@ -405,7 +401,6 @@ class KitsuWLF(WatchlistFlavorBase):
         animeid = item_dict['data'][0]['id']
         return lambda: self.__patch_params(url, animeid, episode)
 
-
     # Define a method that constructs and sends a POST request to update the episode progress of an anime entry on Kitsu
     def __post_params(self, url, episode, kitsu_id):
         # Construct the request JSON body
@@ -434,7 +429,7 @@ class KitsuWLF(WatchlistFlavorBase):
         }
         # Send the POST request with the constructed JSON body
         self._post_request(url, headers=self.__headers(), json=params)
-    
+
     # Define a method that constructs and sends a PATCH request to update the episode progress of an anime entry on Kitsu
     def __patch_params(self, url, animeid, episode):
         # Construct the request JSON body
@@ -448,7 +443,7 @@ class KitsuWLF(WatchlistFlavorBase):
         }
         # Send the PATCH request with the constructed JSON body
         self._patch_request("%s/%s" % (url, animeid), headers=self.__headers(), json=params)
-    
+
     # Define a method that returns the sort type for displaying anime entries in a user's library on Kitsu
     def __get_sort(self):
         # Dictionary containing possible sort types and their corresponding sort parameters
@@ -459,7 +454,7 @@ class KitsuWLF(WatchlistFlavorBase):
         }
         # Return the corresponding sort parameter for the specified sort type
         return sort_types[self._sort]
-    
+
     # Define a method that returns the language code for anime title based on user's preference
     def __get_title_lang(self):
         # Dictionary containing possible language preferences and their corresponding codes
@@ -470,7 +465,7 @@ class KitsuWLF(WatchlistFlavorBase):
         }
         # Return the corresponding code for the specified language preference
         return title_langs[self._title_lang]
-    
+
     # Define a method that adds an anime entry to a user's watchlist on Kitsu
     def watchlist_append(self, anilist_id):
         # Get the Kitsu ID of the anime entry based on its AniList ID
@@ -506,7 +501,7 @@ class KitsuWLF(WatchlistFlavorBase):
         if result.get('data'):
             control.notify('Added to Watchlist')
         return
-    
+
     # Define a method that removes an anime entry from a user's watchlist on Kitsu
     def watchlist_remove(self, mal_id):
         # Get the Kitsu ID of the anime entry based on its MyAnimeList ID
@@ -527,4 +522,3 @@ class KitsuWLF(WatchlistFlavorBase):
         _ = self._delete_request(url, headers=self.__headers())
         control.notify('Removed from Watchlist')
         return
-    
