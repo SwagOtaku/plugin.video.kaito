@@ -97,6 +97,7 @@ class AniListWLF(WatchlistFlavorBase):
                         }
                     }
                 }
+            }
 
         fragment mediaListEntry on MediaList {
             id
