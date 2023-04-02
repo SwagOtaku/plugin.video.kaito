@@ -45,8 +45,7 @@ class AniListBrowser():
         self.perPage_type = 20
         filterEnable = control.getSetting('perpage.bool') == 'true'
         if filterEnable:
-            itemsperpage = [i for i in range(0, 51)]
-            self.perPage_type = itemsperpage[int(control.getSetting('perpage.menu'))]       
+            self.perPage_type = int(control.getSetting('perpage.menu'))
 
     def _title_lang(self, title_key):
         title_lang = {
