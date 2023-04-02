@@ -19,6 +19,9 @@
 		<setting id="contentorigin.bool" label="40418" type="bool" default="false"/>
 		<setting id="contentorigin.menu" type="enum" subsetting="true" label="40419" lvalues="40420|40421|40422|40423" default="0" visible="eq(-1,true)"/>
 		<setting id="sep"/>
+		<setting id="perpage.bool" label="40466" type="bool" default="false"/>
+		<setting id="perpage.menu" type="slider" subsetting="true" label="40467" range="5,5,50" default="20" option="int" visible="eq(-1,true)"/>
+		<setting id="sep"/>
 		<setting id="general.icons" type="enum" label="40388" lvalues="40389|40390" default="0"/>
 		<setting id="general.dialog" type="enum" label="40455" lvalues="40456|40457|40458" default="0"/>
 		<setting id="scraping.fanart" type="bool" label="40433" default="false" />

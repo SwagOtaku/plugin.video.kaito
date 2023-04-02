@@ -843,6 +843,14 @@ msgctxt "#40465"
 msgid "Prioritized Source Sorting"
 msgstr ""
 
+msgctxt "#40466"
+msgid "Set Items Per Page"
+msgstr ""
+
+msgctxt "#40467"
+msgid "Items"
+msgstr ""
+
 ######MAIN Category DIRECTORY#######
 msgctxt "#50000"
 msgid "Airing Anime Calendar"
