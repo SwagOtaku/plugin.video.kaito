@@ -7,7 +7,7 @@ import random
 from resources.lib import pages
 from resources.lib.debrid import (all_debrid, debrid_link, premiumize,
                                   real_debrid)
-from resources.lib.indexers import simkl, trakt, consumet
+from resources.lib.indexers import simkl, trakt, consumet, enime
 from resources.lib.ui import client, control, database, utils
 from resources.lib.ui.BrowserBase import BrowserBase
 
@@ -144,6 +144,9 @@ class OtakuBrowser(BrowserBase):
         if show_meta:
             data = consumet.CONSUMETAPI().get_episodes(anilist_id, filter_lang=filter_lang)
 
+        if show_meta:
+            data = enime.ENIMEAPI().get_episodes(anilist_id, filter_lang=filter_lang)
+
         if not data[0]:
             data = self.get_anime_simkl(anilist_id, filter_lang)
 
@@ -158,14 +161,21 @@ class OtakuBrowser(BrowserBase):
             if show['simkl_id']:
                 items = simkl.SIMKLAPI().get_episodes(show_id)
             else:
-                # items = trakt.TRAKTAPI()._process_trakt_episodes(show_id, '', episodes, '')
                 items = consumet.CONSUMETAPI()._process_episodes(show_id, episodes, '')
+            if not items:
+                items = enime.ENIMEAPI()._process_episodes(show_id, episodes, '')
+                if not items:
+                    items = simkl.SIMKLAPI().get_episodes(show_id)
         else:
-            items = simkl.SIMKLAPI().get_episodes(show_id)
+            items = consumet.CONSUMETAPI()._process_episodes(show_id, episodes, '')
+            if not items:
+                items = enime.ENIMEAPI()._process_episodes(show_id, episodes, '')
+                if not items:
+                    items = simkl.SIMKLAPI().get_episodes(show_id)
 
         if rescrape or source_select:
             return items
-
+    
         # items = [i for i in items if self.is_aired(i['info'])]
         show_meta = database.get_show_meta(show_id)
         show_art = pickle.loads(show_meta.get('art'))
