@@ -36,6 +36,7 @@ def getQuality(release_title):
 
     return quality
 
+
 def getInfo(release_title):
     info = []
     release_title = cleanTitle(release_title)

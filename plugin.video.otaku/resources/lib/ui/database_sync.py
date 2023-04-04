@@ -232,7 +232,7 @@ class AnilistSyncDatabase:
             os.remove(os.path.join(control.dataPath, 'mal_dub.json'))
         except:
             pass
-        
+
         path = control.anilistSyncDB
         xbmcvfs.delete(path)
         file = open(path, 'a+')

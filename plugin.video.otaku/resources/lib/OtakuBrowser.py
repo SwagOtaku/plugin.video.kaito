@@ -164,18 +164,14 @@ class OtakuBrowser(BrowserBase):
                 items = consumet.CONSUMETAPI()._process_episodes(show_id, episodes, '')
             if not items:
                 items = enime.ENIMEAPI()._process_episodes(show_id, episodes, '')
-                if not items:
-                    items = simkl.SIMKLAPI().get_episodes(show_id)
         else:
             items = consumet.CONSUMETAPI()._process_episodes(show_id, episodes, '')
             if not items:
                 items = enime.ENIMEAPI()._process_episodes(show_id, episodes, '')
-                if not items:
-                    items = simkl.SIMKLAPI().get_episodes(show_id)
 
         if rescrape or source_select:
             return items
-    
+
         # items = [i for i in items if self.is_aired(i['info'])]
         show_meta = database.get_show_meta(show_id)
         show_art = pickle.loads(show_meta.get('art'))

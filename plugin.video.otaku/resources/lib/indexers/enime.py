@@ -14,8 +14,8 @@ class ENIMEAPI:
     def __init__(self):
         self.baseUrl = 'https://api.enime.moe/'
         self.episodesUrl = '/mapping/anilist/{0}'
-        self.streamUrl = 'https://api.consumet.org/anime/{0}/watch/{1}'
-        self.streamUrl2 = 'https://api.consumet.org/anime/{0}/watch?episodeId={1}'
+        self.streamUrl = '/source/{1}'
+        self.streamUrl2 = '/episode/{1}'
         self.synurl = 'https://find-my-anime.dtimur.de/api?id={0}&provider=Anilist'
         self.art = {}
         self.request_response = None
@@ -26,7 +26,7 @@ class ENIMEAPI:
         if response:
             response = json.loads(response)
         return response
-    
+
     def _parse_episode_view(self, res, show_id, show_meta, season, poster, fanart, eps_watched, update_time):
         url = "%s/%s/" % (show_id, res['number'])
         name = res.get('title')
@@ -123,7 +123,7 @@ class ENIMEAPI:
     def get_anilist_meta(self, anilist_id):
         url = 'mapping/anilist/{0}'.format(anilist_id)
         return self._json_request(url)
-    
+
     def get_anilist_mapping(self, anilist_id):
         url = 'mapping/anilist/{0}'.format(anilist_id)
         return self._json_request(url)
@@ -142,4 +142,3 @@ class ENIMEAPI:
             return (self._process_episodes(anilist_id, episodes, eps_watched), 'episodes')
 
         return (self._process_episode_view(anilist_id, meta_ids, poster, fanart, eps_watched), 'episodes')
-    
