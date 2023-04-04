@@ -1,3 +1,9 @@
+Changelog 0.3.59 [20230403]:
+- Added New Setting "Prioritize By Season"
+- Added New Setting "Prioritize By Part"
+- Added Enime provider
+- Added Enime fallback
+
 Changelog 0.3.58 [20230402]:
 - Added New Setting "Set Items Per Page"
 

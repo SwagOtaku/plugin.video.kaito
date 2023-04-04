@@ -1,4 +1,4 @@
-New Themes has been added!
-- Hey everyone, we have added 2 new themes for skip intro dialog and playing next dialog. Our two thenmes are Ah2 and Auramod. 
+A Few Updates:
+- Hey everyone, a few days ago we have noticed one of our main apis has been doing maintenance with episode meta and embeds were not working so we added a 2nd fallback called Enime.
 
-For people who are using Auramod Theme, they are a little buggy and out of place. Will work on them soon when i try Auramod again. 
+- Enime may not be perfect but it will help with embeds, if you guys have any problems, feel free to contact us.
