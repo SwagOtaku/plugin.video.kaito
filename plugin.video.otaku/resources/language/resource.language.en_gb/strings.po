@@ -851,6 +851,22 @@ msgctxt "#40467"
 msgid "Items"
 msgstr ""
 
+msgctxt "#40468"
+msgid "Prioritize By Season"
+msgstr ""
+
+msgctxt "#40469"
+msgid "Season Number"
+msgstr ""
+
+msgctxt "#40470"
+msgid "Prioritize By Part"
+msgstr ""
+
+msgctxt "#40471"
+msgid "Part Number"
+msgstr ""
+
 ######MAIN Category DIRECTORY#######
 msgctxt "#50000"
 msgid "Airing Anime Calendar"
