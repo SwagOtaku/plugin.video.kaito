@@ -143,16 +143,3 @@ class ENIMEAPI:
 
         return (self._process_episode_view(anilist_id, meta_ids, poster, fanart, eps_watched), 'episodes')
     
-    def get_sources(self, anilist_id, episode, provider, lang=None):
-        sources = []
-        eurl = self.episodesUrl.format(anilist_id)
-        eurl += '&{0}=true'.format(lang)
-        episodes = self._json_request(eurl)
-        if episodes:
-            if episodes[0].get('number') != 1:
-                episode = episodes[0].get('number') - 1 + int(episode)
-            episode_id = [x.get('id') for x in episodes if x.get('number') == int(episode)][0]
-            surl = self.streamUrl if provider in ['enime'] else self.streamUrl2
-            sources = self._json_request(surl.format(provider, episode_id))
-
-        return sources
