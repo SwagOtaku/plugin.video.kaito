@@ -1,3 +1,6 @@
+Changelog 0.3.60 [20230405]:
+- Improved 2 Priority Settings
+
 Changelog 0.3.59 [20230403]:
 - Added New Setting "Prioritize By Season"
 - Added New Setting "Prioritize By Part"

@@ -41,12 +41,16 @@ def getInfo(release_title):
     info = []
     release_title = cleanTitle(release_title)
     # info.season
-    if any(i.format(control.getSetting("menu.prioritize_season")) in release_title for i in ['season {}', 'season 0{}', 's{}', 's0{}', '{} -', '0{} -', '{} ~', '0{} ~']):
+    if any(i.format(control.getSetting("menu.prioritize_season")) in release_title for i in ['season {}', 'season 0{}', 's{}', 's0{}']):
         info.append('SEASON')
 
     # info.part
     if any(i.format(control.getSetting("menu.prioritize_part")) in release_title for i in ['part {}', 'part 0{}', 'cour {}', 'cour 0{}']):
         info.append('PART')
+
+    # info.season or part
+    if sum(i.format(control.getSetting("menu.prioritize_season"), control.getSetting("menu.prioritize_part")) in release_title for i in ['season {0}', 'season 0{0}', 's{0}', 's0{0}', 'part {1}', 'part 0{1}', 'cour {1}', 'cour 0{1}']) >= 2:
+        info.append('SEASON_OR_PART')
 
     # info.subtitles
     if any(i in release_title for i in ['multi-sub', 'multi sub', 'multiple subtitle']):
