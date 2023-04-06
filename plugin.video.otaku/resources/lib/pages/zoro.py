@@ -56,6 +56,8 @@ class sources(BrowserBase):
                 quality = '1080p'
             else:
                 quality = '4K'
+        else:
+            quality = 'EQ'
 
             source = {
                 'release_title': title,

@@ -206,19 +206,20 @@ def __extract_streamsb(url, page_content, referer=None):
         c2 = binascii.hexlify(x.encode('utf8')).decode('utf8')
         x = '{0}||{1}||{2}||streamsb'.format(makeid(12), c2, makeid(12))
         c3 = binascii.hexlify(x.encode('utf8')).decode('utf8')
-        return 'https://{0}/sources48/{1}/{2}'.format(host, c1, c3)
+        return 'https://{0}/sources16/{1}/{2}'.format(host, c1, c3)
 
     pattern = r'(?://|\.)((?:streamsb|streamsss|sblanh)\.(?:net|com))/e/([0-9a-zA-Z]+)'
     host, media_id = re.findall(pattern, url)[0]
     eurl = get_embedurl(host, media_id)
     headers = {'User-Agent': _EDGE_UA,
-               'Referer': url,
+               'Referer': 'https://{0}/'.format(host),
                'watchsb': 'sbstream'}
     html = client.request(eurl, headers=headers, cookie='lang=1')
     data = json.loads(html).get("stream_data", {})
     strurl = data.get('file') or data.get('backup')
     if strurl:
         headers.pop('watchsb')
+        headers.update({'Origin': 'https://{0}'.format(host)})
         return strurl + __append_headers(headers)
     return
 
@@ -265,7 +266,7 @@ def __extract_goload(url, page_content, referer=None):
         decrypted += decrypter.feed()
         return six.ensure_str(decrypted)
 
-    pattern = r'(?://|\.)((?:goload|gogohd)\.(?:io|pro|net))/(?:streaming\.php|embedplus)\?id=([a-zA-Z0-9-]+)'
+    pattern = r'(?://|\.)((?:goload|gogohd|anihdplay)\.(?:io|pro|net|com))/(?:streaming\.php|embedplus)\?id=([a-zA-Z0-9-]+)'
     r = re.search(r'crypto-js\.js.+?data-value="([^"]+)', page_content)
     if r:
         host, media_id = re.findall(pattern, url)[0]
@@ -285,7 +286,10 @@ def __extract_goload(url, page_content, referer=None):
             if not str_url and len(result.get('source_bk')) > 0:
                 str_url = result.get('source_bk')[0].get('file')
             if str_url:
-                return str_url
+                headers = {'User-Agent': _EDGE_UA,
+                           'Referer': 'https://{0}/'.format(host),
+                           'Origin': 'https://{0}'.format(host)}
+                return str_url + __append_headers(headers)
     return
 
 
@@ -341,7 +345,8 @@ __register_extractor(["https://dood.wf/",
 __register_extractor(["https://goload.io/",
                       "https://goload.pro/",
                       "https://gogohd.net/",
-                      "https://gogohd.pro/"],
+                      "https://gogohd.pro/",
+                      "https://anihdplay.com/"],
                      __extract_goload)
 
 __register_extractor(["https://streamlare.com/",

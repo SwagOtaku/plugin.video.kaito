@@ -48,11 +48,25 @@ class sources(BrowserBase):
     def _process_ap(self, item, title='', referer=''):
         sources = []
         slink = item.get('url') + '|Referer={0}&User-Agent=iPad'.format(referer)
+        qual = item.get('quality')
+        if qual.endswith('p'):
+            qual = int(qual[:-1])
+            if qual < 577:
+                quality = 'NA'
+            elif qual < 721:
+                quality = '720p'
+            elif qual < 1081:
+                quality = '1080p'
+            else:
+                quality = '4K'
+        else:
+            quality = 'EQ'
+
         source = {
             'release_title': title,
             'hash': slink,
             'type': 'direct',
-            'quality': 'EQ',
+            'quality': quality,
             'debrid_provider': '',
             'provider': '9anime',
             'size': 'NA',
