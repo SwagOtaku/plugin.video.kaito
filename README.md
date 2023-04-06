@@ -28,6 +28,14 @@ _or install it manually in the following order (future updates should not be ins
 
 After each update, it is recommended that you clear cache/rebuild database to make sure changes take effect.
 
+## Troubleshooting
+
+If you guys are having problems with Otaku, please feel free to contact me or take a look at the wiki or issues page.
+
+[Otaku Wiki](https://github.com/Goldenfreddy0703/Otaku/wiki)
+
+[Troubleshooting Tips For Otaku](https://github.com/Goldenfreddy0703/Otaku/issues/15)
+
 ## Todo List
 
 **_Function_**:
