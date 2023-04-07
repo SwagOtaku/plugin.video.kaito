@@ -1,3 +1,11 @@
+Changelog 0.3.61 [20230407]:
+- Fixed Ratelimiting
+- Fixed Zoro
+- Improved Gogohd
+- Update gogo url 
+- Added quality for 9anime embeds
+- Updated gogoembed extractor
+
 Changelog 0.3.60 [20230405]:
 - Improved 2 Priority Settings
 

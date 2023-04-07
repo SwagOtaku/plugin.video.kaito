@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.60">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.61">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -25,8 +25,13 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.3.60 [20230405]:
-- Improved 2 Priority Settings
+Changelog 0.3.61 [20230407]:
+- Fixed Ratelimiting
+- Fixed Zoro
+- Improved Gogohd
+- Update gogo url 
+- Added quality for 9anime embeds
+- Updated gogoembed extractor
     </news>
   </extension>
 </addon>
