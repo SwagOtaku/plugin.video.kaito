@@ -3,6 +3,7 @@ import pickle
 import re
 import six
 
+from kodi_six import xbmc
 from functools import partial
 from resources.lib.ui import client, database, utils
 
@@ -11,6 +12,7 @@ class CONSUMETAPI:
     def __init__(self):
         self.baseUrl = 'https://api.consumet.org/'
         self.episodesUrl = 'meta/anilist/episodes/{0}?provider={1}'
+        self.episodesUrl2 = 'meta/anilist/info/{0}?provider={1}'
         self.streamUrl = 'anime/{0}/watch/{1}'
         self.streamUrl2 = 'anime/{0}/watch?episodeId={1}'
         self.synurl = 'https://find-my-anime.dtimur.de/api?id={0}&provider=Anilist'
@@ -18,16 +20,24 @@ class CONSUMETAPI:
     def _json_request(self, url):
         if not url.startswith('http'):
             url = self.baseUrl + url
-        response = database.get(
-            client.request,
-            4,
-            url,
-            error=True,
-            output='extended'
-        )
-        data = []
-        if int(response[1]) < 300:
-            data = json.loads(response[0])
+        ratelimited = True
+        retries = 3
+        while ratelimited and retries > 0:
+            response = database.get(
+                client.request,
+                4,
+                url,
+                error=True,
+                output='extended'
+            )
+            data = []
+            if int(response[1]) < 300:
+                data = json.loads(response[0])
+            if 'ratelimited' in data.get('message', ''):
+                xbmc.sleep(5000)
+                retries -= 1
+            else:
+                ratelimited = False
         return data
 
     def _parse_episode_view(self, res, show_id, show_meta, season, poster, fanart, eps_watched, update_time):
@@ -144,10 +154,13 @@ class CONSUMETAPI:
 
     def get_sources(self, anilist_id, episode, provider, lang=None):
         sources = []
-        eurl = self.episodesUrl.format(anilist_id, provider)
+        if provider in ['animepahe']:
+            eurl = self.episodesUrl.format(anilist_id, provider)
+        else:
+            eurl = self.episodesUrl2.format(anilist_id, provider)
         if provider in ['gogoanime', '9anime']:
             eurl += '&{0}=true'.format(lang)
-        episodes = self._json_request(eurl)
+        episodes = self._json_request(eurl).get('episodes')
         if episodes:
             if episodes[0].get('number') != 1:
                 episode = episodes[0].get('number') - 1 + int(episode)

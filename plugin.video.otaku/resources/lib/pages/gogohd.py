@@ -47,6 +47,7 @@ class sources(BrowserBase):
 
     def _process_ap(self, item, title='', referer=''):
         sources = []
+        quality = 'EQ'
         slink = item.get('url') + '|Referer={0}&User-Agent=iPad'.format(referer)
         qual = item.get('quality')
         if qual.endswith('0p'):
@@ -62,16 +63,16 @@ class sources(BrowserBase):
             else:
                 quality = '4K'
 
-            source = {
-                'release_title': title,
-                'hash': slink,
-                'type': 'direct',
-                'quality': quality,
-                'debrid_provider': '',
-                'provider': 'gogohd',
-                'size': 'NA',
-                'info': [item.get('type'), 'HLS' if item.get('isM3U8') else ''],
-                'lang': 0 if item.get('type') == 'SUB' else 2
-            }
-            sources.append(source)
+        source = {
+            'release_title': title,
+            'hash': slink,
+            'type': 'direct',
+            'quality': quality,
+            'debrid_provider': '',
+            'provider': 'gogohd',
+            'size': 'NA',
+            'info': [item.get('type'), 'HLS' if item.get('isM3U8') else ''],
+            'lang': 0 if item.get('type') == 'SUB' else 2
+        }
+        sources.append(source)
         return sources

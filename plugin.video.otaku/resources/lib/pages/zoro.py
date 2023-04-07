@@ -44,6 +44,7 @@ class sources(BrowserBase):
 
     def _process_ap(self, item, title='', lang=0, subs=[]):
         sources = []
+        quality = 'EQ'
         slink = item.get('url')
         qual = item.get('quality')
         if qual.endswith('p'):
@@ -56,20 +57,18 @@ class sources(BrowserBase):
                 quality = '1080p'
             else:
                 quality = '4K'
-        else:
-            quality = 'EQ'
 
-            source = {
-                'release_title': title,
-                'hash': slink,
-                'type': 'direct',
-                'quality': quality,
-                'debrid_provider': '',
-                'provider': 'zoro',
-                'size': 'NA',
-                'info': ['DUB' if lang == 2 else 'SUB', 'HLS' if item.get('isM3U8') else ''],
-                'lang': lang,
-                'subs': subs
-            }
-            sources.append(source)
+        source = {
+            'release_title': title,
+            'hash': slink,
+            'type': 'direct',
+            'quality': quality,
+            'debrid_provider': '',
+            'provider': 'zoro',
+            'size': 'NA',
+            'info': ['DUB' if lang == 2 else 'SUB', 'HLS' if item.get('isM3U8') else ''],
+            'lang': lang,
+            'subs': subs
+        }
+        sources.append(source)
         return sources
