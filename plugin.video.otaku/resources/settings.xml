@@ -102,12 +102,12 @@
 		<setting id="general.sortsources" type="enum" label="40332" values="Torrents|Embeds" default="0" />
 		<!-- Prioritized Source Sorting -->
 		<setting type="lsep" label="40465"/>
-		<setting id="general.prioritize_dualaudio" type="bool" label="40462" default="false" enable="eq(5,false) + eq(3,false) + eq(2,false) + eq(1,false)" />
-		<setting id="general.prioritize_multisubs" type="bool" label="40463" default="false" enable="eq(4,false) + eq(2,false) + eq(1,false) + eq(-1,false)" />
-		<setting id="general.prioritize_batches" type="bool" label="40464" default="false" enable="eq(3,false) + eq(1,false) + eq(-2,false) + eq(-1,false)" />
-		<setting id="general.prioritize_season" type="bool" label="40468" default="false" enable="eq(-3,false) + eq(-2,false) + eq(-1,false)" />
+		<setting id="general.prioritize_dualaudio" type="bool" label="40462" default="false" enable="eq(2,false) + eq(1,false)" />
+		<setting id="general.prioritize_multisubs" type="bool" label="40463" default="false" enable="eq(1,false) + eq(-1,false)" />
+		<setting id="general.prioritize_batches" type="bool" label="40464" default="false" enable="eq(-2,false) + eq(-1,false)" />
+		<setting id="general.prioritize_season" type="bool" label="40468" default="false" />
 		<setting id="menu.prioritize_season" type="number" subsetting="true" label="40469" option="int" default="1" visible="eq(-1,true)" />
-		<setting id="general.prioritize_part" type="bool" label="40470" default="false" enable="eq(-5,false) + eq(-4,false) + eq(-3,false)" />
+		<setting id="general.prioritize_part" type="bool" label="40470" default="false" />
 		<setting id="menu.prioritize_part" type="number" subsetting="true" label="40471" option="int" default="1" visible="eq(-1,true)" />
 		<!-- Search Filtering -->
 		<setting type="lsep" label="40409"/>

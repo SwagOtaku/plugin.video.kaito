@@ -313,6 +313,7 @@ class Sources(DisplayWindow):
         prioritize_batches = False
         prioritize_season = False
         prioritize_part = False
+        prioritize_season_or_part = False
 
         if control.getSetting('general.sortsources') == '0':  # Torrents selected
             prioritize_dualaudio = control.getSetting('general.prioritize_dualaudio') == 'true'
@@ -320,53 +321,54 @@ class Sources(DisplayWindow):
             prioritize_batches = control.getSetting('general.prioritize_batches') == 'true'
             prioritize_season = control.getSetting('general.prioritize_season') == 'true'
             prioritize_part = control.getSetting('general.prioritize_part') == 'true'
+            prioritize_season_or_part = prioritize_season and prioritize_part
 
         debrid_priorities = self.debrid_priority()
 
-        if prioritize_dualaudio:
-            torrent_list_dualaudio = [i for i in torrent_list if 'DUAL-AUDIO' in i['info']]
-            torrent_list_no_dualaudio = [i for i in torrent_list if 'DUAL-AUDIO' not in i['info']]
-            for resolution in resolutions:
-                for debrid in self.debrid_priority():
-                    for torrent in torrent_list_dualaudio:
-                        if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
-                            sortedList.append(torrent)
-                    for torrent in torrent_list_no_dualaudio:
-                        if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
-                            sortedList.append(torrent)
-                for file in embed_list:
-                    if file['quality'] == resolution:
-                        sortedList.append(file)
-        elif prioritize_multisubs:
-            torrent_list_multisubs = [i for i in torrent_list if 'MULTI-SUBS' in i['info']]
-            torrent_list_no_multisubs = [i for i in torrent_list if 'MULTI-SUBS' not in i['info']]
-            for resolution in resolutions:
-                for debrid in self.debrid_priority():
-                    for torrent in torrent_list_multisubs:
-                        if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
-                            sortedList.append(torrent)
-                    for torrent in torrent_list_no_multisubs:
-                        if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
-                            sortedList.append(torrent)
-                for file in embed_list:
-                    if file['quality'] == resolution:
-                        sortedList.append(file)
-        elif prioritize_batches:
-            torrent_list_batches = [i for i in torrent_list if 'BATCH' in i['info']]
-            torrent_list_no_batches = [i for i in torrent_list if 'BATCH' not in i['info']]
-            for resolution in resolutions:
-                for debrid in self.debrid_priority():
-                    for torrent in torrent_list_batches:
-                        if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
-                            sortedList.append(torrent)
-                    for torrent in torrent_list_no_batches:
-                        if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
-                            sortedList.append(torrent)
-                for file in embed_list:
-                    if file['quality'] == resolution:
-                        sortedList.append(file)
-        elif prioritize_season:
-            if prioritize_part:
+        if prioritize_season_or_part:
+            if prioritize_dualaudio:
+                torrent_list_season_or_part_or_dualaudio = [i for i in torrent_list if 'SEASON_OR_PART_OR_DUAL-AUDIO' in i['info']]
+                torrent_list_no_season_or_part_or_dualaudio = [i for i in torrent_list if 'SEASON_OR_PART_OR_DUAL-AUDIO' not in i['info']]
+                for resolution in resolutions:
+                    for debrid in self.debrid_priority():
+                        for torrent in torrent_list_season_or_part_or_dualaudio:
+                            if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                                sortedList.append(torrent)
+                        for torrent in torrent_list_no_season_or_part_or_dualaudio:
+                            if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                                sortedList.append(torrent)
+                    for file in embed_list:
+                        if file['quality'] == resolution:
+                            sortedList.append(file)
+            if prioritize_multisubs:
+                torrent_list_season_or_part_or_multisubs = [i for i in torrent_list if 'SEASON_OR_PART_OR_MULTI-SUBS' in i['info']]
+                torrent_list_no_season_or_part_or_multisubs = [i for i in torrent_list if 'SEASON_OR_PART_OR_MULTI-SUBS' not in i['info']]
+                for resolution in resolutions:
+                    for debrid in self.debrid_priority():
+                        for torrent in torrent_list_season_or_part_or_multisubs:
+                            if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                                sortedList.append(torrent)
+                        for torrent in torrent_list_no_season_or_part_or_multisubs:
+                            if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                                sortedList.append(torrent)
+                    for file in embed_list:
+                        if file['quality'] == resolution:
+                            sortedList.append(file)
+            if prioritize_batches:
+                torrent_list_season_or_part_or_batch = [i for i in torrent_list if 'SEASON_OR_PART_OR_BATCH' in i['info']]
+                torrent_list_no_season_or_part_or_batch = [i for i in torrent_list if 'SEASON_OR_PART_OR_BATCH' not in i['info']]
+                for resolution in resolutions:
+                    for debrid in self.debrid_priority():
+                        for torrent in torrent_list_season_or_part_or_batch:
+                            if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                                sortedList.append(torrent)
+                        for torrent in torrent_list_no_season_or_part_or_batch:
+                            if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                                sortedList.append(torrent)
+                    for file in embed_list:
+                        if file['quality'] == resolution:
+                            sortedList.append(file)
+            else:
                 torrent_list_season_or_part = [i for i in torrent_list if 'SEASON_OR_PART' in i['info']]
                 torrent_list_no_season_or_part = [i for i in torrent_list if 'SEASON_OR_PART' not in i['info']]
                 for resolution in resolutions:
@@ -375,6 +377,50 @@ class Sources(DisplayWindow):
                             if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
                                 sortedList.append(torrent)
                         for torrent in torrent_list_no_season_or_part:
+                            if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                                sortedList.append(torrent)
+                    for file in embed_list:
+                        if file['quality'] == resolution:
+                            sortedList.append(file)
+
+        elif prioritize_season:
+            if prioritize_dualaudio:
+                torrent_list_season_or_dualaudio = [i for i in torrent_list if 'SEASON_OR_DUAL-AUDIO' in i['info']]
+                torrent_list_no_season_or_dualaudio = [i for i in torrent_list if 'SEASON_OR_DUAL-AUDIO' not in i['info']]
+                for resolution in resolutions:
+                    for debrid in self.debrid_priority():
+                        for torrent in torrent_list_season_or_dualaudio:
+                            if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                                sortedList.append(torrent)
+                        for torrent in torrent_list_no_season_or_dualaudio:
+                            if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                                sortedList.append(torrent)
+                    for file in embed_list:
+                        if file['quality'] == resolution:
+                            sortedList.append(file)
+            if prioritize_multisubs:
+                torrent_list_season_or_multisubs = [i for i in torrent_list if 'SEASON_OR_MULTI-SUBS' in i['info']]
+                torrent_list_no_season_or_multisubs = [i for i in torrent_list if 'SEASON_OR_MULTI-SUBS' not in i['info']]
+                for resolution in resolutions:
+                    for debrid in self.debrid_priority():
+                        for torrent in torrent_list_season_or_multisubs:
+                            if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                                sortedList.append(torrent)
+                        for torrent in torrent_list_no_season_or_multisubs:
+                            if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                                sortedList.append(torrent)
+                    for file in embed_list:
+                        if file['quality'] == resolution:
+                            sortedList.append(file)
+            if prioritize_batches:
+                torrent_list_season_or_batch = [i for i in torrent_list if 'SEASON_OR_BATCH' in i['info']]
+                torrent_list_no_season_or_batch = [i for i in torrent_list if 'SEASON_OR_BATCH' not in i['info']]
+                for resolution in resolutions:
+                    for debrid in self.debrid_priority():
+                        for torrent in torrent_list_season_or_batch:
+                            if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                                sortedList.append(torrent)
+                        for torrent in torrent_list_no_season_or_batch:
                             if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
                                 sortedList.append(torrent)
                     for file in embed_list:
@@ -394,9 +440,50 @@ class Sources(DisplayWindow):
                     for file in embed_list:
                         if file['quality'] == resolution:
                             sortedList.append(file)
+
         elif prioritize_part:
-            if prioritize_season:
-                pass
+            if prioritize_dualaudio:
+                torrent_list_part_or_dualaudio = [i for i in torrent_list if 'PART_OR_DUAL-AUDIO' in i['info']]
+                torrent_list_no_part_or_dualaudio = [i for i in torrent_list if 'PART_OR_DUAL-AUDIO' not in i['info']]
+                for resolution in resolutions:
+                    for debrid in self.debrid_priority():
+                        for torrent in torrent_list_part_or_dualaudio:
+                            if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                                sortedList.append(torrent)
+                        for torrent in torrent_list_no_part_or_dualaudio:
+                            if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                                sortedList.append(torrent)
+                    for file in embed_list:
+                        if file['quality'] == resolution:
+                            sortedList.append(file)
+            if prioritize_multisubs:
+                torrent_list_part_or_multisubs = [i for i in torrent_list if 'PART_OR_MULTI-SUBS' in i['info']]
+                torrent_list_no_part_or_multisubs = [i for i in torrent_list if 'PART_OR_MULTI-SUBS' not in i['info']]
+                for resolution in resolutions:
+                    for debrid in self.debrid_priority():
+                        for torrent in torrent_list_part_or_multisubs:
+                            if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                                sortedList.append(torrent)
+                        for torrent in torrent_list_no_part_or_multisubs:
+                            if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                                sortedList.append(torrent)
+                    for file in embed_list:
+                        if file['quality'] == resolution:
+                            sortedList.append(file)
+            if prioritize_batches:
+                torrent_list_part_or_batch = [i for i in torrent_list if 'PART_OR_BATCH' in i['info']]
+                torrent_list_no_part_or_batch = [i for i in torrent_list if 'PART_OR_BATCH' not in i['info']]
+                for resolution in resolutions:
+                    for debrid in self.debrid_priority():
+                        for torrent in torrent_list_part_or_batch:
+                            if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                                sortedList.append(torrent)
+                        for torrent in torrent_list_no_part_or_batch:
+                            if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                                sortedList.append(torrent)
+                    for file in embed_list:
+                        if file['quality'] == resolution:
+                            sortedList.append(file)
             else:
                 torrent_list_part = [i for i in torrent_list if 'PART' in i['info']]
                 torrent_list_no_part = [i for i in torrent_list if 'PART' not in i['info']]
@@ -411,6 +498,52 @@ class Sources(DisplayWindow):
                     for file in embed_list:
                         if file['quality'] == resolution:
                             sortedList.append(file)
+
+        elif prioritize_dualaudio:
+            torrent_list_dualaudio = [i for i in torrent_list if 'DUAL-AUDIO' in i['info']]
+            torrent_list_no_dualaudio = [i for i in torrent_list if 'DUAL-AUDIO' not in i['info']]
+            for resolution in resolutions:
+                for debrid in self.debrid_priority():
+                    for torrent in torrent_list_dualaudio:
+                        if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                            sortedList.append(torrent)
+                    for torrent in torrent_list_no_dualaudio:
+                        if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                            sortedList.append(torrent)
+                for file in embed_list:
+                    if file['quality'] == resolution:
+                        sortedList.append(file)
+
+        elif prioritize_multisubs:
+            torrent_list_multisubs = [i for i in torrent_list if 'MULTI-SUBS' in i['info']]
+            torrent_list_no_multisubs = [i for i in torrent_list if 'MULTI-SUBS' not in i['info']]
+            for resolution in resolutions:
+                for debrid in self.debrid_priority():
+                    for torrent in torrent_list_multisubs:
+                        if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                            sortedList.append(torrent)
+                    for torrent in torrent_list_no_multisubs:
+                        if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                            sortedList.append(torrent)
+                for file in embed_list:
+                    if file['quality'] == resolution:
+                        sortedList.append(file)
+
+        elif prioritize_batches:
+            torrent_list_batch = [i for i in torrent_list if 'BATCH' in i['info']]
+            torrent_list_no_batch = [i for i in torrent_list if 'BATCH' not in i['info']]
+            for resolution in resolutions:
+                for debrid in self.debrid_priority():
+                    for torrent in torrent_list_batch:
+                        if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                            sortedList.append(torrent)
+                    for torrent in torrent_list_no_batch:
+                        if debrid['slug'] == torrent['debrid_provider'] and torrent['quality'] == resolution:
+                            sortedList.append(torrent)
+                for file in embed_list:
+                    if file['quality'] == resolution:
+                        sortedList.append(file)
+
         else:
             # Sort Souces Medthod: Torrents
             # Torrents: Sub or Dub

@@ -1,3 +1,7 @@
+Changelog 0.3.62 [20230407]:
+- Improved Priority Settings
+- Allow MultiSelect Priority Settings
+
 Changelog 0.3.61 [20230407]:
 - Fixed Ratelimiting
 - Fixed Zoro

@@ -44,13 +44,49 @@ def getInfo(release_title):
     if any(i.format(control.getSetting("menu.prioritize_season")) in release_title for i in ['season {}', 'season 0{}', 's{}', 's0{}']):
         info.append('SEASON')
 
+    # info.season or dual-audio
+    if sum(i.format(control.getSetting("menu.prioritize_season")) in release_title for i in ['season {}', 'season 0{}', 's{}', 's0{}', 'dual audio']) >= 2:
+        info.append('SEASON_OR_DUAL-AUDIO')
+
+    # info.season or multi-subs
+    if sum(i.format(control.getSetting("menu.prioritize_season")) in release_title for i in ['season {}', 'season 0{}', 's{}', 's0{}', 'multi-sub', 'multi sub', 'multiple subtitle']) >= 2:
+        info.append('SEASON_OR_MULTI-SUBS')
+
+    # info.season or batch
+    if sum(i.format(control.getSetting("menu.prioritize_season")) in release_title for i in ['season {}', 'season 0{}', 's{}', 's0{}', 'batch']) >= 2:
+        info.append('SEASON_OR_BATCH')
+
     # info.part
     if any(i.format(control.getSetting("menu.prioritize_part")) in release_title for i in ['part {}', 'part 0{}', 'cour {}', 'cour 0{}']):
         info.append('PART')
 
+    # info.part or dual-audio
+    if sum(i.format(control.getSetting("menu.prioritize_part")) in release_title for i in ['part {}', 'part 0{}', 'cour {}', 'cour 0{}', 'dual audio']) >= 2:
+        info.append('PART_OR_DUAL-AUDIO')
+
+    # info.part or multi-subs
+    if sum(i.format(control.getSetting("menu.prioritize_part")) in release_title for i in ['part {}', 'part 0{}', 'cour {}', 'cour 0{}', 'multi-sub', 'multi sub', 'multiple subtitle']) >= 2:
+        info.append('PART_OR_MULTI-SUBS')
+
+    # info.part or batch
+    if sum(i.format(control.getSetting("menu.prioritize_part")) in release_title for i in ['part {}', 'part 0{}', 'cour {}', 'cour 0{}', 'batch']) >= 2:
+        info.append('PART_OR_BATCH')
+
     # info.season or part
     if sum(i.format(control.getSetting("menu.prioritize_season"), control.getSetting("menu.prioritize_part")) in release_title for i in ['season {0}', 'season 0{0}', 's{0}', 's0{0}', 'part {1}', 'part 0{1}', 'cour {1}', 'cour 0{1}']) >= 2:
         info.append('SEASON_OR_PART')
+
+    # info.season or part
+    if sum(i.format(control.getSetting("menu.prioritize_season"), control.getSetting("menu.prioritize_part")) in release_title for i in ['season {0}', 'season 0{0}', 's{0}', 's0{0}', 'part {1}', 'part 0{1}', 'cour {1}', 'cour 0{1}', 'dual audio']) >= 3:
+        info.append('SEASON_OR_PART_OR_DUAL-AUDIO')
+
+    # info.season or part
+    if sum(i.format(control.getSetting("menu.prioritize_season"), control.getSetting("menu.prioritize_part")) in release_title for i in ['season {0}', 'season 0{0}', 's{0}', 's0{0}', 'part {1}', 'part 0{1}', 'cour {1}', 'cour 0{1}', 'multi-sub', 'multi sub', 'multiple subtitle']) >= 3:
+        info.append('SEASON_OR_PART_OR_MULTI-SUBS')
+
+    # info.season or part
+    if sum(i.format(control.getSetting("menu.prioritize_season"), control.getSetting("menu.prioritize_part")) in release_title for i in ['season {0}', 'season 0{0}', 's{0}', 's0{0}', 'part {1}', 'part 0{1}', 'cour {1}', 'cour 0{1}', 'batch']) >= 3:
+        info.append('SEASON_OR_PART_OR_BATCH')
 
     # info.subtitles
     if any(i in release_title for i in ['multi-sub', 'multi sub', 'multiple subtitle']):
