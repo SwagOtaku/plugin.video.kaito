@@ -30,14 +30,20 @@ class CONSUMETAPI:
                 error=True,
                 output='extended'
             )
-            data = []
+            data = {}
             if int(response[1]) < 300:
                 data = json.loads(response[0])
-            if 'ratelimited' in data.get('message', ''):
-                xbmc.sleep(5000)
-                retries -= 1
-            else:
-                ratelimited = False
+                if 'ratelimited' in data.get('message', ''):
+                    database.remove(
+                        client.request,
+                        url,
+                        error=True,
+                        output='extended'
+                    )
+                    xbmc.sleep(5000)
+                    retries -= 1
+                else:
+                    ratelimited = False
         return data
 
     def _parse_episode_view(self, res, show_id, show_meta, season, poster, fanart, eps_watched, update_time):

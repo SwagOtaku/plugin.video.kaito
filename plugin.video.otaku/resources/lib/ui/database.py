@@ -73,6 +73,24 @@ def get(function, duration, *args, **kwargs):
         return None
 
 
+def remove(function, *args, **kwargs):
+    # type: (function, object) -> object or None
+    """
+    Gets cached value for provided function with optional arguments, or executes and stores the result
+    :param function: Function to be executed
+    :param args: Optional arguments for the provided function
+    """
+    try:
+        key = _hash_function(function, args, kwargs)
+        cache_remove(key)
+        return True
+
+    except Exception:
+        import traceback
+        traceback.print_exc()
+        return False
+
+
 def _hash_function(function_instance, *args):
     return _get_function_name(function_instance) + _generate_md5(args)
 
@@ -124,6 +142,23 @@ def cache_insert(key, value):
             pass
         import traceback
         traceback.print_exc()
+        pass
+    finally:
+        control.try_release_lock(control.cacheFile_lock)
+
+
+def cache_remove(key):
+    control.cacheFile_lock.acquire()
+    try:
+        cursor = _get_connection_cursor(control.cacheFile)
+        cursor.execute('''DELETE FROM %s WHERE key = "%s"''' % (cache_table, key))
+        cursor.connection.commit()
+        cursor.close()
+    except:
+        try:
+            cursor.close()
+        except:
+            pass
         pass
     finally:
         control.try_release_lock(control.cacheFile_lock)

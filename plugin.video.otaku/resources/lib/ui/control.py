@@ -460,10 +460,3 @@ def getChangeLog():
     windows = TextViewerXML('textviewer.xml', ADDON_PATH, heading=heading, text=text, text_2=text_2)
     windows.run()
     del windows
-
-            ### for testing ###
-# def print(string, *args):
-#     for i in list(args):
-#         string = f'{string} {i}'
-#     textviewer_dialog('print', f'{string}')
-#     del args, string
