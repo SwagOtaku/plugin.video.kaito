@@ -1,3 +1,6 @@
+Changelog 0.3.63 [20230410]:
+- Consumet: Remove cached request before retrying
+
 Changelog 0.3.62 [20230407]:
 - Improved Priority Settings
 - Allow MultiSelect Priority Settings
