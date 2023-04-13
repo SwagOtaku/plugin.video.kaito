@@ -97,10 +97,11 @@ class sources(BrowserBase):
                     server = link.get('server')
                     url = link.get('link')
                     if any(x in url for x in ['/crunchyroll/', '/gogoanime/', '/allanime/']):
-                        slink = self._get_redirect_url(url, headers=headers)
-                        host, slink = slink.split('#')
-                        slink = self._bdecode(slink) + '|Origin={0}&Referer={0}/&User-Agent=iPad'.format(self._get_origin(host))
-                        type_ = 'direct'
+                        slink = database.get(self._get_redirect_url, 8, url, headers=headers)
+                        if '#' in slink:
+                            host, slink = slink.split('#')
+                            slink = self._bdecode(slink) + '|Origin={0}&Referer={0}/&User-Agent=iPad'.format(self._get_origin(host))
+                            type_ = 'direct'
                     else:
                         s = database.get(self._get_request, 8, url, headers=headers)
                         slink = re.search(r"hls.loadSource\('([^']+)", s)
