@@ -42,6 +42,16 @@ class AniListBrowser():
             self._TITLE_LANG = self._title_lang(title_key)
         else:
             self._TITLE_LANG = "userPreferred"
+        self.licensedBy_type = ''
+        filterEnable = control.getSetting('licensedBy.bool') == "true"
+        if filterEnable:
+            selected_site = control.getSetting('licensedBy.menu')
+            self.licensedBy_type = selected_site
+        
+        elif title_key:
+            self._TITLE_LANG = self._title_lang(title_key)
+        else:
+            self._TITLE_LANG = "userPreferred"
         self.perPage_type = 20
         filterEnable = control.getSetting('perpage.bool') == 'true'
         if filterEnable:
@@ -99,6 +109,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -119,6 +132,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -141,6 +157,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -161,6 +180,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -184,6 +206,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -204,6 +229,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -227,6 +255,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -248,6 +279,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -271,6 +305,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -293,6 +330,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -314,6 +354,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -334,6 +377,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -357,6 +403,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -379,6 +428,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -400,6 +452,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -424,6 +479,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -445,6 +503,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -468,6 +529,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -490,6 +554,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -511,6 +578,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -535,6 +605,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -556,6 +629,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -579,6 +655,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -598,6 +677,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -619,6 +701,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -639,6 +724,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -658,6 +746,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -683,6 +774,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -704,6 +798,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -727,6 +824,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -748,6 +848,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -772,6 +875,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -793,6 +899,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -817,6 +926,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -839,6 +951,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -863,6 +978,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -886,6 +1004,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -908,6 +1029,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -929,6 +1053,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -953,6 +1080,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -976,6 +1106,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -998,6 +1131,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -1023,6 +1159,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1045,6 +1184,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -1069,6 +1211,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1092,6 +1237,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1114,6 +1262,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -1139,6 +1290,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1161,6 +1315,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -1185,6 +1342,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1205,6 +1365,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -1227,6 +1390,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1248,6 +1414,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1268,6 +1437,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -1293,6 +1465,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1314,6 +1489,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -1337,6 +1515,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1358,6 +1539,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -1382,6 +1566,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1403,6 +1590,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -1427,6 +1617,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1449,6 +1642,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -1473,6 +1669,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1496,6 +1695,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1518,6 +1720,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1539,6 +1744,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -1563,6 +1771,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1586,6 +1797,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1608,6 +1822,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -1633,6 +1850,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1655,6 +1875,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -1679,6 +1902,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1702,6 +1928,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1724,6 +1953,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -1749,6 +1981,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1771,6 +2006,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -1795,6 +2033,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1815,6 +2056,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -1837,6 +2081,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1857,6 +2104,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -1879,6 +2129,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1899,6 +2152,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -1922,6 +2178,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1943,6 +2202,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -1966,6 +2228,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -1985,6 +2250,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -2006,6 +2274,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -2029,6 +2300,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -2050,6 +2324,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -2073,6 +2350,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -2092,6 +2372,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -2113,6 +2396,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -2136,6 +2422,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -2157,6 +2446,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -2180,6 +2472,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -2199,6 +2494,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -2222,6 +2520,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -2243,6 +2544,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -2267,6 +2571,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -2290,6 +2597,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -2310,6 +2620,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -2332,6 +2645,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -2352,6 +2668,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -2375,6 +2694,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -2397,6 +2719,9 @@ class AniListBrowser():
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
 
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
@@ -2418,6 +2743,9 @@ class AniListBrowser():
 
         if self.countryOfOrigin_type:
             variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
 
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
@@ -2568,6 +2896,7 @@ class AniListBrowser():
             $isAdult: Boolean = false,
             $format:[MediaFormat],
             $countryOfOrigin:CountryCode
+          	$licensedBy: String,
             $season: MediaSeason,
             $year: String,
             $status: MediaStatus,
@@ -2586,6 +2915,7 @@ class AniListBrowser():
                     status: $status
                     isAdult: $isAdult
                     countryOfOrigin: $countryOfOrigin
+                  	licensedBy: $licensedBy
                 ) {
                     id
                     idMal

@@ -16,6 +16,9 @@
 		<setting id="contentformat.bool" label="40391" type="bool" default="false"/>
 		<setting id="contentformat.menu" type="enum" subsetting="true" label="40392" lvalues="40393|40394|40395|40396|40397|40398|40399" default="40393" visible="eq(-1,true)"/>
 		<setting id="sep"/>
+		<setting id="licensedBy.bool" label="40472" type="bool" default="false"/>
+		<setting id="licensedBy.menu" type="labelenum" subsetting="true" label="40473" values="Crunchyroll|Hulu|Funimation|Netflix|YouTube|HIDIVE|Amazon|Vimeo|VRV|HBO Max|Wakanim|RetroCrush|Adult Swim|Japanese Film Archives|Tubi TV|Crackle|AsianCrush|Midnight Pulp|CONtv|Fakku|Bilibili|Disney Plus|Bilibili TV|Tencent Video|iQ|Youku|WeTV|Niconico Video|Rooster Teeth|iQIYI|Star+" default="Crunchyroll" visible="eq(-1,true)"/>
+		<setting id="sep"/>
 		<setting id="contentorigin.bool" label="40418" type="bool" default="false"/>
 		<setting id="contentorigin.menu" type="enum" subsetting="true" label="40419" lvalues="40420|40421|40422|40423" default="0" visible="eq(-1,true)"/>
 		<setting id="sep"/>

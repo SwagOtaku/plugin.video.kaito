@@ -867,6 +867,14 @@ msgctxt "#40471"
 msgid "Part Number"
 msgstr ""
 
+msgctxt "#40472"
+msgid "Set Streaming Site"
+msgstr ""
+
+msgctxt "#40473"
+msgid "Site"
+msgstr ""
+
 ######MAIN Category DIRECTORY#######
 msgctxt "#50000"
 msgid "Airing Anime Calendar"
