@@ -1,3 +1,6 @@
+Changelog 0.3.66 [20230418]:
+- Fixed Subtitle Bugs
+
 Changelog 0.3.65 [20230414]:
 - Handle animix dub stream site being down
 
