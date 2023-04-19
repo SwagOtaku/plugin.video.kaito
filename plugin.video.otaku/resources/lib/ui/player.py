@@ -195,7 +195,7 @@ class watchlistPlayer(xbmc.Player):
                 "hin", "tur", "pol", "swe", "nor", "dan",
                 "fin"
             ]
-            preferred_subtitle = subtitles[int(control.getSetting('general.subtitles'))]        
+            preferred_subtitle = subtitles[int(control.getSetting('general.subtitles'))]
 
             try:
                 subtitle_int = subtitle_lang.index(preferred_subtitle)
@@ -206,15 +206,7 @@ class watchlistPlayer(xbmc.Player):
                     subtitle_int = subtitle_lang.index(preferred_subtitle)
                     self.setSubtitleStream(subtitle_int)
                 except ValueError:
-                    self.showSubtitles(False)
-                    return      
-
-            if len(preferred_subtitle) == 5:
-                preferred_subtitle = control.lang(int(preferred_subtitle))
-            subtitle_int = subtitle_lang.index(preferred_subtitle)
-            self.setSubtitleStream(subtitle_int)
-        else:
-            self.showSubtitles(False)
+                    pass
 
         # Audio Preferences
         audio_lang = self.getAvailableAudioStreams()
