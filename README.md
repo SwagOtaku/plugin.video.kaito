@@ -40,12 +40,19 @@ If you guys are having problems with Otaku, please feel free to contact me or ta
 
 **_Function_**:
 - Watchlist: Automatically mark an anime as completed when the whole series is watched. 
-- Watchlist: Wamt to do a full recode on it sense its very confusing to understand. 
+- Watchlist: Want to do a full recode on it sense its very confusing to understand. 
+- Artwork: Want to add Simkl as either a main or fallback for Fanart.
+- Relations: Want to use Chiaki to get relations but have Anilist relations as a fallback incase Chiaki fails to find that.
+	- Api Example: `https://chiaki.vercel.app/get?group_id={malId}`
+	- Api Documentation: https://chiaki.vercel.app/
 
 **_Optional_**: 
-- Embeds: A Setting catagory to sort your embeds
-- Viewtypes: Want to have a Set Viewtypes options for Menu View, Anime Viewm, Episode View
-- Accounts: Adding an Easy News Debrid Provider
+- Artwork: Want to add an setting to replace anilist posters with simkl posters.
+	- I know this is a pointless but will provide anime titles in posters.
+	- Will help with skins that don't offer anime titles.
+- Embeds: A Setting category to sort your embeds.
+- Viewtypes: Want to have a Set Viewtypes options for Menu View, Anime View,and Episode View.
+- Accounts: Adding an Easy News Debrid Provider.
 
 ## Help needed with maintaining
 
