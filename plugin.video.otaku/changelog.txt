@@ -1,3 +1,6 @@
+Changelog 0.3.67 [20230420]:
+- Fix regression error from last commit disabling subs on zoro streams
+
 Changelog 0.3.66 [20230418]:
 - Fixed Subtitle Bugs
 
