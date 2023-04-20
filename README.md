@@ -42,7 +42,7 @@ If you guys are having problems with Otaku, please feel free to contact me or ta
 - Watchlist: Automatically mark an anime as completed when the whole series is watched. 
 - Watchlist: Want to do a full recode on it sense its very confusing to understand. 
 - Artwork: Want to add Simkl as either a main or fallback for Fanart.
-- Relations: Want to use Chiaki to get relations but have Anilist relations as a fallback incase Chiaki fails to find that.
+- Context Menu: Want to use Chiaki to get all anime sereies from one series. 
 	- Api Example: `https://chiaki.vercel.app/get?group_id={malId}`
 	- Api Documentation: https://chiaki.vercel.app/
 
