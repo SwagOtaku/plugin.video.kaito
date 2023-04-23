@@ -366,7 +366,6 @@ class MyAnimeListWLF(WatchlistFlavorBase):
 
     # A method 'watchlist_append' that takes in an argument 'anilist_id' and adds it to the watchlist
     def watchlist_append(self, anilist_id):
-
         # Getting MAL ID from AniList ID using a private method '_get_mapping_id'
         mal_id = self._get_mapping_id(anilist_id, 'mal_id')
 
@@ -393,4 +392,22 @@ class MyAnimeListWLF(WatchlistFlavorBase):
 
         # Notifying the user that the anime was removed from the watchlist
         control.notify('Removed from Watchlist')
+        return
+
+    def watchlist_completed(self, anilist_id):
+        # Getting MAL ID from AniList ID using a private method '_get_mapping_id'
+        mal_id = self._get_mapping_id(anilist_id, 'mal_id')
+
+        # If no mapping exists, return
+        if not mal_id:
+            return
+
+        # Creating URL and data for PUT request and adding it to the watchlist
+        url = self._to_url("anime/%s/my_list_status" % (mal_id))
+        data = {'status': 'completed'}
+        result = json.loads(self._put_request(url, data=data, headers=self.__headers()))
+
+        # Notifying the user that the anime was added to the watchlist
+        if result.get('status'):
+            control.notify('Marked as Completed')
         return

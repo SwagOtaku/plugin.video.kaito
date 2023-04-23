@@ -85,6 +85,10 @@ class WatchlistFlavor(object):
     def watchlist_append_request(anilist_id):
         return WatchlistFlavor.get_update_flavor().watchlist_append(anilist_id)
 
+    @staticmethod
+    def watchlist_completed_request(anilist_id):
+        return WatchlistFlavor.get_update_flavor().watchlist_completed(anilist_id)
+
     # Sends a request to remove an anime from a watchlist
     @staticmethod
     def watchlist_remove_request(anilist_id):

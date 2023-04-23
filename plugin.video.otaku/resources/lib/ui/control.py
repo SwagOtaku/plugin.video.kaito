@@ -327,8 +327,9 @@ def xbmc_add_player_item(name, url, art={}, info={}, draw_cm=None, bulk_add=Fals
     u = addon_url(url)
     cm = []
     if draw_cm is not None:
-        if isinstance(draw_cm, tuple):
-            cm.append((draw_cm[0], 'RunPlugin(plugin://{0}/{1}/{2})'.format(ADDON_ID, draw_cm[1], url)))
+        if isinstance(draw_cm, list):
+            for draw in draw_cm:
+                cm.append((draw[0], 'RunPlugin(plugin://{0}/{1}/{2})'.format(ADDON_ID, draw[1], url)))
 
     liz = make_listitem(name, info)
 
@@ -352,11 +353,13 @@ def xbmc_add_dir(name, url, art={}, info={}, draw_cm=None):
     u = addon_url(url)
     cm = [('Trakt Meta Correction', 'RunPlugin(plugin://{0}/trakt_correction/{1})'.format(ADDON_ID, url))]
     if draw_cm is not None:
-        if isinstance(draw_cm, tuple):
-            cm.append((draw_cm[0], 'RunPlugin(plugin://{0}/{1}/{2})'.format(ADDON_ID, draw_cm[1], url)))
+        if isinstance(draw_cm, list):
+            for draw in draw_cm:
+                cm.append((draw[0], 'RunPlugin(plugin://{0}/{1}/{2})'.format(ADDON_ID, draw[1], url)))
     else:
         if watchlist_enabled():
             cm.append(('Add to Watchlist', 'RunPlugin(plugin://{0}/add_to_watchlist/{1})'.format(ADDON_ID, url)))
+            cm.append(('Mark as Completed', 'RunPlugin(plugin://{0}/add_to_completed_watchlist/{1})'.format(ADDON_ID, url)))
 
     liz = make_listitem(name, info)
 
@@ -386,7 +389,7 @@ def draw_items(video_data, contentType="tvshows", viewType=None, draw_cm=None, b
         else:
             if draw_cm is None:
                 if contentType != 'episodes' and watchlist_enabled():
-                    draw_cm = ('Add to Watchlist', 'add_to_watchlist')
+                    draw_cm = [('Add to Watchlist', 'add_to_watchlist'), ('Mark as Completed', 'add_to_completed_watchlist')]
             xbmc_add_player_item(vid['name'], vid['url'], vid['image'],
                                  vid['info'], draw_cm, bulk_add)
 

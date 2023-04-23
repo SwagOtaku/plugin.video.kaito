@@ -76,7 +76,7 @@ def WATCHLIST_STATUS_TYPE(payload, params):
     # split the payload into flavor and status/type parameters
     flavor, status = payload.rsplit("/")
     # define context menu
-    draw_cm = ('Remove from Watchlist', 'remove_from_watchlist')
+    draw_cm = [('Remove from Watchlist', 'remove_from_watchlist'), ('Mark as Completed', 'add_to_completed_watchlist')]
     # return watchlist status/type request with context menu
     return control.draw_items(WatchlistFlavor.watchlist_status_request(flavor, status, params), draw_cm=draw_cm)
 
@@ -87,7 +87,7 @@ def WATCHLIST_STATUS_TYPE_PAGES(payload, params):
     # split the payload into flavor, status/type, offset, and page parameters
     flavor, status, offset, page = payload.rsplit("/")
     # define context menu
-    draw_cm = ('Remove from Watchlist', 'remove_from_watchlist')
+    draw_cm = [('Remove from Watchlist', 'remove_from_watchlist'), ('Mark as Completed', 'add_to_completed_watchlist')]
     # return watchlist status/type request with context menu
     return control.draw_items(WatchlistFlavor.watchlist_status_request_pages(flavor, status, params, offset, int(page)), draw_cm=draw_cm)
 
@@ -191,6 +191,13 @@ def watchlist_append(anilist_id):
     if not flavor:
         return
     return WatchlistFlavor.watchlist_append_request(anilist_id)
+
+
+def watchlist_completed(anilist_id):
+    flavor = WatchlistFlavor.get_update_flavor()
+    if not flavor:
+        return
+    return WatchlistFlavor.watchlist_completed_request(anilist_id)
 
 
 # function that removes a show from the user's watchlist

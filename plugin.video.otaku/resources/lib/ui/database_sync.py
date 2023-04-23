@@ -247,7 +247,6 @@ class AnilistSyncDatabase:
         self._set_base_activites()
         self._refresh_activites()
 
-
         # from resources.lib.modules.trakt_sync import activities
         # sync_errors = activities.TraktSyncDatabase().sync_activities(silent)
 

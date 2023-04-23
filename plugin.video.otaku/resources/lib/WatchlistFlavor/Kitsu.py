@@ -522,3 +522,38 @@ class KitsuWLF(WatchlistFlavorBase):
         _ = self._delete_request(url, headers=self.__headers())
         control.notify('Removed from Watchlist')
         return
+
+    def watchlist_completed(self, anilist_id):
+        # Get the Kitsu ID of the anime entry based on its AniList ID
+        kitsu_id = self._get_mapping_id(anilist_id, 'kitsu_id')
+        if not kitsu_id:
+            return
+        # Construct the request JSON body
+        url = self._to_url("edge/library-entries")
+        params = {
+            "data": {
+                "type": "libraryEntries",
+                "attributes": {
+                    'status': 'completed',
+                },
+                "relationships": {
+                    "user": {
+                        "data": {
+                            "id": self._user_id,
+                            "type": "users"
+                        }
+                    },
+                    "anime": {
+                        "data": {
+                            "id": int(kitsu_id),
+                            "type": "anime"
+                        }
+                    }
+                }
+            }
+        }
+        # Send the POST request with the constructed JSON body and notify the user if successful
+        result = json.loads(self._post_request(url, headers=self.__headers(), json=params))
+        if result.get('data'):
+            control.notify('Marked as Completed')
+        return

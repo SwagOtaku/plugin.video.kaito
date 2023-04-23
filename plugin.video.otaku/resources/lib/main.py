@@ -24,6 +24,7 @@ from resources.lib.ui import control, database, player, utils
 from resources.lib.ui.router import route, router_process
 from resources.lib.WatchlistIntegration import (add_watchlist, set_browser,
                                                 watchlist_append,
+                                                watchlist_completed,
                                                 watchlist_remove,
                                                 watchlist_update)
 
@@ -1547,6 +1548,12 @@ def ANILIST_GENRES_PAGES(payload, params):
 def ADD_TO_WATCHLIST(payload, params):
     anilist_id, mal_id = payload.split("/")[1:-1]
     return watchlist_append(anilist_id)
+
+
+@route('add_to_completed_watchlist/*')
+def ADD_TO_COMPLETED_WATCHLIST(payload, params):
+    anilist_id, mal_id = payload.split("/")[1:-1]
+    return watchlist_completed(anilist_id)
 
 
 @route('remove_from_watchlist/*')

@@ -4,20 +4,13 @@ import re
 import six
 from functools import partial
 
-from resources.lib.indexers.fanart import FANARTAPI
-from resources.lib.indexers.tmdb import TMDBAPI
 from resources.lib.ui import client, database, utils
-from six.moves import urllib_parse
 
 
 class ENIMEAPI:
     def __init__(self):
         self.baseUrl = 'https://api.enime.moe/'
         self.episodesUrl = '/mapping/anilist/{0}'
-        self.streamUrl = '/source/{1}'
-        self.streamUrl2 = '/episode/{1}'
-        self.synurl = 'https://find-my-anime.dtimur.de/api?id={0}&provider=Anilist'
-        self.art = {}
         self.request_response = None
 
     def _json_request(self, url):
@@ -92,10 +85,6 @@ class ENIMEAPI:
         if result:
             season = 1
             s_id = self._get_season(result)
-            # if not s_id:
-            #     res = self._json_request(self.synurl.format(anilist_id))
-            #     if res:
-            #         s_id = self._get_season(res[0])
             if s_id:
                 season = s_id[0]
             result = result.get('episodes')

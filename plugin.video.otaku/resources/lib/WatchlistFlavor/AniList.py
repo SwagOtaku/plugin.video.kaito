@@ -590,3 +590,26 @@ class AniListWLF(WatchlistFlavorBase):
         }
         res = json.loads(self._post_request(self._URL, headers=self.__headers(), json={'query': query, 'variables': variables}))
         return res.get('data').get('DeleteMediaListEntry').get('deleted')
+
+    def watchlist_completed(self, anilist_id):
+        # Add a show to the user's completed list
+        result = json.loads(self.__update_completed(anilist_id))
+        if result.get('data').get('SaveMediaListEntry'):
+            control.notify('Marked as completed')
+        return
+
+    def __update_completed(self, anilist_id):
+        # Mutation to add a show to the user's watchlist
+        query = '''
+        mutation ($mediaId: Int, $status: MediaListStatus) {
+            SaveMediaListEntry (mediaId: $mediaId, status: $status) {
+                id
+                status
+                }
+            }
+        '''
+        variables = {
+            'mediaId': int(anilist_id),
+            'status': 'COMPLETED'
+        }
+        return self._post_request(self._URL, headers=self.__headers(), json={'query': query, 'variables': variables})
