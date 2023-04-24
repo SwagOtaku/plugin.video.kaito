@@ -257,7 +257,7 @@ class WatchlistFlavorBase(object):
         return client.request(url, headers=headers, cookie=cookies, post=data, params=params)
 
     def _post_request(self, url, headers=None, cookies=None, params=None, json=None):
-        return client.request(url, headers=headers, cookie=cookies, post=json, jpost=True, params=params)
+        return client.request(url, headers=headers, cookie=cookies, post=json, jpost=True, params=params, error=True)
 
     def _patch_request(self, url, headers=None, cookies=None, params=None, json=None):
         return client.request(url, headers=headers, cookie=cookies, post=json, jpost=True, params=params, method='PATCH')

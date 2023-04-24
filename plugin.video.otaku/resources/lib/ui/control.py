@@ -351,7 +351,8 @@ def xbmc_add_player_item(name, url, art={}, info={}, draw_cm=None, bulk_add=Fals
 
 def xbmc_add_dir(name, url, art={}, info={}, draw_cm=None):
     u = addon_url(url)
-    cm = [('Trakt Meta Correction', 'RunPlugin(plugin://{0}/trakt_correction/{1})'.format(ADDON_ID, url))]
+    # cm = [('Trakt Meta Correction', 'RunPlugin(plugin://{0}/trakt_correction/{1})'.format(ADDON_ID, url))]
+    cm = []
     if draw_cm is not None:
         if isinstance(draw_cm, list):
             for draw in draw_cm:

@@ -500,6 +500,9 @@ class KitsuWLF(WatchlistFlavorBase):
         result = json.loads(self._post_request(url, headers=self.__headers(), json=params))
         if result.get('data'):
             control.notify('Added to Watchlist')
+        elif result.get('errors'):
+            if result.get('errors')[0].get('title', '') == 'has already been taken':
+                control.notify('Already in Watchlist')
         return
 
     # Define a method that removes an anime entry from a user's watchlist on Kitsu
@@ -559,4 +562,7 @@ class KitsuWLF(WatchlistFlavorBase):
         result = json.loads(self._post_request(url, headers=self.__headers(), json=params))
         if result.get('data'):
             control.notify('Marked as Completed')
+        elif result.get('errors'):
+            if result.get('errors')[0].get('title', '') == 'has already been taken':
+                control.notify('Already in Completed')
         return
