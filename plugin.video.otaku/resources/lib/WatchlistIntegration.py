@@ -193,11 +193,11 @@ def watchlist_append(anilist_id):
     return WatchlistFlavor.watchlist_append_request(anilist_id)
 
 
-def watchlist_completed(anilist_id):
+def watchlist_completed(anilist_id='', mal_id='', kitsu_id=''):
     flavor = WatchlistFlavor.get_update_flavor()
     if not flavor:
         return
-    return WatchlistFlavor.watchlist_completed_request(anilist_id)
+    return WatchlistFlavor.watchlist_completed_request(anilist_id, mal_id, kitsu_id)
 
 
 # function that removes a show from the user's watchlist

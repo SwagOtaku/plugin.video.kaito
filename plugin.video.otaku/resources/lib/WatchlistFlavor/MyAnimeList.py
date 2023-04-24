@@ -394,9 +394,9 @@ class MyAnimeListWLF(WatchlistFlavorBase):
         control.notify('Removed from Watchlist')
         return
 
-    def watchlist_completed(self, anilist_id):
-        # Getting MAL ID from AniList ID using a private method '_get_mapping_id'
-        mal_id = self._get_mapping_id(anilist_id, 'mal_id')
+    def watchlist_completed(self, anilist_id='', mal_id='', kitsu_id=''):
+        if not mal_id:
+            mal_id = self._get_mapping_id(anilist_id, 'mal_id')
 
         # If no mapping exists, return
         if not mal_id:

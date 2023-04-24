@@ -47,7 +47,7 @@ class AniListBrowser():
         if filterEnable:
             selected_site = control.getSetting('licensedBy.menu')
             self.licensedBy_type = selected_site
-        
+
         elif title_key:
             self._TITLE_LANG = self._title_lang(title_key)
         else:
@@ -2896,7 +2896,7 @@ class AniListBrowser():
             $isAdult: Boolean = false,
             $format:[MediaFormat],
             $countryOfOrigin:CountryCode
-          	$licensedBy: String,
+            $licensedBy: String,
             $season: MediaSeason,
             $year: String,
             $status: MediaStatus,
@@ -2915,7 +2915,7 @@ class AniListBrowser():
                     status: $status
                     isAdult: $isAdult
                     countryOfOrigin: $countryOfOrigin
-                  	licensedBy: $licensedBy
+                    licensedBy: $licensedBy
                 ) {
                     id
                     idMal

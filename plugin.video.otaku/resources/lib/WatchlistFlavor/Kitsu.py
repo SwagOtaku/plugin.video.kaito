@@ -523,11 +523,14 @@ class KitsuWLF(WatchlistFlavorBase):
         control.notify('Removed from Watchlist')
         return
 
-    def watchlist_completed(self, anilist_id):
-        # Get the Kitsu ID of the anime entry based on its AniList ID
-        kitsu_id = self._get_mapping_id(anilist_id, 'kitsu_id')
+    def watchlist_completed(self, anilist_id='', mal_id='', kitsu_id=''):
+        if not kitsu_id:
+            kitsu_id = self._get_mapping_id(anilist_id, 'kitsu_id')
+
+        # If no mapping exists, return
         if not kitsu_id:
             return
+
         # Construct the request JSON body
         url = self._to_url("edge/library-entries")
         params = {

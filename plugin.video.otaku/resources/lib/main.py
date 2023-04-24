@@ -1552,8 +1552,29 @@ def ADD_TO_WATCHLIST(payload, params):
 
 @route('add_to_completed_watchlist/*')
 def ADD_TO_COMPLETED_WATCHLIST(payload, params):
-    anilist_id, mal_id = payload.split("/")[1:-1]
-    return watchlist_completed(anilist_id)
+    anilist_id = mal_id = kitsu_id = ''
+    payload = payload.split("/")
+    if params.get('anilist_id'):
+        anilist_id = params.get('anilist_id')
+    elif len(payload) == 4:
+        id1, id2 = payload[1:-1]
+        show = database.get_show(id1)
+        if show:
+            anilist_id = id1
+            mal_id = id2
+        else:
+            mal_id = id1
+            kitsu_id = id2
+    elif len(payload) == 2:
+        id1 = payload[1]
+        show = database.get_show_mal(id1)
+        if show:
+            mal_id = id1
+        else:
+            kitsu_id = id1
+    else:
+        return
+    return watchlist_completed(anilist_id, mal_id, kitsu_id)
 
 
 @route('remove_from_watchlist/*')
