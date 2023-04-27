@@ -1,3 +1,7 @@
+Changelog 0.3.68 [20230427]:
+- Handled Consumet error
+- Added New Context menu "mark as completed"
+
 Changelog 0.3.67 [20230420]:
 - Fix regression error from last commit disabling subs on zoro streams
 

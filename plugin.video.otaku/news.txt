@@ -1,4 +1,4 @@
 A Few Updates:
-- Hey everyone, a few days ago we have noticed one of our main apis has been doing maintenance with episode meta and embeds were not working so we added a 2nd fallback called Enime.
+- Hey everyone, Consumet is having maintenance again due to deployment and account issues. For free users, use Gogo and Animix Embed to still watch anime.
 
-- Enime may not be perfect but it will help with embeds, if you guys have any problems, feel free to contact us.
+- For Users that are trying the "mark as completed" Context menu, Please be aware that there are a few bugs with it and will need to be worked on in the future.
