@@ -28,10 +28,11 @@ class CONSUMETAPI:
                 4,
                 url,
                 error=True,
-                output='extended'
+                output='extended',
+                timeout=10
             )
             data = {}
-            if int(response[1]) < 300:
+            if response and int(response[1]) < 300:
                 data = json.loads(response[0])
                 if 'ratelimited' in data.get('message', ''):
                     database.remove(
@@ -44,6 +45,8 @@ class CONSUMETAPI:
                     retries -= 1
                 else:
                     ratelimited = False
+            else:
+                ratelimited = False
         return data
 
     def _parse_episode_view(self, res, show_id, show_meta, season, poster, fanart, eps_watched, update_time):
