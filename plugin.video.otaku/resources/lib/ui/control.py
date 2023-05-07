@@ -304,9 +304,9 @@ def make_listitem(name, labels):
         if labels.get('trailer'):
             vtag.setTrailer(labels['trailer'])
         if labels.get('season'):
-            vtag.setSeason(labels['season'])
+            vtag.setSeason(int(labels['season']))
         if labels.get('episode'):
-            vtag.setEpisode(labels['episode'])
+            vtag.setEpisode(int(labels['episode']))
         if labels.get('aired'):
             vtag.setFirstAired(labels['aired'])
         if labels.get('playcount'):
