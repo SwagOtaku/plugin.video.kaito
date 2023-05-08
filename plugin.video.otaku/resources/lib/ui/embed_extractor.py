@@ -224,20 +224,6 @@ def __extract_streamsb(url, page_content, referer=None):
     return
 
 
-def __extract_vidstream(url, page_content, referer=None):
-    SOURCE_RE = re.compile(r"file:\s'(.*?)',")
-    res = SOURCE_RE.findall(page_content)
-    stream_link = None
-    if res:
-        stream_link = res[0]
-        if 'm3u8' in stream_link:
-            stream_link = stream_link.replace('https', 'http')
-
-        stream_link = __check_video(stream_link)
-
-    return stream_link
-
-
 def __extract_xstreamcdn(url, data):
     res = client.request(url, post=data)
     res = json.loads(res)['data']
@@ -266,7 +252,7 @@ def __extract_goload(url, page_content, referer=None):
         decrypted += decrypter.feed()
         return six.ensure_str(decrypted)
 
-    pattern = r'(?://|\.)((?:goload|gogohd|anihdplay)\.(?:io|pro|net|com))/(?:streaming\.php|embedplus)\?id=([a-zA-Z0-9-]+)'
+    pattern = r'(?://|\.)((?:gogo-(?:stream|play)|streamani|goload|gogohd|anihdplay|playtaku)\.(?:io|pro|net|com))/(?:streaming\.php|embedplus)\?id=([a-zA-Z0-9-]+)'
     r = re.search(r'crypto-js\.js.+?data-value="([^"]+)', page_content)
     if r:
         host, media_id = re.findall(pattern, url)[0]
@@ -342,11 +328,16 @@ __register_extractor(["https://dood.wf/",
                       "https://dood.pm/"],
                      __extract_dood)
 
-__register_extractor(["https://goload.io/",
+__register_extractor(["https://gogo-stream.com",
+                      "https://gogo-play.net",
+                      "https://streamani.net",
+                      "https://goload.one"
+                      "https://goload.io/",
                       "https://goload.pro/",
                       "https://gogohd.net/",
                       "https://gogohd.pro/",
-                      "https://anihdplay.com/"],
+                      "https://anihdplay.com/",
+                      "https://playtaku.net/"],
                      __extract_goload)
 
 __register_extractor(["https://streamlare.com/",
@@ -354,13 +345,6 @@ __register_extractor(["https://streamlare.com/",
                       "https://sltube.org/",
                       "https://slwatch.co/"],
                      __extract_streamlare)
-
-__register_extractor(["https://vidstreaming.io",
-                      "https://gogo-stream.com",
-                      "https://gogo-play.net",
-                      "https://streamani.net",
-                      "https://goload.one"],
-                     __extract_vidstream)
 
 __register_extractor(["https://www.xstreamcdn.com/v/",
                       "https://gcloud.live/v/",
