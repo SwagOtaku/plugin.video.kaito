@@ -108,7 +108,7 @@ def __extract_rapidvideo(url, page_content, referer=None):
 
 def __extract_mp4upload(url, page_content, referer=None):
     page_content += __get_packed_data(page_content)
-    r = re.search(r'src\("([^"]+)', page_content)
+    r = re.search(r'src\("([^"]+)', page_content) or re.search(r'src:\s*"([^"]+)', page_content)
     headers = {'User-Agent': _EDGE_UA,
                'Referer': url,
                'verifypeer': 'false'}
