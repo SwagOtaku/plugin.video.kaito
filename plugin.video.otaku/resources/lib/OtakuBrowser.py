@@ -140,17 +140,28 @@ class OtakuBrowser(BrowserBase):
         # p = re.search(r'(?:part|cour)\s*\d', title, re.I)
         # if not trakt_id or p:
         # if not trakt_id:
-        data = ([], 'episodes')
-        if show_meta:
-            data = consumet.CONSUMETAPI().get_episodes(anilist_id, filter_lang=filter_lang)
+        override_ep = control.getSetting("override.episode.bool")
+        if override_ep:
+            selected_api = control.getSetting("override.episode.menu")
+            if selected_api == "Consumet":
+                data = consumet.CONSUMETAPI().get_episodes(anilist_id, filter_lang=filter_lang)
+            elif selected_api == "Enime":
+                data = enime.ENIMEAPI().get_episodes(anilist_id, filter_lang=filter_lang)
+            elif selected_api == "Simkl":
+                data = self.get_anime_simkl(anilist_id, filter_lang)
+            else:
+                data = ([], 'episodes')
+        else:
+            data = ([], 'episodes')
+            if show_meta:
+                data = consumet.CONSUMETAPI().get_episodes(anilist_id, filter_lang=filter_lang)
 
-        if show_meta:
-            data = enime.ENIMEAPI().get_episodes(anilist_id, filter_lang=filter_lang)
+            if not data[0]:
+                data = enime.ENIMEAPI().get_episodes(anilist_id, filter_lang=filter_lang)
 
-        if not data[0]:
-            data = self.get_anime_simkl(anilist_id, filter_lang)
+            if not data[0]:
+                data = self.get_anime_simkl(anilist_id, filter_lang)
 
-        # return self.get_anime_trakt(anilist_id, filter_lang=filter_lang)
         return data
 
     def get_episodeList(self, show_id, pass_idx, filter_lang=None, rescrape=False, source_select=False):

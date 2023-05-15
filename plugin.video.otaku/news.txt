@@ -1,4 +1,5 @@
-A Few Updates:
-- Hey everyone, Consumet is having maintenance again due to deployment and account issues. For free users, use Gogo and Animix Embed to still watch anime.
+Sad News: 
+- Hey everyone, We’re sorry to announce that in the next 4 months or so, One of our main api's, Consumet will be shut down. Reason why it is shutting down is due to cost and bandwidth. You guys will still get episode meta from enime and simkl but you guys may have less embeds in the future. 
 
-- For Users that are trying the "mark as completed" Context menu, Please be aware that there are a few bugs with it and will need to be worked on in the future.
+Good News:
+- You guys can self-host the Consumet api yourselves which can give you old embeds and new emebeds. Special Intructions will be on the Otaku Settings, Github Wiki, or Troubleshooting page if you guys would like to self-host it.

@@ -239,8 +239,8 @@
 		<setting id="anilist_all_time_popular" label="50036" type="bool" default="false"/>
 		<setting id="anilist_all_time_voted" label="50037" type="bool" default="false"/>
 		<setting id="anilist_top_100_anime" label="50009" type="bool" default="true"/>
-		<setting id="anilist_genres" label="50010" type="bool" default="true" visible="false"/>/>
-		<setting id="search_history" label="50011" type="bool" default="true" visible="false"/>/>
+		<setting id="anilist_genres" label="50010" type="bool" default="true" visible="false"/>
+		<setting id="search_history" label="50011" type="bool" default="true" visible="false"/>
 		<setting id="tools" label="50012" type="bool" default="true"/>
 		
 		<!-- Trending Items -->	
@@ -356,8 +356,15 @@
 
 	<!-- Shortcuts -->
 	<category label="40416">
+		<!-- Self-Hosting -->
+		<setting type="lsep" label="40477"/>
+		<setting id="sep"/>
+		<setting id="consumet.hosting.bool" label="40478" type="bool" default="false"/>
+		<setting id="consumet.hosting.menu" type="text" subsetting="true" label="40479" visible="eq(-1,true)"/>
+		<setting id="consumet.hosting.instructions" type="action" subsetting="true" label="40480" action="RunPlugin(plugin://plugin.video.otaku/consumet_inst)" visible="eq(-2,true)"/>
+
 		<!-- Tools -->
-		<setting type="lsep" label="50005"/>
+		<setting type="lsep" label="50012"/>
 		<setting id="sep"/>
 		<setting id="change_log" type="action" label="30027" action="RunPlugin(plugin://plugin.video.otaku/change_log)"/>
 		<setting id="clear_cache" type="action" label="30021" action="RunPlugin(plugin://plugin.video.otaku/clear_cache)"/>
@@ -365,5 +372,12 @@
 		<setting id="clear_history" type="action" label="30023" action="RunPlugin(plugin://plugin.video.otaku/clear_history)"/>
 		<setting id="rebuild_database" type="action" label="30026" action="RunPlugin(plugin://plugin.video.otaku/rebuild_database)"/>
 		<setting id="wipe_addon_data" type="action" label="30024" action="RunPlugin(plugin://plugin.video.otaku/wipe_addon_data)"/>
+
+		<!-- Overrides -->
+		<!-- <setting type="lsep" label="40474"/> -->
+		<!-- <setting id="sep"/> -->
+		<!-- <setting id="override.episode.bool" label="40475" type="bool" default="false"/> -->
+		<!-- <setting id="override.episode.menu" type="labelenum" subsetting="true" label="40476" values="Consumet|Enime|Simkl" default="0" visible="eq(-1,true)"/> -->
+		<!-- <setting id="sep"/> -->
 	</category>
 </settings>

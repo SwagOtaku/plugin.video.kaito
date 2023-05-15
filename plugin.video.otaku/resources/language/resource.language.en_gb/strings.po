@@ -875,6 +875,34 @@ msgctxt "#40473"
 msgid "Site"
 msgstr ""
 
+msgctxt "#40474"
+msgid "Advanced"
+msgstr ""
+
+msgctxt "#40475"
+msgid "Manual Episode Meta Api Override"
+msgstr ""
+
+msgctxt "#40476"
+msgid "Api"
+msgstr ""
+
+msgctxt "#40477"
+msgid "Consumet Self-Hosting"
+msgstr ""
+
+msgctxt "#40478"
+msgid "Enable Consumet Self-Hosting"
+msgstr ""
+
+msgctxt "#40479"
+msgid "Self-Host Url"
+msgstr ""
+
+msgctxt "#40480"
+msgid "Hosting Instructions"
+msgstr ""
+
 ######MAIN Category DIRECTORY#######
 msgctxt "#50000"
 msgid "Airing Anime Calendar"

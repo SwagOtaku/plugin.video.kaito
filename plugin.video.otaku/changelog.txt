@@ -1,3 +1,9 @@
+Changelog 0.3.72 [20230515]:
+- Added Manual Override Future Settings 
+- Added Self Hosting Api Settings
+- Added instructions
+- Fix crash on zoro subtitle handling
+
 Changelog 0.3.71 [20230513]:
 - Fix mp4upload embed extractor
 

@@ -5,23 +5,31 @@ import six
 
 from kodi_six import xbmc
 from functools import partial
-from resources.lib.ui import client, database, utils
+from resources.lib.ui import client, control, database, utils
 
 
 class CONSUMETAPI:
     def __init__(self):
         self.baseUrl = 'https://api.consumet.org/'
+        self.baseUrl2 = control.getSetting('consumet.hosting.menu').rstrip('/') + '/'
         self.episodesUrl = 'meta/anilist/episodes/{0}?provider={1}'
         self.episodesUrl2 = 'meta/anilist/info/{0}?provider={1}'
         self.streamUrl = 'anime/{0}/watch/{1}'
         self.streamUrl2 = 'anime/{0}/watch?episodeId={1}'
         self.synurl = 'https://find-my-anime.dtimur.de/api?id={0}&provider=Anilist'
+        self.hosting = control.getSetting('consumet.hosting.bool') == 'true'
 
     def _json_request(self, url):
-        if not url.startswith('http'):
-            url = self.baseUrl + url
-        ratelimited = True
-        retries = 3
+        if self.hosting:
+            if not url.startswith('http'):
+                url = self.baseUrl2 + url
+            ratelimited = True
+            retries = 3
+        else:
+            if not url.startswith('http'):
+                url = self.baseUrl + url
+            ratelimited = True
+            retries = 3
         while ratelimited and retries > 0:
             response = database.get(
                 client.request,
