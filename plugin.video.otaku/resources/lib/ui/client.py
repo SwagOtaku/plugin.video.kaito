@@ -320,7 +320,7 @@ def request(
         if 'charset=' in content_type:
             encoding = content_type.split('charset=')[-1]
 
-        if 'text/vtt' in content_type:
+        if 'text/vtt' in content_type or url.endswith('.srt') or url.endswith('.vtt'):
             encoding = 'utf8'
 
         if encoding is None:
