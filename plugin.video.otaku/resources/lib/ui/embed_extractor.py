@@ -226,7 +226,10 @@ def __extract_streamsb(url, page_content, referer=None):
 
 def __extract_xstreamcdn(url, data):
     res = client.request(url, post=data)
-    res = json.loads(res)['data']
+    try:
+        res = json.loads(res)['data']
+    except:
+        return
     if res == 'Video not found or has been removed':
         return
     stream_file = res[-1]['file']
@@ -252,7 +255,8 @@ def __extract_goload(url, page_content, referer=None):
         decrypted += decrypter.feed()
         return six.ensure_str(decrypted)
 
-    pattern = r'(?://|\.)((?:gogo-(?:stream|play)|streamani|goload|gogohd|anihdplay|playtaku)\.(?:io|pro|net|com))/(?:streaming\.php|embedplus)\?id=([a-zA-Z0-9-]+)'
+    pattern = r'(?://|\.)((?:gogo-(?:stream|play)|streamani|goload|gogohd|anihdplay|playtaku)\.' \
+              r'(?:io|pro|net|com|online))/(?:streaming\.php|embedplus)\?id=([a-zA-Z0-9-]+)'
     r = re.search(r'crypto-js\.js.+?data-value="([^"]+)', page_content)
     if r:
         host, media_id = re.findall(pattern, url)[0]
@@ -262,7 +266,10 @@ def __extract_goload(url, page_content, referer=None):
         eurl = 'https://{0}/encrypt-ajax.php?id={1}&alias={2}'.format(
             host, _encrypt(media_id, keys[0], iv), params)
         response = client.request(eurl, XHR=True)
-        response = json.loads(response).get('data')
+        try:
+            response = json.loads(response).get('data')
+        except:
+            return
         if response:
             result = _decrypt(response, keys[1], iv)
             result = json.loads(result)
@@ -337,7 +344,8 @@ __register_extractor(["https://gogo-stream.com",
                       "https://gogohd.net/",
                       "https://gogohd.pro/",
                       "https://anihdplay.com/",
-                      "https://playtaku.net/"],
+                      "https://playtaku.net/",
+                      "https://playtaku.online/"],
                      __extract_goload)
 
 __register_extractor(["https://streamlare.com/",

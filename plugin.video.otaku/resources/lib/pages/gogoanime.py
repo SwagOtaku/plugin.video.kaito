@@ -111,7 +111,8 @@ class sources(BrowserBase):
                 type_ = 'embed'
             elif server == 'vidcdn':
                 type_ = 'embed'
-                link = 'https:' + link
+                if link.startswith('//'):
+                    link = 'https:' + link
             elif server == 'mp4upload':
                 type_ = 'embed'
             elif server == 'doodstream':
