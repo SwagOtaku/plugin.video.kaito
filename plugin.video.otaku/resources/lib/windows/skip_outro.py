@@ -53,9 +53,6 @@ class SkipOutro(BaseWindow):
             self.current_time = int(self.player.getTime())
             while int(self.total_time) - int(self.current_time) > 2 and not self.closed and self.playing_file == self.player.getPlayingFile():
                 self.current_time = int(self.player.getTime())
-                if self.current_time > self.skipoutro_end_skip_time:
-                    self.close()
-                    break
                 if progress_bar is not None:
                     progress_bar.setPercent(self.calculate_percent())
                 xbmc.sleep(500)

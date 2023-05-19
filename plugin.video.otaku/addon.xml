@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.72">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.73">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -25,11 +25,11 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.3.72 [20230515]:
-- Added Manual Override Future Settings 
-- Added Self Hosting Api Settings
-- Added instructions
-- Fix crash on zoro subtitle handling
+Changelog 0.3.73 [20230519]:
+- New embed domain for gogoanime
+- Updated Instructions
+- Fix Sorting Settings
+- Improved Skip Outro
     </news>
   </extension>
 </addon>

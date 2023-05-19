@@ -1,3 +1,9 @@
+Changelog 0.3.73 [20230519]:
+- New embed domain for gogoanime
+- Updated Instructions
+- Fix Sorting Settings
+- Improved Skip Outro
+
 Changelog 0.3.72 [20230515]:
 - Added Manual Override Future Settings 
 - Added Self Hosting Api Settings
