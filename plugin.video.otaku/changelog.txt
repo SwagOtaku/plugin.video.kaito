@@ -1,3 +1,6 @@
+Changelog 0.3.74 [20230519]:
+- Improved Skip Intro
+
 Changelog 0.3.73 [20230519]:
 - New embed domain for gogoanime
 - Updated Instructions

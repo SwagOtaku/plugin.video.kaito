@@ -25,6 +25,8 @@ class SkipIntro(BaseWindow):
             self.skip_time = int(control.getSetting('skipintro.time'))
             # Convert duration setting to seconds
             self.close_durration = int(control.getSetting('skipintro.duration')) * 60
+            self.skipintro_aniskip_enable = control.getSetting('skipintro.aniskip.enable') == 'false'
+            self.smartplay_skipintrodialog = control.getSetting('smartplay.skipintrodialog') == 'true'
 
             self.closed = False
             self.actioned = None
@@ -62,12 +64,15 @@ class SkipIntro(BaseWindow):
                 self.current_time = int(self.player.getTime())
                 if self.current_time > self.skipintro_end_skip_time:
                     self.close()
-                    break
+
                 elif self.current_time > self.close_durration + self.skipintro_delay_time > 0 and self.skipintro_end_skip_time == 9999:
                     self.close()
-                    break
-                elif self.close_durration == 0:
-                    break
+
+                elif self.smartplay_skipintrodialog:
+                    if self.skipintro_aniskip_enable:
+                        if self.close_durration == 0:
+                            self.close()
+
                 xbmc.sleep(500)
                 # if progress_bar is not None:
                 #     progress_bar.setPercent(self.calculate_percent())
