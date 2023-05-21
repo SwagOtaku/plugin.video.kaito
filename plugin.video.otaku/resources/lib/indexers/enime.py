@@ -10,7 +10,8 @@ from resources.lib.ui import client, database, utils
 class ENIMEAPI:
     def __init__(self):
         self.baseUrl = 'https://api.enime.moe/'
-        self.episodesUrl = '/mapping/anilist/{0}'
+        self.episodesUrl = 'mapping/anilist/{0}'
+        self.streamUrl = 'source/{0}'
         self.request_response = None
 
     def _json_request(self, url):
@@ -131,3 +132,17 @@ class ENIMEAPI:
             return (self._process_episodes(anilist_id, episodes, eps_watched), 'episodes')
 
         return (self._process_episode_view(anilist_id, meta_ids, poster, fanart, eps_watched), 'episodes')
+
+    def get_sources(self, anilist_id, episode, provider, lang=None):
+        sources = []
+        eurl = self.episodesUrl.format(anilist_id)
+        episodes = self._json_request(eurl).get('episodes')
+        if episodes:
+            episodes = sorted(episodes, key=lambda x: x.get('number'))
+            if episodes[0].get('number') != 1:
+                episode = episodes[0].get('number') - 1 + int(episode)
+            episode_srcs = [x.get('sources') for x in episodes if x.get('number') == int(episode)][0]
+            episode_id = episode_srcs[0].get('id') if provider == 'gogoanime' else episode_srcs[1].get('id')
+            sources = self._json_request(self.streamUrl.format(episode_id))
+
+        return sources

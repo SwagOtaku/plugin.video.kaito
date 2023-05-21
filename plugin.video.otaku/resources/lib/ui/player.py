@@ -459,7 +459,8 @@ def _prefetch_play_link(link):
         for header in headers:
             headers[header] = urllib_parse.unquote_plus(headers[header])
 
-    linkInfo = client.request(url, headers=headers, limit='0', output='extended')
+    limit = None if '.m3u8' in url else '0'
+    linkInfo = client.request(url, headers=headers, limit=limit, output='extended', error=True)
     if linkInfo[1] != '200':
         raise Exception('could not resolve %s. status_code=%s' %
                         (link, linkInfo[1]))
