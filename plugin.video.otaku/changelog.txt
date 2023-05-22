@@ -1,3 +1,7 @@
+Changelog 0.3.76 [20230522]:
+- Improved Skip Intro incase Aniskip Fails
+- Made Nyaa easier to understand
+
 Changelog 0.3.75 [20230520]:
 - Added enime stream sources as fallback
 

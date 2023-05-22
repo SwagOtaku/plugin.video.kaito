@@ -252,10 +252,10 @@ class watchlistPlayer(xbmc.Player):
                         self.player.seekTime(self.skipintro_end_skip_time)
                         break
                 elif self.skipintro_end_skip_time == 9999:
-                    PlayerDialogs()._show_skip_intro()
+                    PlayerDialogs()._show_skip_intro_aniskip()
                     break
                 elif self.current_time > self.skipintro_start_skip_time:
-                    PlayerDialogs()._show_skip_intro()
+                    PlayerDialogs()._show_skip_intro_aniskip()
                     break
 
                 xbmc.sleep(250)
@@ -324,10 +324,10 @@ class watchlistPlayer(xbmc.Player):
                         self.player.seekTime(self.skipoutro_end_skip_time)
                         break
                 elif self.skipoutro_end_skip_time == 9999:
-                    PlayerDialogs()._show_skip_outro()
+                    PlayerDialogs()._show_skip_outro_aniskip()
                     break
                 elif self.current_time > self.skipoutro_start_skip_time:
-                    PlayerDialogs()._show_skip_outro()
+                    PlayerDialogs()._show_skip_outro_aniskip()
                     break
                 elif playList.getposition() == (playList.size() - 1):
                     break
@@ -413,8 +413,16 @@ class PlayerDialogs(xbmc.Player):
         SkipIntro(*(selected_theme, control.ADDON_PATH),
                   actionArgs={'item_type': 'skip_intro'}).doModal()
 
-    def _show_skip_outro(self):
-        from resources.lib.windows.skip_outro import SkipOutro
+    def _show_skip_intro_aniskip(self):
+        from resources.lib.windows.skip_intro_aniskip import SkipIntro
+        selected_theme = int(control.getSetting('general.dialog'))
+        themes = ['skip_intro_default.xml', 'skip_intro_ah2.xml', 'skip_intro_auramod.xml']
+        selected_theme = themes[selected_theme]
+        SkipIntro(*(selected_theme, control.ADDON_PATH),
+                  actionArgs={'item_type': 'skip_intro_aniskip'}).doModal()
+
+    def _show_skip_outro_aniskip(self):
+        from resources.lib.windows.skip_outro_aniskip import SkipOutro
         selected_theme = int(control.getSetting('general.dialog'))
         themes = ['skip_outro_default.xml', 'skip_outro_ah2.xml', 'skip_outro_auramod.xml']
         selected_theme = themes[selected_theme]
