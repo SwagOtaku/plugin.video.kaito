@@ -18,6 +18,7 @@ def get_tmdb_to_anilist_id_tv(tmdb_id, seasonnum):
         r = json.loads(r)
     return r
 
+
 def get_tmdb_to_anilist_id_movie(tmdb_id):
     # Convert Tmdb ID to Anilist ID
 
