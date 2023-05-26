@@ -375,6 +375,12 @@ def FIND_RELATIONS(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_relations(anilist_id))
 
 
+@route('find_all_anime/*')
+def FIND_ALL_ANIME(payload, params):
+    payload_list = payload.split("/")[1:]
+    # Need help on this part
+
+
 @route('authAllDebrid')
 def authAllDebrid(payload, params):
     from resources.lib.debrid.all_debrid import AllDebrid
