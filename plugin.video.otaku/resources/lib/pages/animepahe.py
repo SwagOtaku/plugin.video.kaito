@@ -42,7 +42,10 @@ class sources(BrowserBase):
 
         all_results = []
         if items:
-            items = [x for x in items if (x.get('title').lower() + '  ') in (title.lower() + '  ')]
+            if title[-1].isdigit():
+                items = [x for x in items if title.lower() in x.get('title').lower()]
+            else:
+                items = [x for x in items if (title.lower() + '  ') in (x.get('title').lower() + '  ')]
             if items:
                 slug = items[0].get('session')
                 all_results = self._process_ap(slug, title=title, episode=episode)
@@ -96,7 +99,7 @@ class sources(BrowserBase):
                     'debrid_provider': '',
                     'provider': 'animepahe',
                     'size': 'NA',
-                    'info': [source_utils.get_embedhost(item.get('data-src'))],
+                    'info': [source_utils.get_embedhost(item.get('data-src')), 'DUB' if item.get('data-audio') == 'eng' else 'SUB'],
                     'lang': 2 if item.get('data-audio') == 'eng' else 0
                 }
                 sources.append(source)
