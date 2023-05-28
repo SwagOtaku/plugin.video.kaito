@@ -491,3 +491,8 @@ def user_select(files, dict_key):
     idx = xbmcgui.Dialog().select('Select File', [i[dict_key].rsplit('/')[-1] for i in files])
     files = [files[idx]]
     return files
+
+
+def get_embedhost(url):
+    s = re.search(r'(?://|\.)([^\.]+)\.', url)
+    return s.group(1)

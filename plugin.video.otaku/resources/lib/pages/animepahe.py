@@ -1,69 +1,104 @@
-import itertools
+import json
 import pickle
-from functools import partial
 
-from resources.lib.ui import database
+from bs4 import BeautifulSoup, SoupStrainer
+from resources.lib.ui import database, source_utils
 from resources.lib.ui.BrowserBase import BrowserBase
-from resources.lib.indexers import consumet
 
 
 class sources(BrowserBase):
+    _BASE_URL = 'https://animepahe.ru/'
+
     def get_sources(self, anilist_id, episode, get_backup):
-        all_results = []
         show = database.get_show(anilist_id)
         kodi_meta = pickle.loads(show.get('kodi_meta'))
-        title = kodi_meta.get('ename') or kodi_meta.get('name')
+        title = kodi_meta.get('name')
         title = self._clean_title(title)
-        title = '{0} Ep-{1}'.format(title, episode)
-
+        headers = {'Referer': self._BASE_URL}
+        params = {'m': 'search',
+                  'q': title}
         r = database.get(
-            consumet.CONSUMETAPI().get_sources,
+            self._get_request,
             8,
-            anilist_id,
-            episode,
-            'animepahe'
+            self._BASE_URL + 'api',
+            data=params,
+            headers=headers,
+            XHR=True
         )
+        items = json.loads(r).get('data')
 
-        if r and r.get('sources'):
-            srcs = r.get('sources')
-            quals = []
-            for i in range(len(srcs)):
-                src = srcs[i]
-                if src.get('quality') in quals:
-                    srcs[i].update({'type': 'DUB'})
-                else:
-                    quals.append(src.get('quality'))
-                    srcs[i].update({'type': 'SUB'})
-            referer = r.get('headers', {}).get('Referer', '')
-            mapfunc = partial(self._process_ap, title=title, referer=referer)
-            all_results = list(map(mapfunc, srcs))
-            all_results = list(itertools.chain(*all_results))
+        if not items and ':' in title:
+            title = title.split(':')[0]
+            params.update({'q': title})
+            r = database.get(
+                self._get_request,
+                8,
+                self._BASE_URL + 'api',
+                data=params,
+                headers=headers,
+                XHR=True
+            )
+            items = json.loads(r).get('data')
 
+        all_results = []
+        if items:
+            items = [x for x in items if (x.get('title').lower() + '  ') in (title.lower() + '  ')]
+            if items:
+                slug = items[0].get('session')
+                all_results = self._process_ap(slug, title=title, episode=episode)
         return all_results
 
-    def _process_ap(self, item, title='', referer=''):
+    def _process_ap(self, slug, title, episode):
         sources = []
-        slink = item.get('url') + '|Referer={0}&User-Agent=iPad'.format(referer)
-        qual = int(item.get('quality'))
-        if qual < 577:
-            quality = 'NA'
-        elif qual < 721:
-            quality = '720p'
-        elif qual < 1081:
-            quality = '1080p'
-        else:
-            quality = '4K'
-
-        source = {
-            'release_title': title,
-            'hash': slink,
-            'type': 'direct',
-            'quality': quality,
-            'debrid_provider': '',
-            'provider': 'animepahe',
-            'size': self._get_size(item.get('size', 0)),
-            'info': [item.get('type'), 'HLS' if item.get('isM3U8') else ''],
-            'lang': 0 if item.get('type') == 'SUB' else 2
+        params = {
+            'm': 'release',
+            'id': slug,
+            'sort': 'episode_asc',
+            'page': 1
         }
-        sources.append(source)
+        headers = {'Referer': self._BASE_URL}
+        r = database.get(
+            self._get_request,
+            8,
+            self._BASE_URL + 'api',
+            data=params,
+            headers=headers,
+            XHR=True
+        )
+        items = json.loads(r).get('data')
+        e_num = int(episode)
+        if items[0].get('episode') > 1:
+            e_num = e_num + items[0].get('episode') - 1
+
+        items = [x for x in items if x.get('episode') == e_num]
+        if items:
+            eurl = self._BASE_URL + 'play/' + slug + '/' + items[0].get('session')
+            html = self._get_request(eurl, headers=headers)
+            mlink = SoupStrainer('div', {'id': 'resolutionMenu'})
+            mdiv = BeautifulSoup(html, "html.parser", parse_only=mlink)
+            items = mdiv.find_all('button')
+
+            for item in items:
+                qual = int(item.get('data-resolution'))
+                if qual < 577:
+                    quality = 'NA'
+                elif qual < 721:
+                    quality = '720p'
+                elif qual < 1081:
+                    quality = '1080p'
+                else:
+                    quality = '4K'
+                source = {
+                    'release_title': '{0} - Ep {1}'.format(title, episode),
+                    'hash': item.get('data-src'),
+                    'type': 'embed',
+                    'quality': quality,
+                    'debrid_provider': '',
+                    'provider': 'animepahe',
+                    'size': 'NA',
+                    'info': [source_utils.get_embedhost(item.get('data-src'))],
+                    'lang': 2 if item.get('data-audio') == 'eng' else 0
+                }
+                sources.append(source)
+
         return sources

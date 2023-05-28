@@ -19,16 +19,16 @@ class BrowserBase(object):
             url = url[1:]
         return "%s/%s" % (self._BASE_URL, url)
 
-    def _send_request(self, url, data=None, headers=None):
-        return client.request(url, post=data, headers=headers)
+    def _send_request(self, url, data=None, headers=None, XHR=False):
+        return client.request(url, post=data, headers=headers, XHR=XHR)
 
     def _post_request(self, url, data={}, headers=None):
         return self._send_request(url, data, headers)
 
-    def _get_request(self, url, data=None, headers=None):
+    def _get_request(self, url, data=None, headers=None, XHR=False):
         if data:
             url = "%s?%s" % (url, urllib_parse.urlencode(data))
-        return self._send_request(url, None, headers)
+        return self._send_request(url, data=None, headers=headers, XHR=XHR)
 
     def _get_redirect_url(self, url, headers=None):
         t = client.request(url, redirect=False, headers=headers, output='extended')

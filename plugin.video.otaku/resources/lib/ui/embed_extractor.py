@@ -54,9 +54,8 @@ def load_video_from_url(in_url):
 
 def __get_packed_data(html):
     packed_data = ''
-    for match in re.finditer(r'(eval\s*\(function.*?)</script>', html, re.DOTALL | re.I):
-        if jsunpack.detect(match.group(1)):
-            packed_data += jsunpack.unpack(match.group(1))
+    for match in re.finditer(r'(eval\s*\(function\(p,a,c,k,e.+?\)\)[;\n<])', html, re.DOTALL | re.I):
+        packed_data += jsunpack.unpack(match.group(1))
 
     return packed_data
 
@@ -115,6 +114,15 @@ def __extract_mp4upload(url, page_content, referer=None):
     if r:
         return r.group(1) + __append_headers(headers)
     return
+
+
+def __extract_kwik(url, page_content, referer=None):
+    page_content += __get_packed_data(page_content)
+    r = re.search(r"const\s*source\s*=\s*'([^']+)", page_content)
+    if r:
+        headers = {'User-Agent': _EDGE_UA,
+                   'Referer': url}
+        return r.group(1) + __append_headers(headers)
 
 
 def __extract_okru(url, page_content, referer=None):
@@ -202,13 +210,11 @@ def __extract_streamsb(url, page_content, referer=None):
 
         x = '{0}||{1}||{2}||streamsb'.format(makeid(12), media_id, makeid(12))
         c1 = binascii.hexlify(x.encode('utf8')).decode('utf8')
-        x = '{0}||{1}||{2}||streamsb'.format(makeid(12), makeid(12), makeid(12))
+        x = '7Vd5jIEF2lKy||nuewwgxb1qs'
         c2 = binascii.hexlify(x.encode('utf8')).decode('utf8')
-        x = '{0}||{1}||{2}||streamsb'.format(makeid(12), c2, makeid(12))
-        c3 = binascii.hexlify(x.encode('utf8')).decode('utf8')
-        return 'https://{0}/sources16/{1}/{2}'.format(host, c1, c3)
+        return 'https://{0}/{1}7/{2}'.format(host, c2, c1)
 
-    pattern = r'(?://|\.)((?:streamsb|streamsss|sblanh)\.(?:net|com))/e/([0-9a-zA-Z]+)'
+    pattern = r'(?://|\.)((?:streamsb|streamsss|sb(?:lanh|ani|rapic))\.(?:net|com|pro))/e/([0-9a-zA-Z]+)'
     host, media_id = re.findall(pattern, url)[0]
     eurl = get_embedurl(host, media_id)
     headers = {'User-Agent': _EDGE_UA,
@@ -255,8 +261,8 @@ def __extract_goload(url, page_content, referer=None):
         decrypted += decrypter.feed()
         return six.ensure_str(decrypted)
 
-    pattern = r'(?://|\.)((?:gogo-(?:stream|play)|streamani|goload|gogohd|anihdplay|playtaku)\.' \
-              r'(?:io|pro|net|com|online))/(?:streaming\.php|embedplus)\?id=([a-zA-Z0-9-]+)'
+    pattern = r'(?://|\.)((?:gogo-(?:play|stream)|streamani|goload|gogohd|vidstreaming|gembedhd|playgo1|anihdplay|playtaku|gotaku1)\.' \
+              r'(?:io|pro|net|com|cc|online))/(?:streaming|embed(?:plus)?|ajax|load)(?:\.php)?\?id=([a-zA-Z0-9-]+)'
     r = re.search(r'crypto-js\.js.+?data-value="([^"]+)', page_content)
     if r:
         host, media_id = re.findall(pattern, url)[0]
@@ -319,6 +325,9 @@ __register_extractor(["https://www.mp4upload.com/",
                       "https://mp4upload.com/"],
                      __extract_mp4upload)
 
+__register_extractor(["https://kwik.cx/"],
+                     __extract_kwik)
+
 __register_extractor(["https://mixdrop.co/",
                       "https://mixdrop.to/",
                       "https://mixdrop.sx/",
@@ -343,9 +352,12 @@ __register_extractor(["https://gogo-stream.com",
                       "https://goload.pro/",
                       "https://gogohd.net/",
                       "https://gogohd.pro/",
+                      "https://gembedhd.com/",
+                      "https://playgo1.cc/",
                       "https://anihdplay.com/",
                       "https://playtaku.net/",
-                      "https://playtaku.online/"],
+                      "https://playtaku.online/",
+                      "https://gotaku1.com/"],
                      __extract_goload)
 
 __register_extractor(["https://streamlare.com/",
@@ -403,5 +415,7 @@ __register_extractor(["https://sbembed.com/e/",
                       "https://vidmovie.xyz/e/",
                       "https://sbspeed.com/e/",
                       "https://streamsss.net/e/",
-                      "https://sblanh.com/e/"],
+                      "https://sblanh.com/e/",
+                      "https://sbani.pro/e/",
+                      "https://sbrapid.com/e/"],
                      __extract_streamsb)
