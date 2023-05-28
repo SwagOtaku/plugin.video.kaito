@@ -1,3 +1,6 @@
+Changelog 0.3.77 [20230528]:
+- Added Animepahe Scraper
+
 Changelog 0.3.76 [20230522]:
 - Improved Skip Intro incase Aniskip Fails
 - Made Nyaa easier to understand
