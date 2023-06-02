@@ -60,16 +60,28 @@ class sources(BrowserBase):
             'page': 1
         }
         headers = {'Referer': self._BASE_URL}
-        r = database.get(
-            self._get_request,
-            8,
-            self._BASE_URL + 'api',
-            data=params,
-            headers=headers,
-            XHR=True
-        )
-        items = json.loads(r).get('data')
+        np = True
+        items = []
+        while np:
+            r = database.get(
+                self._get_request,
+                8,
+                self._BASE_URL + 'api',
+                data=params,
+                headers=headers,
+                XHR=True
+            )
+            r = json.loads(r)
+            items += r.get('data')
+            cp = r.get('current_page')
+            lp = r.get('last_page')
+            if cp < lp:
+                params.update({'page': cp + 1})
+            else:
+                np = False
+
         e_num = int(episode)
+        items = sorted(items, key=lambda x: x.get('episode'))
         if items[0].get('episode') > 1:
             e_num = e_num + items[0].get('episode') - 1
 
