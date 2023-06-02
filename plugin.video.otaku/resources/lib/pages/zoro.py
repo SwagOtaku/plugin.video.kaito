@@ -60,9 +60,11 @@ class sources(BrowserBase):
                     'provider': 'zoro',
                     'size': 'NA',
                     'info': ['HLS'],
-                    'lang': 0,
-                    'subs': [{'url': r.get('subtitle'), 'lang': 'English'}]
+                    'lang': 0
                 }
+                if r.get('subtitle'):
+                    source.update({'subs': [{'url': r.get('subtitle'), 'lang': 'English'}]})
+
                 all_results.append(source)
 
         return all_results

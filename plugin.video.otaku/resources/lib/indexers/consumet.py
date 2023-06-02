@@ -179,6 +179,7 @@ class CONSUMETAPI:
             eurl += '&{0}=true'.format(lang)
         episodes = self._json_request(eurl).get('episodes')
         if episodes:
+            episodes = sorted(episodes, key=lambda x: x.get('number'))
             if episodes[0].get('number') != 1:
                 episode = episodes[0].get('number') - 1 + int(episode)
             episode_id = [x.get('id') for x in episodes if x.get('number') == int(episode)][0]
