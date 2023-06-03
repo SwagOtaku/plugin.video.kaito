@@ -53,36 +53,32 @@ class sources(BrowserBase):
 
     def _process_ap(self, slug, title, episode):
         sources = []
+        e_num = int(episode)
+        big_series = e_num > 30
+        page = 1
+        if big_series:
+            page += int(e_num / 30)
+
         params = {
             'm': 'release',
             'id': slug,
             'sort': 'episode_asc',
-            'page': 1
+            'page': page
         }
         headers = {'Referer': self._BASE_URL}
-        np = True
-        items = []
-        while np:
-            r = database.get(
-                self._get_request,
-                8,
-                self._BASE_URL + 'api',
-                data=params,
-                headers=headers,
-                XHR=True
-            )
-            r = json.loads(r)
-            items += r.get('data')
-            cp = r.get('current_page')
-            lp = r.get('last_page')
-            if cp < lp:
-                params.update({'page': cp + 1})
-            else:
-                np = False
-
-        e_num = int(episode)
+        r = database.get(
+            self._get_request,
+            8,
+            self._BASE_URL + 'api',
+            data=params,
+            headers=headers,
+            XHR=True
+        )
+        r = json.loads(r)
+        items = r.get('data')
         items = sorted(items, key=lambda x: x.get('episode'))
-        if items[0].get('episode') > 1:
+
+        if items[0].get('episode') > 1 and not big_series:
             e_num = e_num + items[0].get('episode') - 1
 
         items = [x for x in items if x.get('episode') == e_num]
