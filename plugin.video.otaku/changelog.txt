@@ -1,3 +1,7 @@
+Changelog 0.3.78 [20230602]:
+- Fixed Zoro scraper fails when there are no external subtitles
+- Fixed Aanimepahe scraping when more than 30 episodes
+
 Changelog 0.3.77 [20230528]:
 - Added Animepahe Scraper
 
