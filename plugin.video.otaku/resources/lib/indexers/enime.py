@@ -119,19 +119,22 @@ class ENIMEAPI:
         return self._json_request(url)
 
     def get_episodes(self, anilist_id, filter_lang):
-        show_meta = database.get_show_meta(anilist_id)
-        meta_ids = pickle.loads(show_meta.get('meta_ids'))
-        kodi_meta = pickle.loads(database.get_show(anilist_id).get('kodi_meta'))
-        kodi_meta.update(pickle.loads(show_meta.get('art')))
-        fanart = kodi_meta.get('fanart')
-        poster = kodi_meta.get('poster')
-        eps_watched = kodi_meta.get('eps_watched')
-        episodes = database.get_episode_list(int(anilist_id))
+        try:
+            show_meta = database.get_show_meta(anilist_id)
+            meta_ids = pickle.loads(show_meta.get('meta_ids'))
+            kodi_meta = pickle.loads(database.get_show(anilist_id).get('kodi_meta'))
+            kodi_meta.update(pickle.loads(show_meta.get('art')))
+            fanart = kodi_meta.get('fanart')
+            poster = kodi_meta.get('poster')
+            eps_watched = kodi_meta.get('eps_watched')
+            episodes = database.get_episode_list(int(anilist_id))
 
-        if episodes:
-            return (self._process_episodes(anilist_id, episodes, eps_watched), 'episodes')
+            if episodes:
+                return (self._process_episodes(anilist_id, episodes, eps_watched), 'episodes')
 
-        return (self._process_episode_view(anilist_id, meta_ids, poster, fanart, eps_watched), 'episodes')
+            return (self._process_episode_view(anilist_id, meta_ids, poster, fanart, eps_watched), 'episodes')
+        except AttributeError:
+            return ([], 'episodes')
 
     def get_sources(self, anilist_id, episode, provider, lang=None):
         sources = []
