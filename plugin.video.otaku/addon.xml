@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.78">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.79">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -25,9 +25,9 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.3.78 [20230602]:
-- Fixed Zoro scraper fails when there are no external subtitles
-- Fixed Aanimepahe scraping when more than 30 episodes
+Changelog 0.3.79 [20230606]:
+- Fixed a fallback property for Consumet
+- Made a few episode meta changes
     </news>
   </extension>
 </addon>

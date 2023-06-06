@@ -1,3 +1,7 @@
+Changelog 0.3.79 [20230606]:
+- Fixed a fallback property for Consumet
+- Made a few episode meta changes
+
 Changelog 0.3.78 [20230602]:
 - Fixed Zoro scraper fails when there are no external subtitles
 - Fixed Aanimepahe scraping when more than 30 episodes
