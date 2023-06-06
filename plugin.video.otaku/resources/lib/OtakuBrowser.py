@@ -124,7 +124,7 @@ class OtakuBrowser(BrowserBase):
             from resources.lib.AniListBrowser import AniListBrowser
             show = AniListBrowser().get_anilist(anilist_id)
 
-        show_meta = database.get_show_meta(anilist_id)
+        # show_meta = database.get_show_meta(anilist_id)
         # if not show_meta:
         #     kodi_meta = pickle.loads(show['kodi_meta'])
         #     name = kodi_meta['ename'] or kodi_meta['name']
@@ -153,8 +153,8 @@ class OtakuBrowser(BrowserBase):
                 data = ([], 'episodes')
         else:
             data = ([], 'episodes')
-            if show_meta:
-                data = consumet.CONSUMETAPI().get_episodes(anilist_id, filter_lang=filter_lang)
+            # if show_meta:
+            data = consumet.CONSUMETAPI().get_episodes(anilist_id, filter_lang=filter_lang)
 
             if not data[0]:
                 data = enime.ENIMEAPI().get_episodes(anilist_id, filter_lang=filter_lang)

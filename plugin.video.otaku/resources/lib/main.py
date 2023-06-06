@@ -1747,8 +1747,8 @@ def RESCRAPE_PLAY(payload, params):
                        rescrape=True)
 
 
-#@route('tmdb_helper')
-#def TMDB_HELPER(payload, params):
+# @route('tmdb_helper')
+# def TMDB_HELPER(payload, params):
 #    from resources.lib.indexers.anilist import AnilistAPI
 #    from resources.lib.indexers.trakt import TRAKTAPI
 #    trakt_show_name = params['title']
