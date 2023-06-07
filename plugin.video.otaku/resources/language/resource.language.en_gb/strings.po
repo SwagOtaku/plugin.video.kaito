@@ -85,6 +85,14 @@ msgctxt "#30203"
 msgid "[COLOR red]WARNING[/COLOR]\nThis will reset all meta information, are you sure?"
 msgstr ""
 
+msgctxt "#30204"
+msgid "Database"
+msgstr ""
+
+msgctxt "#30205"
+msgid "Metadata Database Successfully Cleared"
+msgstr ""
+
 ######SKINS DIRECTORY######
 msgctxt "#40100"
 msgid "[B]Open this link in a browser: [COLOR deepskyblue]https://armkai.vercel.app/api/mal[/COLOR][/B]"

@@ -22,7 +22,7 @@ class SIMKLAPI:
         return "%s/%s" % (self.baseUrl[:-1], url)
 
     def _json_request(self, url, data=''):
-        response = database.get(client.request, 4, url, params=data)
+        response = database.get(client.request, 4, url, params=data, error=True)
         response = json.loads(response)
         return response
 
@@ -91,14 +91,15 @@ class SIMKLAPI:
         if show['simkl_id']:
             return (self.get_episodes(anilist_id, filter_lang), 'episodes')
 
-        # show_meta = show_meta['meta_ids']
-        mal_id = show['mal_id']
-
-        if not mal_id:
-            mal_id = self.get_mal_id(anilist_id)
-            database.add_mapping_id(anilist_id, 'mal_id', str(mal_id))
-
-        simkl_id = str(self.get_anime_id(mal_id))
+        simkl_id = str(self.get_anime_id(anilist_id))
+        if not simkl_id:
+            mal_id = show['mal_id']
+            if not mal_id:
+                mal_id = self.get_mal_id(anilist_id)
+                if mal_id:
+                    database.add_mapping_id(anilist_id, 'mal_id', str(mal_id))
+            if mal_id:
+                simkl_id = str(self.get_anime_id_mal(mal_id))
         database.add_mapping_id(anilist_id, 'simkl_id', simkl_id)
 
         return (self.get_episodes(anilist_id, filter_lang), 'episodes')
@@ -128,7 +129,20 @@ class SIMKLAPI:
         anime_id = json_resp[0]['ids']['simkl_id']
         return anime_id
 
-    def get_anime_id(self, mal_id):
+    def get_anime_id(self, anilist_id):
+        data = {
+            "anilist": anilist_id,
+            "client_id": self.ClientID,
+        }
+        url = self._to_url("search/id")
+        json_resp = self._json_request(url, data)
+        if not json_resp:
+            return []
+
+        anime_id = json_resp[0]['ids'].get('simkl')
+        return anime_id
+
+    def get_anime_id_mal(self, mal_id):
         data = {
             "mal": mal_id,
             "client_id": self.ClientID,
@@ -142,6 +156,10 @@ class SIMKLAPI:
         return anime_id
 
     def get_mal_id(self, anilist_id):
-        arm_resp = self._json_request("https://arm2.vercel.app/api/search?type=anilist&id={}".format(anilist_id))
+        data = {
+            'type': 'anilist',
+            'id': anilist_id
+        }
+        arm_resp = self._json_request("https://arm2.vercel.app/api/search", data=data)
         mal_id = arm_resp["mal"]
         return mal_id

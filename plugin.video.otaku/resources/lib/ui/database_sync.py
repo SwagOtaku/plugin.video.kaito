@@ -258,6 +258,8 @@ class AnilistSyncDatabase:
         # else:
         #     control.showDialog.notification(control.addonName + ': Trakt', control.lang(40262), time=5000)
 
+        control.showDialog.notification('{}: {}'.format(control.ADDON_NAME, control.lang(30204)), control.lang(30205), time=5000, sound=False)
+
 
 def _dict_factory(cursor, row):
     d = {}
