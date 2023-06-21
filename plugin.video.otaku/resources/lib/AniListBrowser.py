@@ -2766,7 +2766,7 @@ class AniListBrowser():
         variables = {
             'weekStart': weekStart,
             'weekEnd': weekEnd,
-            'page': page,
+            'page': page
         }
 
         list_ = []
