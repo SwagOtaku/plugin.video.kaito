@@ -3415,7 +3415,6 @@ class AniListBrowser():
         else:
             filter_json = [x for x in json_res['airingSchedules'] if x['media']['isAdult'] is False]
 
-        #import web_pdb; web_pdb.set_trace()
         ts = int(time.time())
         mapfunc = partial(self._base_airing_view, ts=ts)
         all_results = list(map(mapfunc, filter_json))
