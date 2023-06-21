@@ -2766,7 +2766,7 @@ class AniListBrowser():
         variables = {
             'weekStart': weekStart,
             'weekEnd': weekEnd,
-            'page': page
+            'page': page,
         }
 
         list_ = []
@@ -2844,6 +2844,7 @@ class AniListBrowser():
                         hasNextPage
                         total
                 }
+
                 airingSchedules(
                         airingAt_greater: $weekStart
                         airingAt_lesser: $weekEnd
@@ -2860,6 +2861,7 @@ class AniListBrowser():
                                 english
                         }
                         description
+                        countryOfOrigin
                         genres
                         averageScore
                         isAdult
@@ -3407,8 +3409,13 @@ class AniListBrowser():
         return all_results
 
     def _process_airing_view(self, json_res):
-        # filter_json = filter(lambda x: x['media']['isAdult'] == False, json_res['airingSchedules'])
-        filter_json = [x for x in json_res['airingSchedules'] if x['media']['isAdult'] is False]
+        if control.getSetting('contentorigin.bool') == "true":
+            filter_json = [x for x in json_res['airingSchedules'] if x['media']['isAdult'] is False 
+                if x['media']['countryOfOrigin'] == self.countryOfOrigin_type]
+        else:
+            filter_json = [x for x in json_res['airingSchedules'] if x['media']['isAdult'] is False]
+
+        #import web_pdb; web_pdb.set_trace()
         ts = int(time.time())
         mapfunc = partial(self._base_airing_view, ts=ts)
         all_results = list(map(mapfunc, filter_json))
@@ -3595,6 +3602,7 @@ class AniListBrowser():
         if rankings and rankings[-1]['season']:
             rank = rankings[-1]['rank']
         genres = res['media']['genres']
+        countryOfOrigin = res['media']['countryOfOrigin']
         if genres:
             genres = ' | '.join(genres[:3])
         title = res['media']['title'][self._TITLE_LANG]
@@ -3610,6 +3618,7 @@ class AniListBrowser():
             'rank': rank,
             'plot': res['media']['description'].replace('<br><br>', '[CR]').replace('<br>', '').replace('<i>', '[I]').replace('</i>', '[/I]') if res['media']['description'] else res['media']['description'],
             'genres': genres,
+            'countryOfOrigin': countryOfOrigin,
             'id': res['media']['id']
         }
 
