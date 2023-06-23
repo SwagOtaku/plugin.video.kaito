@@ -1,3 +1,7 @@
+Changelog 0.3.81 [20230622]:
+- Added CountryOfOrigin filter to "Airing Anime Calendar"
+- Big Thanks to Pahiro for adding this filter.
+
 Changelog 0.3.80 [20230607]:
 - Added anilist id when searching simkl for episodes
 - Added notification when meta database is rebuilt

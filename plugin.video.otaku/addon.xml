@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.80">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.81">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -25,10 +25,9 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.3.80 [20230607]:
-- Added anilist id when searching simkl for episodes
-- Added notification when meta database is rebuilt
-- Disabled xstreamcdn in gogo
+Changelog 0.3.81 [20230622]:
+- Added CountryOfOrigin filter to "Airing Anime Calendar"
+- Big Thanks to Pahiro for adding this filter.
     </news>
   </extension>
 </addon>
