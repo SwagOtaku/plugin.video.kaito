@@ -483,3 +483,12 @@ def getInstructions():
     # windows = TextViewerXML(*('textviewer_1.xml', ADDON_PATH),heading=heading, text=text).doModal()
     windows.run()
     del windows
+
+def setGlobalProp(property, value):
+    xbmcgui.Window(10000).setProperty(property, str(value))
+def getGlobalProp(property):
+    value = xbmcgui.Window(10000).getProperty(property)
+    if value.lower in ("true", "false"):
+        return value.lower == "true"
+    else:
+        return value
