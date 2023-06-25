@@ -2755,7 +2755,6 @@ class AniListBrowser():
 
     def get_airing(self, page=1, format_in=''):
         dbargs = {}
-        dbargs['otaku_reload'] = True
         if control.calendarRefresh == True:
             dbargs['otaku_reload'] = True
             control.calendarRefresh = False
