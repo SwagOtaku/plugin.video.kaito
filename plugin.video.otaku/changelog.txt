@@ -1,3 +1,6 @@
+Changelog 0.3.83 [20230625]:
+- No code changes, linting only
+
 Changelog 0.3.82 [20230625]:
 - New service to monitor settings changes
 - Update global flag to indicate calendar requires a refresh

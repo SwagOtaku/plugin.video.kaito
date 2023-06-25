@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.82">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.83">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -26,10 +26,8 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.3.82 [20230625]:
-- New service to monitor settings changes
-- Update global flag to indicate calendar requires a refresh
-- Added dbargs to refresh the calendar
+Changelog 0.3.83 [20230625]:
+- No code changes, linting only
     </news>
   </extension>
 </addon>
