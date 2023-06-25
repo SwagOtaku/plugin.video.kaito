@@ -30,6 +30,7 @@ _kodiver = float(xbmcaddon.Addon('xbmc.addon').getAddonInfo('version')[:4])
 
 cacheFile = os.path.join(dataPath, 'cache.db')
 cacheFile_lock = threading.Lock()
+calendarRefresh = False
 
 searchHistoryDB = os.path.join(dataPath, 'search.db')
 searchHistoryDB_lock = threading.Lock()

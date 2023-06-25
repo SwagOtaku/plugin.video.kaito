@@ -2754,7 +2754,13 @@ class AniListBrowser():
         return self._process_anilist_view(upcoming, "anilist_upcoming_next_season_upcoming/%d", page)
 
     def get_airing(self, page=1, format_in=''):
-        airing = database.get(self._get_airing, 12, page, self.format_in_type)
+        dbargs = {}
+        dbargs['otaku_reload'] = True
+        if control.calendarRefresh == True:
+            dbargs['otaku_reload'] = True
+            control.calendarRefresh = False
+
+        airing = database.get(self._get_airing, 12, page, self.format_in_type, **dbargs)
         return airing
 
     def _get_airing(self, page=1, format_in=''):
@@ -3953,3 +3959,4 @@ class AniListBrowser():
             database.remove_episodes(anilist_id)
             control.refresh()
         return
+

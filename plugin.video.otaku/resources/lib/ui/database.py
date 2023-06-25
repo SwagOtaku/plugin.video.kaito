@@ -28,7 +28,7 @@ def get(function, duration, *args, **kwargs):
     try:
         sources = False
         reload = False
-        if 'animepahe_reload' in kwargs:
+        if 'otaku_reload' in kwargs:
             reload = kwargs['otaku_reload']
             kwargs.pop('otaku_reload')
 
