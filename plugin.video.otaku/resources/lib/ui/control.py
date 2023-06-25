@@ -30,7 +30,6 @@ _kodiver = float(xbmcaddon.Addon('xbmc.addon').getAddonInfo('version')[:4])
 
 cacheFile = os.path.join(dataPath, 'cache.db')
 cacheFile_lock = threading.Lock()
-calendarRefresh = False
 
 searchHistoryDB = os.path.join(dataPath, 'search.db')
 searchHistoryDB_lock = threading.Lock()
@@ -484,3 +483,8 @@ def getInstructions():
     # windows = TextViewerXML(*('textviewer_1.xml', ADDON_PATH),heading=heading, text=text).doModal()
     windows.run()
     del windows
+
+def setGlobalProp(property, value):
+    xbmcgui.Window(10000).setProperty(property, value)
+def getGlobalProp(property):
+    xbmcgui.Window(10000).getProperty(property)
