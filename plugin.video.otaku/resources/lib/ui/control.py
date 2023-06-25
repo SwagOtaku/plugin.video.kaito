@@ -485,6 +485,19 @@ def getInstructions():
     del windows
 
 def setGlobalProp(property, value):
-    xbmcgui.Window(10000).setProperty(property, value)
+    #Propery must be string so can't just pass a bool.
+    if value == True:
+        conv_val = "True"
+    elif value == False:
+        conv_val = "False"
+    else:
+        conv_val = value
+    xbmcgui.Window(10000).setProperty(property, conv_val)
 def getGlobalProp(property):
-    xbmcgui.Window(10000).getProperty(property)
+    value = xbmcgui.Window(10000).getProperty(property)
+    if value == "True":
+        return True
+    elif value == "False":
+        return False
+    else:
+        return value
