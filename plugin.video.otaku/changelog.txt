@@ -1,3 +1,8 @@
+Changelog 0.3.82 [20230625]:
+- New service to monitor settings changes
+- Update global flag to indicate calendar requires a refresh
+- Added dbargs to refresh the calendar
+
 Changelog 0.3.81 [20230622]:
 - Added CountryOfOrigin filter to "Airing Anime Calendar"
 - Big Thanks to Pahiro for adding this filter.
