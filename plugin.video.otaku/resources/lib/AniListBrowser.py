@@ -3413,8 +3413,8 @@ class AniListBrowser():
 
     def _process_airing_view(self, json_res):
         if control.getSetting('contentorigin.bool') == "true":
-            filter_json = [x for x in json_res['airingSchedules'] if x['media']['isAdult'] is False 
-                if x['media']['countryOfOrigin'] == self.countryOfOrigin_type]
+            filter_json = [x for x in json_res['airingSchedules'] if x['media']['isAdult'] is False
+                           and x['media']['countryOfOrigin'] == self.countryOfOrigin_type]
         else:
             filter_json = [x for x in json_res['airingSchedules'] if x['media']['isAdult'] is False]
 
@@ -3956,4 +3956,3 @@ class AniListBrowser():
             database.remove_episodes(anilist_id)
             control.refresh()
         return
-

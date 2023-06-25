@@ -484,8 +484,11 @@ def getInstructions():
     windows.run()
     del windows
 
+
 def setGlobalProp(property, value):
     xbmcgui.Window(10000).setProperty(property, str(value))
+
+
 def getGlobalProp(property):
     value = xbmcgui.Window(10000).getProperty(property)
     if value.lower in ("true", "false"):
