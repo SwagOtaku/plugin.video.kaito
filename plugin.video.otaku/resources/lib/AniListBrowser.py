@@ -2754,11 +2754,8 @@ class AniListBrowser():
         return self._process_anilist_view(upcoming, "anilist_upcoming_next_season_upcoming/%d", page)
 
     def get_airing(self, page=1, format_in=''):
-        dbargs = {}
-        calendarRefresh = control.getGlobalProp("calendarRefresh")
-        if calendarRefresh == True:
-            dbargs['otaku_reload'] = True
-            control.setGlobalProp("calendarRefresh", False)
+        dbargs = {"otaku_reload": control.getGlobalProp("calendarRefresh")}
+        control.setGlobalProp("calendarRefresh", False)
 
         airing = database.get(self._get_airing, 12, page, self.format_in_type, **dbargs)
         return airing
