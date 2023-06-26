@@ -2754,9 +2754,8 @@ class AniListBrowser():
         return self._process_anilist_view(upcoming, "anilist_upcoming_next_season_upcoming/%d", page)
 
     def get_poster(self, mal_id, ani_id):
-        url = 'https://graphql.anilist.co'
         variables = {
-            #'ani_id': ani_id,
+            # 'ani_id': ani_id,
             'mal_id': mal_id
         }
         query = '''
@@ -2775,6 +2774,7 @@ class AniListBrowser():
         if r:
             r = json.loads(r)
         return r
+
     def get_airing(self, page=1, format_in=''):
         dbargs = {"otaku_reload": control.getGlobalProp("calendarRefresh")}
         control.setGlobalProp("calendarRefresh", False)
@@ -2853,12 +2853,13 @@ class AniListBrowser():
             }
             anilist_item = database.get(self.get_watchorder_res, 0.125, variables)
             final_list.append(anilist_item)
-            #I probably need to enumerate chiaki_list as well
-            #so I can send back a media and page object on each line.
+            # I probably need to enumerate chiaki_list as well
+            # so I can send back a media and page object on each line.
         breakpoint()
-        #Need to send back the full list here
+        # Need to send back the full list here
 
         return self._process_watchorder_view(final_list, "watch_order/%d")
+
     def get_anilist(self, mal_id):
         variables = {
             'id': mal_id,
@@ -3573,6 +3574,7 @@ class AniListBrowser():
         all_results = list(itertools.chain(*all_results))
 
         return all_results
+
     def _process_watchorder_view(self, json_res, base_pluin_url, dub=False):
         if dub:
             mapfunc = partial(self._base_anilist_view, mal_dub=dub)
