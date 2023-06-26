@@ -375,11 +375,33 @@ def FIND_RELATIONS(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_relations(anilist_id))
 
 
-@route('find_all_anime/*')
+@route('watch_order/*')
 def FIND_ALL_ANIME(payload, params):
     payload_list = payload.split("/")[1:]
-    # Need help on this part
+    if len(payload_list) == 2:
+        mal_id, x = payload_list
+        show_meta = database.get_show_mal(mal_id)
+        anilist_id = show_meta['anilist_id']
+    else:
+        anilist_id, mal_id, filter_lang = payload_list
+    return control.draw_items(_ANILIST_BROWSER.get_watch_order(anilist_id))
 
+    # video_data = chiaki.get_all_anime(mal_id)
+    # for x, item in enumerate(video_data):
+    #     item_list = item['url'].split("/")[1:]
+    #     if len(item_list) == 4:
+    #         mal_id = item_list[3]
+    #         img = _ANILIST_BROWSER.get_poster(mal_id, 0)
+    #         #import web_pdb; web_pdb.set_trace()
+    #         try:
+    #             video_data[x]['is_dir'] = False
+    #             # Image.open(urlopen(img['data']['Media']['coverImage']['extraLarge']))
+    #             video_data[x]['image'] = img['data']['Media']['coverImage']['extraLarge']
+    #         except TypeError:
+    #             video_data[x]['image'] = ''
+    #             pass
+    #
+    # return control.draw_items(video_data)
 
 @route('authAllDebrid')
 def authAllDebrid(payload, params):

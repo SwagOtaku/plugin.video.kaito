@@ -2753,6 +2753,28 @@ class AniListBrowser():
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_next_season_upcoming/%d", page)
 
+    def get_poster(self, mal_id, ani_id):
+        url = 'https://graphql.anilist.co'
+        variables = {
+            #'ani_id': ani_id,
+            'mal_id': mal_id
+        }
+        query = '''
+            query ($mal_id: Int) {
+              Media (idMal: $mal_id, type: ANIME) {
+                id
+                idMal
+                coverImage {
+                  extraLarge
+                }
+              }
+            }
+            '''
+        r = client.request(self._URL, post={'query': query, 'variables': variables}, jpost=True)
+
+        if r:
+            r = json.loads(r)
+        return r
     def get_airing(self, page=1, format_in=''):
         dbargs = {"otaku_reload": control.getGlobalProp("calendarRefresh")}
         control.setGlobalProp("calendarRefresh", False)
@@ -2807,7 +2829,8 @@ class AniListBrowser():
         }
 
         recommendations = database.get(self.get_recommendations_res, 0.125, variables, page)
-        return self._process_recommendations_view(recommendations, "recommendations_next/{}/%d".format(anilist_id), page)
+        return self._process_recommendations_view(recommendations, "recommendations_next/{}/%d".format(anilist_id),
+                                                  page)
 
     def get_relations(self, anilist_id):
         variables = {
@@ -2817,6 +2840,12 @@ class AniListBrowser():
         relations = database.get(self.get_relations_res, 0.125, variables)
         return self._process_relations_view(relations, "find_relations/%d")
 
+    def get_watch_order(self, mal_id):
+        variables = {
+            'idMal': mal_id
+        }
+        watch_order = database.get(self.get_watchorder_res, 0.125, variables)
+        return self._process_relations_view(watch_order, "watch_order/%d")
     def get_anilist(self, mal_id):
         variables = {
             'id': mal_id,
@@ -3248,6 +3277,80 @@ class AniListBrowser():
         json_res = results['data']['Media']['relations']
         return json_res
 
+    def get_watchorder_res(self, variables):
+        query = '''
+                query ($idMal: Int) {
+                    Media(idMal: $idMal, type: ANIME) {
+                        id
+                        idMal
+                        title {
+                            userPreferred,
+                            romaji,
+                            english
+                        }
+                        coverImage {
+                            extraLarge
+                        }
+                        bannerImage
+                        startDate {
+                            year,
+                            month,
+                            day
+                        }
+                        description
+                        synonyms
+                        format
+                        episodes
+                        status
+                        genres
+                        duration
+                        countryOfOrigin
+                        averageScore
+                        characters (
+                            page: 1,
+                            sort: ROLE,
+                            perPage: 10,
+                        ) {
+                            edges {
+                                node {
+                                    name {
+                                        userPreferred
+                                    }
+                                }
+                                voiceActors (language: JAPANESE) {
+                                    name {
+                                        userPreferred
+                                    }
+                                    image {
+                                        large
+                                    }
+                                }
+                            }
+                        }
+                        studios {
+                            edges {
+                                node {
+                                    name
+                                }
+                            }
+                        }
+                        trailer {
+                            id
+                            site
+                        }
+                    }
+                }
+                '''
+
+        result = client.request(self._URL, post={'query': query, 'variables': variables}, jpost=True)
+        results = json.loads(result)
+
+        if "errors" in results.keys():
+            return
+
+        json_res = results['data']['Media']['relations']
+        return json_res
+
     def get_anilist_res(self, variables):
         query = '''
         query($id: Int, $type: MediaType){
@@ -3556,9 +3659,11 @@ class AniListBrowser():
 
         try:
             if res.get('trailer').get('site') == 'youtube':
-                info['trailer'] = 'plugin://plugin.video.youtube/play/?video_id={0}'.format(res.get('trailer').get('id'))
+                info['trailer'] = 'plugin://plugin.video.youtube/play/?video_id={0}'.format(
+                    res.get('trailer').get('id'))
             else:
-                info['trailer'] = 'plugin://plugin.video.dailymotion_com/?url={0}&mode=playVideo'.format(res.get('trailer').get('id'))
+                info['trailer'] = 'plugin://plugin.video.dailymotion_com/?url={0}&mode=playVideo'.format(
+                    res.get('trailer').get('id'))
         except:
             pass
 
@@ -3618,7 +3723,9 @@ class AniListBrowser():
             'ep_airingAt': airingAt_time,
             'averageScore': res['media']['averageScore'],
             'rank': rank,
-            'plot': res['media']['description'].replace('<br><br>', '[CR]').replace('<br>', '').replace('<i>', '[I]').replace('</i>', '[/I]') if res['media']['description'] else res['media']['description'],
+            'plot': res['media']['description'].replace('<br><br>', '[CR]').replace('<br>', '').replace('<i>',
+                                                                                                        '[I]').replace(
+                '</i>', '[/I]') if res['media']['description'] else res['media']['description'],
             'genres': genres,
             'countryOfOrigin': countryOfOrigin,
             'id': res['media']['id']
