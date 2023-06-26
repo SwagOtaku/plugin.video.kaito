@@ -22,7 +22,7 @@
         <visible>String.StartsWith(ListItem.path,plugin://plugin.video.otaku/)+[String.IsEqual(ListItem.dbtype,tvshow)|String.IsEqual(ListItem.dbtype,movie)]</visible>
       </item>
       <item library="findallanime.py">
-        <label>Find All Anime</label>
+        <label>Get Watch Order</label>
         <visible>String.StartsWith(ListItem.path,plugin://plugin.video.otaku/)+[String.IsEqual(ListItem.dbtype,tvshow)|String.IsEqual(ListItem.dbtype,movie)]</visible>
       </item>
       <item library="watchlistLogout.py">

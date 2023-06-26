@@ -376,7 +376,8 @@ def FIND_RELATIONS(payload, params):
 
 
 @route('watch_order/*')
-def FIND_ALL_ANIME(payload, params):
+def GET_WATCH_ORDER(payload, params):
+    from resources.lib.indexers import chiaki
     payload_list = payload.split("/")[1:]
     if len(payload_list) == 2:
         mal_id, x = payload_list
@@ -384,7 +385,8 @@ def FIND_ALL_ANIME(payload, params):
         anilist_id = show_meta['anilist_id']
     else:
         anilist_id, mal_id, filter_lang = payload_list
-    return control.draw_items(_ANILIST_BROWSER.get_watch_order(anilist_id))
+
+    return control.draw_items(_ANILIST_BROWSER.get_watch_order(mal_id))
 
     # video_data = chiaki.get_all_anime(mal_id)
     # for x, item in enumerate(video_data):

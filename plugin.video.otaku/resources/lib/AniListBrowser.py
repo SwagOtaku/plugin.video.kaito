@@ -2841,11 +2841,24 @@ class AniListBrowser():
         return self._process_relations_view(relations, "find_relations/%d")
 
     def get_watch_order(self, mal_id):
-        variables = {
-            'idMal': mal_id
-        }
-        watch_order = database.get(self.get_watchorder_res, 0.125, variables)
-        return self._process_relations_view(watch_order, "watch_order/%d")
+        from resources.lib.indexers import chiaki
+        chiaki_list = chiaki.get_watch_order_list(mal_id)
+        final_list = []
+        for x, anime in enumerate(chiaki_list):
+            variables = anime['url'].split("/")[1:]
+            # Get the GraphQL response back
+
+            variables = {
+                'idMal': variables[3]
+            }
+            anilist_item = database.get(self.get_watchorder_res, 0.125, variables)
+            final_list.append(anilist_item)
+            #I probably need to enumerate chiaki_list as well
+            #so I can send back a media and page object on each line.
+        breakpoint()
+        #Need to send back the full list here
+
+        return self._process_watchorder_view(final_list, "watch_order/%d")
     def get_anilist(self, mal_id):
         variables = {
             'id': mal_id,
@@ -3348,7 +3361,7 @@ class AniListBrowser():
         if "errors" in results.keys():
             return
 
-        json_res = results['data']['Media']['relations']
+        json_res = results['data']['Media']
         return json_res
 
     def get_anilist_res(self, variables):
@@ -3560,6 +3573,14 @@ class AniListBrowser():
         all_results = list(itertools.chain(*all_results))
 
         return all_results
+    def _process_watchorder_view(self, json_res, base_pluin_url, dub=False):
+        if dub:
+            mapfunc = partial(self._base_anilist_view, mal_dub=dub)
+        else:
+            mapfunc = self._base_anilist_view
+
+        all_results = list(map(mapfunc, json_res))
+        all_results = list(itertools.chain(*all_results))
 
     def _process_mal_to_anilist(self, res):
         # titles = self._get_titles(res)
