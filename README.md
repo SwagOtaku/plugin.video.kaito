@@ -22,9 +22,9 @@ _You can install it via repository to provide automatic updates (future updates 
 
 _or install it manually in the following order (future updates should not be installed manually and these download links could be outdated)_
 
-- [context.otaku](https://github.com/Goldenfreddy0703/repository.otaku/raw/master/repo/zips/context.otaku/context.otaku-0.0.9.zip)
+- [context.otaku](https://github.com/Goldenfreddy0703/repository.otaku/raw/master/repo/zips/context.otaku/context.otaku-0.0.10.zip)
 - [script.otaku.themepak](https://github.com/Goldenfreddy0703/repository.otaku/raw/master/repo/zips/script.otaku.themepak/script.otaku.themepak-0.0.7.zip)
-- [plugin.video.otaku](https://github.com/Goldenfreddy0703/repository.otaku/raw/master/repo/zips/plugin.video.otaku/plugin.video.otaku-0.3.44.zip)
+- [plugin.video.otaku](https://github.com/Goldenfreddy0703/repository.otaku/raw/master/repo/zips/plugin.video.otaku/plugin.video.otaku-0.3.84.zip)
 
 After each update, it is recommended that you clear cache/rebuild database to make sure changes take effect.
 
@@ -41,9 +41,6 @@ If you guys are having problems with Otaku, please feel free to contact me or ta
 **_Function_**:
 - Watchlist: Automatically mark an anime as completed when the whole series is watched. 
 - Watchlist: Want to do a full recode on it sense its very confusing to understand. 
-- Context Menu: Want to use Chiaki to get all anime sereies from one series. 
-	- Api Example: `https://chiaki.vercel.app/get?group_id={malId}`
-	- Api Documentation: https://chiaki.vercel.app/
 - Tmdb Helper Player: Want to add an Otaku Player for Tmdb Helper. (I found ways to get the Anilist ID)
 	- Api Documentation: https://tmdb2anilist.slidemovies.org/
 	- Api TV Shows Example: `https://tmdb2anilist.slidemovies.org/tv/?id=TMDB_ID&s=SEASON`

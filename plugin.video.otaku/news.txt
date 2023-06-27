@@ -1,5 +1,4 @@
-Sad News: 
-- Hey everyone, We’re sorry to announce that in the next 4 months or so, One of our main api's, Consumet will be shut down. Reason why it is shutting down is due to cost and bandwidth. You guys will still get episode meta from enime and simkl but you guys may have less embeds in the future. 
+New feature:
+- Hey Everyone, we have a special new context menu item called "Get Watch Order" where you can get the watch order for any anime that has seasons, ova, specials, ect with one click.
 
-Good News:
-- You guys can self-host the Consumet api yourselves which can give you old embeds and new emebeds. Special Intructions will be on the Otaku Settings, Github Wiki, or Troubleshooting page if you guys would like to self-host it.
+-This is all thanks to our newest contributor, Pahiro. He has done a fantastic job adding this feature and we hope to add more very soon. Again, huge thanks to Pahiro and i hope you all enjoy this new context menu item.

@@ -507,7 +507,7 @@ def get_show(anilist_id):
     try:
         cursor.execute(db_query)
     except OperationalError:
-        pass #Avoid missing DB error when executing unit tests
+        pass # Avoid missing DB error when executing unit tests
     shows = cursor.fetchone()
     cursor.close()
     control.try_release_lock(control.anilistSyncDB_lock)
@@ -521,7 +521,7 @@ def get_show_meta(anilist_id):
     try:
         cursor.execute(db_query)
     except OperationalError:
-        pass #Avoid missing DB error when executing unit tests
+        pass # Avoid missing DB error when executing unit tests
     shows = cursor.fetchone()
     cursor.close()
     control.try_release_lock(control.anilistSyncDB_lock)

@@ -1,3 +1,8 @@
+Changelog 0.3.84 [20230627]:
+- Added Chiaki to get watch order
+- Added New Context menu "Get Watch Order"
+- Huge thanks to @Pahiro for adding this.
+
 Changelog 0.3.83 [20230625]:
 - No code changes, linting only
 

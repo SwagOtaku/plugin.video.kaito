@@ -387,6 +387,7 @@ def GET_WATCH_ORDER(payload, params):
         anilist_id, mal_id, filter_lang = payload_list
     return control.draw_items(_ANILIST_BROWSER.get_watch_order(mal_id))
 
+
 @route('authAllDebrid')
 def authAllDebrid(payload, params):
     from resources.lib.debrid.all_debrid import AllDebrid

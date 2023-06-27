@@ -3559,6 +3559,7 @@ class AniListBrowser():
         all_results = list(itertools.chain(*all_results))
 
         return all_results
+
     def _process_mal_to_anilist(self, res):
         # titles = self._get_titles(res)
         # start_date = self._get_start_date(res)
