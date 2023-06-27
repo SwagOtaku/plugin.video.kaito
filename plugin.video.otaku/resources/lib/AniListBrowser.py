@@ -2753,27 +2753,6 @@ class AniListBrowser():
         upcoming = database.get(self.get_base_res, 0.125, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_next_season_upcoming/%d", page)
 
-    def get_poster(self, mal_id, ani_id):
-        variables = {
-            'mal_id': mal_id
-        }
-        query = '''
-            query ($mal_id: Int) {
-              Media (idMal: $mal_id, type: ANIME) {
-                id
-                idMal
-                coverImage {
-                  extraLarge
-                }
-              }
-            }
-            '''
-        r = client.request(self._URL, post={'query': query, 'variables': variables}, jpost=True)
-
-        if r:
-            r = json.loads(r)
-        return r
-
     def get_airing(self, page=1, format_in=''):
         dbargs = {"otaku_reload": control.getGlobalProp("calendarRefresh")}
         control.setGlobalProp("calendarRefresh", False)
@@ -2828,8 +2807,7 @@ class AniListBrowser():
         }
 
         recommendations = database.get(self.get_recommendations_res, 0.125, variables, page)
-        return self._process_recommendations_view(recommendations, "recommendations_next/{}/%d".format(anilist_id),
-                                                  page)
+        return self._process_recommendations_view(recommendations, "recommendations_next/{}/%d".format(anilist_id), page)
 
     def get_relations(self, anilist_id):
         variables = {
@@ -2842,18 +2820,19 @@ class AniListBrowser():
     def get_watch_order(self, mal_id):
         from resources.lib.indexers import chiaki
         chiaki_list = chiaki.get_watch_order_list(mal_id)
-        final_list = []
-        for x, anime in enumerate(chiaki_list):
+        watch_order_list = []
+        for anime in chiaki_list:
             variables = anime['url'].split("/")[1:]
-            # Get the GraphQL response back
-
+            idmal = int(variables[3])
             variables = {
-                'idMal': int(variables[3])
+                'idMal': idmal
             }
-            anilist_item = database.get(self.get_watchorder_res, 0.125, variables)
-            final_list.append(anilist_item)
 
-        return self._process_watch_order_view(final_list, "watch_order/%d")
+            anilist_item = database.get(self.get_watch_order_res, 0.125, variables)
+            if anilist_item != None:
+                watch_order_list.append(anilist_item)
+
+        return self._process_watch_order_view(watch_order_list, "watch_order/%d")
 
     def get_anilist(self, mal_id):
         variables = {
@@ -3286,10 +3265,10 @@ class AniListBrowser():
         json_res = results['data']['Media']['relations']
         return json_res
 
-    def get_watchorder_res(self, variables):
+    def get_watch_order_res(self, variables):
         query = '''
-            query ($mal_id: Int) {
-                Media (idMal: $mal_id, type: ANIME) {
+            query ($idMal: Int) {
+                Media (idMal: $idMal, type: ANIME) {
                     id
                     idMal
                     title {
@@ -3350,15 +3329,15 @@ class AniListBrowser():
                 }
             }
             '''
-
         result = client.request(self._URL, post={'query': query, 'variables': variables}, jpost=True)
-        results = json.loads(result)
-
-        if "errors" in results.keys():
-            return
-
-        json_res = results['data']['Media']
-        return json_res
+        if result != None:
+            results = json.loads(result)
+            json_res = results['data']['Media']
+            if "errors" in results.keys():
+                return
+            return json_res
+        else:
+            return None
 
     def get_anilist_res(self, variables):
         query = '''
@@ -3570,7 +3549,7 @@ class AniListBrowser():
 
         return all_results
 
-    def _process_watch_order_view(self, json_res, base_pluin_url, dub=False):
+    def _process_watch_order_view(self, json_res, base_plugin_url, dub=False):
         if dub:
             mapfunc = partial(self._base_anilist_view, mal_dub=dub)
         else:
@@ -3678,11 +3657,9 @@ class AniListBrowser():
 
         try:
             if res.get('trailer').get('site') == 'youtube':
-                info['trailer'] = 'plugin://plugin.video.youtube/play/?video_id={0}'.format(
-                    res.get('trailer').get('id'))
+                info['trailer'] = 'plugin://plugin.video.youtube/play/?video_id={0}'.format(res.get('trailer').get('id'))
             else:
-                info['trailer'] = 'plugin://plugin.video.dailymotion_com/?url={0}&mode=playVideo'.format(
-                    res.get('trailer').get('id'))
+                info['trailer'] = 'plugin://plugin.video.dailymotion_com/?url={0}&mode=playVideo'.format(res.get('trailer').get('id'))
         except:
             pass
 
@@ -3742,9 +3719,7 @@ class AniListBrowser():
             'ep_airingAt': airingAt_time,
             'averageScore': res['media']['averageScore'],
             'rank': rank,
-            'plot': res['media']['description'].replace('<br><br>', '[CR]').replace('<br>', '').replace('<i>',
-                                                                                                        '[I]').replace(
-                '</i>', '[/I]') if res['media']['description'] else res['media']['description'],
+            'plot': res['media']['description'].replace('<br><br>', '[CR]').replace('<br>', '').replace('<i>', '[I]').replace('</i>', '[/I]') if res['media']['description'] else res['media']['description'],
             'genres': genres,
             'countryOfOrigin': countryOfOrigin,
             'id': res['media']['id']

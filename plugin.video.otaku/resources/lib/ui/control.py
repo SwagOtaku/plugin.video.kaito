@@ -28,7 +28,7 @@ dataPath = TRANSLATEPATH(addonInfo('profile'))
 ADDON_PATH = __settings__.getAddonInfo('path')
 try:
     _kodiver = float(xbmcaddon.Addon('xbmc.addon').getAddonInfo('version')[:4])
-except ValueError: pass
+except ValueError: pass #Avoid error while executing unit tests
 
 cacheFile = os.path.join(dataPath, 'cache.db')
 cacheFile_lock = threading.Lock()
@@ -379,10 +379,6 @@ def xbmc_add_dir(name, url, art={}, info={}, draw_cm=None):
 
 
 def draw_items(video_data, contentType="tvshows", viewType=None, draw_cm=None, bulk_add=False):
-    # Need to see how video_data is structured for other calls to this function
-    # import web_pdb; web_pdb.set_trace()
-    breakpoint()
-
     if isinstance(video_data, tuple):
         contentType = video_data[1]
         video_data = video_data[0]
