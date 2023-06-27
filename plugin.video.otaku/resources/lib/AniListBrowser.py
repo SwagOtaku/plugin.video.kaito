@@ -2817,6 +2817,23 @@ class AniListBrowser():
         relations = database.get(self.get_relations_res, 0.125, variables)
         return self._process_relations_view(relations, "find_relations/%d")
 
+    def get_watch_order(self, mal_id):
+        from resources.lib.indexers import chiaki
+        chiaki_list = chiaki.get_watch_order_list(mal_id)
+        watch_order_list = []
+        for anime in chiaki_list:
+            variables = anime['url'].split("/")[1:]
+            idmal = int(variables[3])
+            variables = {
+                'idMal': idmal
+            }
+
+            anilist_item = database.get(self.get_watch_order_res, 0.125, variables)
+            if anilist_item != None:
+                watch_order_list.append(anilist_item)
+
+        return self._process_watch_order_view(watch_order_list, "watch_order/%d")
+
     def get_anilist(self, mal_id):
         variables = {
             'id': mal_id,
@@ -3248,6 +3265,80 @@ class AniListBrowser():
         json_res = results['data']['Media']['relations']
         return json_res
 
+    def get_watch_order_res(self, variables):
+        query = '''
+            query ($idMal: Int) {
+                Media (idMal: $idMal, type: ANIME) {
+                    id
+                    idMal
+                    title {
+                        userPreferred,
+                        romaji,
+                        english
+                    }
+                    coverImage {
+                        extraLarge
+                    }
+                    bannerImage
+                    startDate {
+                        year,
+                        month,
+                        day
+                    }
+                    description
+                    synonyms
+                    format
+                    episodes
+                    status
+                    genres
+                    duration
+                    countryOfOrigin
+                    averageScore
+                    characters (
+                        page: 1,
+                        sort: ROLE,
+                        perPage: 10,
+                    ) {
+                        edges {
+                            node {
+                                name {
+                                    userPreferred
+                                }
+                            }
+                            voiceActors (language: JAPANESE) {
+                                name {
+                                    userPreferred
+                                }
+                                image {
+                                    large
+                                }
+                            }
+                        }
+                    }
+                    studios {
+                        edges {
+                            node {
+                                name
+                            }
+                        }
+                    }
+                    trailer {
+                        id
+                        site
+                    }
+                }
+            }
+            '''
+        result = client.request(self._URL, post={'query': query, 'variables': variables}, jpost=True)
+        if result != None:
+            results = json.loads(result)
+            json_res = results['data']['Media']
+            if "errors" in results.keys():
+                return
+            return json_res
+        else:
+            return None
+
     def get_anilist_res(self, variables):
         query = '''
         query($id: Int, $type: MediaType){
@@ -3458,6 +3549,16 @@ class AniListBrowser():
 
         return all_results
 
+    def _process_watch_order_view(self, json_res, base_plugin_url, dub=False):
+        if dub:
+            mapfunc = partial(self._base_anilist_view, mal_dub=dub)
+        else:
+            mapfunc = self._base_anilist_view
+
+        all_results = list(map(mapfunc, json_res))
+        all_results = list(itertools.chain(*all_results))
+
+        return all_results
     def _process_mal_to_anilist(self, res):
         # titles = self._get_titles(res)
         # start_date = self._get_start_date(res)

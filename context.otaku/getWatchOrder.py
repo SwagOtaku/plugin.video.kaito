@@ -9,5 +9,5 @@ if __name__ == '__main__':
     plugin = 'plugin://plugin.video.otaku/'
     path = path.split(plugin, 1)[1]
 
-    xbmc.executebuiltin('ActivateWindow(Videos,plugin://plugin.video.otaku/find_all_anime/%s)'
+    xbmc.executebuiltin('ActivateWindow(Videos,plugin://plugin.video.otaku/watch_order/%s)'
                         % path)

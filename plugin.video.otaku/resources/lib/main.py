@@ -375,11 +375,17 @@ def FIND_RELATIONS(payload, params):
     return control.draw_items(_ANILIST_BROWSER.get_relations(anilist_id))
 
 
-@route('find_all_anime/*')
-def FIND_ALL_ANIME(payload, params):
+@route('watch_order/*')
+def GET_WATCH_ORDER(payload, params):
+    from resources.lib.indexers import chiaki
     payload_list = payload.split("/")[1:]
-    # Need help on this part
-
+    if len(payload_list) == 2:
+        mal_id, x = payload_list
+        show_meta = database.get_show_mal(mal_id)
+        anilist_id = show_meta['anilist_id']
+    else:
+        anilist_id, mal_id, filter_lang = payload_list
+    return control.draw_items(_ANILIST_BROWSER.get_watch_order(mal_id))
 
 @route('authAllDebrid')
 def authAllDebrid(payload, params):

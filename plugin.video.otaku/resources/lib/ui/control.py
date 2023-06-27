@@ -26,7 +26,9 @@ LOGINFO = xbmc.LOGNOTICE if PY2 else xbmc.LOGINFO
 INPUT_ALPHANUM = xbmcgui.INPUT_ALPHANUM
 dataPath = TRANSLATEPATH(addonInfo('profile'))
 ADDON_PATH = __settings__.getAddonInfo('path')
-_kodiver = float(xbmcaddon.Addon('xbmc.addon').getAddonInfo('version')[:4])
+try:
+    _kodiver = float(xbmcaddon.Addon('xbmc.addon').getAddonInfo('version')[:4])
+except ValueError: pass #Avoid error while executing unit tests
 
 cacheFile = os.path.join(dataPath, 'cache.db')
 cacheFile_lock = threading.Lock()
