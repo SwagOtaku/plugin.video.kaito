@@ -379,6 +379,10 @@ def xbmc_add_dir(name, url, art={}, info={}, draw_cm=None):
 
 
 def draw_items(video_data, contentType="tvshows", viewType=None, draw_cm=None, bulk_add=False):
+    # Need to see how video_data is structured for other calls to this function
+    # import web_pdb; web_pdb.set_trace()
+    breakpoint()
+
     if isinstance(video_data, tuple):
         contentType = video_data[1]
         video_data = video_data[0]

@@ -5,6 +5,5 @@ class Test(TestCase):
         from resources.lib.ui import control
         from resources.lib.AniListBrowser import AniListBrowser
         a = AniListBrowser()
-
         control.draw_items(a.get_watch_order(35062))
         self.fail()

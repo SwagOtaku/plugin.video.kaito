@@ -2755,7 +2755,6 @@ class AniListBrowser():
 
     def get_poster(self, mal_id, ani_id):
         variables = {
-            # 'ani_id': ani_id,
             'mal_id': mal_id
         }
         query = '''
@@ -2849,16 +2848,12 @@ class AniListBrowser():
             # Get the GraphQL response back
 
             variables = {
-                'idMal': variables[3]
+                'idMal': int(variables[3])
             }
             anilist_item = database.get(self.get_watchorder_res, 0.125, variables)
             final_list.append(anilist_item)
-            # I probably need to enumerate chiaki_list as well
-            # so I can send back a media and page object on each line.
-        breakpoint()
-        # Need to send back the full list here
 
-        return self._process_watchorder_view(final_list, "watch_order/%d")
+        return self._process_watch_order_view(final_list, "watch_order/%d")
 
     def get_anilist(self, mal_id):
         variables = {
@@ -3293,68 +3288,68 @@ class AniListBrowser():
 
     def get_watchorder_res(self, variables):
         query = '''
-                query ($idMal: Int) {
-                    Media(idMal: $idMal, type: ANIME) {
-                        id
-                        idMal
-                        title {
-                            userPreferred,
-                            romaji,
-                            english
-                        }
-                        coverImage {
-                            extraLarge
-                        }
-                        bannerImage
-                        startDate {
-                            year,
-                            month,
-                            day
-                        }
-                        description
-                        synonyms
-                        format
-                        episodes
-                        status
-                        genres
-                        duration
-                        countryOfOrigin
-                        averageScore
-                        characters (
-                            page: 1,
-                            sort: ROLE,
-                            perPage: 10,
-                        ) {
-                            edges {
-                                node {
-                                    name {
-                                        userPreferred
-                                    }
-                                }
-                                voiceActors (language: JAPANESE) {
-                                    name {
-                                        userPreferred
-                                    }
-                                    image {
-                                        large
-                                    }
+            query ($mal_id: Int) {
+                Media (idMal: $mal_id, type: ANIME) {
+                    id
+                    idMal
+                    title {
+                        userPreferred,
+                        romaji,
+                        english
+                    }
+                    coverImage {
+                        extraLarge
+                    }
+                    bannerImage
+                    startDate {
+                        year,
+                        month,
+                        day
+                    }
+                    description
+                    synonyms
+                    format
+                    episodes
+                    status
+                    genres
+                    duration
+                    countryOfOrigin
+                    averageScore
+                    characters (
+                        page: 1,
+                        sort: ROLE,
+                        perPage: 10,
+                    ) {
+                        edges {
+                            node {
+                                name {
+                                    userPreferred
                                 }
                             }
-                        }
-                        studios {
-                            edges {
-                                node {
-                                    name
+                            voiceActors (language: JAPANESE) {
+                                name {
+                                    userPreferred
+                                }
+                                image {
+                                    large
                                 }
                             }
-                        }
-                        trailer {
-                            id
-                            site
                         }
                     }
+                    studios {
+                        edges {
+                            node {
+                                name
+                            }
+                        }
+                    }
+                    trailer {
+                        id
+                        site
+                    }
                 }
-                '''
+            }
+            '''
 
         result = client.request(self._URL, post={'query': query, 'variables': variables}, jpost=True)
         results = json.loads(result)
@@ -3575,7 +3570,7 @@ class AniListBrowser():
 
         return all_results
 
-    def _process_watchorder_view(self, json_res, base_pluin_url, dub=False):
+    def _process_watch_order_view(self, json_res, base_pluin_url, dub=False):
         if dub:
             mapfunc = partial(self._base_anilist_view, mal_dub=dub)
         else:
@@ -3584,6 +3579,7 @@ class AniListBrowser():
         all_results = list(map(mapfunc, json_res))
         all_results = list(itertools.chain(*all_results))
 
+        return all_results
     def _process_mal_to_anilist(self, res):
         # titles = self._get_titles(res)
         # start_date = self._get_start_date(res)
