@@ -377,7 +377,6 @@ def FIND_RELATIONS(payload, params):
 
 @route('watch_order/*')
 def GET_WATCH_ORDER(payload, params):
-    from resources.lib.indexers import chiaki
     payload_list = payload.split("/")[1:]
     if len(payload_list) == 2:
         mal_id, x = payload_list

@@ -2829,7 +2829,7 @@ class AniListBrowser():
             }
 
             anilist_item = database.get(self.get_watch_order_res, 0.125, variables)
-            if anilist_item != None:
+            if anilist_item is not None:
                 watch_order_list.append(anilist_item)
 
         return self._process_watch_order_view(watch_order_list, "watch_order/%d")
@@ -3330,7 +3330,7 @@ class AniListBrowser():
             }
             '''
         result = client.request(self._URL, post={'query': query, 'variables': variables}, jpost=True)
-        if result != None:
+        if result is not None:
             results = json.loads(result)
             json_res = results['data']['Media']
             if "errors" in results.keys():
