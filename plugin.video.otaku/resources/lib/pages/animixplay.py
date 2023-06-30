@@ -4,13 +4,14 @@ import pickle
 import re
 from functools import partial
 
-from bs4 import BeautifulSoup
-from resources.lib.ui import database
+from bs4 import BeautifulSoup, SoupStrainer
+from six.moves import urllib_parse
+from resources.lib.ui import database, client
 from resources.lib.ui.BrowserBase import BrowserBase
 
 
 class sources(BrowserBase):
-    _BASE_URL = 'https://animixplay.sc/'
+    _BASE_URL = 'https://animixplay.fun/'
 
     def get_sources(self, anilist_id, episode, get_backup):
         show = database.get_show(anilist_id)
@@ -21,26 +22,26 @@ class sources(BrowserBase):
         headers = {'Origin': self._BASE_URL[:-1],
                    'Referer': self._BASE_URL}
         r = database.get(
-            self._get_request,
+            client.request,
             8,
-            self._BASE_URL + 'wp-json/kiranime/v1/anime/search',
-            data={'query': title},
+            self._BASE_URL + 'api/lsearch',
+            post={'qfast': title},
             headers=headers
         )
         r = json.loads(r).get('result')
 
         if len(r) == 0:
             if ' Cour ' in title:
-                title = title.replace(' Cour ', ' Part ')
+                ntitle = title.replace(' Cour ', ' Part ')
             elif ' Part ' in title:
-                title = title.replace(' Part ', ' Cour ')
+                ntitle = title.replace(' Part ', ' Cour ')
             else:
                 return []
             r = database.get(
-                self._get_request,
+                client.request,
                 8,
-                self._BASE_URL + 'wp-json/kiranime/v1/anime/search',
-                data={'query': title},
+                self._BASE_URL + 'api/lsearch',
+                post={'qfast': ntitle},
                 headers=headers
             )
             r = json.loads(r).get('result')
@@ -55,7 +56,7 @@ class sources(BrowserBase):
                 slugs = [
                     item.get('href')
                     for item in items
-                    if (item.find('h3').text.split(',')[0].lower() + '  ').startswith(title.lower() + '  ')
+                    if (item.get('title').lower() + '  ').startswith(title.lower() + '  ')
                 ]
 
         if not slugs:
@@ -64,65 +65,100 @@ class sources(BrowserBase):
             else:
                 return []
         slugs = list(slugs.keys()) if isinstance(slugs, dict) else slugs
-        mapfunc = partial(self._process_animixplay, show_id=anilist_id, episode=episode)
+        mapfunc = partial(self._process_animixplay, title=title, episode=episode)
         all_results = list(map(mapfunc, slugs))
         all_results = list(itertools.chain(*all_results))
         return all_results
 
-    def _process_animixplay(self, slug, show_id, episode):
+    def _process_animixplay(self, slug, title, episode):
         sources = []
-        links = []
-        headers = {'Referer': self._BASE_URL}
-        url = slug.replace('/anime/', '/watch/')
-        r = database.get(self._get_request, 8, url, headers=headers)
-        mdata = re.search(r"var\s*anime\s*=\s*(.+?});", r)
-        if not mdata:
-            r = database.get(self._get_request, 8, slug, headers=headers)
-            url = re.search(r'<a\s*href="([^"]+)">\s*Ep', r, re.DOTALL)
-            if url:
-                r = database.get(self._get_request, 8, url.group(1), headers=headers)
-                mdata = re.search(r"var\s*anime\s*=\s*(.+?});", r)
-        if mdata:
-            mdata = json.loads(mdata.group(1))
-            eps = mdata.get('episodes').get('lists')
-            title = mdata.get('title')
-            for ep in eps:
-                if ep.get('number') == int(episode):
-                    links = ep.get('links')
-                    break
-            if links:
-                for link in links:
-                    type_ = None
-                    lang = 0 if link.get('type') == 'sub' else 2
-                    server = link.get('server')
-                    url = link.get('link')
-                    if any(x in url for x in ['/crunchyroll/', '/gogoanime/', '/allanime/']):
-                        slink = database.get(self._get_redirect_url, 8, url, headers=headers)
-                        if '#' in slink:
-                            host, slink = slink.split('#')
-                            slink = self._bdecode(slink) + '|Origin={0}&Referer={0}/&User-Agent=iPad'.format(self._get_origin(host))
-                            type_ = 'direct'
+        r = database.get(client.request, 8, slug, referer=self._BASE_URL)
+        eurl = re.search(r'id="showstreambtn"\s*href="([^"]+)', r)
+        if eurl:
+            eurl = eurl.group(1)
+            resp = database.get(client.request, 8, eurl, referer=self._BASE_URL, output='extended')
+            s = resp[0]
+            cookie = resp[4]
+            referer = urllib_parse.urljoin(eurl, '/')
+            if episode:
+                esurl = re.findall(r'src="(/ajax/stats.js[^"]+)', s)[0]
+                esurl = urllib_parse.urljoin(eurl, esurl)
+                epage = database.get(client.request, 8, esurl, referer=eurl)
+                soup = BeautifulSoup(epage, "html.parser")
+                epurls = soup.find_all('a', {'class': 'playbutton'})
+                for epurl in epurls:
+                    if int(epurl.text) == int(episode):
+                        epi_url = epurl.get('href')
+                        resp = database.get(client.request, 8, epi_url, referer=eurl, output='extended')
+                        cookie = resp[4]
+                        s = resp[0]
+                        break
+
+            mlink = SoupStrainer('div', {'class': re.compile('sv_container$')})
+            mdiv = BeautifulSoup(s, "html.parser", parse_only=mlink)
+            mitems = mdiv.find_all('li')
+            csrf_token = re.findall(r'name="csrf-token"\s*content="([^"]+)', s)[0]
+            for mitem in mitems:
+                if not any(x in mitem.text for x in ['FSD', 'YTB', 'EGA']):
+                    type_ = 'direct'
+                    server = mitem.a.get('data-name')
+                    qual = mitem.a.get('title')
+                    if '1080p' in qual:
+                        qual = '1080p'
+                    elif 'HD' in qual:
+                        qual = '720p'
                     else:
-                        s = database.get(self._get_request, 8, url, headers=headers)
-                        slink = re.search(r"hls.loadSource\('([^']+)", s)
-                        if slink:
-                            slink = slink.group(1) + '|Origin={0}&Referer={0}/&User-Agent=iPad'.format(self._get_origin(url))
-                            type_ = 'direct'
+                        qual = 'NA'
+                    lang = 2 if mitem.a.get('id').endswith('dub') else 0
 
-                    if type_ is None:
-                        continue
-
-                    source = {
-                        'release_title': '{0} Ep{1}'.format(title, episode),
-                        'hash': slink,
-                        'type': type_,
-                        'quality': 'EQ',
-                        'debrid_provider': '',
-                        'provider': 'animix',
-                        'size': 'NA',
-                        'info': [server, link.get('type')],
-                        'lang': lang
+                    data = {
+                        'name_server': server,
+                        'data_play': mitem.a.get('data-play'),
+                        'id': mitem.a.get('data-id'),
+                        'server_id': mitem.a.get('data-serverid'),
+                        'expired': mitem.a.get('data-expired')
                     }
+                    headers = {
+                        'Origin': referer[:-1],
+                        'X-CSRF-TOKEN': csrf_token
+                    }
+                    r = client.request(
+                        urllib_parse.urljoin(eurl, '/ajax/embed'),
+                        post=data,
+                        headers=headers,
+                        XHR=True,
+                        referer=eurl,
+                        cookie=cookie
+                    )
+                    embed_url = urllib_parse.urljoin(eurl, re.findall(r'<iframe.+?src="([^"]+)', r)[0])
+                    subs = ''
+                    slink = ''
+                    s = client.request(embed_url, referer=eurl)
+                    sdiv = re.search(r'<source.+?src="([^"]+)', s)
+                    if sdiv:
+                        slink = sdiv.group(1)
+                    else:
+                        sdiv = re.search(r'sources:.+?file:\s*"([^"]+)', s, re.DOTALL)
+                        if sdiv:
+                            slink = sdiv.group(1)
+                    subdiv = re.search(r'captions:\s*\[.+?file:\s*"([^"]+)', s, re.DOTALL)
+                    if subdiv:
+                        subs = subdiv.group(1)
+
+                    if slink:
+                        source = {
+                            'release_title': '{0} Ep{1}'.format(title, episode),
+                            'hash': slink,  # + '|Referer={0}&Origin={1}&User-Agent=iPad'.format(referer, referer[:-1]),
+                            'type': type_,
+                            'quality': qual,
+                            'debrid_provider': '',
+                            'provider': 'animix',
+                            'size': 'NA',
+                            'info': [server, 'DUB' if lang == 2 else 'SUB'],
+                            'lang': lang
+                        }
+                        if subs:
+                            source.update({'subs': [{'url': subs, 'lang': 'English'}]})
                     sources.append(source)
 
         return sources
