@@ -1,3 +1,8 @@
+Changelog 0.3.85 [20230630]:
+- Fix Animix Scraper
+- Fix Gogo Scraper
+- linting Changes
+
 Changelog 0.3.84 [20230627]:
 - Added Chiaki to get watch order
 - Added New Context menu "Get Watch Order"

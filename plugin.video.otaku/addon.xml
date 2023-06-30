@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.84">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.85">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -26,10 +26,10 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.3.84 [20230627]:
-- Added Chiaki to get watch order
-- Added New Context menu "Get Watch Order"
-- Huge thanks to @Pahiro for adding this.
+Changelog 0.3.85 [20230630]:
+- Fix Animix Scraper
+- Fix Gogo Scraper
+- linting Changes
     </news>
   </extension>
 </addon>
