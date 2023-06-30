@@ -10,7 +10,7 @@ from resources.lib.ui.BrowserBase import BrowserBase
 
 
 class sources(BrowserBase):
-    _BASE_URL = 'https://gogoanime.llc/'
+    _BASE_URL = 'https://gogoanime.vet/'
 
     def get_sources(self, anilist_id, episode, get_backup):
         show = database.get_show(anilist_id)
@@ -50,9 +50,12 @@ class sources(BrowserBase):
             slugs = [
                 item.find('a').get('href').split('/')[-1]
                 for item in items
-                if ((item.text.strip() + ' ').lower()).startswith((title + ' ').lower())
-                or ((item.text.strip().replace(' - ', ' ') + ' ').lower()).startswith((title + ' ').lower())
-                or (item.text.strip().replace(':', ' ') + ' ').startswith(title + ' ')
+                if ((item.a.text.strip() + '  ').lower()).startswith((title + '  ').lower())
+                or ((item.a.text.strip() + '  ').lower()).startswith((title + ' (Dub)  ').lower())
+                or ((item.a.text.strip() + '  ').lower()).startswith((title + ' (TV)  ').lower())
+                or ((item.a.text.strip() + '  ').lower()).startswith((title + ' (TV) (Dub)  ').lower())
+                or ((item.a.text.strip().replace(' - ', ' ') + '  ').lower()).startswith((title + '  ').lower())
+                or (item.a.text.strip().replace(':', ' ') + '   ').startswith(title + '   ')
             ]
         if not slugs:
             slugs = database.get(get_backup, 168, anilist_id, 'Gogoanime')
