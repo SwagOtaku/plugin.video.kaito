@@ -1,0 +1,62 @@
+import json
+from six.moves import urllib_parse
+from resources.lib.ui import client, database
+
+
+class ANIFYAPI:
+    def __init__(self):
+        self.baseUrl = 'https://api.anify.tv/'
+        self.apikey = '\x65\x65\x36\x65\x61\x38\x32\x32\x36\x30\x36\x64\x32\x61\x64\x30\x35\x39\x64\x38\x38\x35\x64\x38\x61\x38\x34\x37\x62\x33\x37\x36'
+        self.episodesUrl = '/episodes/{id}'
+        self.streamUrl = '/sources'
+
+    def _json_request(self, url, params={}):
+        if url.startswith('/'):
+            url = urllib_parse.urljoin(self.baseUrl, url)
+        if not params:
+            params = {'apikey': self.apikey}
+        elif 'apikey' not in params.keys():
+            params.update({'apikey': self.apikey})
+
+        response = database.get(
+            client.request,
+            4,
+            url,
+            params=params,
+            error=True,
+            output='extended',
+            timeout=10
+        )
+        data = {}
+        if response and int(response[1]) < 300:
+            data = json.loads(response[0])
+        return data
+
+    def get_sources(self, anilist_id, episode, provider, lang=''):
+        sources = []
+        episodes = []
+        if provider not in ['gogoanime', '9anime', 'zoro', 'animepahe']:
+            return sources
+
+        eurl = self.episodesUrl.format(id=anilist_id)
+        res = self._json_request(eurl)
+        for r in res:
+            if r.get('providerId') == provider:
+                episodes = r.get('episodes')
+                break
+
+        if episodes:
+            episodes = sorted(episodes, key=lambda x: x.get('number'))
+            if episodes[0].get('number') != 1:
+                episode = episodes[0].get('number') - 1 + int(episode)
+            eid = [x.get('id') for x in episodes if x.get('number') == int(episode)][0]
+            params = {
+                'providerId': provider,
+                'watchId': eid,
+                'episode': episode,
+                'id': anilist_id,
+                'subType': lang
+            }
+            sources = self._json_request(self.streamUrl, params)
+
+        return sources

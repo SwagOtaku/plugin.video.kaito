@@ -5,7 +5,7 @@ from six.moves import urllib_parse
 
 from resources.lib.ui import control, database
 from resources.lib.ui.BrowserBase import BrowserBase
-from resources.lib.indexers import consumet
+from resources.lib.indexers import anify
 
 
 class sources(BrowserBase):
@@ -24,14 +24,13 @@ class sources(BrowserBase):
 
         for x in srcs:
             r = database.get(
-                consumet.CONSUMETAPI().get_sources,
+                anify.ANIFYAPI().get_sources,
                 8,
                 anilist_id,
                 episode,
                 '9anime',
                 x
             )
-
             if r and r.get('sources'):
                 srcs = r.get('sources')
                 for i in range(len(srcs)):
@@ -43,6 +42,7 @@ class sources(BrowserBase):
                 results = list(map(mapfunc, srcs))
                 results = list(itertools.chain(*results))
                 all_results += results
+
         return all_results
 
     def _process_ap(self, item, title='', referer=''):
@@ -70,7 +70,7 @@ class sources(BrowserBase):
             'debrid_provider': '',
             'provider': '9anime',
             'size': 'NA',
-            'info': [item.get('type'), 'HLS' if item.get('isM3U8') else ''],
+            'info': [item.get('type')],
             'lang': 0 if item.get('type') == 'SUB' else 2
         }
         sources.append(source)

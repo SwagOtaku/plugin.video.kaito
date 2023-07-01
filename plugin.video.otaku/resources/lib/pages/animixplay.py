@@ -157,8 +157,10 @@ class sources(BrowserBase):
                             'info': [server, 'DUB' if lang == 2 else 'SUB'],
                             'lang': lang
                         }
+
                         if subs:
                             source.update({'subs': [{'url': subs, 'lang': 'English'}]})
-                    sources.append(source)
+
+                        sources.append(source)
 
         return sources
