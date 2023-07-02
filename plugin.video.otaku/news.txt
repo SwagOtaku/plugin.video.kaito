@@ -1,4 +1,4 @@
-New feature:
-- Hey Everyone, we have a special new context menu item called "Get Watch Order" where you can get the watch order for any anime that has seasons, ova, specials, ect with one click.
+New feature: 9anime is back!!!!
+- Hey Everyone, we are really happy to tell you that 9anime is back thanks to our newest api, Anify. 
 
--This is all thanks to our newest contributor, Pahiro. He has done a fantastic job adding this feature and we hope to add more very soon. Again, huge thanks to Pahiro and i hope you all enjoy this new context menu item.
+Huge thanks to gujal and the Anify team for making it possible and glad to have 9anime back. 

@@ -1,3 +1,6 @@
+Changelog 0.3.86 [20230701]:
+- Fix 9anime scraper using anify
+
 Changelog 0.3.85 [20230630]:
 - Fix Animix Scraper
 - Fix Gogo Scraper
