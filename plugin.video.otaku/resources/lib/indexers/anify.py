@@ -49,14 +49,15 @@ class ANIFYAPI:
             episodes = sorted(episodes, key=lambda x: x.get('number'))
             if episodes[0].get('number') != 1:
                 episode = episodes[0].get('number') - 1 + int(episode)
-            eid = [x.get('id') for x in episodes if x.get('number') == int(episode)][0]
-            params = {
-                'providerId': provider,
-                'watchId': eid,
-                'episode': episode,
-                'id': anilist_id,
-                'subType': lang
-            }
-            sources = self._json_request(self.streamUrl, params)
+            eid = [(x.get('id'), x.get('hasDub')) for x in episodes if x.get('number') == int(episode)][0]
+            if (lang == 'dub' and eid[1]) or lang == 'sub':
+                params = {
+                    'providerId': provider,
+                    'watchId': eid[0],
+                    'episode': episode,
+                    'id': anilist_id,
+                    'subType': lang
+                }
+                sources = self._json_request(self.streamUrl, params)
 
         return sources

@@ -4,7 +4,7 @@ from functools import partial
 
 from resources.lib.ui import control, database
 from resources.lib.ui.BrowserBase import BrowserBase
-from resources.lib.indexers import consumet, enime
+from resources.lib.indexers import anify, enime
 
 
 class sources(BrowserBase):
@@ -23,7 +23,7 @@ class sources(BrowserBase):
 
         for x in srcs:
             r = database.get(
-                consumet.CONSUMETAPI().get_sources,
+                anify.ANIFYAPI().get_sources,
                 8,
                 anilist_id,
                 episode,
@@ -93,7 +93,7 @@ class sources(BrowserBase):
             'debrid_provider': '',
             'provider': 'zoro',
             'size': 'NA',
-            'info': ['DUB' if lang == 2 else 'SUB', 'HLS' if item.get('isM3U8') else ''],
+            'info': ['DUB' if lang == 2 else 'SUB'],
             'lang': lang,
             'subs': subs
         }
