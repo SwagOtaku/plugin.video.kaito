@@ -22,7 +22,7 @@ from six.moves import filter, urllib_parse
 # Define class sources, inheriting from BrowserBase class
 class sources(BrowserBase):
     # Set _BASE_URL attribute based on user preferences
-    _BASE_URL = 'https://nyaa.si/' if control.getSetting('provider.nyaa') == 'true' else 'https://nyaa.iss.ink/'
+    _BASE_URL = 'https://nyaa.si/' if control.getSetting('provider.nyaa') == 'true' else 'https://nyaa-si.translate.goog/?_x_tr_sl=es&_x_tr_tl=en&_x_tr_hl=en/'
 
     # Define private method for parsing anime view
     def _parse_anime_view(self, res):
