@@ -46,6 +46,7 @@
 		<setting id="provider.animix" type="bool" label="Animix" default="true" />
 		<setting id="provider.animepahe" type="bool" label="Animepahe" default="true" />
 		<setting id="provider.animesaturn" type="bool" label="AnimeSaturn (For Italian Users)" default="false" visible="false" />
+		<setting id="provider.aniwatch" type="bool" label="Aniwatch" default="true" />
 		<setting id="provider.gogo" type="bool" label="Gogo" default="true" />
 		<setting id="provider.gogohd" type="bool" label="Gogo HD" default="true" />
 		<setting id="provider.nineanime" type="bool" label="9Anime" default="true" />
