@@ -1,6 +1,6 @@
-Changelog 0.3.88 [20230711]:
-- Permanent Fix for Verizon Firestick/Nvidia Users
-- Changed Nyaa Proxy to Google Proxy
+Changelog 0.3.89 [20230712]:
+- Added Aniwatch scraper
+- Removed Animesaturn references 
 
 Changelog 0.3.87 [20230710]:
 - Used anify for zoro
