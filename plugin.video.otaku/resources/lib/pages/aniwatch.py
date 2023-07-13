@@ -57,7 +57,7 @@ class sources(BrowserBase):
         for sdiv in sdivs:
             try:
                 slug = sdiv.get('href').split('?')[0]
-                stitle = sdiv.h3.text
+                stitle = sdiv.h3.get('data-jname')
                 sitems.append({'title': stitle, 'slug': slug})
             except AttributeError:
                 pass
