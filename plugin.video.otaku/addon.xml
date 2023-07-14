@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.89">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.90">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -26,9 +26,8 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.3.89 [20230712]:
-- Added Aniwatch scraper
-- Removed Animesaturn references 
+Changelog 0.3.90 [20230713]:
+- Improved Aniwatch search with romaji titles
     </news>
   </extension>
 </addon>

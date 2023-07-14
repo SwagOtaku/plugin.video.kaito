@@ -1,3 +1,6 @@
+Changelog 0.3.90 [20230713]:
+- Improved Aniwatch search with romaji titles
+
 Changelog 0.3.89 [20230712]:
 - Added Aniwatch scraper
 - Removed Animesaturn references 
