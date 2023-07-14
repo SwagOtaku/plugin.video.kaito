@@ -68,6 +68,10 @@ class sources(BrowserBase):
                 items = [x.get('slug') for x in sitems if title.lower() in x.get('title').lower()]
             else:
                 items = [x.get('slug') for x in sitems if (title.lower() + '  ') in (x.get('title').lower() + '  ')]
+            if not items and ':' in title:
+                title = title.split(':')[0]
+                items = [x.get('slug') for x in sitems if (title.lower() + '  ') in (x.get('title').lower() + '  ')]
+
             if items:
                 slug = items[0]
                 all_results = self._process_aw(slug, title=title, episode=episode, langs=srcs)
