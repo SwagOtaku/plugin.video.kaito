@@ -10,7 +10,7 @@ from resources.lib.ui.BrowserBase import BrowserBase
 
 
 class sources(BrowserBase):
-    _BASE_URL = 'https://gogoanime.vet/'
+    _BASE_URL = 'https://gogoanime3.net/'
 
     def get_sources(self, anilist_id, episode, get_backup):
         show = database.get_show(anilist_id)
