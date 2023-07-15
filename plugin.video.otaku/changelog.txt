@@ -1,3 +1,6 @@
+Changelog 0.3.91 [20230714]:
+- More improvements on Aniwatch search
+
 Changelog 0.3.90 [20230713]:
 - Improved Aniwatch search with romaji titles
 
