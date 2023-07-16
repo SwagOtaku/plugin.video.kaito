@@ -1,3 +1,6 @@
+Changelog 0.3.92 [20230715]:
+- Changed Gogoanime domain
+
 Changelog 0.3.91 [20230714]:
 - More improvements on Aniwatch search
 
