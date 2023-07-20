@@ -27,11 +27,11 @@ class WatchlistFlavorBase(object):
         self._refresh = refresh
         self._sort = sort
 
-        # If title_lang exists then assign it to _title_lang else set it according to control.getSetting("titlelanguage")
+        # If title_lang exists then assign it to _title_lang else set it according to control.getSetting("general.titlelanguage")
         if title_lang:
             self._title_lang = title_lang
         else:
-            self._title_lang = self._get_title_lang(control.getSetting("titlelanguage"))
+            self._title_lang = self._get_title_lang(control.getSetting("general.titlelanguage"))
 
     # This is method to get title language as per the key provided.
     def _get_title_lang(self, title_key):

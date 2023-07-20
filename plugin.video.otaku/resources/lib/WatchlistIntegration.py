@@ -17,7 +17,7 @@ def set_browser(browser):
 # function that gets anime metadata from AniList using MAL ID as input
 def get_anilist_res(mal_id):
     # get title language preference from Kodi settings
-    title_lang = control.getSetting("titlelanguage")
+    title_lang = control.getSetting("general.titlelanguage")
     # import and use the AniListBrowser class to retrieve metadata
     from resources.lib.AniListBrowser import AniListBrowser
     # return the retrieved data
@@ -42,8 +42,6 @@ def get_auth_dialog(flavor):
     # check if authentication was successful
     if auth:
         return WatchlistFlavor.login_request(flavor)
-    else:
-        return
 
 
 # route decorator for login page

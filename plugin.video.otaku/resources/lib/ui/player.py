@@ -77,7 +77,10 @@ class watchlistPlayer(xbmc.Player):
         self._filter_lang = filter_lang
 
         if self.skipintro_aniskip_enable:
-            mal_id = database.get_show(anilist_id)['mal_id']
+            try:
+                mal_id = database.get_show(anilist_id)['mal_id']
+            except TypeError:
+                mal_id = ''
             skipintro_aniskip_res = aniskip.get_skip_times(mal_id, episode, 'op')
 
             if skipintro_aniskip_res:
@@ -86,7 +89,10 @@ class watchlistPlayer(xbmc.Player):
                 self.skipintro_end_skip_time = int(skip_times['endTime']) + int(self.skipintro_aniskip_offset)
 
         if self.skipoutro_aniskip_enable:
-            mal_id = database.get_show(anilist_id)['mal_id']
+            try:
+                mal_id = database.get_show(anilist_id)['mal_id']
+            except TypeError:
+                mal_id = ''
             skipoutro_aniskip_res = aniskip.get_skip_times(mal_id, episode, 'ed')
 
             if skipoutro_aniskip_res:

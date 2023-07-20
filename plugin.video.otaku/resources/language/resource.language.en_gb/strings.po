@@ -196,7 +196,7 @@ msgid "Enable search history"
 msgstr ""
 
 msgctxt "#40302"
-msgid "Interface"
+msgid "Content Customization"
 msgstr ""
 
 msgctxt "#40303"
@@ -909,6 +909,34 @@ msgstr ""
 
 msgctxt "#40480"
 msgid "Hosting Instructions"
+msgstr ""
+
+msgctxt "#40481"
+msgid "Manual File Selection"
+msgstr ""
+
+msgctxt "#40482"
+msgid "Enable Manual File Selection for Batch Torrents"
+msgstr ""
+
+msgctxt "#40483"
+msgid "Smart Episode Scrolling (Only works in List View )"
+msgstr ""
+
+msgctxt "#40484"
+msgid "Artwork Customization"
+msgstr ""
+
+msgctxt "#40485"
+msgid "General Customization"
+msgstr ""
+
+msgctxt "#40486"
+msgid "Hide Episode Info and Plot"
+msgstr ""
+
+msgctxt "#40487"
+msgid "Smart Scroll Wait Time"
 msgstr ""
 
 ######MAIN Category DIRECTORY#######

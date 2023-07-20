@@ -23,9 +23,7 @@ def getAudio_lang(release_title):
 def getQuality(release_title):
     release_title = release_title.lower()
     quality = 'NA'
-    if '4k' in release_title:
-        quality = '4K'
-    if '2160' in release_title:
+    if '4k' in release_title or '2160' in release_title:
         quality = '4K'
     if '1080' in release_title:
         quality = '1080p'
@@ -390,21 +388,23 @@ def get_best_match(dict_key, dictionary_list, episode):
     regex = get_cache_check_reg(episode)
 
     files = []
-
     for i in dictionary_list:
         path = re.sub(r'\[.*?\]', '', i[dict_key].split('/')[-1])
         i['regex_matches'] = regex.findall(path)
         files.append(i)
 
-    files = [i for i in files if len(i['regex_matches']) > 0]
-
-    if len(files) == 0:
-        return None
-
-    files = sorted(files, key=lambda x: len(' '.join(list(x['regex_matches'][0]))), reverse=True)
-
-    if len(files) != 1:
+    if control.getSetting('general.selection') == 'true':
         files = user_select(files, dict_key)
+    else:
+        files = [i for i in files if len(i['regex_matches']) > 0]
+
+        if len(files) == 0:
+            return None
+
+        files = sorted(files, key=lambda x: len(' '.join(list(x['regex_matches'][0]))), reverse=True)
+
+        if len(files) != 1:
+            files = user_select(files, dict_key)
 
     return files[0]
 

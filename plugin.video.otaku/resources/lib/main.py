@@ -68,14 +68,14 @@ MENU_ITEMS = [
     (control.lang(50011), "search_history", 'search.png'),
     (control.lang(50012), "tools", 'tools.png'),
 ]
-_TITLE_LANG = control.getSetting("titlelanguage")
+_TITLE_LANG = control.getSetting("general.titlelanguage")
 _BROWSER = OtakuBrowser()
 _ANILIST_BROWSER = AniListBrowser(_TITLE_LANG)
 
 if control.ADDON_VERSION != control.getSetting('version'):
     database.cache_clear()
     database.torrent_cache_clear()
-    showchangelog = control.getSetting("showchangelog")
+    showchangelog = control.getSetting("general.showchangelog")
     if showchangelog == "Yes":
         control.getChangeLog()
     control.setSetting('version', control.ADDON_VERSION)
@@ -1606,7 +1606,7 @@ def REMOVE_FROM_WATCHLIST(payload, params):
 @route('search_history')
 def SEARCH_HISTORY(payload, params):
     history = database.getSearchHistory('show')
-    if "Yes" in control.getSetting('searchhistory'):
+    if "Yes" in control.getSetting('general.searchhistory'):
         return control.draw_items(_BROWSER.search_history(history), contentType="addons", draw_cm=False)
     else:
         return SEARCH(payload, params)
@@ -1629,7 +1629,7 @@ def SEARCH(payload, params):
         return False
 
     # TODO: Better logic here, maybe move functionatly into router?
-    if "Yes" in control.getSetting('searchhistory'):
+    if "Yes" in control.getSetting('general.searchhistory'):
         database.addSearchHistory(query, 'show')
         # history = database.getSearchHistory('show')
 
@@ -1652,13 +1652,6 @@ def SEARCH_RESULTS(payload, params):
     query = params.get('query')
     items = _ANILIST_BROWSER.get_search(query, 1)
     return control.draw_items(items)
-
-
-@route('play_latest/*')
-def PLAY_LATEST(payload, params):
-    debrid_provider, hash_ = payload.rsplit('/')
-    link = _BROWSER.get_latest_sources(debrid_provider, hash_)
-    player.play_source(link)
 
 
 @route('play_movie/*')
@@ -1687,22 +1680,6 @@ def PLAY_MOVIE(payload, params):
                        watchlist_update,
                        None,
                        int(episode))
-
-
-@route('play_gogo/*')
-def PLAY_GOGO(payload, params):
-    slug, episode = payload.rsplit('/')
-    from resources.lib.pages import gogoanime
-    sources = gogoanime.sources()._process_gogo(slug, '', episode)
-
-    _mock_args = {}
-    from resources.lib.windows.source_select import SourceSelect
-
-    link = SourceSelect(*('source_select.xml', control.ADDON_PATH),
-                        actionArgs=_mock_args, sources=sources).doModal()
-
-    player.play_source(link)
-
 
 @route('play/*')
 def PLAY(payload, params):

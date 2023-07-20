@@ -3,8 +3,7 @@ import json
 import time
 
 from resources.lib.ui import control
-from resources.lib.WatchlistFlavor.WatchlistFlavorBase import \
-    WatchlistFlavorBase
+from resources.lib.WatchlistFlavor.WatchlistFlavorBase import WatchlistFlavorBase
 from six.moves import urllib_parse
 
 
@@ -121,7 +120,7 @@ class KitsuWLF(WatchlistFlavorBase):
     # Define a function to process and get the watchlist status view
     def _process_watchlist_status_view(self, url, params, base_plugin_url, page):
         # Get the list of all statuses for watchlist
-        all_results = list(map(self._base_watchlist_status_view, self.__kitsu_statuses()))
+        all_results = map(self._base_watchlist_status_view, self.__kitsu_statuses())
         # Flatten the resulting nested list into a single list
         all_results = list(itertools.chain(*all_results))
         # Return all results obtained
@@ -191,9 +190,9 @@ class KitsuWLF(WatchlistFlavorBase):
         # Run various functions based on whether or not the user has specified a value for "next_up"
         # Returns a list of all the available results as dictionaries.
         if next_up:
-            all_results = list(map(self._base_next_up_view, _list, el))
+            all_results = map(self._base_next_up_view, _list, el)
         else:
-            all_results = list(map(self._base_watchlist_view, _list, el))
+            all_results = map(self._base_watchlist_view, _list, el)
 
         # Flatten the list of results with itertools.chain(*iterables), which returns a new iterator
         all_results = list(itertools.chain(*all_results))
@@ -301,15 +300,18 @@ class KitsuWLF(WatchlistFlavorBase):
                 image = next_up_meta.get('image')
             plot = next_up_meta.get('plot')
             aired = next_up_meta.get('aired')
-        info = {}
 
         # Build a dictionary of relevant episode information
-        info['episode'] = next_up
-        info['title'] = title
-        info['tvshowtitle'] = anime_title
-        info['plot'] = plot
-        info['mediatype'] = 'episode'
-        info['aired'] = aired
+        info = {
+            'episode': next_up,
+            'title': title,
+            'tvshowtitle': anime_title,
+            'plot': plot,
+            'mediatype': 'episode',
+            'aired': aired
+        }
+
+
 
         # Build the dictionary entry for the episode
         base = {
@@ -503,7 +505,6 @@ class KitsuWLF(WatchlistFlavorBase):
         elif result.get('errors'):
             if result.get('errors')[0].get('title', '') == 'has already been taken':
                 control.notify('Already in Watchlist')
-        return
 
     # Define a method that removes an anime entry from a user's watchlist on Kitsu
     def watchlist_remove(self, mal_id):
@@ -520,11 +521,11 @@ class KitsuWLF(WatchlistFlavorBase):
         # Send a GET request to retrieve the ID of the specified anime entry in the user's library
         result = self._get_request(url, headers=self.__headers(), params=params)
         item_id = json.loads(result).get('data')[0].get('id')
+
         # Send a DELETE request to remove the specified anime entry from the user's library and notify the user if successful
         url = self._to_url("edge/library-entries/%s" % (item_id))
         _ = self._delete_request(url, headers=self.__headers())
         control.notify('Removed from Watchlist')
-        return
 
     def watchlist_completed(self, anilist_id='', mal_id='', kitsu_id=''):
         if not kitsu_id:
@@ -565,4 +566,3 @@ class KitsuWLF(WatchlistFlavorBase):
         elif result.get('errors'):
             if result.get('errors')[0].get('title', '') == 'has already been taken':
                 control.notify('Already in Completed')
-        return

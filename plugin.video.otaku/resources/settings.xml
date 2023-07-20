@@ -2,12 +2,16 @@
 <settings>
 	<!-- General -->
 	<category label="40300">
-		<!-- General -->
-		<setting id="titlelanguage" type="labelenum" label="40369" lvalues="40370|40371" default ="40371"/>
-		<setting id="searchhistory" type="labelenum" label="40301" values="Yes|No" default="Yes"/>
-		<setting id="showchangelog" type="labelenum" label="40426" values="Yes|No" default="Yes"/>
+		<!-- General Customization -->
+		<setting type="lsep" label="40485"/>
+		<setting id="general.titlelanguage" type="labelenum" label="40369" lvalues="40370|40371" default ="40371"/>
+		<setting id="general.searchhistory" type="labelenum" label="40301" values="Yes|No" default="Yes"/>
+		<setting id="general.showchangelog" type="labelenum" label="40426" values="Yes|No" default="Yes"/>
+		<setting id="general.smartscroll" type="bool" label="40483" default="False" />
+		<setting id="general.smartscroll.wait.time" type="slider" label="40487" default="500" range="10,100,2000" option="int" visible="eq(-1,true)" />
+<!--		<setting id="general.spoilers" type="bool" label="40486" default="False" />-->
 
-		<!-- Interface -->
+		<!-- Content Customization -->
 		<setting type="lsep" label="40302"/>
 		<setting id="sep"/>
 		<setting id="divflavors.bool" label="40428" type="bool" default="false"/>
@@ -25,10 +29,13 @@
 		<setting id="perpage.bool" label="40466" type="bool" default="false"/>
 		<setting id="perpage.menu" type="slider" subsetting="true" label="40467" range="5,5,50" default="20" option="int" visible="eq(-1,true)"/>
 		<setting id="sep"/>
+		<!-- Artwork Customization -->
+		<setting type="lsep" label="40484"/>
 		<setting id="general.icons" type="enum" label="40388" lvalues="40389|40390" default="0"/>
 		<setting id="general.dialog" type="enum" label="40455" lvalues="40456|40457|40458" default="0"/>
 		<setting id="scraping.fanart" type="bool" label="40433" default="false" />
 		<setting id="scraping.clearlogo" type="bool" label="40434" default="false" />
+
 		<!--
 		<setting id="contenttype.seasons" type="labelenum" label="- Seasons content type" values="seasons|tvshows" default="tvshows" visible="eq(-2,true)"/>
 		<setting id="contenttype.episodes" type="labelenum" label="- Episodes content type" values="episodes|tvshows" default="tvshows" visible="eq(-3,true)"/>
@@ -43,6 +50,7 @@
 	<category label="40226">
 		<setting id="provider.nyaa" type="bool" label="Nyaa" default="true" enable="eq(1,false)" />
 		<setting id="provider.nyaaalt" type="bool" label="Nyaa Alt (For Verizon Users)" default="false" enable="eq(-1,false)" />
+		<setting id="provider.animetosho" type="bool" label="Anime Tosho" default="true" />
 		<setting id="provider.animix" type="bool" label="Animix" default="true" />
 		<setting id="provider.animepahe" type="bool" label="Animepahe" default="true" />
 		<setting id="provider.aniwatch" type="bool" label="Aniwatch" default="true" />
@@ -101,6 +109,9 @@
 		<setting id="general.maxResolution" type="enum" label="40328" values="4k|1080p|720p|NA" default="0" />
 		<setting id="general.disable265" type="bool" label="40329" default="false" />
 		<setting type="sep" />
+		<!-- Manual File Selection -->
+		<setting type="lsep" label="40481"/>
+		<setting id="general.selection" type="bool" label="40482" default="false" />
 		<!-- Source Sorting -->
 		<setting type="lsep" label="40331"/>
 		<setting id="general.sortsources" type="enum" label="40332" values="Torrents|Embeds" default="0" />
@@ -373,11 +384,10 @@
 		<setting id="rebuild_database" type="action" label="30026" action="RunPlugin(plugin://plugin.video.otaku/rebuild_database)"/>
 		<setting id="wipe_addon_data" type="action" label="30024" action="RunPlugin(plugin://plugin.video.otaku/wipe_addon_data)"/>
 
-		<!-- Overrides -->
-		<!-- <setting type="lsep" label="40474"/> -->
-		<!-- <setting id="sep"/> -->
-		<!-- <setting id="override.episode.bool" label="40475" type="bool" default="false"/> -->
-		<!-- <setting id="override.episode.menu" type="labelenum" subsetting="true" label="40476" values="Consumet|Enime|Simkl" default="0" visible="eq(-1,true)"/> -->
-		<!-- <setting id="sep"/> -->
+<!--		 &lt;!&ndash;Overrides &ndash;&gt;-->
+<!--		 <setting type="lsep" label="40474"/>-->
+<!--		 <setting id="sep"/>-->
+<!--		 <setting id="override.episode.bool" label="40475" type="bool" default="false"/>-->
+<!--		 <setting id="override.episode.menu" type="labelenum" subsetting="true" label="40476" values="Consumet|Enime|Simkl" default="0" visible="eq(-1,true)"/>-->
 	</category>
 </settings>

@@ -400,11 +400,24 @@ def draw_items(video_data, contentType="tvshows", viewType=None, draw_cm=None, b
     xbmcplugin.setContent(HANDLE, contentType)
     if contentType == 'episodes':
         xbmcplugin.addSortMethod(HANDLE, xbmcplugin.SORT_METHOD_EPISODE)
+
     xbmcplugin.endOfDirectory(HANDLE, succeeded=True, updateListing=False, cacheToDisc=True)
 
     if viewType:
         xbmc.executebuiltin('Container.SetViewMode(%d)' % _get_view_type(viewType))
 
+    # move to episode position currently watching
+    if contentType == "episodes" and getSetting('general.smartscroll') == 'true':
+        sleep(int(getSetting('general.smartscroll.wait.time')))
+        try:
+            num_watched = int(xbmc.getInfoLabel("Container.TotalWatched"))
+            total_ep = int(xbmc.getInfoLabel('Container(id).NumItems'))
+        except ValueError:
+            return False
+        if total_ep > num_watched > 0:
+            xbmc.executebuiltin('Action(firstpage)')
+            for _ in range(num_watched + 1):
+                xbmc.executebuiltin('Action(Down)')
     return True
 
 
@@ -498,3 +511,10 @@ def getGlobalProp(property):
         return value.lower == "true"
     else:
         return value
+
+#             ## for testing ###
+# def print(string, *args):
+#     for i in list(args):
+#         string = f'{string} {i}'
+#     textviewer_dialog('print', f'{string}')
+#     del args, string

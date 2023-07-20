@@ -88,6 +88,8 @@ class ENIMEAPI:
             s_id = self._get_season(result)
             if s_id:
                 season = s_id[0]
+            database._update_season(anilist_id, season)
+
             result = result.get('episodes')
             mapfunc = partial(self._parse_episode_view, show_id=anilist_id, show_meta=show_meta, season=season, poster=poster, fanart=fanart, eps_watched=eps_watched, update_time=update_time)
             all_results = list(map(mapfunc, result))

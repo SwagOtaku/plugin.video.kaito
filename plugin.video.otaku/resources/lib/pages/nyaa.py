@@ -1,22 +1,15 @@
-# Import necessary libraries/modules
-import copy
 import itertools
 import json
 import pickle
 import re
-import threading
-from functools import partial
-
-# Import external libraries/modules
 import six
-from bs4 import BeautifulSoup, SoupStrainer
 
-# Import internal modules
-from resources.lib.debrid import (all_debrid, debrid_link, premiumize,
-                                  real_debrid)
-from resources.lib.ui import control, database, source_utils, utils
+from functools import partial
+from bs4 import BeautifulSoup, SoupStrainer
+from resources.lib import debrid
+from resources.lib.ui import control, database, source_utils
 from resources.lib.ui.BrowserBase import BrowserBase
-from six.moves import filter, urllib_parse
+from six.moves import urllib_parse
 
 
 # Define class sources, inheriting from BrowserBase class
@@ -24,30 +17,15 @@ class sources(BrowserBase):
     # Set _BASE_URL attribute based on user preferences
     _BASE_URL = 'https://nyaa.si/' if control.getSetting('provider.nyaa') == 'true' else 'https://nyaa-si.translate.goog/?_x_tr_sl=es&_x_tr_tl=en&_x_tr_hl=en/'
 
-    # Define private method for parsing anime view
-    def _parse_anime_view(self, res):
-        # Create empty dictionary to store info
-        info = {}
-        # Create url variable by formatting result hash and debrid_provider
-        url = '{}/{}'.format(res['debrid_provider'], res['hash'])
-        # Create name variable from result name
-        name = res['name']
-        # Set default image
-        image = 'DefaultVideo.png'
-        # Add title and mediatype to info dictionary
-        info['title'] = name
-        info['mediatype'] = 'tvshow'
-        # Return allocated item with url, image, and info dictionary
-        return utils.allocate_item(name, "play_latest/" + str(url), False, image, info)
-
     # Define private method for parsing nyaa episode view
-    def _parse_nyaa_episode_view(self, res, episode):
+    @staticmethod
+    def _parse_nyaa_episode_view(res, episode):
         # Create dictionary with necessary information
         source = {
             'release_title': res['name'].encode('utf-8') if six.PY2 else res['name'],
             'hash': res['hash'],
             'type': 'torrent',
-            'quality': self.get_quality(res['name']),
+            'quality': source_utils.getQuality(res['name']),
             'debrid_provider': res['debrid_provider'],
             'provider': 'nyaa',
             'episode_re': episode,
@@ -59,13 +37,14 @@ class sources(BrowserBase):
         return source
 
     # Define private method for parsing nyaa cached episode view
-    def _parse_nyaa_cached_episode_view(self, res, episode):
+    @staticmethod
+    def _parse_nyaa_cached_episode_view(res, episode):
         # Create dictionary with necessary information
         source = {
             'release_title': res['name'].encode('utf-8') if six.PY2 else res['name'],
             'hash': res['hash'],
             'type': 'torrent',
-            'quality': self.get_quality(res['name']),
+            'quality': source_utils.getQuality(res['name']),
             'debrid_provider': res['debrid_provider'],
             'provider': 'nyaa (Local Cache)',
             'episode_re': episode,
@@ -75,71 +54,6 @@ class sources(BrowserBase):
         }
 
         return source
-
-    # Define method to get quality based on release title
-    def get_quality(self, release_title):
-        # Convert release title to lowercase
-        release_title = release_title.lower()
-        # Set default quality
-        quality = 'NA'
-        # Check for different qualities in release title and update quality accordingly
-        if '4k' in release_title:
-            quality = '4K'
-        if '2160' in release_title:
-            quality = '4K'
-        if '1080' in release_title:
-            quality = '1080p'
-        if '720' in release_title:
-            quality = '720p'
-        if '480' in release_title:
-            quality = 'NA'
-
-        return quality
-
-    # Define method to handle paging
-    def _handle_paging(self, total_pages, base_url, page):
-        # Check if on last page and return empty list if true
-        if page == total_pages:
-            return []
-        # Set next page variable
-        next_page = page + 1
-        # Use next_page variable to create name variable
-        name = "Next Page (%d/%d)" % (next_page, total_pages)
-        # Return allocated item with base_url and fanart
-        return [utils.allocate_item(name, base_url % next_page, True, 'next.png', fanart='next.png')]
-
-    # Define private method for making JSON request
-    def _json_request(self, url, data=''):
-        # Load response as JSON and return
-        response = json.loads(self._get_request(url, data))
-        return response
-
-    # Define method for processing anime view
-    def _process_anime_view(self, url, data, base_plugin_url, page):
-        # Make JSON request
-        json_resp = self._get_request(url)
-        # Parse results using BeautifulSoup
-        results = BeautifulSoup(json_resp, 'html.parser')
-        rex = r'(magnet:)+[^"]*'
-        search_results = [
-            (i.find_all('a', {'href': re.compile(rex)})[0].get('href'),
-             i.find_all('a', {'class': None})[1].get('title'))
-            for i in results.select("tr.default,tr.success")
-        ]
-
-        list_ = [
-            {'magnet': magnet,
-             'name': name
-             }
-            for magnet, name in search_results]
-
-        for torrent in list_:
-            torrent['hash'] = re.findall(r'btih:(.*?)(?:&|$)', torrent['magnet'])[0]
-
-        cache_list = TorrentCacheCheck().torrentCacheCheck(list_)
-        all_results = list(map(self._parse_anime_view, cache_list))
-
-        return all_results
 
     # Define function with parameters url, episode, and season (with None as default value)
     def _process_nyaa_episodes(self, url, episode, season=None):
@@ -181,9 +95,7 @@ class sources(BrowserBase):
                     regex_ep_range = r'\s\d+-\d+|\s\d+~\d+|\s\d+\s-\s\d+|\s\d+\s~\s\d+'
                     rex_ep_range = re.compile(regex_ep_range)
 
-                    if rex_ep_range.search(title):
-                        pass
-                    else:
+                    if not rex_ep_range.search(title):
                         continue
 
                 match = rex.findall(title)
@@ -196,8 +108,8 @@ class sources(BrowserBase):
             else:
                 filtered_list.append(torrent)
 
-        # Call TorrentCacheCheck() method and sort the list by number of downloads
-        cache_list = TorrentCacheCheck().torrentCacheCheck(filtered_list)
+        # Call debrid.TorrentCacheCheck() method and sort the list by number of downloads
+        cache_list = debrid.TorrentCacheCheck().torrentCacheCheck(filtered_list)
         cache_list = sorted(cache_list, key=lambda k: k['downloads'], reverse=True)
 
         # Use map function to call _parse_nyaa_episode_view() for each item in the list and return all results
@@ -238,7 +150,7 @@ class sources(BrowserBase):
             database.addTorrentList(anilist_id, list_, _zfill)
 
         # Checking torrent cache and sorting by downloads in descending order
-        cache_list = TorrentCacheCheck().torrentCacheCheck(list_)
+        cache_list = debrid.TorrentCacheCheck().torrentCacheCheck(list_)
         cache_list = sorted(cache_list, key=lambda k: k['downloads'], reverse=True)
 
         # Mapping function to parse results
@@ -276,7 +188,7 @@ class sources(BrowserBase):
             torrent['hash'] = re.findall(r'btih:(.*?)(?:&|$)', torrent['magnet'])[0]
 
         # Checking torrent cache and sorting by downloads in descending order
-        cache_list = TorrentCacheCheck().torrentCacheCheck(list_)
+        cache_list = debrid.TorrentCacheCheck().torrentCacheCheck(list_)
         cache_list = sorted(cache_list, key=lambda k: k['downloads'], reverse=True)
 
         # Mapping function to parse results
@@ -287,36 +199,11 @@ class sources(BrowserBase):
     # This function processes cached sources
     def _process_cached_sources(self, list_, episode):
         # Checking torrent cache
-        cache_list = TorrentCacheCheck().torrentCacheCheck(list_)
+        cache_list = debrid.TorrentCacheCheck().torrentCacheCheck(list_)
         # Mapping function to parse results
         mapfunc = partial(self._parse_nyaa_cached_episode_view, episode=episode)
         all_results = list(map(mapfunc, cache_list))
         return all_results
-
-    # This function gets the latest anime by scraping web page
-    def get_latest(self, page=1):
-        url = self._BASE_URL + '?f=0&c=1_0&q='
-        data = ''
-        return self._process_anime_view(url, data, "latest/%d", page)
-
-    # This function gets the latest dubbed anime by scraping web page
-    def get_latest_dub(self, page=1):
-        url = self._BASE_URL + '?f=0&c=1_2&q=english+dub'
-        data = ''
-        return self._process_anime_view(url, data, "latest_dub/%d", page)
-
-    # Defines the function storeTorrentResults which takes in a parameter torrent_list
-    def storeTorrentResults(self, torrent_list):
-
-        try:
-            # checks if the length of the torrent list is 0
-            if len(torrent_list) == 0:
-                return
-
-            # adds torrent list information to the database
-            database.addTorrent(self.item_information, torrent_list)
-        except:
-            pass
 
     # Defines the function get_sources which takes in several parameters: query, anilist_id, episode, status, media_type, and rescrape
     def get_sources(self, query, anilist_id, episode, status, media_type, rescrape):
@@ -374,7 +261,7 @@ class sources(BrowserBase):
 
         # if status is "FINISHED", updates the query and URL string
         if status == 'FINISHED':
-            query = '%s "Batch"|"Complete Series"' % (show)
+            query = '%s "Batch"|"Complete Series"' % show
 
             episodes = pickle.loads(database.get_show(anilist_id)['kodi_meta'])['episodes']
             if episodes:
@@ -435,7 +322,7 @@ class sources(BrowserBase):
     # Defines the function _get_episode_sources_pack which takes in several parameters: show, anilist_id, and episode
     def _get_episode_sources_pack(self, show, anilist_id, episode):
         # creates query string for Nyaa.si search
-        query = '%s "Batch"|"Complete Series"' % (show)
+        query = '%s "Batch"|"Complete Series"' % show
 
         episodes = pickle.loads(database.get_show(anilist_id)['kodi_meta'])['episodes']
         if episodes:
@@ -481,129 +368,3 @@ class sources(BrowserBase):
         # set URL based on query
         url = '%s?f=0&c=1_2&q=%s' % (self._BASE_URL, query)
         return self._process_nyaa_movie(url, episode)
-
-
-# Class definition for TorrentCacheCheck
-class TorrentCacheCheck:
-    def __init__(self):
-        self.premiumizeCached = []
-        self.realdebridCached = []
-        self.all_debridCached = []
-        self.debrid_linkCached = []
-        self.threads = []
-
-        self.episodeStrings = None
-        self.seasonStrings = None
-
-    # Definition of 'torrentCacheCheck' function
-    def torrentCacheCheck(self, torrent_list):
-        if control.real_debrid_enabled():
-            self.threads.append(
-                threading.Thread(target=self.real_debrid_worker, args=(copy.deepcopy(torrent_list),)))
-
-        if control.debrid_link_enabled():
-            self.threads.append(
-                threading.Thread(target=self.debrid_link_worker, args=(copy.deepcopy(torrent_list),)))
-
-        if control.premiumize_enabled():
-            self.threads.append(threading.Thread(target=self.premiumize_worker, args=(copy.deepcopy(torrent_list),)))
-
-        if control.all_debrid_enabled():
-            self.threads.append(
-                threading.Thread(target=self.all_debrid_worker, args=(copy.deepcopy(torrent_list),)))
-
-        # starting all the threads
-        for i in self.threads:
-            i.start()
-        # joining all the threads
-        for i in self.threads:
-            i.join()
-
-        cachedList = self.realdebridCached + self.premiumizeCached + self.all_debridCached + self.debrid_linkCached
-        return cachedList
-
-    # Function to check cache on 'all_debrid'
-    def all_debrid_worker(self, torrent_list):
-
-        api = all_debrid.AllDebrid()
-
-        if len(torrent_list) == 0:
-            return
-
-        cache_check = api.check_hash([i['hash'] for i in torrent_list])
-        if not cache_check:
-            return
-
-        cache_list = []
-        cached_items = [m.get('hash') for m in cache_check if m.get('instant') is True]
-
-        for i in torrent_list:
-            if i['hash'] in cached_items:
-                i['debrid_provider'] = 'all_debrid'
-                cache_list.append(i)
-
-        self.all_debridCached = cache_list
-
-    # Function to check cache on 'debrid_link'
-    def debrid_link_worker(self, torrent_list):
-
-        api = debrid_link.DebridLink()
-
-        if len(torrent_list) == 0:
-            return
-
-        cache_check = api.check_hash([i['hash'] for i in torrent_list])
-
-        if not cache_check:
-            return
-
-        cache_list = []
-
-        for i in torrent_list:
-            if i['hash'] in list(cache_check.keys()):
-                i['debrid_provider'] = 'debrid_link'
-                cache_list.append(i)
-
-        self.debrid_linkCached = cache_list
-
-    # Function to check cache on 'real_debrid'
-    def real_debrid_worker(self, torrent_list):
-        cache_list = []
-
-        hash_list = [i['hash'] for i in torrent_list]
-
-        if len(hash_list) == 0:
-            return
-        api = real_debrid.RealDebrid()
-        realDebridCache = api.checkHash(hash_list)
-
-        for i in torrent_list:
-            try:
-                if 'rd' not in realDebridCache.get(i['hash'], {}):
-                    continue
-                if len(realDebridCache[i['hash']]['rd']) >= 1:
-                    i['debrid_provider'] = 'real_debrid'
-                    cache_list.append(i)
-                else:
-                    pass
-            except KeyError:
-                pass
-
-        self.realdebridCached = cache_list
-
-    # Function to check cache on 'premiumize'
-    def premiumize_worker(self, torrent_list):
-        hash_list = [i['hash'] for i in torrent_list]
-        if len(hash_list) == 0:
-            return
-        premiumizeCache = premiumize.Premiumize().hash_check(hash_list)
-        premiumizeCache = premiumizeCache['response']
-        cache_list = []
-        count = 0
-        for i in torrent_list:
-            if premiumizeCache[count] is True:
-                i['debrid_provider'] = 'premiumize'
-                cache_list.append(i)
-            count += 1
-
-        self.premiumizeCached = cache_list

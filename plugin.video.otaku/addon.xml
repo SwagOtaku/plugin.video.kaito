@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.92">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.93">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -9,6 +9,7 @@
     <import addon="context.otaku" version="0.0.10"/>
     <import addon="script.otaku.themepak" version="0.0.7"/>
     <!-- <import addon="script.module.web-pdb" version="1.6.0"/> -->
+
   </requires>
   <extension library="default.py" point="xbmc.python.pluginsource">
         <provides>video</provides>
@@ -26,8 +27,11 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.3.92 [20230715]:
-- Changed Gogoanime domain
+Changelog 0.3.93 [20230719]:
+- Improved Nyaa Scrapping
+- Added Anime Tosho Scrapper
+- Added Manual Batch File Selection Setting
+- Added Smart Episode Scrolling Setting
     </news>
   </extension>
 </addon>

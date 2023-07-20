@@ -117,6 +117,7 @@ class CONSUMETAPI:
     def _process_episode_view(self, anilist_id, show_meta, poster, fanart, eps_watched):
         from datetime import date
         update_time = date.today().isoformat()
+
         all_results = []
         result = self.get_anilist_meta(anilist_id)
         if result:
@@ -129,6 +130,8 @@ class CONSUMETAPI:
             if s_id:
                 season = s_id[0]
             result = result.get('episodes')
+            database._update_season(anilist_id, season)
+
             mapfunc = partial(self._parse_episode_view, show_id=anilist_id, show_meta=show_meta, season=season, poster=poster, fanart=fanart, eps_watched=eps_watched, update_time=update_time)
             all_results = list(map(mapfunc, result))
         return all_results
@@ -166,7 +169,6 @@ class CONSUMETAPI:
         poster = kodi_meta.get('poster')
         eps_watched = kodi_meta.get('eps_watched')
         episodes = database.get_episode_list(int(anilist_id))
-
         if episodes:
             return (self._process_episodes(anilist_id, episodes, eps_watched), 'episodes')
 

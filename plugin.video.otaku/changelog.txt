@@ -1,3 +1,9 @@
+Changelog 0.3.93 [20230719]:
+- Improved Nyaa Scrapping
+- Added Anime Tosho Scrapper
+- Added Manual Batch File Selection Setting
+- Added Smart Episode Scrolling Setting
+
 Changelog 0.3.92 [20230715]:
 - Changed Gogoanime domain
 

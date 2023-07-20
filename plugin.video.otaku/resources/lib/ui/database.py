@@ -441,7 +441,6 @@ def _update_season(show_id, season):
         cursor.close()
         import traceback
         traceback.print_exc()
-        pass
     finally:
         control.try_release_lock(control.anilistSyncDB_lock)
 
@@ -465,7 +464,6 @@ def _update_episode(show_id, season=0, number=0, number_abs=0, update_time='', k
         cursor.close()
         import traceback
         traceback.print_exc()
-        pass
     finally:
         control.try_release_lock(control.anilistSyncDB_lock)
 
@@ -727,7 +725,6 @@ def updateSlugs(anilist_id, sources):
         except:
             import traceback
             traceback.print_exc()
-            pass
 
         cursor.connection.commit()
         cursor.close()

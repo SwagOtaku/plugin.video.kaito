@@ -4,8 +4,9 @@ from kodi_six import xbmc
 
 class SettingsMonitor(xbmc.Monitor):
     def __init__(self):
-        while (not self.abortRequested()):
+        while not self.abortRequested():
             xbmc.sleep(1000)
 
-    def onSettingsChanged(self):
+    @staticmethod
+    def onSettingsChanged():
         control.setGlobalProp("calendarRefresh", True)

@@ -1,10 +1,9 @@
 import threading
 import time
 
-from resources.lib.pages import animixplay, debrid_cloudfiles, nineanime, gogoanime, gogohd, nyaa, animepahe, aniwatch, zoro
+from resources.lib.pages import nyaa, animetosho, animixplay, debrid_cloudfiles, nineanime, gogoanime, gogohd, animepahe, aniwatch, zoro
 from resources.lib.ui import control
-from resources.lib.windows.get_sources_window import \
-    GetSources as DisplayWindow
+from resources.lib.windows.get_sources_window import GetSources as DisplayWindow
 
 
 class CancelProcess(Exception):
@@ -25,6 +24,7 @@ def getSourcesHelper(actionArgs):
 
 class Sources(DisplayWindow):
     def __init__(self, xml_file, location, actionArgs=None):
+
         try:
             super(Sources, self).__init__(xml_file, location, actionArgs)
         except:
@@ -40,7 +40,7 @@ class Sources(DisplayWindow):
         self.embedSources = []
         self.hosterSources = []
         self.cloud_files = []
-        self.remainingProviders = ['nyaa', '9anime', 'gogo', 'gogohd', 'animix', 'animepahe', 'aniwatch', 'zoro']
+        self.remainingProviders = ['nyaa', 'animetosho', '9anime', 'gogo', 'gogohd', 'animix', 'animepahe', 'aniwatch', 'zoro']
         self.allTorrents = {}
         self.allTorrents_len = 0
         self.hosterDomains = {}
@@ -66,6 +66,7 @@ class Sources(DisplayWindow):
 
         self.remainingSources = ['1', '2', '3']
         self.nyaaSources = []
+        self.animetoshoSources = []
         self.gogoSources = []
         self.gogohdSources = []
         self.nineSources = []
@@ -74,6 +75,7 @@ class Sources(DisplayWindow):
         self.aniwatchSources = []
         self.zoroSources = []
         self.threads = []
+        self.usercloudSources = []
 
     def getSources(self, args):
         query = args['query']
@@ -92,8 +94,16 @@ class Sources(DisplayWindow):
                     threading.Thread(target=self.nyaa_worker, args=(query, anilist_id, episode, status, media_type, rescrape)))
             else:
                 self.remainingProviders.remove('nyaa')
+
+            if control.getSetting('provider.animetosho') == 'true':
+                self.threads.append(
+                    threading.Thread(target=self.animetosho_worker, args=(query, anilist_id, episode, status, media_type, rescrape)))
+            else:
+                self.remainingProviders.remove('animetosho')
+
         else:
             self.remainingProviders.remove('nyaa')
+            self.remainingProviders.remove('animetosho')
 
         if control.getSetting('provider.gogo') == 'true':
             self.threads.append(
@@ -193,6 +203,11 @@ class Sources(DisplayWindow):
         self.torrentCacheSources += self.nyaaSources
         self.remainingProviders.remove('nyaa')
 
+    def animetosho_worker(self, query, anilist_id, episode, status, media_type, rescrape):
+        self.animetoshoSources = animetosho.sources().get_sources(query, anilist_id, episode, status, media_type, rescrape)
+        self.torrentCacheSources += self.animetoshoSources
+        self.remainingProviders.remove('animetosho')
+
     def gogo_worker(self, anilist_id, episode, get_backup, rescrape):
         if not rescrape:
             self.gogoSources = gogoanime.sources().get_sources(anilist_id, episode, get_backup)
@@ -252,10 +267,11 @@ class Sources(DisplayWindow):
 
         self.remainingProviders.remove('Cloud Inspection')
 
-    def resolutionList(self):
+    @staticmethod
+    def resolutionList():
         resolutions = []
         max_res = int(control.getSetting('general.maxResolution'))
-        if max_res == 3 or max_res < 3:
+        if max_res <= 3:
             resolutions.append('NA')
             resolutions.append('EQ')
         if max_res < 3:
@@ -267,7 +283,8 @@ class Sources(DisplayWindow):
 
         return resolutions
 
-    def debrid_priority(self):
+    @staticmethod
+    def debrid_priority():
         p = []
 
         if control.getSetting('premiumize.enabled') == 'true':
@@ -608,12 +625,9 @@ class Sources(DisplayWindow):
 
         return sortedList
 
-    def colorNumber(self, number):
-
-        if int(number) > 0:
-            return control.colorString(number, 'green')
-        else:
-            return control.colorString(number, 'red')
+    @staticmethod
+    def colorNumber(number):
+        return control.colorString(number, 'green') if int(number) > 0 else control.colorString(number, 'red')
 
     def updateProgress(self):
 

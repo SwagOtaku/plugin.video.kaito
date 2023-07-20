@@ -2,11 +2,8 @@ import datetime
 import json
 import pickle
 import random
-# import re
 
 from resources.lib import pages
-from resources.lib.debrid import (all_debrid, debrid_link, premiumize,
-                                  real_debrid)
 from resources.lib.indexers import simkl, trakt, consumet, enime
 from resources.lib.ui import client, control, database, utils
 from resources.lib.ui.BrowserBase import BrowserBase
@@ -18,23 +15,6 @@ class OtakuBrowser(BrowserBase):
         name = res
         return utils.allocate_item(name, "search/%s/1" % name, True)
 
-    def _parse_airing_dub_view(self, res):
-        name = list(res.values())[0]
-        mal_id = (list(res.keys())[0]).rsplit('/')[-2]
-        url = 'watchlist_to_ep/{}//0'.format(mal_id)
-
-        try:
-            image = pickle.loads(database.get_show_mal(mal_id)['kodi_meta'])['poster']
-        except:
-            image = 'DefaultVideo.png'
-
-        info = {}
-
-        info['title'] = name
-        info['plot'] = '** = Dub production suspended until further notice.\n++ = Dub is being produced from home studios with an irregular release schedule.'
-        info['mediatype'] = 'tvshow'
-
-        return utils.allocate_item(name, url, True, image, info)
 
     # TODO: Not sure i want this here..
     def search_history(self, search_array):
@@ -42,33 +22,6 @@ class OtakuBrowser(BrowserBase):
         result.insert(0, utils.allocate_item("New Search", "search", True, 'new_search.png'))
         result.insert(len(result), utils.allocate_item("Clear Search History...", "clear_history", True, 'clear_search_history.png'))
         return result
-
-    def get_airing_dub(self):
-        resp = client.request('https://armkai.vercel.app/api/airingdub', output='extended')
-
-        if resp[1] != '200':
-            return []
-
-        all_results = list(map(self._parse_airing_dub_view, json.loads(resp[0])))
-        return all_results
-
-    def get_latest(self, real_debrid_enabled, premiumize_enabled):
-        if real_debrid_enabled or premiumize_enabled:
-            page = pages.nyaa.sources
-        else:
-            page = pages.gogoanime.sources
-
-        latest = database.get(page().get_latest, 0.125)
-        return latest
-
-    def get_latest_dub(self, real_debrid_enabled, premiumize_enabled):
-        if real_debrid_enabled or premiumize_enabled:
-            page = pages.nyaa.sources
-        else:
-            page = pages.gogoanime.sources
-
-        latest_dub = database.get(page().get_latest_dub, 0.125)
-        return latest_dub
 
     def get_backup(self, anilist_id, source):
         show = database.get_show(anilist_id)
@@ -89,11 +42,6 @@ class OtakuBrowser(BrowserBase):
         arm_resp = json.loads(arm_resp)
         mal_id = arm_resp["mal"]
         return mal_id
-
-    def clean_show(self, show_id, meta_ids):
-        database.add_meta_ids(show_id, meta_ids)
-        database.remove_season(show_id)
-        database.remove_episodes(show_id)
 
     def search_trakt_shows(self, anilist_id):
         shows = trakt.TRAKTAPI().search_trakt_shows(anilist_id)
@@ -249,14 +197,3 @@ class OtakuBrowser(BrowserBase):
         }
         sources = pages.getSourcesHelper(actionArgs)
         return sources
-
-    def get_latest_sources(self, debrid_provider, hash_):
-        resolvers = {'premiumize': premiumize.Premiumize,
-                     'all_debrid': all_debrid.AllDebrid,
-                     'debrid_link': debrid_link.DebridLink,
-                     'real_debrid': real_debrid.RealDebrid}
-
-        magnet = 'magnet:?xt=urn:btih:' + hash_
-        api = resolvers[debrid_provider]
-        link = api().resolve_single_magnet(hash_, magnet)
-        return link
