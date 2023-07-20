@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.93">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.94">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -27,11 +27,9 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.3.93 [20230719]:
-- Improved Nyaa Scrapping
-- Added Anime Tosho Scrapper
-- Added Manual Batch File Selection Setting
-- Added Smart Episode Scrolling Setting
+Changelog 0.3.94 [20230720]:
+- Fix for Smartscroll 
+- Fix for Anime Tosho
     </news>
   </extension>
 </addon>

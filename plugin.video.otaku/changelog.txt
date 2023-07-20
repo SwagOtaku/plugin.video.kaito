@@ -1,3 +1,7 @@
+Changelog 0.3.94 [20230720]:
+- Fix for Smartscroll 
+- Fix for Anime Tosho
+
 Changelog 0.3.93 [20230719]:
 - Improved Nyaa Scrapping
 - Added Anime Tosho Scrapper
