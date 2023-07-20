@@ -412,11 +412,14 @@ def draw_items(video_data, contentType="tvshows", viewType=None, draw_cm=None, b
         try:
             num_watched = int(xbmc.getInfoLabel("Container.TotalWatched"))
             total_ep = int(xbmc.getInfoLabel('Container(id).NumItems'))
+            total_items = int(xbmc.getInfoLabel('Container(id).NumAllItems'))
+            if total_items == total_ep + 1:
+                num_watched += 1
         except ValueError:
             return False
         if total_ep > num_watched > 0:
             xbmc.executebuiltin('Action(firstpage)')
-            for _ in range(num_watched + 1):
+            for _ in range(num_watched):
                 xbmc.executebuiltin('Action(Down)')
     return True
 

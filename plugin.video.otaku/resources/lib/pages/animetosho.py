@@ -58,7 +58,7 @@ class sources(BrowserBase):
             try:
                 torrent['hash'] = re.match(r'https://animetosho.org/storage/torrent/([^/]+)', torrent['torrent']).group(1)
             except AttributeError:
-                pass
+                continue
             if season:
                 title = torrent['name'].lower()
 
