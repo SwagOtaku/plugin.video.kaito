@@ -9,7 +9,7 @@
 		<setting id="general.showchangelog" type="labelenum" label="40426" values="Yes|No" default="Yes"/>
 		<setting id="general.smartscroll" type="bool" label="40483" default="False" />
 		<setting id="general.smartscroll.wait.time" type="slider" label="40487" default="500" range="10,100,2000" option="int" visible="eq(-1,true)" />
-<!--		<setting id="general.spoilers" type="bool" label="40486" default="False" />-->
+		<setting id="general.spoilers" type="bool" label="40486" default="False" />
 
 		<!-- Content Customization -->
 		<setting type="lsep" label="40302"/>

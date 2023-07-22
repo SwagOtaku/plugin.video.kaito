@@ -5,7 +5,7 @@ import re
 import six
 
 from functools import partial
-from resources.lib.ui import client, database, utils
+from resources.lib.ui import client, database, utils, control
 from resources.lib.indexers.snycurl import SyncUrl
 
 class SIMKLAPI:
@@ -28,7 +28,7 @@ class SIMKLAPI:
         response = json.loads(response)
         return response
 
-    def _parse_episode_view(self, res, anilist_id, season, poster, fanart, eps_watched, filter_lang, update_time):
+    def _parse_episode_view(self, res, anilist_id, season, poster, fanart, eps_watched, filter_lang, update_time, title_disable):
         url = "%s/%s/" % (anilist_id, res['episode'])
         if isinstance(fanart, list):
             fanart = random.choice(fanart)
@@ -72,9 +72,14 @@ class SIMKLAPI:
         info['mediatype'] = 'episode'
         parsed = utils.allocate_item(name, "play/" + str(url), False, image, info, fanart, poster)
         database._update_episode(anilist_id, 1, res['episode'], '', update_time, parsed)
+
+        if title_disable and info.get('playcount') != 1:
+            parsed['info']['title'] = 'Episode %s' % res["episode"]
+            parsed['info']['plot'] = None
+
         return parsed
 
-    def _process_episode_view(self, anilist_id, json_resp, filter_lang, base_plugin_url, page):
+    def _process_episode_view(self, anilist_id, json_resp, filter_lang, base_plugin_url, page, title_disable=False):
         from datetime import date
         update_time = date.today().isoformat()
         kodi_meta = pickle.loads(database.get_show(anilist_id)['kodi_meta'])
@@ -92,7 +97,9 @@ class SIMKLAPI:
         database._update_season(anilist_id, season)
 
         json_resp = [x for x in json_resp if x['type'] == 'episode']
-        mapfunc = partial(self._parse_episode_view, anilist_id=anilist_id, season=season, poster=poster, fanart=fanart, eps_watched=eps_watched, filter_lang=filter_lang, update_time=update_time)
+        mapfunc = partial(self._parse_episode_view, anilist_id=anilist_id, season=season, poster=poster, fanart=fanart,
+                          eps_watched=eps_watched, filter_lang=filter_lang, update_time=update_time,
+                          title_disable=title_disable)
         all_results = list(map(mapfunc, json_resp))
 
         return all_results
@@ -128,7 +135,8 @@ class SIMKLAPI:
 
     def get_episodes(self, anilist_id, filter_lang=None, page=1):
         episodes = database.get(self._get_episodes, 6, anilist_id)
-        return self._process_episode_view(anilist_id, episodes, filter_lang, "animes_page/%s/%%d" % anilist_id, page)
+        title_disable = control.getSetting('general.spoilers') == 'true'
+        return self._process_episode_view(anilist_id, episodes, filter_lang, "animes_page/%s/%%d" % anilist_id, page, title_disable)
 
     def get_anime_search(self, q):
         data = {
