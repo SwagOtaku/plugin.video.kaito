@@ -75,7 +75,7 @@ class SIMKLAPI:
 
         if title_disable and info.get('playcount') != 1:
             parsed['info']['title'] = 'Episode %s' % res["episode"]
-            parsed['info']['plot'] = None
+            parsed['info']['plot'] = "None"
 
         return parsed
 

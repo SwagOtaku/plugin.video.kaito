@@ -46,7 +46,7 @@ class ENIMEAPI:
 
         if title_disable and info.get('playcount') != 1:
             parsed['info']['title'] = 'Episode %s' % res["number"]
-            parsed['info']['plot'] = None
+            parsed['info']['plot'] = "None"
 
         return parsed
 
@@ -114,7 +114,7 @@ class ENIMEAPI:
 
         if title_disable and parsed['info'].get('playcount') != 1:
             parsed['info']['title'] = 'Episode %s' % res["number"]
-            parsed['info']['plot'] = None
+            parsed['info']['plot'] = "None"
 
         return parsed
 
