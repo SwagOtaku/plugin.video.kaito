@@ -1,4 +1,9 @@
-New feature: 9anime is back!!!!
-- Hey Everyone, we are really happy to tell you that 9anime is back thanks to our newest api, Anify. 
+Nyaa is Fixed and Consistant:
+Hey everyone, we got some new features and we fixed Nyaa to be Consistant. 
+Here are the new features we added:
+- Added Anime Tosho Scrapper.
+- Added Manual File Selection.
+- Added A Smart Scroll Feature where it scrolls automatically where you left off.
+- Added a way to hide spoliers for episodes you havn't watched yet.
 
-Huge thanks to gujal and the Anify team for making it possible and glad to have 9anime back. 
+Huge thanks to Joezito for making this all happen. He has done a great job with all these new features, we hope you all enjoy. 

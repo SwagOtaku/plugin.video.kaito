@@ -1,3 +1,7 @@
+Changelog 0.3.95 [20230722]:
+- Added Hide Episode Info and Plot Setting
+- Fix Scrolling Issue in Source Select
+
 Changelog 0.3.94 [20230720]:
 - Fix for Smartscroll 
 - Fix for Anime Tosho
