@@ -165,10 +165,10 @@
       	    <width>20</width>
       	    <height>838</height>
       	    <visible>true</visible>
-            <texturesliderbackground colordiffuse="9900000" border="4">special://home/userdata/addon_data/plugin.video.otaku/resources/skins/media/white.png</texturesliderbackground>
-            <texturesliderbar colordiffuse="4dcccccc" border="4">special://home/userdata/addon_data/plugin.video.otaku/resources/skins/media/scrollv.png</texturesliderbar>
-            <texturesliderbarfocus colordiffuse="99ffffff" border="4">special://home/userdata/addon_data/plugin.video.otaku/resources/skins/media/scrollv.png</texturesliderbarfocus>
-      	    <pulseonselect></pulseonselect>
+<!--            <texturesliderbackground colordiffuse="9900000" border="4">special://home/userdata/addon_data/plugin.video.otaku/resources/skins/media/white.png</texturesliderbackground>-->
+<!--            <texturesliderbar colordiffuse="4dcccccc" border="4">special://home/userdata/addon_data/plugin.video.otaku/resources/skins/media/scrollv.png</texturesliderbar>-->
+<!--            <texturesliderbarfocus colordiffuse="99ffffff" border="4">special://home/userdata/addon_data/plugin.video.otaku/resources/skins/media/scrollv.png</texturesliderbarfocus>-->
+      	    <pulseonselect>no</pulseonselect>
       	    <orientation>vertical</orientation>
       	    <showonepage>false</showonepage>
             <onleft>1000</onleft>
@@ -204,7 +204,7 @@
                     <label>[B]$INFO[ListItem.Label][/B]</label>
                 </control>
                 <control type="label">
-                    <top>70</top>
+                    <top>60</top>
                     <left>400</left>
                     <width>450</width>
                     <height>0</height>
@@ -216,7 +216,7 @@
                     </label>
                 </control>
                 <control type="label">
-                    <top>100</top>
+                    <top>90</top>
                     <left>400</left>
                     <width>450</width>
                     <height>0</height>
@@ -226,7 +226,7 @@
                     <label>Provider: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(provider)][/COLOR][/UPPERCASE]</label>
                 </control>
                 <control type="label">
-                    <top>70</top>
+                    <top>60</top>
                     <left>10</left>
                     <width>350</width>
                     <height>0</height>
@@ -237,7 +237,7 @@
                     <label>Type: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(type)][/COLOR][/UPPERCASE]</label>
                 </control>
                 <control type="label">
-                    <top>100</top>
+                    <top>90</top>
                     <left>10</left>
                     <width>350</width>
                     <height>0</height>
@@ -330,7 +330,7 @@
                     <scroll>true</scroll>
                 </control>
                 <control type="label">
-                    <top>70</top>
+                    <top>60</top>
                     <left>400</left>
                     <width>450</width>
                     <height>0</height>
@@ -341,7 +341,7 @@
                     <label>Debrid: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(debrid_provider)][/COLOR][/UPPERCASE]</label>
                 </control>
                 <control type="label">
-                    <top>100</top>
+                    <top>90</top>
                     <left>400</left>
                     <width>450</width>
                     <height>0</height>
@@ -351,7 +351,7 @@
                     <label>Provider: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(provider)][/COLOR][/UPPERCASE]</label>
                 </control>
                 <control type="label">
-                    <top>70</top>
+                    <top>60</top>
                     <left>10</left>
                     <width>350</width>
                     <height>0</height>
@@ -362,7 +362,7 @@
                     <label>Type: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(type)][/COLOR][/UPPERCASE]</label>
                 </control>
                 <control type="label">
-                    <top>100</top>
+                    <top>90</top>
                     <left>10</left>
                     <width>350</width>
                     <height>0</height>
