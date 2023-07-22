@@ -121,8 +121,7 @@
                     <align>center</align>
                     <aligny>center</aligny>
                     <visible>String.IsEmpty(Window().Property(item.info.season))</visible>
-                    <label>Year: [COLOR $INFO[Window().Property(settings.color)]]$INFO[Window().Property(item.info.year)] [/COLOR] | Rating: [COLOR $INFO[Window().Property(settings.color)]]$INFO[Window().Property(item.info.rating)][/COLOR]
-                    </label>
+                    <label>Year: [COLOR $INFO[Window().Property(settings.color)]]$INFO[Window().Property(item.info.year)] [/COLOR] | Rating: [COLOR $INFO[Window().Property(settings.color)]]$INFO[Window().Property(item.info.rating)][/COLOR]</label>
                 </control>
                 <control type="label">
                     <top>120</top>
@@ -184,11 +183,11 @@
             <height>920</height>
             <orientation>vertical</orientation>
             <focusposition>1</focusposition>
-	    <pagecontrol>17</pagecontrol>
-	    <onright>17</onright>
+	        <pagecontrol>17</pagecontrol>
+	        <onright>17</onright>
             <itemlayout height="120">
-	        <control type="image">
-        	    <visible>true</visible>
+	            <control type="image">
+        	        <visible>true</visible>
                     <texture background="true">$INFO[Window().Property(texture.white)]</texture>
                     <colordiffuse>AA2e2d32</colordiffuse>
                 </control>
@@ -199,7 +198,7 @@
                     <height>5</height>
                     <font>font12</font>
                     <textcolor>66FFFFFF</textcolor>
-		    <shadowcolor>dimgrey</shadowcolor>
+		            <shadowcolor>dimgrey</shadowcolor>
                     <align>left</align>
                     <aligny>center</aligny>
                     <label>[B]$INFO[ListItem.Label][/B]</label>
@@ -224,8 +223,7 @@
                     <aligny>center</aligny>
                     <textcolor>FFFFFFFF</textcolor>
                     <font>font10</font>
-                    <label>Provider: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(provider)][/COLOR][/UPPERCASE]
-                    </label>
+                    <label>Provider: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(provider)][/COLOR][/UPPERCASE]</label>
                 </control>
                 <control type="label">
                     <top>70</top>
@@ -234,10 +232,9 @@
                     <height>0</height>
                     <aligny>center</aligny>
                     <textcolor>FFFFFFFF</textcolor>
-		    <shadowcolor>dimgrey</shadowcolor>
+		            <shadowcolor>dimgrey</shadowcolor>
                     <font>font10</font>
-                    <label>Type: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(type)][/COLOR][/UPPERCASE]
-                    </label>
+                    <label>Type: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(type)][/COLOR][/UPPERCASE]</label>
                 </control>
                 <control type="label">
                     <top>100</top>
@@ -246,10 +243,9 @@
                     <height>0</height>
                     <aligny>center</aligny>
                     <textcolor>FFFFFFFF</textcolor>
-		    <shadowcolor>dimgrey</shadowcolor>
+		            <shadowcolor>dimgrey</shadowcolor>
                     <font>font10</font>
-                    <label>$ADDON[plugin.video.otaku 40238]: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(info)][/COLOR][/UPPERCASE]
-                    </label>
+                    <label>$ADDON[plugin.video.otaku 40238]: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(info)][/COLOR][/UPPERCASE]</label>
                 </control>
                 <control type="label">
                     <centertop>70%</centertop>
@@ -260,8 +256,7 @@
                     <textcolor>66FFFFFF</textcolor>
                     <align>left</align>
                     <aligny>center</aligny>
-                    <label>Size: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(size)][/COLOR][/UPPERCASE]
-                    </label>
+                    <label>Size: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(size)][/COLOR][/UPPERCASE]</label>
                 </control>
               <control type="image">
                     <centertop>50%</centertop>
@@ -324,14 +319,15 @@
                 <control type="label">
                     <top>13</top>
                     <left>10</left>
-                    <width>1400</width>
+                    <width>1160</width>
                     <height>5</height>
                     <font>font12</font>
                     <textcolor>FFFFFFFF</textcolor>
-		    <shadowcolor>dimgrey</shadowcolor>
+		            <shadowcolor>dimgrey</shadowcolor>
                     <align>left</align>
                     <aligny>center</aligny>
                     <label>[B]$INFO[ListItem.Label][/B]</label>
+                    <scroll>true</scroll>
                 </control>
                 <control type="label">
                     <top>70</top>
@@ -342,8 +338,7 @@
                     <textcolor>FFFFFFFF</textcolor>
                     <align>left</align>
                     <aligny>center</aligny>
-                    <label>Debrid: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(debrid_provider)][/COLOR][/UPPERCASE]
-                    </label>
+                    <label>Debrid: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(debrid_provider)][/COLOR][/UPPERCASE]</label>
                 </control>
                 <control type="label">
                     <top>100</top>
@@ -353,8 +348,7 @@
                     <aligny>center</aligny>
                     <textcolor>FFFFFFFF</textcolor>
                     <font>font10</font>
-                    <label>Provider: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(provider)][/COLOR][/UPPERCASE]
-                    </label>
+                    <label>Provider: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(provider)][/COLOR][/UPPERCASE]</label>
                 </control>
                 <control type="label">
                     <top>70</top>
@@ -363,10 +357,9 @@
                     <height>0</height>
                     <aligny>center</aligny>
                     <textcolor>FFFFFFFF</textcolor>
-		    <shadowcolor>dimgrey</shadowcolor>
+		            <shadowcolor>dimgrey</shadowcolor>
                     <font>font10</font>
-                    <label>Type: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(type)][/COLOR][/UPPERCASE]
-                    </label>
+                    <label>Type: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(type)][/COLOR][/UPPERCASE]</label>
                 </control>
                 <control type="label">
                     <top>100</top>
@@ -375,10 +368,9 @@
                     <height>0</height>
                     <aligny>center</aligny>
                     <textcolor>FFFFFFFF</textcolor>
-		    <shadowcolor>dimgrey</shadowcolor>
+		            <shadowcolor>dimgrey</shadowcolor>
                     <font>font10</font>
-                    <label>$ADDON[plugin.video.otaku 40238]: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(info)][/COLOR][/UPPERCASE]
-                    </label>
+                    <label>$ADDON[plugin.video.otaku 40238]: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(info)][/COLOR][/UPPERCASE]</label>
                 </control>
                 <control type="label">
                     <centertop>70%</centertop>
@@ -389,8 +381,7 @@
                     <textcolor>66FFFFFF</textcolor>
                     <align>left</align>
                     <aligny>center</aligny>
-                    <label>Size: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(size)][/COLOR][/UPPERCASE]
-                    </label>
+                    <label>Size: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(size)][/COLOR][/UPPERCASE]</label>
                 </control>
               <control type="image">
                     <centertop>50%</centertop>
