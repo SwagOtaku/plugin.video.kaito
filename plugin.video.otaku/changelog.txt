@@ -1,3 +1,7 @@
+Changelog 0.3.96 [20230723]:
+- Moved get season function to utils
+- Matched hight Positions on Select Source
+
 Changelog 0.3.95 [20230722]:
 - Added Hide Episode Info and Plot Setting
 - Fix Scrolling Issue in Source Select
