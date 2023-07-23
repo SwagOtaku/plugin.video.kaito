@@ -2,7 +2,7 @@ import os
 import random
 import re
 from resources.lib.ui import control, client
-from six import StringIO
+from six import StringIO, iteritems
 from kodi_six import xbmcvfs
 
 
@@ -78,3 +78,38 @@ def del_subs():
         if fname.startswith('TemporarySubs'):
             xbmcvfs.delete('special://temp/' + fname)
     return
+
+
+def get_season(res):
+    regexes = [r'season\s(\d+)', r'\s(\d+)st\sseason\s', r'\s(\d+)nd\sseason\s',
+               r'\s(\d+)rd\sseason\s', r'\s(\d+)th\sseason\s']
+    s_ids = []
+    for regex in regexes:
+        if isinstance(res.get('title'), dict):
+            s_ids += [re.findall(regex, name, re.IGNORECASE) for lang, name in iteritems(res.get('title')) if name is not None]
+        else:
+            s_ids += [re.findall(regex, name, re.IGNORECASE) for name in res.get('title')]
+        s_ids += [re.findall(regex, name, re.IGNORECASE) for name in res.get('synonyms')]
+    s_ids = [s[0] for s in s_ids if s]
+    if not s_ids:
+        regex = r'\s(\d+)$'
+        cour = False
+        if isinstance(res.get('title'), dict):
+            for lang, name in iteritems(res.get('title')):
+                if name is not None and (' part ' in name.lower() or ' cour ' in name.lower()):
+                    cour = True
+                    break
+            if not cour:
+                s_ids += [re.findall(regex, name, re.IGNORECASE) for lang, name in iteritems(res.get('title')) if name is not None]
+                s_ids += [re.findall(regex, name, re.IGNORECASE) for name in res.get('synonyms')]
+        else:
+            for name in res.get('title'):
+                if ' part ' in name.lower() or ' cour ' in name.lower():
+                    cour = True
+                    break
+            if not cour:
+                s_ids += [re.findall(regex, name, re.IGNORECASE) for name in res.get('title')]
+                s_ids += [re.findall(regex, name, re.IGNORECASE) for name in res.get('synonyms')]
+        s_ids = [s[0] for s in s_ids if s]
+
+    return s_ids

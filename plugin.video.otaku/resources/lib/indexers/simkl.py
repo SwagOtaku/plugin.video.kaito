@@ -1,12 +1,11 @@
 import json
 import pickle
 import random
-import re
-import six
 
 from functools import partial
 from resources.lib.ui import client, database, utils, control
 from resources.lib.indexers.snycurl import SyncUrl
+
 
 class SIMKLAPI:
     def __init__(self):
@@ -92,7 +91,7 @@ class SIMKLAPI:
 
         sync_data = SyncUrl().get_anime_data(anilist_id, 'Anilist')
 
-        s_id = self._get_season(sync_data[0])
+        s_id = utils.get_season(sync_data[0])
         season = s_id[0] if s_id else 1
         database._update_season(anilist_id, season)
 
@@ -184,38 +183,3 @@ class SIMKLAPI:
         arm_resp = self._json_request("https://arm2.vercel.app/api/search", data=data)
         mal_id = arm_resp["mal"]
         return mal_id
-
-    @staticmethod
-    def _get_season(res):
-        regexes = [r'season\s(\d+)', r'\s(\d+)st\sseason\s', r'\s(\d+)nd\sseason\s',
-                   r'\s(\d+)rd\sseason\s', r'\s(\d+)th\sseason\s']
-        s_ids = []
-        for regex in regexes:
-            if isinstance(res.get('title'), dict):
-                s_ids += [re.findall(regex, name, re.IGNORECASE) for lang, name in six.iteritems(res.get('title')) if name is not None]
-            else:
-                s_ids += [re.findall(regex, name, re.IGNORECASE) for name in res.get('title')]
-            s_ids += [re.findall(regex, name, re.IGNORECASE) for name in res.get('synonyms')]
-        s_ids = [s[0] for s in s_ids if s]
-        if not s_ids:
-            regex = r'\s(\d+)$'
-            cour = False
-            if isinstance(res.get('title'), dict):
-                for lang, name in six.iteritems(res.get('title')):
-                    if name is not None and (' part ' in name.lower() or ' cour ' in name.lower()):
-                        cour = True
-                        break
-                if not cour:
-                    s_ids += [re.findall(regex, name, re.IGNORECASE) for lang, name in six.iteritems(res.get('title')) if name is not None]
-                    s_ids += [re.findall(regex, name, re.IGNORECASE) for name in res.get('synonyms')]
-            else:
-                for name in res.get('title'):
-                    if ' part ' in name.lower() or ' cour ' in name.lower():
-                        cour = True
-                        break
-                if not cour:
-                    s_ids += [re.findall(regex, name, re.IGNORECASE) for name in res.get('title')]
-                    s_ids += [re.findall(regex, name, re.IGNORECASE) for name in res.get('synonyms')]
-            s_ids = [s[0] for s in s_ids if s]
-
-        return s_ids

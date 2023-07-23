@@ -1,5 +1,5 @@
 <window type="dialog">
-<!--    <onload>Skin.SetString(otakuPath,special://home/userdata/addon_data/plugin.video.otaku/skins/)</onload> -->
+    <!--<onload>Skin.SetString(otakuPath,special://home/userdata/addon_data/plugin.video.otaku/skins/)</onload> -->
     <defaultcontrol>2</defaultcontrol>
     <coordinates>
         <left>0</left>
@@ -21,49 +21,49 @@
         </control>
         
         <!-- MultiFanart -->
-            <control type="group">
-                <visible>Skin.HasSetting(SkinHelper.EnableExtraFanart) + System.HasAddon(script.artwork.helper)</visible>
-            
-                <control type="fadelabel" id="1010">
-                    <info>Window().Property(item.art.fanart)</info>
-                    <info>Window().Property(item.art.fanart1)</info>
-                    <info>Window().Property(item.art.fanart2)</info>
-                    <info>Window().Property(item.art.fanart3)</info>
-                    <info>Window().Property(item.art.fanart4)</info>
-                    <info>Window().Property(item.art.fanart5)</info>
-                    <info>Window().Property(item.art.fanart6)</info>
-                    <info>Window().Property(item.art.fanart7)</info>
-                    <info>Window().Property(item.art.fanart8)</info>
-                    <info>Window().Property(item.art.fanart9)</info>
-                    <info>Window().Property(item.art.fanart10)</info>
-                    <info>Window().Property(item.art.fanart11)</info>
-                    <info>Window().Property(item.art.fanart12)</info>
-                    <info>Window().Property(item.art.fanart13)</info>
-                    <info>Window().Property(item.art.fanart14)</info>
-                    <info>Window().Property(item.art.fanart15)</info>
-                    <info>Window().Property(item.art.fanart16)</info>
-                    <info>Window().Property(item.art.fanart17)</info>
-                    <info>Window().Property(item.art.fanart18)</info>
-                    <info>Window().Property(item.art.fanart19)</info>
-                    <info>Window().Property(item.art.fanart20)</info>
-                    <randomize>true</randomize>
-                    <pauseatend>8000</pauseatend>
-                    <scroll>false</scroll>
-                    <scrollout>false</scrollout>
-                    <resetonlabelchange>true</resetonlabelchange>
-                    <textcolor>0x00000000</textcolor>
-                </control>
-                
-                <!-- Background -->
-                <control type="multiimage">
-                    <imagepath background="true">$INFO[Control.GetLabel(1010)]</imagepath>
-                    <timeperimage>4000</timeperimage>
-                    <fadetime>1000</fadetime>
-                    <pauseatend>12000</pauseatend>
-                    <randomize>true</randomize>
-                    <loop>no</loop>
-                </control>
+        <control type="group">
+            <visible>Skin.HasSetting(SkinHelper.EnableExtraFanart) + System.HasAddon(script.artwork.helper)</visible>
+        
+            <control type="fadelabel" id="1010">
+                <info>Window().Property(item.art.fanart)</info>
+                <info>Window().Property(item.art.fanart1)</info>
+                <info>Window().Property(item.art.fanart2)</info>
+                <info>Window().Property(item.art.fanart3)</info>
+                <info>Window().Property(item.art.fanart4)</info>
+                <info>Window().Property(item.art.fanart5)</info>
+                <info>Window().Property(item.art.fanart6)</info>
+                <info>Window().Property(item.art.fanart7)</info>
+                <info>Window().Property(item.art.fanart8)</info>
+                <info>Window().Property(item.art.fanart9)</info>
+                <info>Window().Property(item.art.fanart10)</info>
+                <info>Window().Property(item.art.fanart11)</info>
+                <info>Window().Property(item.art.fanart12)</info>
+                <info>Window().Property(item.art.fanart13)</info>
+                <info>Window().Property(item.art.fanart14)</info>
+                <info>Window().Property(item.art.fanart15)</info>
+                <info>Window().Property(item.art.fanart16)</info>
+                <info>Window().Property(item.art.fanart17)</info>
+                <info>Window().Property(item.art.fanart18)</info>
+                <info>Window().Property(item.art.fanart19)</info>
+                <info>Window().Property(item.art.fanart20)</info>
+                <randomize>true</randomize>
+                <pauseatend>8000</pauseatend>
+                <scroll>false</scroll>
+                <scrollout>false</scrollout>
+                <resetonlabelchange>true</resetonlabelchange>
+                <textcolor>0x00000000</textcolor>
             </control>
+            
+            <!-- Background -->
+            <control type="multiimage">
+                <imagepath background="true">$INFO[Control.GetLabel(1010)]</imagepath>
+                <timeperimage>4000</timeperimage>
+                <fadetime>1000</fadetime>
+                <pauseatend>12000</pauseatend>
+                <randomize>true</randomize>
+                <loop>no</loop>
+            </control>
+        </control>
 
         <control type="image">
             <top>0</top>
@@ -165,9 +165,9 @@
       	    <width>20</width>
       	    <height>838</height>
       	    <visible>true</visible>
-<!--            <texturesliderbackground colordiffuse="9900000" border="4">special://home/userdata/addon_data/plugin.video.otaku/resources/skins/media/white.png</texturesliderbackground>-->
-<!--            <texturesliderbar colordiffuse="4dcccccc" border="4">special://home/userdata/addon_data/plugin.video.otaku/resources/skins/media/scrollv.png</texturesliderbar>-->
-<!--            <texturesliderbarfocus colordiffuse="99ffffff" border="4">special://home/userdata/addon_data/plugin.video.otaku/resources/skins/media/scrollv.png</texturesliderbarfocus>-->
+            <!--<texturesliderbackground colordiffuse="9900000" border="4">special://home/userdata/addon_data/plugin.video.otaku/resources/skins/media/white.png</texturesliderbackground>-->
+            <!--<texturesliderbar colordiffuse="4dcccccc" border="4">special://home/userdata/addon_data/plugin.video.otaku/resources/skins/media/scrollv.png</texturesliderbar>-->
+            <!-- <texturesliderbarfocus colordiffuse="99ffffff" border="4">special://home/userdata/addon_data/plugin.video.otaku/resources/skins/media/scrollv.png</texturesliderbarfocus>-->
       	    <pulseonselect>no</pulseonselect>
       	    <orientation>vertical</orientation>
       	    <showonepage>false</showonepage>
@@ -192,119 +192,119 @@
                     <texture background="true">$INFO[Window().Property(texture.white)]</texture>
                     <colordiffuse>AA2e2d32</colordiffuse>
                 </control>
-                    <control type="label">
-                        <top>15</top>
-                        <left>10</left>
-                        <width>1160</width>
-                        <height>5</height>
-                        <font>font12</font>
-                        <textcolor>66FFFFFF</textcolor>
-                        <shadowcolor>dimgrey</shadowcolor>
-                        <align>left</align>
-                        <aligny>center</aligny>
-                        <label>[B]$INFO[ListItem.Label][/B]</label>
-                    </control>
-                    <control type="label">
-                        <top>60</top>
-                        <left>400</left>
-                        <width>450</width>
-                        <height>0</height>
-                        <font>font10</font>
-                        <textcolor>FFFFFFFF</textcolor>
-                        <align>left</align>
-                        <aligny>center</aligny>
-                        <label>Debrid: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(debrid_provider)][/COLOR][/UPPERCASE]</label>
-                    </control>
-                    <control type="label">
-                        <top>90</top>
-                        <left>400</left>
-                        <width>450</width>
-                        <height>0</height>
-                        <aligny>center</aligny>
-                        <textcolor>FFFFFFFF</textcolor>
-                        <font>font10</font>
-                        <label>Provider: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(provider)][/COLOR][/UPPERCASE]</label>
-                    </control>
-                    <control type="label">
-                        <top>60</top>
-                        <left>10</left>
-                        <width>350</width>
-                        <height>0</height>
-                        <aligny>center</aligny>
-                        <textcolor>FFFFFFFF</textcolor>
-                        <shadowcolor>dimgrey</shadowcolor>
-                        <font>font10</font>
-                        <label>Type: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(type)][/COLOR][/UPPERCASE]</label>
-                    </control>
-                    <control type="label">
-                        <top>90</top>
-                        <left>10</left>
-                        <width>350</width>
-                        <height>0</height>
-                        <aligny>center</aligny>
-                        <textcolor>FFFFFFFF</textcolor>
-                        <shadowcolor>dimgrey</shadowcolor>
-                        <font>font10</font>
-                        <label>$ADDON[plugin.video.otaku 40238]: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(info)][/COLOR][/UPPERCASE]</label>
-                    </control>
-                    <control type="label">
-                        <centertop>70%</centertop>
-                        <left>750</left>
-                        <width>350</width>
-                        <height>0</height>
-                        <font>font10</font>
-                        <textcolor>66FFFFFF</textcolor>
-                        <align>left</align>
-                        <aligny>center</aligny>
-                        <label>Size: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(size)][/COLOR][/UPPERCASE]</label>
-                    </control>
-                  <control type="image">
-                        <centertop>50%</centertop>
-                        <left>1010</left>
-                        <width>128.8</width>
-                        <height>87.2</height>
-                        <texture background="true" colordiffuse="yellow">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualitysd480.png</texture>
-                        <visible>String.Contains(ListItem.Property(quality),NA)</visible>
-                    </control>
-                    <control type="image">
-                        <centertop>50%</centertop>
-                        <left>1010</left>
-                        <width>128.8</width>
-                        <height>87.2</height>
-                        <texture background="true" colordiffuse="red">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualityhd720.png</texture>
-                        <visible>String.Contains(ListItem.Property(quality),720P)</visible>
-                    </control>
-                    <control type="image">
-                        <centertop>50%</centertop>
-                        <left>1010</left>
-                        <width>128.8</width>
-                        <height>87.2</height>
-                        <texture background="true" colordiffuse="green">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualityhd1080.png</texture>
-                        <visible>String.Contains(ListItem.Property(quality),1080P)</visible>
-                    </control>
-                    <control type="image">
-                        <centertop>50%</centertop>
-                        <left>1010</left>
-                        <width>128.8</width>
-                        <height>87.2</height>
-                        <texture background="true">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualityhd4k.png</texture>
-                        <visible>String.Contains(ListItem.Property(quality),4k)</visible>
-                    </control>
-                    <control type="image">
-                        <centertop>50%</centertop>
-                        <left>1010</left>
-                        <width>128.8</width>
-                        <height>87.2</height>
-                        <texture background="true">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualityeq.png</texture>
-                        <visible>String.Contains(ListItem.Property(quality),EQ)</visible>
-                    </control>
-                    <control type="image">
-                        <width>100%</width>
-                        <height>3</height>
-                        <bottom>-1</bottom>
-                        <texture colordiffuse="9f000000">special://home/addons/plugin.video.otaku/resources/skins/media/white.png</texture>
-                     </control>
-                </itemlayout>
+                <control type="label">
+                    <top>15</top>
+                    <left>10</left>
+                    <width>1160</width>
+                    <height>5</height>
+                    <font>font12</font>
+                    <textcolor>66FFFFFF</textcolor>
+                    <shadowcolor>dimgrey</shadowcolor>
+                    <align>left</align>
+                    <aligny>center</aligny>
+                    <label>[B]$INFO[ListItem.Label][/B]</label>
+                </control>
+                <control type="label">
+                    <top>60</top>
+                    <left>400</left>
+                    <width>450</width>
+                    <height>0</height>
+                    <font>font10</font>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <align>left</align>
+                    <aligny>center</aligny>
+                    <label>Debrid: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(debrid_provider)][/COLOR][/UPPERCASE]</label>
+                </control>
+                <control type="label">
+                    <top>90</top>
+                    <left>400</left>
+                    <width>450</width>
+                    <height>0</height>
+                    <aligny>center</aligny>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <font>font10</font>
+                    <label>Provider: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(provider)][/COLOR][/UPPERCASE]</label>
+                </control>
+                <control type="label">
+                    <top>60</top>
+                    <left>10</left>
+                    <width>350</width>
+                    <height>0</height>
+                    <aligny>center</aligny>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <shadowcolor>dimgrey</shadowcolor>
+                    <font>font10</font>
+                    <label>Type: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(type)][/COLOR][/UPPERCASE]</label>
+                </control>
+                <control type="label">
+                    <top>90</top>
+                    <left>10</left>
+                    <width>350</width>
+                    <height>0</height>
+                    <aligny>center</aligny>
+                    <textcolor>FFFFFFFF</textcolor>
+                    <shadowcolor>dimgrey</shadowcolor>
+                    <font>font10</font>
+                    <label>$ADDON[plugin.video.otaku 40238]: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(info)][/COLOR][/UPPERCASE]</label>
+                </control>
+                <control type="label">
+                    <centertop>70%</centertop>
+                    <left>750</left>
+                    <width>350</width>
+                    <height>0</height>
+                    <font>font10</font>
+                    <textcolor>66FFFFFF</textcolor>
+                    <align>left</align>
+                    <aligny>center</aligny>
+                    <label>Size: [UPPERCASE][COLOR $INFO[Window().Property(settings.color)]]$INFO[ListItem.Property(size)][/COLOR][/UPPERCASE]</label>
+                </control>
+                <control type="image">
+                    <centertop>50%</centertop>
+                    <left>1010</left>
+                    <width>128.8</width>
+                    <height>87.2</height>
+                    <texture background="true" colordiffuse="yellow">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualitysd480.png</texture>
+                    <visible>String.Contains(ListItem.Property(quality),NA)</visible>
+                </control>
+                <control type="image">
+                    <centertop>50%</centertop>
+                    <left>1010</left>
+                    <width>128.8</width>
+                    <height>87.2</height>
+                    <texture background="true" colordiffuse="red">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualityhd720.png</texture>
+                    <visible>String.Contains(ListItem.Property(quality),720P)</visible>
+                </control>
+                <control type="image">
+                    <centertop>50%</centertop>
+                    <left>1010</left>
+                    <width>128.8</width>
+                    <height>87.2</height>
+                    <texture background="true" colordiffuse="green">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualityhd1080.png</texture>
+                    <visible>String.Contains(ListItem.Property(quality),1080P)</visible>
+                </control>
+                <control type="image">
+                    <centertop>50%</centertop>
+                    <left>1010</left>
+                    <width>128.8</width>
+                    <height>87.2</height>
+                    <texture background="true">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualityhd4k.png</texture>
+                    <visible>String.Contains(ListItem.Property(quality),4k)</visible>
+                </control>
+                <control type="image">
+                    <centertop>50%</centertop>
+                    <left>1010</left>
+                    <width>128.8</width>
+                    <height>87.2</height>
+                    <texture background="true">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualityeq.png</texture>
+                    <visible>String.Contains(ListItem.Property(quality),EQ)</visible>
+                </control>
+                <control type="image">
+                    <width>100%</width>
+                    <height>3</height>
+                    <bottom>-1</bottom>
+                    <texture colordiffuse="9f000000">special://home/addons/plugin.video.otaku/resources/skins/media/white.png</texture>
+                </control>
+            </itemlayout>
 
             <focusedlayout height="120">
                 <control type="image">
