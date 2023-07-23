@@ -114,7 +114,7 @@
                     <label>[COLOR $INFO[Window().Property(settings.color)]]$INFO[Window().Property(item.info.title)] [/COLOR]</label>
                 </control>
                 <control type="label">
-                    <top>150</top>
+                    <top>120</top>
                     <width>400</width>
                     <font>font12</font>
                     <textcolor>AAFFFFFF</textcolor>
