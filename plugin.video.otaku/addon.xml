@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.96">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.3.97">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -27,9 +27,14 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.3.96 [20230723]:
-- Moved get season function to utils
-- Matched hight Positions on Select Source
+Changelog 0.3.97 [20230725]:
+- Removed Uncategorized Menus
+- Made Category Menus for Movies and TV Shows
+- Added Movie Search For Movies
+- Added TV Search For TV Shows
+- Added Movie Genres for Movies
+- Added TV Genres For TV Shows
+- Changed alot of Menu Settings
     </news>
   </extension>
 </addon>
