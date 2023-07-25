@@ -15,12 +15,30 @@ class OtakuBrowser(BrowserBase):
         name = res
         return utils.allocate_item(name, "search/%s/1" % name, True)
 
-
-    # TODO: Not sure i want this here..
     def search_history(self, search_array):
         result = list(map(self._parse_history_view, search_array))
         result.insert(0, utils.allocate_item("New Search", "search", True, 'new_search.png'))
         result.insert(len(result), utils.allocate_item("Clear Search History...", "clear_history", True, 'clear_search_history.png'))
+        return result
+
+    def _parse_history_view_movie(self, res):
+        name = res
+        return utils.allocate_item(name, "search_movie/%s/1" % name, True)
+
+    def search_history_movie(self, search_array):
+        result = list(map(self._parse_history_view_movie, search_array))
+        result.insert(0, utils.allocate_item("New Search", "search_movie", True, 'new_search.png'))
+        result.insert(len(result), utils.allocate_item("Clear Search History...", "clear_history_movie", True, 'clear_search_history.png'))
+        return result
+    
+    def _parse_history_view_tv(self, res):
+        name = res
+        return utils.allocate_item(name, "search_tv/%s/1" % name, True)
+
+    def search_history_tv(self, search_array):
+        result = list(map(self._parse_history_view_tv, search_array))
+        result.insert(0, utils.allocate_item("New Search", "search_tv", True, 'new_search.png'))
+        result.insert(len(result), utils.allocate_item("Clear Search History...", "clear_history_tv", True, 'clear_search_history.png'))
         return result
 
     def get_backup(self, anilist_id, source):

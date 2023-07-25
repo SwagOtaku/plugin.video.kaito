@@ -588,39 +588,39 @@ msgid "MUSIC"
 msgstr ""
 
 msgctxt "#40400"
-msgid "Main Menu Items"
+msgid ""
 msgstr ""
 
 msgctxt "#40401"
-msgid "Movie Items"
+msgid ""
 msgstr ""
 
 msgctxt "#40402"
-msgid "TV Show Items"
+msgid ""
 msgstr ""
 
 msgctxt "#40403"
-msgid "Main Menu Items 2"
+msgid ""
 msgstr ""
 
 msgctxt "#40404"
-msgid "Trending Items"
+msgid ""
 msgstr ""
 
 msgctxt "#40405"
-msgid "Popular Items"
+msgid ""
 msgstr ""
 
 msgctxt "#40406"
-msgid "Voted Items"
+msgid ""
 msgstr ""
 
 msgctxt "#40407"
-msgid "Completed Items"
+msgid ""
 msgstr ""
 
 msgctxt "#40408"
-msgid "Upcoming Items"
+msgid ""
 msgstr ""
 
 msgctxt "#40409"
@@ -1090,4 +1090,96 @@ msgstr ""
 
 msgctxt "#50037"
 msgid "All Time Voted"
+msgstr ""
+
+msgctxt "#50050"
+msgid "Mainmenu Customization"
+msgstr ""
+
+msgctxt "#50051"
+msgid "Main Menu Items"
+msgstr ""
+
+msgctxt "#50052"
+msgid "Movie Menu Items"
+msgstr ""
+
+msgctxt "#50053"
+msgid "TV Show Menu Items"
+msgstr ""
+
+msgctxt "#50054"
+msgid "Submenu Customization"
+msgstr ""
+
+msgctxt "#50055"
+msgid "Main Menu - Trending Items"
+msgstr ""
+
+msgctxt "#50056"
+msgid "Main Menu - Popular Items"
+msgstr ""
+
+msgctxt "#50057"
+msgid "Main Menu - Voted Items"
+msgstr ""
+
+msgctxt "#50058"
+msgid "Main Menu - Completed Items"
+msgstr ""
+
+msgctxt "#50059"
+msgid "Main Menu - Upcoming Items"
+msgstr ""
+
+msgctxt "#50060"
+msgid "Movies - Trending Items"
+msgstr ""
+
+msgctxt "#50061"
+msgid "Movies - Popular Items"
+msgstr ""
+
+msgctxt "#50062"
+msgid "Movies - Voted Items"
+msgstr ""
+
+msgctxt "#50063"
+msgid "Movies - Completed Items"
+msgstr ""
+
+msgctxt "#50064"
+msgid "Movies - Upcoming Items"
+msgstr ""
+
+msgctxt "#50065"
+msgid "TV Shows - Trending Items"
+msgstr ""
+
+msgctxt "#50066"
+msgid "TV Shows - Popular Items"
+msgstr ""
+
+msgctxt "#50067"
+msgid "TV Shows - Voted Items"
+msgstr ""
+
+msgctxt "#50068"
+msgid "TV Shows - Completed Items"
+msgstr ""
+
+msgctxt "#50069"
+msgid "TV Shows - Upcoming Items"
+msgstr ""
+
+msgctxt "#50070"
+msgid "Search Both"
+msgstr ""
+
+msgctxt "#50071"
+msgid "Search Movies"
+msgstr ""
+
+msgctxt "#50072"
+msgid "Search TV Shows"
 msgstr ""

@@ -210,12 +210,12 @@
 		<setting id="mal.titles" type="text"  default="" visible="false"/>
 	</category>
 
-	<!-- Menus -->
-	<category label="40400">
+	<!-- Main Menu Customization -->
+	<category label="50050">
 		<!-- Main Menu Items -->	
-		<setting type="lsep" label="40400"/>
+		<setting type="lsep" label="50051"/>
 		<setting id="sep"/>		
-		<setting id="anilist_airing" label="50000" type="bool" default="true"/>
+		<setting id="anilist_airing_calendar" label="50000" type="bool" default="true"/>
 		<setting id="anilist_airing_anime" label="50001" type="bool" default="true"/>
 		<setting id="movies" label="50002" type="bool" default="true"/>
 		<setting id="tv_shows" label="50003" type="bool" default="true"/>
@@ -224,73 +224,79 @@
 		<setting id="voted" label="50006" type="bool" default="true"/>
 		<setting id="completed" label="50007" type="bool" default="true"/>
 		<setting id="upcoming" label="50008" type="bool" default="true"/>
-		<setting id="anilist_trending_last_year" label="50013" type="bool" default="false"/>
-		<setting id="anilist_popular_last_year" label="50014" type="bool" default="false"/>
-		<setting id="anilist_voted_last_year" label="50015" type="bool" default="false"/>
-		<setting id="anilist_completed_last_year" label="50016" type="bool" default="false"/>
-		<setting id="anilist_upcoming_last_year" label="50017" type="bool" default="false"/>
-		<setting id="anilist_trending_this_year" label="50018" type="bool" default="false"/>
-		<setting id="anilist_popular_this_year" label="50019" type="bool" default="false"/>
-		<setting id="anilist_voted_this_year" label="50020" type="bool" default="false"/>
-		<setting id="anilist_completed_this_year" label="50021" type="bool" default="false"/>
-		<setting id="anilist_upcoming_this_year" label="50022" type="bool" default="false"/>
-		<setting id="anilist_upcoming_next_year" label="50023" type="bool" default="false"/>
-		<setting id="anilist_trending_last_season" label="50024" type="bool" default="false"/>
-		<setting id="anilist_popular_last_season" label="50025" type="bool" default="false"/>
-		<setting id="anilist_voted_last_season" label="50026" type="bool" default="false"/>
-		<setting id="anilist_completed_last_season" label="50027" type="bool" default="false"/>
-		<setting id="anilist_upcoming_last_season" label="50028" type="bool" default="false"/>
-		<setting id="anilist_trending_this_season" label="50029" type="bool" default="false"/>
-		<setting id="anilist_popular_this_season" label="50030" type="bool" default="false"/>
-		<setting id="anilist_voted_this_season" label="50031" type="bool" default="false"/>
-		<setting id="anilist_completed_this_season" label="50032" type="bool" default="false"/>
-		<setting id="anilist_upcoming_this_season" label="50033" type="bool" default="false"/>
-		<setting id="anilist_upcoming_next_season" label="50034" type="bool" default="false"/>
-		<setting id="anilist_all_time_trending" label="50035" type="bool" default="false"/>
-		<setting id="anilist_all_time_popular" label="50036" type="bool" default="false"/>
-		<setting id="anilist_all_time_voted" label="50037" type="bool" default="false"/>
 		<setting id="anilist_top_100_anime" label="50009" type="bool" default="true"/>
 		<setting id="anilist_genres" label="50010" type="bool" default="true" visible="false"/>
-		<setting id="search_history" label="50011" type="bool" default="true" visible="false"/>
+		<setting id="anilist_search" label="50011" type="bool" default="true" visible="false"/>
 		<setting id="tools" label="50012" type="bool" default="true"/>
-		
-		<!-- Trending Items -->	
-		<setting type="lsep" label="40404"/>
+
+		<!-- Movie Menu Items -->
+		<setting type="lsep" label="50052"/>
+		<setting id="sep"/>
+		<setting id="anilist_airing_calendar_movie" label="50000" type="bool" default="true"/>
+		<setting id="anilist_airing_anime_movie" label="50001" type="bool" default="true"/>
+		<setting id="trending_movie" label="50004" type="bool" default="true"/>
+		<setting id="popular_movie" label="50005" type="bool" default="true"/>
+		<setting id="voted_movie" label="50006" type="bool" default="true"/>
+		<setting id="completed_movie" label="50007" type="bool" default="true"/>
+		<setting id="upcoming_movie" label="50008" type="bool" default="true"/>
+		<setting id="anilist_top_100_anime_movie" label="50009" type="bool" default="true"/>
+		<setting id="anilist_genres_movie" label="50010" type="bool" default="true" visible="false"/>
+		<setting id="search_history_movie" label="50011" type="bool" default="true" visible="false"/>
+
+		<!-- TV Show Menu Items -->
+		<setting type="lsep" label="50053"/>
+		<setting id="sep"/>
+		<setting id="anilist_airing_calendar_tv" label="50000" type="bool" default="true"/>
+		<setting id="anilist_airing_anime_tv" label="50001" type="bool" default="true"/>
+		<setting id="trending_tv" label="50004" type="bool" default="true"/>
+		<setting id="popular_tv" label="50005" type="bool" default="true"/>
+		<setting id="voted_tv" label="50006" type="bool" default="true"/>
+		<setting id="completed_tv" label="50007" type="bool" default="true"/>
+		<setting id="upcoming_tv" label="50008" type="bool" default="true"/>
+		<setting id="anilist_top_100_anime_tv" label="50009" type="bool" default="true"/>
+		<setting id="anilist_genres_tv" label="50010" type="bool" default="true" visible="false"/>
+		<setting id="search_history_tv" label="50011" type="bool" default="true" visible="false"/>
+	</category>
+
+	<!-- Submenu Customization -->
+	<category label="50054">
+		<!-- Main Menu - Trending Items -->	
+		<setting type="lsep" label="50055"/>
 		<setting id="sep"/>		
 		<setting id="anilist_trending_last_year_trending" label="50013" type="bool" default="true"/>
 		<setting id="anilist_trending_this_year_trending" label="50018" type="bool" default="true"/>
 		<setting id="anilist_trending_last_season_trending" label="50024" type="bool" default="true"/>
 		<setting id="anilist_trending_this_season_trending" label="50029" type="bool" default="true"/>
 		<setting id="anilist_all_time_trending_trending" label="50035" type="bool" default="true"/>
-																							
-		<!-- Popular Items -->	
-		<setting type="lsep" label="40405"/>
+
+		<!-- Main Menu - Popular Items -->	
+		<setting type="lsep" label="50056"/>
 		<setting id="sep"/>			
 		<setting id="anilist_popular_last_year_popular" label="50014" type="bool" default="true"/>
 		<setting id="anilist_popular_this_year_popular" label="50019" type="bool" default="true"/>
 		<setting id="anilist_popular_last_season_popular" label="50025" type="bool" default="true"/>
 		<setting id="anilist_popular_this_season_popular" label="50030" type="bool" default="true"/>
 		<setting id="anilist_all_time_popular_popular" label="50036" type="bool" default="true"/>
-																							
-		<!-- Voted Items -->	
-		<setting type="lsep" label="40406"/>
+
+		<!-- Main Menu - Voted Items -->	
+		<setting type="lsep" label="50057"/>
 		<setting id="sep"/>			
 		<setting id="anilist_voted_last_year_voted" label="50015" type="bool" default="true"/>
 		<setting id="anilist_voted_this_year_voted" label="50020" type="bool" default="true"/>
 		<setting id="anilist_voted_last_season_voted" label="50026" type="bool" default="true"/>
 		<setting id="anilist_voted_this_season_voted" label="50031" type="bool" default="true"/>
 		<setting id="anilist_all_time_voted_voted" label="50037" type="bool" default="true"/>
-																							
-		<!-- Completed Items -->	
-		<setting type="lsep" label="40407"/>
+
+		<!-- Main Menu - Completed Items -->	
+		<setting type="lsep" label="50058"/>
 		<setting id="sep"/>			
 		<setting id="anilist_completed_last_year_completed" label="50016" type="bool" default="true"/>
 		<setting id="anilist_completed_this_year_completed" label="50021" type="bool" default="true"/>
 		<setting id="anilist_completed_last_season_completed" label="50027" type="bool" default="true"/>
 		<setting id="anilist_completed_this_season_completed" label="50032" type="bool" default="true"/>
-																							
-		<!-- Upcoming Items -->		
-		<setting type="lsep" label="40408"/>
+
+		<!-- Main Menu - Upcoming Items -->		
+		<setting type="lsep" label="50059"/>
 		<setting id="sep"/>			
 		<setting id="anilist_upcoming_last_year_upcoming" label="50017" type="bool" default="true"/>
 		<setting id="anilist_upcoming_this_year_upcoming" label="50022" type="bool" default="true"/>
@@ -298,72 +304,97 @@
 		<setting id="anilist_upcoming_last_season_upcoming" label="50028" type="bool" default="true"/>
 		<setting id="anilist_upcoming_this_season_upcoming" label="50033" type="bool" default="true"/>
 		<setting id="anilist_upcoming_next_season_upcoming" label="50034" type="bool" default="true"/>
-	</category>	
 
-	<!-- Menus -->
-	<category label="40403">
-		<!-- Movie Items -->	
-		<setting type="lsep" label="40401"/>
-		<setting id="sep"/>
-		<setting id="anilist_airing_anime_movie" label="50001" type="bool" default="true"/>
-		<setting id="anilist_trending_last_year_movie" label="50013" type="bool" default="true"/>
-		<setting id="anilist_popular_last_year_movie" label="50014" type="bool" default="true"/>
-		<setting id="anilist_voted_last_year_movie" label="50015" type="bool" default="true"/>
-		<setting id="anilist_completed_last_year_movie" label="50016" type="bool" default="true"/>
-		<setting id="anilist_upcoming_last_year_movie" label="50017" type="bool" default="true"/>
-		<setting id="anilist_trending_this_year_movie" label="50018" type="bool" default="true"/>
-		<setting id="anilist_popular_this_year_movie" label="50019" type="bool" default="true"/>
-		<setting id="anilist_voted_this_year_movie" label="50020" type="bool" default="true"/>
-		<setting id="anilist_completed_this_year_movie" label="50021" type="bool" default="true"/>
-		<setting id="anilist_upcoming_this_year_movie" label="50022" type="bool" default="true"/>
-		<setting id="anilist_upcoming_next_year_movie" label="50023" type="bool" default="true"/>
-		<setting id="anilist_trending_last_season_movie" label="50024" type="bool" default="true"/>
-		<setting id="anilist_popular_last_season_movie" label="50025" type="bool" default="true"/>
-		<setting id="anilist_voted_last_season_movie" label="50026" type="bool" default="true"/>
-		<setting id="anilist_completed_last_season_movie" label="50027" type="bool" default="true"/>
-		<setting id="anilist_upcoming_last_season_movie" label="50028" type="bool" default="true"/>
-		<setting id="anilist_trending_this_season_movie" label="50029" type="bool" default="true"/>
-		<setting id="anilist_popular_this_season_movie" label="50030" type="bool" default="true"/>
-		<setting id="anilist_voted_this_season_movie" label="50031" type="bool" default="true"/>
-		<setting id="anilist_completed_this_season_movie" label="50032" type="bool" default="true"/>
-		<setting id="anilist_upcoming_this_season_movie" label="50033" type="bool" default="true"/>
-		<setting id="anilist_upcoming_next_season_movie" label="50034" type="bool" default="true"/>
-		<setting id="anilist_all_time_trending_movie" label="50035" type="bool" default="true"/>
-		<setting id="anilist_all_time_popular_movie" label="50036" type="bool" default="true"/>
-		<setting id="anilist_all_time_voted_movie" label="50037" type="bool" default="true"/>
-		<setting id="anilist_top_100_anime_movie" label="50009" type="bool" default="true"/>
-																							
-		<!-- TV Show Items -->		
-		<setting type="lsep" label="40402"/>
+		<!-- Movies - Trending Items -->	
+		<setting type="lsep" label="50060"/>
 		<setting id="sep"/>		
-		<setting id="anilist_airing_anime_tv" label="50001" type="bool" default="true"/>
-		<setting id="anilist_trending_last_year_tv" label="50013" type="bool" default="true"/>
-		<setting id="anilist_popular_last_year_tv" label="50014" type="bool" default="true"/>
-		<setting id="anilist_voted_last_year_tv" label="50015" type="bool" default="true"/>
-		<setting id="anilist_completed_last_year_tv" label="50016" type="bool" default="true"/>
-		<setting id="anilist_upcoming_last_year_tv" label="50017" type="bool" default="true"/>
-		<setting id="anilist_trending_this_year_tv" label="50018" type="bool" default="true"/>
-		<setting id="anilist_popular_this_year_tv" label="50019" type="bool" default="true"/>
-		<setting id="anilist_voted_this_year_tv" label="50020" type="bool" default="true"/>
-		<setting id="anilist_completed_this_year_tv" label="50021" type="bool" default="true"/>
-		<setting id="anilist_upcoming_this_year_tv" label="50022" type="bool" default="true"/>
-		<setting id="anilist_upcoming_next_year_tv" label="50023" type="bool" default="true"/>
-		<setting id="anilist_trending_last_season_tv" label="50024" type="bool" default="true"/>
-		<setting id="anilist_popular_last_season_tv" label="50025" type="bool" default="true"/>
-		<setting id="anilist_voted_last_season_tv" label="50026" type="bool" default="true"/>
-		<setting id="anilist_completed_last_season_tv" label="50027" type="bool" default="true"/>
-		<setting id="anilist_upcoming_last_season_tv" label="50028" type="bool" default="true"/>
-		<setting id="anilist_trending_this_season_tv" label="50029" type="bool" default="true"/>
-		<setting id="anilist_popular_this_season_tv" label="50030" type="bool" default="true"/>
-		<setting id="anilist_voted_this_season_tv" label="50031" type="bool" default="true"/>
-		<setting id="anilist_completed_this_season_tv" label="50032" type="bool" default="true"/>
-		<setting id="anilist_upcoming_this_season_tv" label="50033" type="bool" default="true"/>
-		<setting id="anilist_upcoming_next_season_tv" label="50034" type="bool" default="true"/>
-		<setting id="anilist_all_time_trending_tv" label="50035" type="bool" default="true"/>
-		<setting id="anilist_all_time_popular_tv" label="50036" type="bool" default="true"/>
-		<setting id="anilist_all_time_voted_tv" label="50037" type="bool" default="true"/>
-		<setting id="anilist_top_100_anime_tv" label="50009" type="bool" default="true"/>
-	</category>
+		<setting id="anilist_trending_last_year_trending_movie" label="50013" type="bool" default="true"/>
+		<setting id="anilist_trending_this_year_trending_movie" label="50018" type="bool" default="true"/>
+		<setting id="anilist_trending_last_season_trending_movie" label="50024" type="bool" default="true"/>
+		<setting id="anilist_trending_this_season_trending_movie" label="50029" type="bool" default="true"/>
+		<setting id="anilist_all_time_trending_trending_movie" label="50035" type="bool" default="true"/>
+
+		<!-- Movies - Popular Items -->	
+		<setting type="lsep" label="50061"/>
+		<setting id="sep"/>			
+		<setting id="anilist_popular_last_year_popular_movie" label="50014" type="bool" default="true"/>
+		<setting id="anilist_popular_this_year_popular_movie" label="50019" type="bool" default="true"/>
+		<setting id="anilist_popular_last_season_popular_movie" label="50025" type="bool" default="true"/>
+		<setting id="anilist_popular_this_season_popular_movie" label="50030" type="bool" default="true"/>
+		<setting id="anilist_all_time_popular_popular_movie" label="50036" type="bool" default="true"/>
+
+		<!-- Movies - Voted Items -->	
+		<setting type="lsep" label="50062"/>
+		<setting id="sep"/>			
+		<setting id="anilist_voted_last_year_voted_movie" label="50015" type="bool" default="true"/>
+		<setting id="anilist_voted_this_year_voted_movie" label="50020" type="bool" default="true"/>
+		<setting id="anilist_voted_last_season_voted_movie" label="50026" type="bool" default="true"/>
+		<setting id="anilist_voted_this_season_voted_movie" label="50031" type="bool" default="true"/>
+		<setting id="anilist_all_time_voted_voted_movie" label="50037" type="bool" default="true"/>
+
+		<!-- Movies - Completed Items -->	
+		<setting type="lsep" label="50063"/>
+		<setting id="sep"/>			
+		<setting id="anilist_completed_last_year_completed_movie" label="50016" type="bool" default="true"/>
+		<setting id="anilist_completed_this_year_completed_movie" label="50021" type="bool" default="true"/>
+		<setting id="anilist_completed_last_season_completed_movie" label="50027" type="bool" default="true"/>
+		<setting id="anilist_completed_this_season_completed_movie" label="50032" type="bool" default="true"/>
+
+		<!-- Movies - Upcoming Items -->		
+		<setting type="lsep" label="50064"/>
+		<setting id="sep"/>			
+		<setting id="anilist_upcoming_last_year_upcoming_movie" label="50017" type="bool" default="true"/>
+		<setting id="anilist_upcoming_this_year_upcoming_movie" label="50022" type="bool" default="true"/>
+		<setting id="anilist_upcoming_next_year_upcoming_movie" label="50023" type="bool" default="true"/>
+		<setting id="anilist_upcoming_last_season_upcoming_movie" label="50028" type="bool" default="true"/>
+		<setting id="anilist_upcoming_this_season_upcoming_movie" label="50033" type="bool" default="true"/>
+		<setting id="anilist_upcoming_next_season_upcoming_movie" label="50034" type="bool" default="true"/>
+
+		<!-- TV Shows - Trending Items -->	
+		<setting type="lsep" label="50065"/>
+		<setting id="sep"/>		
+		<setting id="anilist_trending_last_year_trending_tv" label="50013" type="bool" default="true"/>
+		<setting id="anilist_trending_this_year_trending_tv" label="50018" type="bool" default="true"/>
+		<setting id="anilist_trending_last_season_trending_tv" label="50024" type="bool" default="true"/>
+		<setting id="anilist_trending_this_season_trending_tv" label="50029" type="bool" default="true"/>
+		<setting id="anilist_all_time_trending_trending_tv" label="50035" type="bool" default="true"/>
+
+		<!-- TV Shows - Popular Items -->	
+		<setting type="lsep" label="50066"/>
+		<setting id="sep"/>			
+		<setting id="anilist_popular_last_year_popular_tv" label="50014" type="bool" default="true"/>
+		<setting id="anilist_popular_this_year_popular_tv" label="50019" type="bool" default="true"/>
+		<setting id="anilist_popular_last_season_popular_tv" label="50025" type="bool" default="true"/>
+		<setting id="anilist_popular_this_season_popular_tv" label="50030" type="bool" default="true"/>
+		<setting id="anilist_all_time_popular_popular_tv" label="50036" type="bool" default="true"/>
+
+		<!-- TV Shows - Voted Items -->	
+		<setting type="lsep" label="50067"/>
+		<setting id="sep"/>			
+		<setting id="anilist_voted_last_year_voted_tv" label="50015" type="bool" default="true"/>
+		<setting id="anilist_voted_this_year_voted_tv" label="50020" type="bool" default="true"/>
+		<setting id="anilist_voted_last_season_voted_tv" label="50026" type="bool" default="true"/>
+		<setting id="anilist_voted_this_season_voted_tv" label="50031" type="bool" default="true"/>
+		<setting id="anilist_all_time_voted_voted_tv" label="50037" type="bool" default="true"/>
+
+		<!-- TV Shows - Completed Items -->	
+		<setting type="lsep" label="50068"/>
+		<setting id="sep"/>			
+		<setting id="anilist_completed_last_year_completed_tv" label="50016" type="bool" default="true"/>
+		<setting id="anilist_completed_this_year_completed_tv" label="50021" type="bool" default="true"/>
+		<setting id="anilist_completed_last_season_completed_tv" label="50027" type="bool" default="true"/>
+		<setting id="anilist_completed_this_season_completed_tv" label="50032" type="bool" default="true"/>
+
+		<!-- TV Shows - Upcoming Items -->		
+		<setting type="lsep" label="50069"/>
+		<setting id="sep"/>			
+		<setting id="anilist_upcoming_last_year_upcoming_tv" label="50017" type="bool" default="true"/>
+		<setting id="anilist_upcoming_this_year_upcoming_tv" label="50022" type="bool" default="true"/>
+		<setting id="anilist_upcoming_next_year_upcoming_tv" label="50023" type="bool" default="true"/>
+		<setting id="anilist_upcoming_last_season_upcoming_tv" label="50028" type="bool" default="true"/>
+		<setting id="anilist_upcoming_this_season_upcoming_tv" label="50033" type="bool" default="true"/>
+		<setting id="anilist_upcoming_next_season_upcoming_tv" label="50034" type="bool" default="true"/>
+	</category>	
 
 	<!-- Shortcuts -->
 	<category label="40416">
@@ -380,14 +411,15 @@
 		<setting id="change_log" type="action" label="30027" action="RunPlugin(plugin://plugin.video.otaku/change_log)"/>
 		<setting id="clear_cache" type="action" label="30021" action="RunPlugin(plugin://plugin.video.otaku/clear_cache)"/>
 		<setting id="clear_torrent_cache" type="action" label="30022" action="RunPlugin(plugin://plugin.video.otaku/clear_torrent_cache)"/>
-		<setting id="clear_history" type="action" label="30023" action="RunPlugin(plugin://plugin.video.otaku/clear_history)"/>
+		<setting id="clear_history" type="action" label="30023" action="RunPlugin(plugin://plugin.video.otaku/clear_all_history)"/>
 		<setting id="rebuild_database" type="action" label="30026" action="RunPlugin(plugin://plugin.video.otaku/rebuild_database)"/>
 		<setting id="wipe_addon_data" type="action" label="30024" action="RunPlugin(plugin://plugin.video.otaku/wipe_addon_data)"/>
 
-<!--		 &lt;!&ndash;Overrides &ndash;&gt;-->
-<!--		 <setting type="lsep" label="40474"/>-->
-<!--		 <setting id="sep"/>-->
-<!--		 <setting id="override.episode.bool" label="40475" type="bool" default="false"/>-->
-<!--		 <setting id="override.episode.menu" type="labelenum" subsetting="true" label="40476" values="Consumet|Enime|Simkl" default="0" visible="eq(-1,true)"/>-->
+		<!-- Overrides -->
+		<!-- <setting type="lsep" label="40474"/> -->
+		<!-- <setting id="sep"/> -->
+		<!-- <setting id="override.episode.bool" label="40475" type="bool" default="false"/> -->
+		<!-- <setting id="override.episode.menu" type="labelenum" subsetting="true" label="40476" values="Consumet|Enime|Simkl" default="0" visible="eq(-1,true)"/> -->
+		<!-- <setting id="sep"/> -->
 	</category>
 </settings>
