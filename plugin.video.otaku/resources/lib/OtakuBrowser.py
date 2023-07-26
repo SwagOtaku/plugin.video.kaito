@@ -30,7 +30,7 @@ class OtakuBrowser(BrowserBase):
         result.insert(0, utils.allocate_item("New Search", "search_movie", True, 'new_search.png'))
         result.insert(len(result), utils.allocate_item("Clear Search History...", "clear_history_movie", True, 'clear_search_history.png'))
         return result
-    
+
     def _parse_history_view_tv(self, res):
         name = res
         return utils.allocate_item(name, "search_tv/%s/1" % name, True)

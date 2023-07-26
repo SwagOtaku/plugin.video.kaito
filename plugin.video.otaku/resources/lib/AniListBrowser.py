@@ -74,7 +74,7 @@ class AniListBrowser():
         next_page = page + 1
         name = "Next Page (%d)" % (next_page)
         return [utils.allocate_item(name, base_url % next_page, True, 'next.png', fanart='next.png')]
-    
+
     def get_season_year(self, period='current'):
         date = datetime.datetime.today()
         year = date.year
@@ -126,7 +126,7 @@ class AniListBrowser():
         results = list(map(self._process_airing_view, list_))
         results = list(itertools.chain(*results))
         return results
-    
+
     def get_airing_anime(self, page=1, format_in=''):
         season, year = self.get_season_year('Aired')
         variables = {
@@ -838,7 +838,7 @@ class AniListBrowser():
         results = list(map(self._process_airing_view, list_))
         results = list(itertools.chain(*results))
         return results
-    
+
     def get_airing_anime_movie(self, page=1, format_in=''):
         season, year = self.get_season_year('Aired')
         variables = {
@@ -1578,7 +1578,7 @@ class AniListBrowser():
         results = list(map(self._process_airing_view, list_))
         results = list(itertools.chain(*results))
         return results
-    
+
     def get_airing_anime_tv(self, page=1, format_in=''):
         season, year = self.get_season_year('Aired')
         variables = {
@@ -3525,7 +3525,7 @@ class AniListBrowser():
 
     def get_genres_page(self, genre_string, tag_string, page):
         return self._genres_payload(ast.literal_eval(genre_string), ast.literal_eval(tag_string), page)
-    
+
     def get_genres_movie(self, genre_dialog):
         query = '''
         query {
@@ -3696,7 +3696,7 @@ class AniListBrowser():
 
     def get_genres_movie_page(self, genre_string, tag_string, page):
         return self._genres_payload(ast.literal_eval(genre_string), ast.literal_eval(tag_string), page)
-    
+
     def get_genres_tv(self, genre_dialog):
         query = '''
         query {

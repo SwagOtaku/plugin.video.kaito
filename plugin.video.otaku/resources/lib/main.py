@@ -59,16 +59,16 @@ if control.ADDON_VERSION != control.getSetting('version'):
 @route('movies')
 def MOVIES_MENU(payload, params):
     MOVIES_ITEMS = [
-    (control.lang(50000), "anilist_airing_calendar_movie", 'airing_anime_calendar.png'),
-    (control.lang(50001), "anilist_airing_anime_movie", 'airing_anime.png'),
-    (control.lang(50004), "trending_movie", 'trending.png'),
-    (control.lang(50005), "popular_movie", 'popular.png'),
-    (control.lang(50006), "voted_movie", 'voted.png'),
-    (control.lang(50007), "completed_movie", 'completed_01.png'),
-    (control.lang(50008), "upcoming_movie", 'upcoming.png'),
-    (control.lang(50009), "anilist_top_100_anime_movie", 'top_100_anime.png'),
-    (control.lang(50010), "anilist_genres_movie", 'genres_&_tags.png'),
-    (control.lang(50011), "search_history_movie", 'search.png'),
+        (control.lang(50000), "anilist_airing_calendar_movie", 'airing_anime_calendar.png'),
+        (control.lang(50001), "anilist_airing_anime_movie", 'airing_anime.png'),
+        (control.lang(50004), "trending_movie", 'trending.png'),
+        (control.lang(50005), "popular_movie", 'popular.png'),
+        (control.lang(50006), "voted_movie", 'voted.png'),
+        (control.lang(50007), "completed_movie", 'completed_01.png'),
+        (control.lang(50008), "upcoming_movie", 'upcoming.png'),
+        (control.lang(50009), "anilist_top_100_anime_movie", 'top_100_anime.png'),
+        (control.lang(50010), "anilist_genres_movie", 'genres_&_tags.png'),
+        (control.lang(50011), "search_history_movie", 'search.png'),
     ]
 
     MOVIES_ITEMS_SETTINGS = MOVIES_ITEMS[:]
@@ -86,16 +86,16 @@ def MOVIES_MENU(payload, params):
 @route('tv_shows')
 def TV_SHOWS_MENU(payload, params):
     TV_SHOWS_ITEMS = [
-    (control.lang(50000), "anilist_airing_calendar_tv", 'airing_anime_calendar.png'),
-    (control.lang(50001), "anilist_airing_anime_tv", 'airing_anime.png'),
-    (control.lang(50004), "trending_tv", 'trending.png'),
-    (control.lang(50005), "popular_tv", 'popular.png'),
-    (control.lang(50006), "voted_tv", 'voted.png'),
-    (control.lang(50007), "completed_tv", 'completed_01.png'),
-    (control.lang(50008), "upcoming_tv", 'upcoming.png'),
-    (control.lang(50009), "anilist_top_100_anime_tv", 'top_100_anime.png'),
-    (control.lang(50010), "anilist_genres_tv", 'genres_&_tags.png'),
-    (control.lang(50011), "search_history_tv", 'search.png'),
+        (control.lang(50000), "anilist_airing_calendar_tv", 'airing_anime_calendar.png'),
+        (control.lang(50001), "anilist_airing_anime_tv", 'airing_anime.png'),
+        (control.lang(50004), "trending_tv", 'trending.png'),
+        (control.lang(50005), "popular_tv", 'popular.png'),
+        (control.lang(50006), "voted_tv", 'voted.png'),
+        (control.lang(50007), "completed_tv", 'completed_01.png'),
+        (control.lang(50008), "upcoming_tv", 'upcoming.png'),
+        (control.lang(50009), "anilist_top_100_anime_tv", 'top_100_anime.png'),
+        (control.lang(50010), "anilist_genres_tv", 'genres_&_tags.png'),
+        (control.lang(50011), "search_history_tv", 'search.png'),
     ]
 
     TV_SHOWS_ITEMS_SETTINGS = TV_SHOWS_ITEMS[:]
@@ -448,7 +448,7 @@ def SEARCH_MENU(payload, params):
         (control.lang(50072), "search_history_tv", 'search.png'),
     ]
 
-    SEARCH_ITEMS_SETTINGS = SEARCH_ITEMS[:]
+    # SEARCH_ITEMS_SETTINGS = SEARCH_ITEMS[:]
 
     return control.draw_items(
         [utils.allocate_item(name, url, True, image) for name, url, image in SEARCH_ITEMS],
@@ -1434,7 +1434,8 @@ def CLEAR_ALL_HISTORY(payload, params):
     database.clearAllSearchHistory()
     return
 
-#<!-- Main Menu Items -->
+
+# <!-- Main Menu Items -->
 @route('anilist_airing_calendar')
 def ANILIST_AIRING_CALENDAR(payload, params):
     airing = _ANILIST_BROWSER.get_airing_calendar()
@@ -1522,7 +1523,8 @@ def SEARCH_RESULTS(payload, params):
     items = _ANILIST_BROWSER.get_search(query, 1)
     return control.draw_items(items)
 
-#<!-- Movie Menu Items -->
+
+# <!-- Movie Menu Items -->
 @route('anilist_airing_calendar_movie')
 def ANILIST_AIRING_CALENDAR_MOVIE(payload, params):
     airing = _ANILIST_BROWSER.get_airing_calendar_movie()
@@ -1610,7 +1612,8 @@ def SEARCH_RESULTS_MOVIE(payload, params):
     items = _ANILIST_BROWSER.get_search_movie(query, 1)
     return control.draw_items(items)
 
-#<!-- TV Show Menu Items -->
+
+# <!-- TV Show Menu Items -->
 @route('anilist_airing_calendar_tv')
 def ANILIST_AIRING_CALENDAR_TV(payload, params):
     airing = _ANILIST_BROWSER.get_airing_calendar_tv()
@@ -1766,6 +1769,7 @@ def PLAY_MOVIE(payload, params):
                        watchlist_update,
                        None,
                        int(episode))
+
 
 @route('play/*')
 def PLAY(payload, params):
