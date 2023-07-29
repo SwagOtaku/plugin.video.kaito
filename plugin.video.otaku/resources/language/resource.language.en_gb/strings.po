@@ -939,6 +939,10 @@ msgctxt "#40487"
 msgid "Smart Scroll Wait Time"
 msgstr ""
 
+msgctxt "#40488"
+msgid "Clean Cache On Update"
+msgstr ""
+
 ######MAIN Category DIRECTORY#######
 msgctxt "#50000"
 msgid "Airing Anime Calendar"

@@ -48,11 +48,13 @@ _BROWSER = OtakuBrowser()
 _ANILIST_BROWSER = AniListBrowser(_TITLE_LANG)
 
 if control.ADDON_VERSION != control.getSetting('version'):
-    database.cache_clear()
-    database.torrent_cache_clear()
     showchangelog = control.getSetting("general.showchangelog")
+    cache = control.getSetting("changelog.clean_cache")
     if showchangelog == "Yes":
         control.getChangeLog()
+        if cache == "true":
+            database.cache_clear()
+            database.torrent_cache_clear()
     control.setSetting('version', control.ADDON_VERSION)
 
 

@@ -1,3 +1,6 @@
+Changelog 0.3.98 [20230729]:
+- Added Clean Cache On Update Setting
+
 Changelog 0.3.97 [20230725]:
 - Removed Uncategorized Menus
 - Made Category Menus for Movies and TV Shows

@@ -311,8 +311,6 @@ class KitsuWLF(WatchlistFlavorBase):
             'aired': aired
         }
 
-
-
         # Build the dictionary entry for the episode
         base = {
             "name": title,
