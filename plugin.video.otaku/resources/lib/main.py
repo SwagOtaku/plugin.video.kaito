@@ -52,9 +52,9 @@ if control.ADDON_VERSION != control.getSetting('version'):
     cache = control.getSetting("changelog.clean_cache")
     if showchangelog == "Yes":
         control.getChangeLog()
-        if cache == "true":
-            database.cache_clear()
-            database.torrent_cache_clear()
+    if cache == "true":
+        database.cache_clear()
+        database.torrent_cache_clear()
     control.setSetting('version', control.ADDON_VERSION)
 
 
