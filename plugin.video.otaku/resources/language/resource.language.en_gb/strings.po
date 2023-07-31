@@ -943,6 +943,10 @@ msgctxt "#40488"
 msgid "Clean Cache On Update"
 msgstr ""
 
+msgctxt "#40495"
+msgid "Use Kodi's Preferred Language Settings"
+msgstr ""
+
 ######MAIN Category DIRECTORY#######
 msgctxt "#50000"
 msgid "Airing Anime Calendar"
