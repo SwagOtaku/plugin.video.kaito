@@ -192,10 +192,7 @@ class watchlistPlayer(xbmc.Player):
 
         control.closeAllDialogs()
 
-        if control.getSetting('general.kodi_language') == 'true':
-            # do not execute the code block
-            pass
-        else:
+        if control.getSetting('general.kodi_language') == 'false':
             # Subtitle Preferences
             subtitle_lang = self.getAvailableSubtitleStreams()
             if len(subtitle_lang) > 1:

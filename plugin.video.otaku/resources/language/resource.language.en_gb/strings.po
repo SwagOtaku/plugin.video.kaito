@@ -943,8 +943,52 @@ msgctxt "#40488"
 msgid "Clean Cache On Update"
 msgstr ""
 
+msgctxt "#40489"
+msgid "Source Filtering by Size"
+msgstr ""
+
+msgctxt "#40490"
+msgid "Internet Speed (Mbps)"
+msgstr ""
+
+msgctxt "#40491"
+msgid "Movie Max Size (GB)"
+msgstr ""
+
+msgctxt "#40492"
+msgid "Movie Min Size (GB)"
+msgstr ""
+
+msgctxt "#40493"
+msgid "Episode Max Size (GB)"
+msgstr ""
+
+msgctxt "#40494"
+msgid "Episode Min Size (GB)"
+msgstr ""
+
 msgctxt "#40495"
 msgid "Use Kodi's Preferred Language Settings"
+msgstr ""
+
+msgctxt "#40496"
+msgid "Rebuild Database On Update"
+msgstr ""
+
+msgctxt "#40497"
+msgid "Off"
+msgstr ""
+
+msgctxt "#40498"
+msgid "Internet Speed"
+msgstr ""
+
+msgctxt "#40499"
+msgid "Hard Limit"
+msgstr ""
+
+msgctxt "#40500"
+msgid "Hide BATCH Items"
 msgstr ""
 
 ######MAIN Category DIRECTORY#######
