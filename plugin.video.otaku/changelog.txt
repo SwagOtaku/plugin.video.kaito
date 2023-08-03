@@ -1,3 +1,7 @@
+Changelog 0.3.99 [20230803]:
+- Added file Management Size Settings
+- Fixed Kodi Language Settings
+
 Changelog 0.3.98 [20230729]:
 - Added Clean Cache On Update Setting
 
