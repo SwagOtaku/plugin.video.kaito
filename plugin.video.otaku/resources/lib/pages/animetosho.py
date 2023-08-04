@@ -30,7 +30,8 @@ class sources(BrowserBase):
 
         show_meta = database.get_show_meta(anilist_id)
         params = {
-            'q': query
+            'q': query,
+            'qx': 1
         }
         if show_meta:
             meta_ids = pickle.loads(show_meta['meta_ids'])
@@ -40,13 +41,15 @@ class sources(BrowserBase):
         html = r
         soup = BeautifulSoup(html, "html.parser")
         soup_all = soup.find('div', id='content').find_all('div', class_='home_list_entry')
-        list_ = [{
-                'name': soup.find('div', class_='link').a.text,
-                'magnet': soup.find('a', {'href': re.compile(rex)}).get('href'),
-                'size': soup.find('div', class_='size').text,
-                'downloads': 0,
-                'torrent': soup.find('a', class_='dllink').get('href')
-            } for soup in soup_all]
+        list_ = [
+            {'name': soup.find('div', class_='link').a.text,
+             'magnet': soup.find('a', {'href': re.compile(rex)}).get('href'),
+             'size': soup.find('div', class_='size').text,
+             'downloads': 0,
+             'torrent': soup.find('a', class_='dllink').get('href')
+             }
+            for soup in soup_all
+        ]
 
         regex = r'\ss(\d+)|season\s(\d+)|(\d+)+(?:st|[nr]d|th)\sseason'
         regex_ep = r'\de(\d+)\b|\se(\d+)\b|\s-\s(\d{1,3})\b'

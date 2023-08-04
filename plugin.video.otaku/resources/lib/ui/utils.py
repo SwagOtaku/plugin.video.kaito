@@ -81,8 +81,8 @@ def del_subs():
 
 
 def get_season(res):
-    regexes = [r'season\s(\d+)', r'\s(\d+)st\sseason\s', r'\s(\d+)nd\sseason\s',
-               r'\s(\d+)rd\sseason\s', r'\s(\d+)th\sseason\s']
+    regexes = [r'season\s(\d+)', r'\s(\d+)st\sseason(?:\s|$)', r'\s(\d+)nd\sseason(?:\s|$)',
+               r'\s(\d+)rd\sseason(?:\s|$)', r'\s(\d+)th\sseason(?:\s|$)']
     s_ids = []
     for regex in regexes:
         if isinstance(res.get('title'), dict):
