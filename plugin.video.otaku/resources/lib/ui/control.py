@@ -438,7 +438,7 @@ def bulk_draw_items(video_data, draw_cm=None, bulk_add=True):
 
 
 def artPath():
-    THEMES = ['coloured', 'white']
+    THEMES = ['coloured', 'white', 'exodus', 'colouredv2', 'whitev2', 'exodusv2']
     if condVisibility('System.HasAddon(script.otaku.themepak)'):
         return os.path.join(
             xbmcaddon.Addon('script.otaku.themepak').getAddonInfo('path'),

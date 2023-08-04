@@ -5,5 +5,7 @@ Here are the new features we added:
 - Added Manual File Selection.
 - Added A Smart Scroll Feature where it scrolls automatically where you left off.
 - Added a way to hide spoliers for episodes you havn't watched yet.
+- Added File Size Limit Settings.
+- Added Four New Icon Packs with the Otaku Text Removed and with a Exodus feel.
 
-Huge thanks to Joezito for making this all happen. He has done a great job with all these new features, we hope you all enjoy. 
+Huge thanks to Joezito for making this all happen. He has done a great job with all these new features, we hope you all enjoy. r

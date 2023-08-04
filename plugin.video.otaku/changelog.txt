@@ -1,9 +1,13 @@
+Changelog 0.4.0 [20230803]:
+- Added Four New Icon Packs
+
 Changelog 0.3.99 [20230803]:
 - Added file Management Size Settings
 - Fixed Kodi Language Settings
+- Added Rebuild Database On Update Settings
 
 Changelog 0.3.98 [20230729]:
-- Added Clean Cache On Update Setting
+- Added Clean Cache On Update Settings
 
 Changelog 0.3.97 [20230725]:
 - Removed Uncategorized Menus
