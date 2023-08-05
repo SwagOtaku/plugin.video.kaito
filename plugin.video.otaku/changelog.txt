@@ -1,3 +1,8 @@
+Changelog 0.4.2 [20230805]:
+- Removed Otaku Themepak
+- Added 2 New Icon Packs
+- Made Image Sizes Smaller
+
 Changelog 0.4.1 [20230804]:
 - Separated Providers
 - Fixed Season Guessing

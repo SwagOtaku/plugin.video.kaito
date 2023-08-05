@@ -33,7 +33,7 @@
 		<setting id="sep"/>
 		<!-- Artwork Customization -->
 		<setting type="lsep" label="40484"/>
-		<setting id="general.icons" type="enum" label="40388" values="Coloured|White|Exodus|ColouredV2|WhiteV2|ExodusV2" default="3"/>
+		<setting id="general.icons" type="labelenum" label="40388" values="Coloured|White|Exodus|ColouredV2|WhiteV2|ExodusV2|Seren|SerenV2" default="ColouredV2"/>
 		<setting id="general.dialog" type="enum" label="40455" lvalues="40456|40457|40458" default="0"/>
 		<setting id="scraping.fanart" type="bool" label="40433" default="false" />
 		<setting id="scraping.clearlogo" type="bool" label="40434" default="false" />

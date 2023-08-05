@@ -1,11 +1,9 @@
-Nyaa is Fixed and Consistant:
-Hey everyone, we got some new features and we fixed Nyaa to be Consistant. 
-Here are the new features we added:
-- Added Anime Tosho Scrapper.
-- Added Manual File Selection.
-- Added A Smart Scroll Feature where it scrolls automatically where you left off.
-- Added a way to hide spoliers for episodes you havn't watched yet.
-- Added File Size Limit Settings.
-- Added Four New Icon Packs with the Otaku Text Removed and with a Exodus feel.
+Now Icon Packs:
+Hey everyone, i know its a bit late but we just updated to version 0.4.0 recently and we want to give you icons packs for Otaku.
 
-Huge thanks to Joezito for making this all happen. He has done a great job with all these new features, we hope you all enjoy. r
+Summary:
+- Removed Otaku Themepak dependency so feel free to uninstall it.
+- Added ColouredV2 which removes the Otaku Word.
+- Added WhiteV2 which also removes the Otaku Word.
+- Added Exodus Icons for people who remember Exodus.
+- Added Seren Icons for people who think this addon is very similar to Seren.
