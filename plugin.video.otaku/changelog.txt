@@ -1,3 +1,6 @@
+Changelog 0.4.4 [20230806]:
+- Fixed Aniwatch
+
 Changelog 0.4.3 [20230806]:
 - Readded Otaku Themepak
 
