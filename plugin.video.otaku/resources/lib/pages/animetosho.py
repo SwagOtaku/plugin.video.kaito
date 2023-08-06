@@ -37,7 +37,7 @@ class sources(BrowserBase):
             meta_ids = pickle.loads(show_meta['meta_ids'])
             params['aids'] = meta_ids['anidb']
 
-        r = client.request(f'{self._BASE_URL}/search', params=params)
+        r = client.request(self._BASE_URL + '/search', params=params)
         html = r
         soup = BeautifulSoup(html, "html.parser")
         soup_all = soup.find('div', id='content').find_all('div', class_='home_list_entry')

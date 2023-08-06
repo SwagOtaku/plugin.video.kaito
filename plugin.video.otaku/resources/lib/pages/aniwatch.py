@@ -12,7 +12,7 @@ from resources.lib.ui.BrowserBase import BrowserBase
 class sources(BrowserBase):
     _BASE_URL = 'https://aniwatch.to/ajax/'
     keyurl = 'https://raw.githubusercontent.com/enimax-anime/key/e6/key.txt'
-    key = 'kgjN5EpBj8xS255xAXk'
+    keyhints = [[53, 59], [71, 78], [119, 126], [143, 150]]
 
     def get_sources(self, anilist_id, episode, get_backup):
         show = database.get_show(anilist_id)
@@ -171,7 +171,13 @@ class sources(BrowserBase):
             4,
             self.keyurl
         )
-        key = r or self.key
+        keyhints = json.loads(r) or self.keyhints
+        key = ''
+        orig_src = sources
+        for start, end in keyhints:
+            key += orig_src[start:end]
+            sources = sources.replace(orig_src[start:end], '')
+
         try:
             if 'file' not in sources:
                 sources = json.loads(jscrypto.decode(sources, key))
