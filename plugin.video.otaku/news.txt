@@ -2,8 +2,8 @@ Now Icon Packs:
 Hey everyone, i know its a bit late but we just updated to version 0.4.0 recently and we want to give you icons packs for Otaku.
 
 Summary:
-- Removed Otaku Themepak dependency so feel free to uninstall it.
 - Added ColouredV2 which removes the Otaku Word.
 - Added WhiteV2 which also removes the Otaku Word.
 - Added Exodus Icons for people who remember Exodus.
 - Added Seren Icons for people who think this addon is very similar to Seren.
+- Readded Otaku Themepak, Reason why was cause we update Otaku very often. This was also giving bugs for Linux.

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.4.2">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.4.3">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -7,6 +7,7 @@
     <import addon="script.module.six" version="1.15.0"/>
     <import addon="script.module.kodi-six" version="0.1.3"/>
     <import addon="context.otaku" version="0.0.10"/>
+    <import addon="script.otaku.themepak" version="0.0.9"/>
     <!-- <import addon="script.module.web-pdb" version="1.6.0"/> -->
 
   </requires>
@@ -26,10 +27,8 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.4.2 [20230805]:
-- Removed Otaku Themepak
-- Added 2 New Icon Packs
-- Made Image Sizes Smaller
+Changelog 0.4.3 [20230806]:
+- Readded Otaku Themepak
     </news>
   </extension>
 </addon>

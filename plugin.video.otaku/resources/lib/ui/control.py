@@ -52,20 +52,11 @@ dialogWindow = xbmcgui.WindowDialog
 xmlWindow = xbmcgui.WindowXMLDialog
 condVisibility = xbmc.getCondVisibility
 sleep = xbmc.sleep
-
-# IMAGES_PATH = f'{ADDON_PATH}resources\images'
+fanart_ = "%s/fanart.jpg" % ADDON_PATH
 IMAGES_PATH = os.path.join(ADDON_PATH, 'resources', 'images')
-# OTAKU_FANART_PATH = f'{ADDON_PATH}fanart.jpg'
-OTAKU_FANART_PATH = os.path.join(ADDON_PATH, 'fanart.jpg')
-
-# OTAKU_LOGO_PATH = f'{IMAGES_PATH}\\trans-goku.png'
 OTAKU_LOGO_PATH = os.path.join(IMAGES_PATH, 'trans-goku.png')
-# OTAKU_LOGO2_PATH = f'{IMAGES_PATH}\\trans-goku-small.png'
 OTAKU_LOGO2_PATH = os.path.join(IMAGES_PATH, 'trans-goku-small.png')
-# OTAKU_ICONS_PATH = f'{IMAGES_PATH}\\icons\\{__settings__.getSetting("general.icons")}'
-OTAKU_ICONS_PATH = os.path.join(IMAGES_PATH, 'icons', __settings__.getSetting("general.icons"))
-
-
+OTAKU_FANART_PATH = "%s/fanart.jpg" % ADDON_PATH
 menuItem = xbmcgui.ListItem
 execute = xbmc.executebuiltin
 
@@ -444,6 +435,17 @@ def bulk_draw_items(video_data, draw_cm=None, bulk_add=True):
                                     vid['info'], draw_cm, bulk_add)
         item_list.append(item)
     return item_list
+
+
+def artPath():
+    THEMES = ['coloured', 'white', 'exodus', 'seren', 'colouredv2', 'whitev2', 'exodusv2', 'serenv2']
+    if condVisibility('System.HasAddon(script.otaku.themepak)'):
+        return os.path.join(
+            xbmcaddon.Addon('script.otaku.themepak').getAddonInfo('path'),
+            'art',
+            'themes',
+            THEMES[int(getSetting("general.icons"))]
+        )
 
 
 def getKodiVersion():
