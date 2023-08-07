@@ -60,7 +60,7 @@ class BrowserBase(object):
         text = text.replace('-', '\-')  # noQA
         text = text.replace('!', '\!')  # noQA
         text = text.replace('^', '\^')  # noQA
-        text = text.replace('"', '\"')  # noQA
+        text = text.replace('"', '\\"')  # noQA
         text = text.replace('~', '\~')  # noQA
         text = text.replace('*', '\*')  # noQA
         text = text.replace('?', '\?')  # noQA
