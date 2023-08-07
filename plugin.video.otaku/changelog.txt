@@ -1,3 +1,7 @@
+Changelog 0.4.5 [20230807]:
+- Improved Anime Tosho Scrapping
+- Escape special characters in Sphinx query
+
 Changelog 0.4.4 [20230806]:
 - Fixed Aniwatch
 

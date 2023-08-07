@@ -972,7 +972,7 @@ msgid "Use Kodi's Preferred Language Settings"
 msgstr ""
 
 msgctxt "#40496"
-msgid "Rebuild Database On Update"
+msgid ""
 msgstr ""
 
 msgctxt "#40497"
