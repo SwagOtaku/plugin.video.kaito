@@ -50,15 +50,11 @@ _ANILIST_BROWSER = AniListBrowser(_TITLE_LANG)
 if control.ADDON_VERSION != control.getSetting('version'):
     showchangelog = control.getSetting("general.showchangelog")
     cache = control.getSetting("changelog.clean_cache")
-    databaserebuild = control.getSetting("changelog.rebuild_database")
     if showchangelog == "Yes":
         control.getChangeLog()
     if cache == "true":
         database.cache_clear()
         database.torrent_cache_clear()
-    if databaserebuild == "true":
-        from resources.lib.ui.database_sync import AnilistSyncDatabase
-        AnilistSyncDatabase().re_build_database(True)
     control.setSetting('version', control.ADDON_VERSION)
 
 

@@ -209,6 +209,7 @@ class sources(BrowserBase):
     def get_sources(self, query, anilist_id, episode, status, media_type, rescrape):
         # cleans the title of the query
         query = self._clean_title(query)
+
         # checks if media type is "movie", returns movie sources if true
         if media_type == 'movie':
             return self._get_movie_sources(query, anilist_id, episode)

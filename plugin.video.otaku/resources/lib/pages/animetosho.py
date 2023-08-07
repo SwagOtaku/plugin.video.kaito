@@ -14,13 +14,14 @@ class sources(BrowserBase):
 
     def get_sources(self, query, anilist_id, episode, status, media_type, rescrape):
         query = self._clean_title(query)
+        query = self._sphinx_clean(query)
 
         if rescrape:
             # todo add rescrape stuff here
             pass
             # return self._get_episode_sources_pack(quary, anilist_id, episode)
         if media_type != "movie":
-            query = '%s "- %s"' % (query, episode.zfill(2))
+            query = '%s "\- %s"' % (query, episode.zfill(2))  # noQA
             season = database.get_season_list(anilist_id)['season']
             season = str(season).zfill(2)
             query += '|"S%sE%s "' % (season, episode.zfill(2))
@@ -35,10 +36,10 @@ class sources(BrowserBase):
         }
         if show_meta:
             meta_ids = pickle.loads(show_meta['meta_ids'])
-            params['aids'] = meta_ids['anidb']
+            if meta_ids.get('anidb'):
+                params.update({'aids': meta_ids.get('anidb')})
 
-        r = client.request(self._BASE_URL + '/search', params=params)
-        html = r
+        html = client.request(self._BASE_URL + '/search', params=params)
         soup = BeautifulSoup(html, "html.parser")
         soup_all = soup.find('div', id='content').find_all('div', class_='home_list_entry')
         list_ = [

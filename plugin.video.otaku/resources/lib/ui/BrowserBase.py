@@ -54,3 +54,15 @@ class BrowserBase(object):
             size /= power
             n += 1
         return '{0:.2f} {1}'.format(size, power_labels[n])
+
+    def _sphinx_clean(self, text):
+        text = text.replace('+', '\+')  # noQA
+        text = text.replace('-', '\-')  # noQA
+        text = text.replace('!', '\!')  # noQA
+        text = text.replace('^', '\^')  # noQA
+        text = text.replace('"', '\"')  # noQA
+        text = text.replace('~', '\~')  # noQA
+        text = text.replace('*', '\*')  # noQA
+        text = text.replace('?', '\?')  # noQA
+        text = text.replace(':', '\:')  # noQA
+        return text
