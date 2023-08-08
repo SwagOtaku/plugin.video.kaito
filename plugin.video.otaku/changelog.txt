@@ -1,3 +1,7 @@
+Changelog 0.4.6 [20230808]:
+- Fix Sphinx clean function 
+- Fixed a small bug with Genres
+
 Changelog 0.4.5 [20230807]:
 - Improved Anime Tosho Scrapping
 - Escape special characters in Sphinx query
