@@ -3696,7 +3696,7 @@ class AniListBrowser():
         return all_results
 
     def get_genres_movie_page(self, genre_string, tag_string, page):
-        return self._genres_payload(ast.literal_eval(genre_string), ast.literal_eval(tag_string), page)
+        return self._genres_payload_movie(ast.literal_eval(genre_string), ast.literal_eval(tag_string), page)
 
     def get_genres_tv(self, genre_dialog):
         query = '''
@@ -3867,7 +3867,7 @@ class AniListBrowser():
         return all_results
 
     def get_genres_tv_page(self, genre_string, tag_string, page):
-        return self._genres_payload(ast.literal_eval(genre_string), ast.literal_eval(tag_string), page)
+        return self._genres_payload_tv(ast.literal_eval(genre_string), ast.literal_eval(tag_string), page)
 
     def update_trakt_id(self, anilist_id):
         slug = control.keyboard('Enter Trakt Slug[CR]example, to-your-eternity')
