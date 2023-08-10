@@ -19,7 +19,7 @@
             <left>0</left>
             <width>100%</width>
             <height>100%</height>
-            <texture background="true">$INFO[Window().Property(texture.white)]</texture>
+            <texture background="true">white.png</texture>
             <colordiffuse>33000000</colordiffuse>
         </control>
 
@@ -39,7 +39,7 @@
             <height>840</height>
             <top>200</top>
             <border>5</border>
-            <texture>$INFO[Window().Property(texture.white)]</texture>
+            <texture>white.png</texture>
             <colordiffuse>11FFFFFF</colordiffuse>
         </control>
 
@@ -150,7 +150,7 @@
                 <width>660</width>
                 <height>840</height>
                 <border>5</border>
-                <texture>$INFO[Window().Property(texture.white)]</texture>
+                <texture>white.png</texture>
                 <colordiffuse>DD2e2d32</colordiffuse>
             </control>
 
@@ -182,7 +182,7 @@
                         <width>660</width>
                         <height>1</height>
                         <top>74</top>
-                        <texture>$INFO[Window().Property(texture.white)]</texture>
+                        <texture>white.png</texture>
                         <colordiffuse>EEd3d3d3</colordiffuse>
                     </control>
                 </itemlayout>
@@ -191,7 +191,7 @@
                         <width>100%</width>
                         <height>100%</height>
                         <!--<visible>Control.HasFocus(2000)</visible>-->
-                        <texture>$INFO[Window().Property(texture.white)]</texture>
+                        <texture>white.png</texture>
                         <colordiffuse>44d3d3d3</colordiffuse>
                     </control>
                     <control type="label">
@@ -214,7 +214,7 @@
                         <width>660</width>
                         <height>1</height>
                         <top>74</top>
-                        <texture>$INFO[Window().Property(texture.white)]</texture>
+                        <texture>white.png</texture>
                         <colordiffuse>EEd3d3d3</colordiffuse>
                     </control>
                 </focusedlayout>
@@ -239,7 +239,7 @@
                 <width>780</width>
                 <height>840</height>
                 <border>5</border>
-                <texture>$INFO[Window().Property(texture.white)]</texture>
+                <texture>white.png</texture>
                 <colordiffuse>DD2e2d32</colordiffuse>
             </control>
 
@@ -283,7 +283,7 @@
                             <width>100%</width>
                             <height>1</height>
                             <top>69</top>
-                            <texture>$INFO[Window().Property(texture.white)]</texture>
+                            <texture>white.png</texture>
                             <colordiffuse>EEd3d3d3</colordiffuse>
                         </control>
                     </control>
@@ -292,7 +292,7 @@
                     <control type="image">
                         <width>100%</width>
                         <height>100%</height>
-                        <texture>$INFO[Window().Property(texture.white)]</texture>
+                        <texture>white.png</texture>
                         <visible>Control.HasFocus(2001)</visible>
                         <colordiffuse>44d3d3d3</colordiffuse>
                     </control>
@@ -328,7 +328,7 @@
                             <width>100%</width>
                             <height>1</height>
                             <top>69</top>
-                            <texture>$INFO[Window().Property(texture.white)]</texture>
+                            <texture>white.png</texture>
                             <colordiffuse>EEd3d3d3</colordiffuse>
                         </control>
                     </control>

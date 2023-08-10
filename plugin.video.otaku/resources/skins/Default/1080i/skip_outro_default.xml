@@ -25,7 +25,7 @@
 					<right>0</right>
 					<width>100%</width>
 					<height>100%</height>
-					<texture colordiffuse="dd000000">$INFO[Window.Property(texture.white)]</texture>
+					<texture colordiffuse="dd000000">white.png</texture>
 				</control>
 				<!-- Thumb -->
 				<control type="group">
@@ -35,7 +35,7 @@
 					<control type="image">
 						<width>100%</width>
 						<height>100%</height>
-						<texture colordiffuse="FF12A0C7">$INFO[Window.Property(texture.white)]</texture>
+						<texture colordiffuse="FF12A0C7">white.png</texture>
 						<visible>String.IsEmpty(Window.Property(item.art.thumb)) + String.IsEmpty(Window.Property(item.art.landscape)) + String.IsEmpty(Window.Property(item.art.fanart))</visible>
 					</control>
 					<control type="textbox">

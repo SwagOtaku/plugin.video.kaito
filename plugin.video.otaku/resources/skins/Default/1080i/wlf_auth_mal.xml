@@ -7,7 +7,7 @@
     <controls>
         <!-- Background Texture -->
         <control type="image">
-            <texture>$INFO[Window().Property(texture.white)]</texture>
+            <texture>white.png</texture>
             <colordiffuse>FF000000</colordiffuse>
         </control>
 

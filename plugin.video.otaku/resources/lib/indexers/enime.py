@@ -35,7 +35,11 @@ class ENIMEAPI:
                 info['playcount'] = 1
         except:
             pass
-        info['aired'] = res.get('airDate')[:10] if res.get('airDate') else ''
+
+        try:
+            info['aired'] = res['airedAt'][:10]
+        except (KeyError, TypeError):
+            info['aired'] = ''
 
         info['tvshowtitle'] = pickle.loads(database.get_show(show_id)['kodi_meta'])['title_userPreferred']
         info['mediatype'] = 'episode'
