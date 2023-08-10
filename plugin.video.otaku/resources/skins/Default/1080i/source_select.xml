@@ -165,9 +165,9 @@
       	    <width>20</width>
       	    <height>838</height>
       	    <visible>true</visible>
-            <!--<texturesliderbackground colordiffuse="9900000" border="4">special://home/userdata/addon_data/plugin.video.otaku/resources/skins/media/white.png</texturesliderbackground>-->
-            <!--<texturesliderbar colordiffuse="4dcccccc" border="4">special://home/userdata/addon_data/plugin.video.otaku/resources/skins/media/scrollv.png</texturesliderbar>-->
-            <!-- <texturesliderbarfocus colordiffuse="99ffffff" border="4">special://home/userdata/addon_data/plugin.video.otaku/resources/skins/media/scrollv.png</texturesliderbarfocus>-->
+            <!--<texturesliderbackground colordiffuse="9900000" border="4">special://home/userdata/addon_data/plugin.video.otaku/resources/skins/Default/media/white.png</texturesliderbackground>-->
+            <!--<texturesliderbar colordiffuse="4dcccccc" border="4">special://home/userdata/addon_data/plugin.video.otaku/resources/skins/Default/media/scrollv.png</texturesliderbar>-->
+            <!-- <texturesliderbarfocus colordiffuse="99ffffff" border="4">special://home/userdata/addon_data/plugin.video.otaku/resources/skins/Default/media/scrollv.png</texturesliderbarfocus>-->
       	    <pulseonselect>no</pulseonselect>
       	    <orientation>vertical</orientation>
       	    <showonepage>false</showonepage>
@@ -263,7 +263,7 @@
                     <left>1010</left>
                     <width>128.8</width>
                     <height>87.2</height>
-                    <texture background="true" colordiffuse="yellow">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualitysd480.png</texture>
+                    <texture background="true" colordiffuse="yellow">$INFO[Window().Property(skin.dir)]/resources/skins/Default/media/quality/qualitysd480.png</texture>
                     <visible>String.Contains(ListItem.Property(quality),NA)</visible>
                 </control>
                 <control type="image">
@@ -271,7 +271,7 @@
                     <left>1010</left>
                     <width>128.8</width>
                     <height>87.2</height>
-                    <texture background="true" colordiffuse="red">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualityhd720.png</texture>
+                    <texture background="true" colordiffuse="red">$INFO[Window().Property(skin.dir)]/resources/skins/Default/media/quality/qualityhd720.png</texture>
                     <visible>String.Contains(ListItem.Property(quality),720P)</visible>
                 </control>
                 <control type="image">
@@ -279,7 +279,7 @@
                     <left>1010</left>
                     <width>128.8</width>
                     <height>87.2</height>
-                    <texture background="true" colordiffuse="green">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualityhd1080.png</texture>
+                    <texture background="true" colordiffuse="green">$INFO[Window().Property(skin.dir)]/resources/skins/Default/media/quality/qualityhd1080.png</texture>
                     <visible>String.Contains(ListItem.Property(quality),1080P)</visible>
                 </control>
                 <control type="image">
@@ -287,7 +287,7 @@
                     <left>1010</left>
                     <width>128.8</width>
                     <height>87.2</height>
-                    <texture background="true">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualityhd4k.png</texture>
+                    <texture background="true">$INFO[Window().Property(skin.dir)]/resources/skins/Default/media/quality/qualityhd4k.png</texture>
                     <visible>String.Contains(ListItem.Property(quality),4k)</visible>
                 </control>
                 <control type="image">
@@ -295,14 +295,14 @@
                     <left>1010</left>
                     <width>128.8</width>
                     <height>87.2</height>
-                    <texture background="true">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualityeq.png</texture>
+                    <texture background="true">$INFO[Window().Property(skin.dir)]/resources/skins/Default/media/quality/qualityeq.png</texture>
                     <visible>String.Contains(ListItem.Property(quality),EQ)</visible>
                 </control>
                 <control type="image">
                     <width>100%</width>
                     <height>3</height>
                     <bottom>-1</bottom>
-                    <texture colordiffuse="9f000000">special://home/addons/plugin.video.otaku/resources/skins/media/white.png</texture>
+                    <texture colordiffuse="9f000000">special://home/addons/plugin.video.otaku/resources/skins/Default/media/white.png</texture>
                 </control>
             </itemlayout>
 
@@ -385,7 +385,7 @@
                     <left>1010</left>
                     <width>128.8</width>
                     <height>87.2</height>
-                    <texture background="true" colordiffuse="yellow">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualitysd480.png</texture>
+                    <texture background="true" colordiffuse="yellow">$INFO[Window().Property(skin.dir)]/resources/skins/Default/media/quality/qualitysd480.png</texture>
                     <visible>String.Contains(ListItem.Property(quality),NA)</visible>
                 </control>
                 <control type="image">
@@ -393,7 +393,7 @@
                     <left>1010</left>
                     <width>128.8</width>
                     <height>87.2</height>
-                    <texture background="true" colordiffuse="red">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualityhd720.png</texture>
+                    <texture background="true" colordiffuse="red">$INFO[Window().Property(skin.dir)]/resources/skins/Default/media/quality/qualityhd720.png</texture>
                     <visible>String.Contains(ListItem.Property(quality),720P)</visible>
                 </control>
                 <control type="image">
@@ -401,7 +401,7 @@
                     <left>1010</left>
                     <width>128.8</width>
                     <height>87.2</height>
-                    <texture background="true" colordiffuse="green">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualityhd1080.png</texture>
+                    <texture background="true" colordiffuse="green">$INFO[Window().Property(skin.dir)]/resources/skins/Default/media/quality/qualityhd1080.png</texture>
                     <visible>String.Contains(ListItem.Property(quality),1080P)</visible>
                 </control>
                 <control type="image">
@@ -409,7 +409,7 @@
                     <left>1010</left>
                     <width>128.8</width>
                     <height>87.2</height>
-                    <texture background="true">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualityhd4k.png</texture>
+                    <texture background="true">$INFO[Window().Property(skin.dir)]/resources/skins/Default/media/quality/qualityhd4k.png</texture>
                     <visible>String.Contains(ListItem.Property(quality),4k)</visible>
                 </control>
                 <control type="image">
@@ -417,7 +417,7 @@
                     <left>1010</left>
                     <width>128.8</width>
                     <height>87.2</height>
-                    <texture background="true">$INFO[Window().Property(skin.dir)]/resources/skins/media/quality/qualityeq.png</texture>
+                    <texture background="true">$INFO[Window().Property(skin.dir)]/resources/skins/Default/media/quality/qualityeq.png</texture>
                     <visible>String.Contains(ListItem.Property(quality),EQ)</visible>
                 </control>
             </focusedlayout>

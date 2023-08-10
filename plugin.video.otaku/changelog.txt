@@ -1,3 +1,6 @@
+Changelog 0.4.7 [20230810]:
+- Added New Setting "Terminate on Cloud Sources"
+
 Changelog 0.4.6 [20230808]:
 - Fix Sphinx clean function 
 - Fixed a small bug with Genres

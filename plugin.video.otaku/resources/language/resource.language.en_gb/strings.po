@@ -972,7 +972,7 @@ msgid "Use Kodi's Preferred Language Settings"
 msgstr ""
 
 msgctxt "#40496"
-msgid ""
+msgid "Terminate on Cloud Sources"
 msgstr ""
 
 msgctxt "#40497"

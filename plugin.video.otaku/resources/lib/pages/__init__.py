@@ -76,6 +76,7 @@ class Sources(DisplayWindow):
         self.zoroSources = []
         self.threads = []
         self.usercloudSources = []
+        self.terminate_on_cloud = control.getSetting('general.terminate.oncloud') == 'true'
 
     def getSources(self, args):
         query = args['query']
@@ -154,39 +155,36 @@ class Sources(DisplayWindow):
         for i in self.threads:
             i.start()
 
-        timeout = int(control.getSetting('general.timeout'))
-        start_time = time.time()
+        timeout = 60 if rescrape else int(control.getSetting('general.timeout'))
+        start_time = time.perf_counter()
         runtime = 0
 
-        while self.progress < 100:
-            if (len(self.remainingProviders) < 1 and runtime > 5):
-                break
-
-            if self.canceled:
-                break
-
-            try:
-                self.updateProgress()
-            except:
-                pass
-
-            try:
-                self.setProgress()
-                self.setText("4K: %s | 1080: %s | 720: %s | SD: %s" % (
-                    control.colorString(self.torrents_qual_len[0] + self.hosters_qual_len[0]),
-                    control.colorString(self.torrents_qual_len[1] + self.hosters_qual_len[1]),
-                    control.colorString(self.torrents_qual_len[2] + self.hosters_qual_len[2]),
-                    control.colorString(self.torrents_qual_len[3] + self.hosters_qual_len[3]),
-                ))
-
-            except:
-                import traceback
-                traceback.print_exc()
+        while runtime < timeout:
+            if self.canceled or len(self.remainingProviders) < 1 and runtime > 5 or \
+                self.terminate_on_cloud and len(self.cloud_files) > 0:
+                    self.updateProgress()
+                    self.setProgress()
+                    self.setText("4K: %s | 1080: %s | 720: %s | SD: %s" % (
+                        control.colorString(self.torrents_qual_len[0] + self.hosters_qual_len[0]),
+                        control.colorString(self.torrents_qual_len[1] + self.hosters_qual_len[1]),
+                        control.colorString(self.torrents_qual_len[2] + self.hosters_qual_len[2]),
+                        control.colorString(self.torrents_qual_len[3] + self.hosters_qual_len[3]),
+                    ))
+                    time.sleep(.5)
+                    break
+            self.updateProgress()
+            self.setProgress()
+            self.setText("4K: %s | 1080: %s | 720: %s | SD: %s" % (
+                control.colorString(self.torrents_qual_len[0] + self.hosters_qual_len[0]),
+                control.colorString(self.torrents_qual_len[1] + self.hosters_qual_len[1]),
+                control.colorString(self.torrents_qual_len[2] + self.hosters_qual_len[2]),
+                control.colorString(self.torrents_qual_len[3] + self.hosters_qual_len[3]),
+            ))
 
             # Update Progress
-            time.sleep(.200)
-            runtime = time.time() - start_time
-            self.progress = int(100 - float(1 - (runtime / float(timeout))) * 100)
+            time.sleep(.5)
+            runtime = time.perf_counter() - start_time
+            self.progress = runtime/timeout * 100
 
         if len(self.torrentCacheSources) + len(self.embedSources) + len(self.cloud_files) == 0:
             self.return_data = []
