@@ -160,18 +160,21 @@ class Sources(DisplayWindow):
         runtime = 0
 
         while runtime < timeout:
-            if self.canceled or len(self.remainingProviders) < 1 and runtime > 5 or \
-                self.terminate_on_cloud and len(self.cloud_files) > 0:
-                    self.updateProgress()
-                    self.setProgress()
-                    self.setText("4K: %s | 1080: %s | 720: %s | SD: %s" % (
-                        control.colorString(self.torrents_qual_len[0] + self.hosters_qual_len[0]),
-                        control.colorString(self.torrents_qual_len[1] + self.hosters_qual_len[1]),
-                        control.colorString(self.torrents_qual_len[2] + self.hosters_qual_len[2]),
-                        control.colorString(self.torrents_qual_len[3] + self.hosters_qual_len[3]),
-                    ))
-                    time.sleep(.5)
-                    break
+            if (self.canceled
+                    or len(self.remainingProviders) < 1
+                    and runtime > 5
+                    or self.terminate_on_cloud
+                    and len(self.cloud_files) > 0):
+                self.updateProgress()
+                self.setProgress()
+                self.setText("4K: %s | 1080: %s | 720: %s | SD: %s" % (
+                    control.colorString(self.torrents_qual_len[0] + self.hosters_qual_len[0]),
+                    control.colorString(self.torrents_qual_len[1] + self.hosters_qual_len[1]),
+                    control.colorString(self.torrents_qual_len[2] + self.hosters_qual_len[2]),
+                    control.colorString(self.torrents_qual_len[3] + self.hosters_qual_len[3]),
+                ))
+                time.sleep(.5)
+                break
             self.updateProgress()
             self.setProgress()
             self.setText("4K: %s | 1080: %s | 720: %s | SD: %s" % (
@@ -184,7 +187,7 @@ class Sources(DisplayWindow):
             # Update Progress
             time.sleep(.5)
             runtime = time.perf_counter() - start_time
-            self.progress = runtime/timeout * 100
+            self.progress = runtime / timeout * 100
 
         if len(self.torrentCacheSources) + len(self.embedSources) + len(self.cloud_files) == 0:
             self.return_data = []

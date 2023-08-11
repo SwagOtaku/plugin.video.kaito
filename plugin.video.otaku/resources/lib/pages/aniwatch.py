@@ -10,7 +10,7 @@ from resources.lib.ui.BrowserBase import BrowserBase
 
 
 class sources(BrowserBase):
-    _BASE_URL = 'https://aniwatch.to/ajax/'
+    _BASE_URL = 'https://aniwatch.to/'
     keyurl = 'https://raw.githubusercontent.com/enimax-anime/key/e6/key.txt'
     keyhints = [[53, 59], [71, 78], [119, 126], [143, 150]]
 
@@ -28,36 +28,22 @@ class sources(BrowserBase):
 
         headers = {'Referer': self._BASE_URL}
         params = {'keyword': title}
-        r = database.get(
+        res = database.get(
             self._get_request,
             8,
-            self._BASE_URL + 'search/suggest',
+            self._BASE_URL + 'search',
             data=params,
-            headers=headers,
-            XHR=True
+            headers=headers
         )
-        res = json.loads(r).get('html')
 
-        if not res and ':' in title:
-            title = title.split(':')[0]
-            params.update({'q': title})
-            r = database.get(
-                self._get_request,
-                8,
-                self._BASE_URL + 'search/suggest',
-                data=params,
-                headers=headers,
-                XHR=True
-            )
-            res = json.loads(r).get('html')
-
-        mdiv = BeautifulSoup(res, "html.parser")
-        sdivs = mdiv.find_all('a', {'class': 'nav-item'})
+        mlink = SoupStrainer('div', {'class': 'flw-item'})
+        mdiv = BeautifulSoup(res, "html.parser", parse_only=mlink)
+        sdivs = mdiv.find_all('h3')
         sitems = []
         for sdiv in sdivs:
             try:
-                slug = sdiv.get('href').split('?')[0]
-                stitle = sdiv.h3.get('data-jname')
+                slug = sdiv.find('a').get('href').split('?')[0]
+                stitle = sdiv.find('a').get('data-jname')
                 sitems.append({'title': stitle, 'slug': slug})
             except AttributeError:
                 pass
@@ -83,7 +69,7 @@ class sources(BrowserBase):
         r = database.get(
             self._get_request,
             8,
-            self._BASE_URL + 'v2/episode/list/' + slug.split('-')[-1],
+            self._BASE_URL + 'ajax/v2/episode/list/' + slug.split('-')[-1],
             headers=headers,
             XHR=True
         )
@@ -97,7 +83,7 @@ class sources(BrowserBase):
         r = database.get(
             self._get_request,
             8,
-            self._BASE_URL + 'v2/episode/servers',
+            self._BASE_URL + 'ajax/v2/episode/servers',
             data=params,
             headers=headers,
             XHR=True
@@ -110,7 +96,7 @@ class sources(BrowserBase):
             if edata_id:
                 params = {'id': edata_id.get('data-id')}
                 r = self._get_request(
-                    self._BASE_URL + 'v2/episode/sources',
+                    self._BASE_URL + 'ajax/v2/episode/sources',
                     data=params,
                     headers=headers,
                     XHR=True

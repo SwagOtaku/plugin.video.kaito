@@ -1,6 +1,6 @@
 __metaclass__ = type
 
-import os
+# import os
 import pickle
 from resources.lib.ui import control, database
 import random
