@@ -18,12 +18,10 @@ class BaseWindow(control.xmlWindow):
         control.closeBusyDialog()
         self.canceled = False
         self._title_lang = self._get_title_lang(control.getSetting("general.titlelanguage"))
-        self.setProperty('texture.white', os.path.join(control.IMAGES_PATH, 'white.png'))
         self.setProperty('otaku.logo', control.OTAKU_LOGO_PATH)
         self.setProperty('otaku.fanart', control.OTAKU_FANART_PATH)
         self.setProperty('settings.color', 'deepskyblue')
-        self.setProperty('test.pattern', os.path.join(control.IMAGES_PATH, 'test_pattern.png'))
-        self.setProperty('skin.dir', control.ADDON_PATH)
+        # self.setProperty('test.pattern', os.path.join(control.IMAGES_PATH, 'test_pattern.png'))
 
         if actionArgs is None:
             return
