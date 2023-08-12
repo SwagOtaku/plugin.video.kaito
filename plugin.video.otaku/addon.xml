@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.4.7">
+<addon id="plugin.video.otaku" name="Otaku" provider-name="TeamOtaku" version="0.4.8">
   <requires>
     <!-- <import addon="xbmc.python" version="2.24.0"/> -->
     <import addon="script.module.beautifulsoup4" version="4.5.3" />
@@ -27,8 +27,11 @@
       <fanart>fanart.jpg</fanart>
     </assets>
     <news>
-Changelog 0.4.7 [20230810]:
-- Added New Setting "Terminate on Cloud Sources"
+Changelog 0.4.8 [20230811]:
+- Fixed Artwork Bug
+- Fixed Airdates
+- Improved Aniwatch search
+- Made a couple of File Changes
     </news>
   </extension>
 </addon>

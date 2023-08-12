@@ -1,3 +1,9 @@
+Changelog 0.4.8 [20230811]:
+- Fixed Artwork Bug
+- Fixed Airdates
+- Improved Aniwatch search
+- Made a couple of File Changes
+
 Changelog 0.4.7 [20230810]:
 - Added New Setting "Terminate on Cloud Sources"
 
