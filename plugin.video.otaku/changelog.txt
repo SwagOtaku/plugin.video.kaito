@@ -1,3 +1,6 @@
+Changelog 0.4.10 [20230813]:
+- Fix pyaes for Python 3.9+ 
+
 Changelog 0.4.9 [20230813]:
 - Added delete from database context menu
 - Added reuselanginvoker setting
