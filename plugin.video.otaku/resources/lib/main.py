@@ -1834,7 +1834,6 @@ def DELETE_ANIME_DATABASE(payload, params):
         anilist_id = None
     else:
         path, anilist_id, mal_id, filter_lang = payload_list
-        mal_id = None
 
     if not anilist_id:
         try:
@@ -1846,6 +1845,9 @@ def DELETE_ANIME_DATABASE(payload, params):
             show_meta = _ANILIST_BROWSER.get_mal_to_anilist(mal_id)
             anilist_id = show_meta['anilist_id']
             title_user = pickle.loads(show_meta['kodi_meta'])['title_userPreferred']
+    else:
+        show_meta = database.get_show(anilist_id)
+        title_user = pickle.loads(show_meta['kodi_meta'])['title_userPreferred']
 
     database.remove_episodes(anilist_id)
     database.remove_season(anilist_id)
