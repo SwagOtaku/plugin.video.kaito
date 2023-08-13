@@ -1835,8 +1835,7 @@ def DELETE_ANIME_DATABASE(payload, params):
     elif len(payload_list) == 4:
         path, anilist_id, mal_id, filter_lang = payload_list
     else:
-        # path, filter_list = payload_list
-        mal_id = None
+        path, mal_id = payload_list
         anilist_id = params.get('anilist_id')
     if not anilist_id:
         try:
