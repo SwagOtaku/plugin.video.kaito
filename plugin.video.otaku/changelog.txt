@@ -1,3 +1,8 @@
+Changelog 0.4.9 [20230813]:
+- Added delete from database context menu
+- Added reuselanginvoker setting
+- Update database for shows on new episodes
+
 Changelog 0.4.8 [20230811]:
 - Fixed Artwork Bug
 - Fixed Airdates

@@ -991,6 +991,18 @@ msgctxt "#40500"
 msgid "Hide BATCH Items"
 msgstr ""
 
+msgctxt "#40501"
+msgid "Show Delete from Database in Context Menu"
+msgstr ""
+
+msgctxt "#40502"
+msgid "Re-Use Language Invoker"
+msgstr ""
+
+msgctxt "#40503"
+msgid "Toggle Re-Use Language Invoker:    [COLOR red]Faster speeds but some instability![/COLOR]"
+msgstr ""
+
 ######MAIN Category DIRECTORY#######
 msgctxt "#50000"
 msgid "Airing Anime Calendar"
