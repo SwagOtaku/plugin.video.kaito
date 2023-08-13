@@ -28,8 +28,10 @@
 		<setting id="contentorigin.menu" type="enum" subsetting="true" label="40419" lvalues="40420|40421|40422|40423" default="0" visible="eq(-1,true)"/>
 		<setting id="sep"/>
 		<setting id="perpage.bool" label="40466" type="bool" default="false"/>
-		<setting id="perpage.menu" type="slider" subsetting="true" label="40467" range="5,5,50" default="20" option="int" visible="eq(-1,true)"/>
+		<setting id="perpage.menu" type="slider" subsetting="true" label="40467" range="5,5,100" default="20" option="int" visible="eq(-1,true)"/>
 		<setting id="sep"/>
+		<setting id="context.delete.from.database" type="bool" label="Show Delete from Database in context menu" default="false" />
+
 		<!-- Artwork Customization -->
 		<setting type="lsep" label="40484"/>
 		<setting id="general.icons" type="enum" label="40388" values="Coloured|White|Exodus|Seren|ColouredV2|WhiteV2|ExodusV2|SerenV2" default="4"/>
@@ -431,7 +433,10 @@
 		<setting id="clear_history" type="action" label="30023" action="RunPlugin(plugin://plugin.video.otaku/clear_all_history)"/>
 		<setting id="rebuild_database" type="action" label="30026" action="RunPlugin(plugin://plugin.video.otaku/rebuild_database)"/>
 		<setting id="wipe_addon_data" type="action" label="30024" action="RunPlugin(plugin://plugin.video.otaku/wipe_addon_data)"/>
-
+		<setting type="lsep" label="Re-Use Language Invoker" />
+		<setting id="reuselanguageinvoker.toggle" label="Toggle Re-Use Language Invoker:    [COLOR red]Faster speeds but some instability![/COLOR]" type="action" option="close"
+			 action="RunPlugin(plugin://plugin.video.otaku/toggleLanguageInvoker)"/>
+		<setting id="reuselanguageinvoker.status" label="Re-Use Language Invoker Status: " type="text" default="Disabled" enable="false" />
 		<!-- Overrides -->
 		<!-- <setting type="lsep" label="40474"/> -->
 		<!-- <setting id="sep"/> -->

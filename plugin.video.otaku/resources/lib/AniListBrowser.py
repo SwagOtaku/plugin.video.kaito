@@ -18,61 +18,33 @@ class AniListBrowser():
     _URL = "https://graphql.anilist.co"
 
     def __init__(self, title_key=None):
-        if title_key:
-            self._TITLE_LANG = self._title_lang(title_key)
-        else:
-            self._TITLE_LANG = "userPreferred"
-        self.format_in_type = ''
-        filterEnable = control.getSetting('contentformat.bool') == "true"
-        if filterEnable:
+        self._TITLE_LANG = control.title_lang(title_key) if title_key else "userPreferred"
+        if control.getSetting('contentformat.bool') == "true":
             formats = ['TV', 'MOVIE', 'TV_SHORT', 'SPECIAL', 'OVA', 'ONA', 'MUSIC']
             self.format_in_type = formats[int(control.getSetting('contentformat.menu'))]
-
-        elif title_key:
-            self._TITLE_LANG = self._title_lang(title_key)
         else:
-            self._TITLE_LANG = "userPreferred"
-        self.countryOfOrigin_type = ''
-        filterEnable = control.getSetting('contentorigin.bool') == "true"
-        if filterEnable:
+            self.format_in_type = ''
+        if control.getSetting('contentorigin.bool') == "true":
             countries = ['JP', 'KR', 'CN', 'TW']
             self.countryOfOrigin_type = countries[int(control.getSetting('contentorigin.menu'))]
-
-        elif title_key:
-            self._TITLE_LANG = self._title_lang(title_key)
         else:
-            self._TITLE_LANG = "userPreferred"
-        self.licensedBy_type = ''
-        filterEnable = control.getSetting('licensedBy.bool') == "true"
-        if filterEnable:
+            self.countryOfOrigin_type = ''
+        if control.getSetting('licensedBy.bool') == "true":
             selected_site = control.getSetting('licensedBy.menu')
             self.licensedBy_type = selected_site
-
-        elif title_key:
-            self._TITLE_LANG = self._title_lang(title_key)
         else:
-            self._TITLE_LANG = "userPreferred"
-        self.perPage_type = 20
-        filterEnable = control.getSetting('perpage.bool') == 'true'
-        if filterEnable:
+            self.licensedBy_type = ''
+        if control.getSetting('perpage.bool') == 'true':
             self.perPage_type = int(control.getSetting('perpage.menu'))
-
-    def _title_lang(self, title_key):
-        title_lang = {
-            "40370": "userPreferred",
-            "Romaji (Shingeki no Kyojin)": "userPreferred",
-            "40371": "english",
-            "English (Attack on Titan)": "english"
-        }
-
-        return title_lang[title_key]
+        else:
+            self.perPage_type = 20
 
     def _handle_paging(self, hasNextPage, base_url, page):
         if not hasNextPage:
             return []
 
         next_page = page + 1
-        name = "Next Page (%d)" % (next_page)
+        name = "Next Page (%d)" % next_page
         return [utils.allocate_item(name, base_url % next_page, True, 'next.png', fanart='next.png')]
 
     def get_season_year(self, period='current'):
@@ -150,7 +122,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        airing = database.get(self.get_base_res, 0.125, variables, page)
+        airing = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(airing, "anilist_airing_anime/%d", page)
 
     def get_trending_last_year_trending_trending(self, page=1, format_in=''):
@@ -174,7 +146,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        trending = database.get(self.get_base_res, 0.125, variables, page)
+        trending = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_last_year_trending_trending/%d", page)
 
     def get_trending_this_year_trending_trending(self, page=1, format_in=''):
@@ -199,7 +171,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        trending = database.get(self.get_base_res, 0.125, variables, page)
+        trending = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_this_year_trending_trending/%d", page)
 
     def get_trending_last_season_trending(self, page=1, format_in=''):
@@ -224,7 +196,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        trending = database.get(self.get_base_res, 0.125, variables, page)
+        trending = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_last_season_trending/%d", page)
 
     def get_trending_this_season_trending(self, page=1, format_in=''):
@@ -249,7 +221,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        trending = database.get(self.get_base_res, 0.125, variables, page)
+        trending = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_this_season_trending/%d", page)
 
     def get_all_time_trending_trending(self, page=1, format_in=''):
@@ -272,7 +244,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        trending = database.get(self.get_base_res, 0.125, variables, page)
+        trending = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(trending, "anilist_all_time_trending_trending/%d", page)
 
     def get_popular_last_year_popular(self, page=1, format_in=''):
@@ -296,7 +268,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        popular = database.get(self.get_base_res, 0.125, variables, page)
+        popular = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_last_year_popular/%d", page)
 
     def get_popular_this_year_popular(self, page=1, format_in=''):
@@ -321,7 +293,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        popular = database.get(self.get_base_res, 0.125, variables, page)
+        popular = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_this_year_popular/%d", page)
 
     def get_popular_last_season_popular(self, page=1, format_in=''):
@@ -346,7 +318,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        popular = database.get(self.get_base_res, 0.125, variables, page)
+        popular = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_last_season_popular/%d", page)
 
     def get_popular_this_season_popular(self, page=1, format_in=''):
@@ -371,7 +343,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        popular = database.get(self.get_base_res, 0.125, variables, page)
+        popular = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_this_season_popular/%d", page)
 
     def get_all_time_popular_popular(self, page=1, format_in=''):
@@ -394,7 +366,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        popular = database.get(self.get_base_res, 0.125, variables, page)
+        popular = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(popular, "anilist_all_time_popular_popular/%d", page)
 
     def get_voted_last_year_voted(self, page=1, format_in=''):
@@ -418,7 +390,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        voted = database.get(self.get_base_res, 0.125, variables, page)
+        voted = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_last_year_voted/%d", page)
 
     def get_voted_this_year_voted(self, page=1, format_in=''):
@@ -443,7 +415,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        voted = database.get(self.get_base_res, 0.125, variables, page)
+        voted = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_this_year_voted/%d", page)
 
     def get_voted_last_season_voted(self, page=1, format_in=''):
@@ -468,7 +440,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        voted = database.get(self.get_base_res, 0.125, variables, page)
+        voted = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_last_season_voted/%d", page)
 
     def get_voted_this_season_voted(self, page=1, format_in=''):
@@ -493,7 +465,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        voted = database.get(self.get_base_res, 0.125, variables, page)
+        voted = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_this_season_voted/%d", page)
 
     def get_all_time_voted_voted(self, page=1, format_in=''):
@@ -516,7 +488,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        voted = database.get(self.get_base_res, 0.125, variables, page)
+        voted = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(voted, "anilist_all_time_voted_voted /%d", page)
 
     def get_completed_last_year_completed(self, page=1, format_in=''):
@@ -541,7 +513,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        completed = database.get(self.get_base_res, 0.125, variables, page)
+        completed = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_last_year_completed/%d", page)
 
     def get_completed_this_year_completed(self, page=1, format_in=''):
@@ -566,7 +538,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        completed = database.get(self.get_base_res, 0.125, variables, page)
+        completed = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_this_year_completed/%d", page)
 
     def get_completed_last_season_completed(self, page=1, format_in=''):
@@ -592,7 +564,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        completed = database.get(self.get_base_res, 0.125, variables, page)
+        completed = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_last_season_completed/%d", page)
 
     def get_completed_this_season_completed(self, page=1, format_in=''):
@@ -618,7 +590,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        completed = database.get(self.get_base_res, 0.125, variables, page)
+        completed = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_this_season_completed/%d", page)
 
     def get_upcoming_last_year_upcoming(self, page=1, format_in=''):
@@ -642,7 +614,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        upcoming = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_last_year_upcoming/%d", page)
 
     def get_upcoming_this_year_upcoming(self, page=1, format_in=''):
@@ -666,7 +638,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        upcoming = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_this_year_upcoming/%d", page)
 
     def get_upcoming_next_year_upcoming(self, page=1, format_in=''):
@@ -690,7 +662,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        upcoming = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_next_year_upcoming/%d", page)
 
     def get_upcoming_last_season_upcoming(self, page=1, format_in=''):
@@ -715,7 +687,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        upcoming = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_last_season_upcoming/%d", page)
 
     def get_upcoming_this_season_upcoming(self, page=1, format_in=''):
@@ -740,7 +712,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        upcoming = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_this_season_upcoming/%d", page)
 
     def get_upcoming_next_season_upcoming(self, page=1, format_in=''):
@@ -765,7 +737,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        upcoming = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_next_season_upcoming/%d", page)
 
     def get_top_100_anime(self, page=1, format_in=''):
@@ -788,7 +760,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        top_100_anime = database.get(self.get_base_res, 0.125, variables, page)
+        top_100_anime = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(top_100_anime, "anilist_top_100_anime/%d", page)
 
     def get_search(self, query, page=1):
@@ -800,7 +772,7 @@ class AniListBrowser():
             'isAdult': control.getSetting('search.adult') == "true"
         }
 
-        search = database.get(self.get_search_res, 0.125, variables, page)
+        search = database.get(self.get_search_res, 2, variables, page)
         return self._process_anilist_view(search, "search/%s/%%d" % query, page)
 
     def get_airing_calendar_movie(self, page=1, format_in=''):
@@ -863,7 +835,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        airing = database.get(self.get_base_res, 0.125, variables, page)
+        airing = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(airing, "anilist_airing_anime_movie/%d", page)
 
     def get_trending_last_year_trending_trending_movie(self, page=1, format_in=''):
@@ -888,7 +860,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        trending = database.get(self.get_base_res, 0.125, variables, page)
+        trending = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_last_year_trending_trending_movie/%d", page)
 
     def get_trending_this_year_trending_trending_movie(self, page=1, format_in=''):
@@ -914,7 +886,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        trending = database.get(self.get_base_res, 0.125, variables, page)
+        trending = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_this_year_trending_trending_movie/%d", page)
 
     def get_trending_last_season_trending_movie(self, page=1, format_in=''):
@@ -940,7 +912,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        trending = database.get(self.get_base_res, 0.125, variables, page)
+        trending = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_last_season_trending_movie/%d", page)
 
     def get_trending_this_season_trending_movie(self, page=1, format_in=''):
@@ -966,7 +938,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        trending = database.get(self.get_base_res, 0.125, variables, page)
+        trending = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_this_season_trending_movie/%d", page)
 
     def get_all_time_trending_trending_movie(self, page=1, format_in=''):
@@ -990,7 +962,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        trending = database.get(self.get_base_res, 0.125, variables, page)
+        trending = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(trending, "anilist_all_time_trending_trending_movie/%d", page)
 
     def get_popular_last_year_popular_movie(self, page=1, format_in=''):
@@ -1015,7 +987,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        popular = database.get(self.get_base_res, 0.125, variables, page)
+        popular = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_last_year_popular_movie/%d", page)
 
     def get_popular_this_year_popular_movie(self, page=1, format_in=''):
@@ -1041,7 +1013,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        popular = database.get(self.get_base_res, 0.125, variables, page)
+        popular = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_this_year_popular_movie/%d", page)
 
     def get_popular_last_season_popular_movie(self, page=1, format_in=''):
@@ -1067,7 +1039,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        popular = database.get(self.get_base_res, 0.125, variables, page)
+        popular = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_last_season_popular_movie/%d", page)
 
     def get_popular_this_season_popular_movie(self, page=1, format_in=''):
@@ -1093,7 +1065,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        popular = database.get(self.get_base_res, 0.125, variables, page)
+        popular = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_this_season_popular_movie/%d", page)
 
     def get_all_time_popular_popular_movie(self, page=1, format_in=''):
@@ -1117,7 +1089,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        popular = database.get(self.get_base_res, 0.125, variables, page)
+        popular = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(popular, "anilist_all_time_popular_popular_movie/%d", page)
 
     def get_voted_last_year_voted_movie(self, page=1, format_in=''):
@@ -1142,7 +1114,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        voted = database.get(self.get_base_res, 0.125, variables, page)
+        voted = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_last_year_voted_movie/%d", page)
 
     def get_voted_this_year_voted_movie(self, page=1, format_in=''):
@@ -1168,7 +1140,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        voted = database.get(self.get_base_res, 0.125, variables, page)
+        voted = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_this_year_voted_movie/%d", page)
 
     def get_voted_last_season_voted_movie(self, page=1, format_in=''):
@@ -1194,7 +1166,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        voted = database.get(self.get_base_res, 0.125, variables, page)
+        voted = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_last_season_voted_movie/%d", page)
 
     def get_voted_this_season_voted_movie(self, page=1, format_in=''):
@@ -1220,7 +1192,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        voted = database.get(self.get_base_res, 0.125, variables, page)
+        voted = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_this_season_voted_movie/%d", page)
 
     def get_all_time_voted_voted_movie(self, page=1, format_in=''):
@@ -1244,7 +1216,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        voted = database.get(self.get_base_res, 0.125, variables, page)
+        voted = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(voted, "anilist_all_time_voted_voted _movie/%d", page)
 
     def get_completed_last_year_completed_movie(self, page=1, format_in=''):
@@ -1270,7 +1242,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        completed = database.get(self.get_base_res, 0.125, variables, page)
+        completed = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_last_year_completed_movie/%d", page)
 
     def get_completed_this_year_completed_movie(self, page=1, format_in=''):
@@ -1296,7 +1268,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        completed = database.get(self.get_base_res, 0.125, variables, page)
+        completed = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_this_year_completed_movie/%d", page)
 
     def get_completed_last_season_completed_movie(self, page=1, format_in=''):
@@ -1323,7 +1295,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        completed = database.get(self.get_base_res, 0.125, variables, page)
+        completed = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_last_season_completed_movie/%d", page)
 
     def get_completed_this_season_completed_movie(self, page=1, format_in=''):
@@ -1350,7 +1322,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        completed = database.get(self.get_base_res, 0.125, variables, page)
+        completed = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_this_season_completed_movie/%d", page)
 
     def get_upcoming_last_year_upcoming_movie(self, page=1, format_in=''):
@@ -1375,7 +1347,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        upcoming = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_last_year_upcoming_movie/%d", page)
 
     def get_upcoming_this_year_upcoming_movie(self, page=1, format_in=''):
@@ -1400,7 +1372,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        upcoming = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_this_year_upcoming_movie/%d", page)
 
     def get_upcoming_next_year_upcoming_movie(self, page=1, format_in=''):
@@ -1425,7 +1397,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        upcoming = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_next_year_upcoming_movie/%d", page)
 
     def get_upcoming_last_season_upcoming_movie(self, page=1, format_in=''):
@@ -1451,7 +1423,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        upcoming = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_last_season_upcoming_movie/%d", page)
 
     def get_upcoming_this_season_upcoming_movie(self, page=1, format_in=''):
@@ -1477,7 +1449,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        upcoming = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_this_season_upcoming_movie/%d", page)
 
     def get_upcoming_next_season_upcoming_movie(self, page=1, format_in=''):
@@ -1503,7 +1475,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        upcoming = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_next_season_upcoming_movie/%d", page)
 
     def get_top_100_anime_movie(self, page=1, format_in=''):
@@ -1527,7 +1499,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        top_100_anime = database.get(self.get_base_res, 0.125, variables, page)
+        top_100_anime = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(top_100_anime, "anilist_top_100_anime_movie/%d", page)
 
     def get_search_movie(self, query, page=1):
@@ -1540,7 +1512,7 @@ class AniListBrowser():
             'format': "MOVIE"
         }
 
-        search = database.get(self.get_search_res, 0.125, variables, page)
+        search = database.get(self.get_search_res, 2, variables, page)
         return self._process_anilist_view(search, "search_movie/%s/%%d" % query, page)
 
     def get_airing_calendar_tv(self, page=1, format_in=''):
@@ -1603,7 +1575,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        airing = database.get(self.get_base_res, 0.125, variables, page)
+        airing = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(airing, "anilist_airing_anime_tv/%d", page)
 
     def get_trending_last_year_trending_trending_tv(self, page=1, format_in=''):
@@ -1628,7 +1600,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        trending = database.get(self.get_base_res, 0.125, variables, page)
+        trending = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_last_year_trending_trending_tv/%d", page)
 
     def get_trending_this_year_trending_trending_tv(self, page=1, format_in=''):
@@ -1654,7 +1626,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        trending = database.get(self.get_base_res, 0.125, variables, page)
+        trending = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_this_year_trending_trending_tv/%d", page)
 
     def get_trending_last_season_trending_tv(self, page=1, format_in=''):
@@ -1680,7 +1652,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        trending = database.get(self.get_base_res, 0.125, variables, page)
+        trending = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_last_season_trending_tv/%d", page)
 
     def get_trending_this_season_trending_tv(self, page=1, format_in=''):
@@ -1706,7 +1678,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        trending = database.get(self.get_base_res, 0.125, variables, page)
+        trending = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(trending, "anilist_trending_this_season_trending_tv/%d", page)
 
     def get_all_time_trending_trending_tv(self, page=1, format_in=''):
@@ -1730,7 +1702,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        trending = database.get(self.get_base_res, 0.125, variables, page)
+        trending = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(trending, "anilist_all_time_trending_trending_tv/%d", page)
 
     def get_popular_last_year_popular_tv(self, page=1, format_in=''):
@@ -1755,7 +1727,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        popular = database.get(self.get_base_res, 0.125, variables, page)
+        popular = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_last_year_popular_tv/%d", page)
 
     def get_popular_this_year_popular_tv(self, page=1, format_in=''):
@@ -1781,7 +1753,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        popular = database.get(self.get_base_res, 0.125, variables, page)
+        popular = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_this_year_popular_tv/%d", page)
 
     def get_popular_last_season_popular_tv(self, page=1, format_in=''):
@@ -1807,7 +1779,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        popular = database.get(self.get_base_res, 0.125, variables, page)
+        popular = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_last_season_popular_tv/%d", page)
 
     def get_popular_this_season_popular_tv(self, page=1, format_in=''):
@@ -1833,7 +1805,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        popular = database.get(self.get_base_res, 0.125, variables, page)
+        popular = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(popular, "anilist_popular_this_season_popular_tv/%d", page)
 
     def get_all_time_popular_popular_tv(self, page=1, format_in=''):
@@ -1857,7 +1829,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        popular = database.get(self.get_base_res, 0.125, variables, page)
+        popular = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(popular, "anilist_all_time_popular_popular_tv/%d", page)
 
     def get_voted_last_year_voted_tv(self, page=1, format_in=''):
@@ -1882,7 +1854,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        voted = database.get(self.get_base_res, 0.125, variables, page)
+        voted = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_last_year_voted_tv/%d", page)
 
     def get_voted_this_year_voted_tv(self, page=1, format_in=''):
@@ -1908,7 +1880,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        voted = database.get(self.get_base_res, 0.125, variables, page)
+        voted = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_this_year_voted_tv/%d", page)
 
     def get_voted_last_season_voted_tv(self, page=1, format_in=''):
@@ -1934,7 +1906,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        voted = database.get(self.get_base_res, 0.125, variables, page)
+        voted = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_last_season_voted_tv/%d", page)
 
     def get_voted_this_season_voted_tv(self, page=1, format_in=''):
@@ -1960,7 +1932,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        voted = database.get(self.get_base_res, 0.125, variables, page)
+        voted = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(voted, "anilist_voted_this_season_voted_tv/%d", page)
 
     def get_all_time_voted_voted_tv(self, page=1, format_in=''):
@@ -1984,7 +1956,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        voted = database.get(self.get_base_res, 0.125, variables, page)
+        voted = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(voted, "anilist_all_time_voted_voted _tv/%d", page)
 
     def get_completed_last_year_completed_tv(self, page=1, format_in=''):
@@ -2010,7 +1982,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        completed = database.get(self.get_base_res, 0.125, variables, page)
+        completed = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_last_year_completed_tv/%d", page)
 
     def get_completed_this_year_completed_tv(self, page=1, format_in=''):
@@ -2036,7 +2008,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        completed = database.get(self.get_base_res, 0.125, variables, page)
+        completed = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_this_year_completed_tv/%d", page)
 
     def get_completed_last_season_completed_tv(self, page=1, format_in=''):
@@ -2063,7 +2035,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        completed = database.get(self.get_base_res, 0.125, variables, page)
+        completed = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_last_season_completed_tv/%d", page)
 
     def get_completed_this_season_completed_tv(self, page=1, format_in=''):
@@ -2090,7 +2062,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        completed = database.get(self.get_base_res, 0.125, variables, page)
+        completed = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(completed, "anilist_completed_this_season_completed_tv/%d", page)
 
     def get_upcoming_last_year_upcoming_tv(self, page=1, format_in=''):
@@ -2115,7 +2087,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        upcoming = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_last_year_upcoming_tv/%d", page)
 
     def get_upcoming_this_year_upcoming_tv(self, page=1, format_in=''):
@@ -2140,7 +2112,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        upcoming = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_this_year_upcoming_tv/%d", page)
 
     def get_upcoming_next_year_upcoming_tv(self, page=1, format_in=''):
@@ -2165,7 +2137,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        upcoming = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_next_year_upcoming_tv/%d", page)
 
     def get_upcoming_last_season_upcoming_tv(self, page=1, format_in=''):
@@ -2191,7 +2163,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        upcoming = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_last_season_upcoming_tv/%d", page)
 
     def get_upcoming_this_season_upcoming_tv(self, page=1, format_in=''):
@@ -2217,7 +2189,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        upcoming = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_this_season_upcoming_tv/%d", page)
 
     def get_upcoming_next_season_upcoming_tv(self, page=1, format_in=''):
@@ -2243,7 +2215,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        upcoming = database.get(self.get_base_res, 0.125, variables, page)
+        upcoming = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(upcoming, "anilist_upcoming_next_season_upcoming_tv/%d", page)
 
     def get_top_100_anime_tv(self, page=1, format_in=''):
@@ -2267,7 +2239,7 @@ class AniListBrowser():
         if self.perPage_type:
             variables['perPage'] = self.perPage_type
 
-        top_100_anime = database.get(self.get_base_res, 0.125, variables, page)
+        top_100_anime = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(top_100_anime, "anilist_top_100_anime_tv/%d", page)
 
     def get_search_tv(self, query, page=1):
@@ -2280,7 +2252,7 @@ class AniListBrowser():
             'format': "TV"
         }
 
-        search = database.get(self.get_search_res, 0.125, variables, page)
+        search = database.get(self.get_search_res, 2, variables, page)
         return self._process_anilist_view(search, "search_tv/%s/%%d" % query, page)
 
     def get_recommendations(self, anilist_id, page=1):
@@ -2289,7 +2261,7 @@ class AniListBrowser():
             'id': anilist_id
         }
 
-        recommendations = database.get(self.get_recommendations_res, 0.125, variables, page)
+        recommendations = database.get(self.get_recommendations_res, 2, variables, page)
         return self._process_recommendations_view(recommendations, "recommendations_next/{}/%d".format(anilist_id), page)
 
     def get_relations(self, anilist_id):
@@ -2297,7 +2269,7 @@ class AniListBrowser():
             'id': anilist_id
         }
 
-        relations = database.get(self.get_relations_res, 0.125, variables)
+        relations = database.get(self.get_relations_res, 2, variables)
         return self._process_relations_view(relations, "find_relations/%d")
 
     def get_watch_order(self, mal_id):
@@ -2311,7 +2283,7 @@ class AniListBrowser():
                 'idMal': idmal
             }
 
-            anilist_item = database.get(self.get_watch_order_res, 0.125, variables)
+            anilist_item = database.get(self.get_watch_order_res, 2, variables)
             if anilist_item is not None:
                 watch_order_list.append(anilist_item)
 
@@ -3059,20 +3031,20 @@ class AniListBrowser():
         if not in_database:
             self._database_update_show(res)
 
-        # remove cached eps for releasing shows every five days so new eps metadata can be shown
-        if res.get('status') == 'RELEASING':
-            from datetime import date
-            ep_list = database.get_episode_list(res['id'])
-            if ep_list:
-                last_updated = ep_list[0]['last_updated']
-                if six.PY2:
-                    year, month, day = last_updated.split('-')
-                    ldate = date(int(year), int(month), int(day))
-                else:
-                    ldate = date.fromisoformat(last_updated)
-                ldiff = date.today() - ldate
-                if ldiff.days > 4:
-                    database.remove_episodes(res['id'])
+        # # remove cached eps for releasing shows every five days so new eps metadata can be shown
+        # if res.get('status') == 'RELEASING':
+        #     from datetime import date
+        #     ep_list = database.get_episode_list(res['id'])
+        #     if ep_list:
+        #         last_updated = ep_list[0]['last_updated']
+        #         if six.PY2:
+        #             year, month, day = last_updated.split('-')
+        #             ldate = date(int(year), int(month), int(day))
+        #         else:
+        #             ldate = date.fromisoformat(last_updated)
+        #         ldiff = date.today() - ldate
+        #         if ldiff.days > 4:
+        #             database.remove_episodes(res['id'])
 
         kodi_meta = {}
         show_meta = database.get_show_meta(res['id'])

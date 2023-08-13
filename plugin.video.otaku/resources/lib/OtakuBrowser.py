@@ -85,10 +85,10 @@ class OtakuBrowser(BrowserBase):
         return simkl.SIMKLAPI().get_anime(anilist_id, params)
 
     def get_anime_init(self, anilist_id, filter_lang=None):
-        show = database.get_show(anilist_id)
-        if not show:
-            from resources.lib.AniListBrowser import AniListBrowser
-            show = AniListBrowser().get_anilist(anilist_id)
+        # show = database.get_show(anilist_id)
+        # if not show:
+        #     from resources.lib.AniListBrowser import AniListBrowser
+        #     show = AniListBrowser().get_anilist(anilist_id)
 
         # show_meta = database.get_show_meta(anilist_id)
         # if not show_meta:
@@ -118,12 +118,12 @@ class OtakuBrowser(BrowserBase):
             else:
                 data = ([], 'episodes')
         else:
-            data = ([], 'episodes')
+            # data = ([], 'episodes')
             # if show_meta:
-            data = consumet.CONSUMETAPI().get_episodes(anilist_id, filter_lang=filter_lang)
+            data = enime.ENIMEAPI().get_episodes(anilist_id, filter_lang=filter_lang)
 
             if not data[0]:
-                data = enime.ENIMEAPI().get_episodes(anilist_id, filter_lang=filter_lang)
+                data = consumet.CONSUMETAPI().get_episodes(anilist_id, filter_lang=filter_lang)
 
             if not data[0]:
                 data = self.get_anime_simkl(anilist_id, filter_lang)

@@ -356,7 +356,7 @@ def xbmc_add_player_item(name, url, art={}, info={}, draw_cm=None, bulk_add=Fals
         return xbmcplugin.addDirectoryItem(handle=HANDLE, url=u, listitem=liz, isFolder=False)
 
 
-def xbmc_add_dir(name, url, art={}, info={}, draw_cm=None):
+def xbmc_add_dir(name, url, art={}, info={}, draw_cm=[]):
     u = addon_url(url)
     # cm = [('Trakt Meta Correction', 'RunPlugin(plugin://{0}/trakt_correction/{1})'.format(ADDON_ID, url))]
     cm = []
@@ -383,23 +383,24 @@ def xbmc_add_dir(name, url, art={}, info={}, draw_cm=None):
     return xbmcplugin.addDirectoryItem(handle=HANDLE, url=u, listitem=liz, isFolder=True)
 
 
-def draw_items(video_data, contentType="tvshows", viewType=None, draw_cm=None, bulk_add=False):
+def draw_items(video_data, contentType="tvshows", viewType=None, draw_cm=[], bulk_add=False):
     if isinstance(video_data, tuple):
         contentType = video_data[1]
         video_data = video_data[0]
 
     if not isinstance(video_data, list):
         video_data = [video_data]
+    if not draw_cm and contentType == 'tvshows' and watchlist_enabled():
+        draw_cm.append(('Add to Watchlist', 'add_to_watchlist'))
+        draw_cm.append(('Mark as Completed', 'add_to_completed_watchlist'))
+    if getSetting('context.delete.from.database') == 'true' and contentType == 'tvshows':
+        draw_cm.append(("Delete from database", 'delete_anime_from_database'))
 
     for vid in video_data:
         if vid['is_dir']:
             xbmc_add_dir(vid['name'], vid['url'], vid['image'], vid['info'], draw_cm)
         else:
-            if draw_cm is None:
-                if contentType != 'episodes' and watchlist_enabled():
-                    draw_cm = [('Add to Watchlist', 'add_to_watchlist'), ('Mark as Completed', 'add_to_completed_watchlist')]
-            xbmc_add_player_item(vid['name'], vid['url'], vid['image'],
-                                 vid['info'], draw_cm, bulk_add)
+            xbmc_add_player_item(vid['name'], vid['url'], vid['image'], vid['info'], draw_cm, bulk_add)
 
     xbmcplugin.setContent(HANDLE, contentType)
     if contentType == 'episodes':
@@ -458,7 +459,6 @@ def getChangeLog():
     news_file = os.path.join(ADDON_PATH, 'news.txt')
 
     # Read changelog file
-    changelog_text = ""
     if xbmcvfs.exists(changelog_file):
         if PY2:
             f = open(changelog_file, 'r')
@@ -508,6 +508,32 @@ def getInstructions():
     del windows
 
 
+def toggle_reuselanguageinvoker(forced_state=None):
+    def _store_and_reload(output):
+        with open(file_path, "w+") as addon_xml:
+            addon_xml.writelines(output)
+        ok_dialog(ADDON_NAME, 'Language Invoker option has been changed, reloading kodi profile')
+        execute('LoadProfile({})'.format(xbmc.getInfoLabel("system.profilename")))
+
+    file_path = os.path.join(ADDON_PATH, "addon.xml")
+
+    with open(file_path, "r") as addon_xml:
+        file_lines = addon_xml.readlines()
+
+    for i in range(len(file_lines)):
+        line_string = file_lines[i]
+        if "reuselanguageinvoker" in file_lines[i]:
+            if ("false" in line_string and forced_state is None) or ("false" in line_string and forced_state):
+                file_lines[i] = file_lines[i].replace("false", "true")
+                setSetting("reuselanguageinvoker.status", "Enabled")
+                _store_and_reload(file_lines)
+            elif ("true" in line_string and forced_state is None) or ("true" in line_string and forced_state is False):
+                file_lines[i] = file_lines[i].replace("true", "false")
+                setSetting("reuselanguageinvoker.status", "Disabled")
+                _store_and_reload(file_lines)
+            break
+
+
 def setGlobalProp(property, value):
     xbmcgui.Window(10000).setProperty(property, str(value))
 
@@ -518,6 +544,17 @@ def getGlobalProp(property):
         return value.lower == "true"
     else:
         return value
+
+
+def title_lang(title_key):
+    title_lang_dict = {
+        "40370": "userPreferred",
+        "Romaji (Shingeki no Kyojin)": "userPreferred",
+        "40371": "english",
+        "English (Attack on Titan)": "english"
+    }
+    return title_lang_dict[title_key]
+
 
 #             ## for testing ###
 # def print(string, *args):

@@ -11,7 +11,6 @@ class ENIMEAPI:
         self.baseUrl = 'https://api.enime.moe/'
         self.episodesUrl = 'mapping/anilist/{0}'
         self.streamUrl = 'source/{0}'
-        self.request_response = None
 
     def _json_request(self, url):
         url = self.baseUrl + url
@@ -20,16 +19,23 @@ class ENIMEAPI:
             response = json.loads(response)
         return response
 
-    def _parse_episode_view(self, res, show_id, show_meta, season, poster, fanart, eps_watched, update_time, title_disable):
+    @staticmethod
+    def _parse_episode_view(res, show_id, title_userpreferred, season, poster, fanart, eps_watched, update_time,
+                            title_disable):
         url = "%s/%s/" % (show_id, res['number'])
+
         name = res.get('title')
         image = res.get('image')
 
-        info = {}
-        info['plot'] = res.get('description', '')
-        info['title'] = res.get('title', '')
-        info['season'] = int(season)
-        info['episode'] = res['number']
+        info = {
+            'plot': res.get('description', ''),
+            'title': res.get('title', ''),
+            'season': int(season),
+            'episode': res['number'],
+            'tvshowtitle': title_userpreferred,
+            'mediatype': 'episode'
+        }
+
         try:
             if int(eps_watched) >= res['number']:
                 info['playcount'] = 1
@@ -41,10 +47,9 @@ class ENIMEAPI:
         except (KeyError, TypeError):
             info['aired'] = ''
 
-        info['tvshowtitle'] = pickle.loads(database.get_show(show_id)['kodi_meta'])['title_userPreferred']
-        info['mediatype'] = 'episode'
-        parsed = utils.allocate_item(name, "play/" + str(url), False, image, info, fanart, poster)
-        database._update_episode(show_id, season=season, number=res['number'], update_time=update_time, kodi_meta=parsed, air_date=info['aired'])
+        parsed = utils.allocate_item(name, "play/%s" % url, False, image, info, fanart, poster)
+        database._update_episode(show_id, season=season, number=res['number'], update_time=update_time,
+                                 kodi_meta=parsed, air_date=info['aired'])
 
         if title_disable and info.get('playcount') != 1:
             parsed['info']['title'] = 'Episode %s' % res["number"]
@@ -52,9 +57,10 @@ class ENIMEAPI:
 
         return parsed
 
-    def _process_episode_view(self, anilist_id, show_meta, poster, fanart, eps_watched, title_disable=False):
+    def _process_episode_view(self, anilist_id, title_userpreferred, poster, fanart, eps_watched, title_disable=False):
         from datetime import date
         update_time = date.today().isoformat()
+
         all_results = []
         result = self.get_anilist_meta(anilist_id)
         if result:
@@ -65,13 +71,36 @@ class ENIMEAPI:
             database._update_season(anilist_id, season)
 
             result = result.get('episodes')
-            mapfunc = partial(self._parse_episode_view, show_id=anilist_id, show_meta=show_meta, season=season,
-                              poster=poster, fanart=fanart, eps_watched=eps_watched, update_time=update_time,
-                              title_disable=title_disable)
+            mapfunc = partial(self._parse_episode_view, show_id=anilist_id, title_userpreferred=title_userpreferred,
+                              season=season, poster=poster, fanart=fanart, eps_watched=eps_watched,
+                              update_time=update_time, title_disable=title_disable)
             all_results = list(map(mapfunc, result))
         return all_results
 
-    def _parse_episodes(self, res, show_id, eps_watched, title_disable=False):
+    def append_episodes(self, anilist_id, title_userpreferred, episodes, eps_watched, poster, fanart, title_disable=False):
+        import datetime
+        import time
+        update_time = datetime.date.today().isoformat()
+        last_updated = datetime.datetime(*(time.strptime(episodes[0]['last_updated'], "%Y-%m-%d")[0:6]))
+        diff = (datetime.datetime.today() - last_updated).days
+
+        result = self.get_anilist_meta(anilist_id) if diff > 0 else {}
+        if len(result) > len(episodes):
+            season = database.get_season_list(anilist_id)['season']
+            result = result.get('episodes')
+            mapfunc2 = partial(self._parse_episode_view, show_id=anilist_id, title_userpreferred=title_userpreferred,
+                               season=season, poster=poster, fanart=fanart, eps_watched=eps_watched,
+                               update_time=update_time, title_disable=title_disable)
+            all_results = list(map(mapfunc2, result))
+        else:
+            mapfunc1 = partial(self._parse_episodes, eps_watched=eps_watched,
+                               title_disable=title_disable)
+            all_results = list(map(mapfunc1, episodes))
+
+        return all_results
+
+    @staticmethod
+    def _parse_episodes(res, eps_watched, title_disable=False):
         parsed = pickle.loads(res['kodi_meta'])
 
         try:
@@ -86,10 +115,9 @@ class ENIMEAPI:
 
         return parsed
 
-    def _process_episodes(self, anilist_id, episodes, eps_watched, title_disable=False):
-        mapfunc = partial(self._parse_episodes, show_id=anilist_id, eps_watched=eps_watched, title_disable=title_disable)
+    def _process_episodes(self, episodes, eps_watched, title_disable=False):
+        mapfunc = partial(self._parse_episodes, eps_watched=eps_watched, title_disable=title_disable)
         all_results = list(map(mapfunc, episodes))
-
         return all_results
 
     def get_anilist_meta(self, anilist_id):
@@ -105,20 +133,26 @@ class ENIMEAPI:
         kodi_meta = pickle.loads(database.get_show(anilist_id).get('kodi_meta'))
         if show_meta:
             kodi_meta.update(pickle.loads(show_meta.get('art')))
-            meta_ids = pickle.loads(show_meta.get('meta_ids'))
-        else:
-            meta_ids = {}
+        #     meta_ids = pickle.loads(show_meta.get('meta_ids'))
+        #
+        # else:
+        #     meta_ids = {}
+
         fanart = kodi_meta.get('fanart')
         poster = kodi_meta.get('poster')
         eps_watched = kodi_meta.get('eps_watched')
-        episodes = database.get_episode_list(int(anilist_id))
+        title_userpreferred = kodi_meta['title_userPreferred']
 
+
+        episodes = database.get_episode_list(int(anilist_id))
         title_disable = control.getSetting('general.spoilers') == 'true'
 
         if episodes:
-            return self._process_episodes(anilist_id, episodes, eps_watched, title_disable), 'episodes'
+            if kodi_meta['status'] != "FINISHED":
+                return self.append_episodes(anilist_id, title_userpreferred, episodes, eps_watched, poster, fanart, title_disable), 'episodes'
+            return self._process_episodes(episodes, eps_watched, title_disable), 'episodes'
 
-        return self._process_episode_view(anilist_id, meta_ids, poster, fanart, eps_watched, title_disable), 'episodes'
+        return self._process_episode_view(anilist_id, title_userpreferred, poster, fanart, eps_watched, title_disable), 'episodes'
 
     def get_sources(self, anilist_id, episode, provider, lang=None):
         sources = []

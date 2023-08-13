@@ -518,7 +518,6 @@ def seasonCorrectionDatabase(payload, params):
 def traktCorrection(payload, params):
     anilist_id, mal_id, filter_lang = payload.split("/")[1:]
     _ANILIST_BROWSER.update_trakt_id(anilist_id)
-    return
 
 
 @route('find_recommendations/*')
@@ -1821,6 +1820,36 @@ def RESCRAPE_PLAY(payload, params):
                        filter_lang,
                        rescrape=True)
 
+
+@route('toggleLanguageInvoker')
+def TOGGLE_LANGUAGE_INVOKER(payload, params):
+    return control.toggle_reuselanguageinvoker()
+
+
+@route('delete_anime_from_database/*')
+def DELETE_ANIME_DATABASE(payload, params):
+    payload_list = payload.rsplit("/")
+    if len(payload_list) == 3:
+        path, mal_id, episode_num = payload_list
+        anilist_id = None
+    else:
+        path, anilist_id, mal_id, filter_lang = payload_list
+        mal_id = None
+
+    if not anilist_id:
+        try:
+            show_meta = database.get_show_mal(mal_id)
+            anilist_id = show_meta['anilist_id']
+            title_user = pickle.loads(show_meta['kodi_meta'])['title_userPreferred']
+        except TypeError:
+            from resources.lib.AniListBrowser import AniListBrowser
+            show_meta = _ANILIST_BROWSER.get_mal_to_anilist(mal_id)
+            anilist_id = show_meta['anilist_id']
+            title_user = pickle.loads(show_meta['kodi_meta'])['title_userPreferred']
+
+    database.remove_episodes(anilist_id)
+    database.remove_season(anilist_id)
+    control.ok_dialog(control.ADDON_NAME, 'Removed "%s" from database' % title_user)
 
 # @route('tmdb_helper')
 # def TMDB_HELPER(payload, params):

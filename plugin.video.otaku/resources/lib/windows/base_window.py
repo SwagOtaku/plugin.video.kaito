@@ -17,7 +17,7 @@ class BaseWindow(control.xmlWindow):
 
         control.closeBusyDialog()
         self.canceled = False
-        self._title_lang = self._get_title_lang(control.getSetting("general.titlelanguage"))
+        self._title_lang = control.title_lang(control.getSetting("general.titlelanguage"))
         self.setProperty('otaku.logo', control.OTAKU_LOGO_PATH)
         self.setProperty('otaku.fanart', control.OTAKU_FANART_PATH)
         self.setProperty('settings.color', 'deepskyblue')
@@ -95,12 +95,3 @@ class BaseWindow(control.xmlWindow):
         #     self.setProperty('item.info.%s' % 1, str('fdf'))
         # except UnicodeEncodeError:
         #     self.setProperty('item.info.%s' % 1, 'fdf')
-
-    def _get_title_lang(self, title_key):
-        title_lang = {
-            "40370": "userPreferred",
-            "Romaji (Shingeki no Kyojin)": "userPreferred",
-            "40371": "english",
-            "English (Attack on Titan)": "english"
-        }
-        return title_lang[title_key]

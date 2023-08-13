@@ -31,21 +31,7 @@ class WatchlistFlavorBase(object):
         if title_lang:
             self._title_lang = title_lang
         else:
-            self._title_lang = self._get_title_lang(control.getSetting("general.titlelanguage"))
-
-    # This is method to get title language as per the key provided.
-    def _get_title_lang(self, title_key):
-
-        # Define dictionary containing mapping of title keys with their corresponding languages.
-        title_lang = {
-            "40370": "userPreferred",
-            "Romaji (Shingeki no Kyojin)": "userPreferred",
-            "40371": "english",
-            "English (Attack on Titan)": "english"
-        }
-
-        # Return the language corresponding to the title key passed in.
-        return title_lang[title_key]
+            self._title_lang = control.title_lang(control.getSetting("general.titlelanguage"))
 
     # This is a class method to get the name of the current class.
     @classmethod
