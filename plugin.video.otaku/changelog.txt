@@ -1,3 +1,6 @@
+Changelog 0.4.11 [20230813]:
+- Fix favorites error
+
 Changelog 0.4.10 [20230813]:
 - Fix pyaes for Python 3.9+ 
 
