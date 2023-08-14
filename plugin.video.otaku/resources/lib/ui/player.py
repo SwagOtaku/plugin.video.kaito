@@ -512,12 +512,10 @@ def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=Non
     if subs:
         utils.del_subs()
         subtitles = []
-        for sub in subs:
-            sub_url = sub.get('url')
-            sub_lang = sub.get('lang')
-            language = xbmc.getLanguage(xbmc.ENGLISH_NAME).split(' ')[0]
-            if language.lower() in sub_lang.lower():
-                subtitles.append(utils.get_sub(sub_url, sub_lang))
+        language = xbmc.getLanguage(xbmc.ENGLISH_NAME).split(' ')[0].lower()
+        subtitles = [utils.get_sub(x.get('url'), x.get('lang')) for x in subs if language in x.get('lang').lower()]
+        if not subtitles:
+            subtitles = [utils.get_sub(x.get('url'), x.get('lang')) for x in subs if 'english' in x.get('lang').lower()]
         item.setSubtitles(subtitles)
 
     if rescrape or source_select:
