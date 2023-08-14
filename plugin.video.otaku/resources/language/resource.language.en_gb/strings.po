@@ -123,7 +123,7 @@ msgid "Cached"
 msgstr ""
 
 msgctxt "#40223"
-msgid "English Embeds"
+msgid "Embeds"
 msgstr ""
 
 msgctxt "#40224"
@@ -184,10 +184,6 @@ msgstr ""
 
 msgctxt "#40238"
 msgid "Info"
-msgstr ""
-
-msgctxt "#40251"
-msgid "Portugese Embeds"
 msgstr ""
 
 ######SETTINGS.XML VALUES######
@@ -1005,6 +1001,14 @@ msgstr ""
 
 msgctxt "#40503"
 msgid "Toggle Re-Use Language Invoker:    [COLOR red]Faster speeds but some instability![/COLOR]"
+msgstr ""
+
+msgctxt "#40504"
+msgid "English Embeds"
+msgstr ""
+
+msgctxt "#40505"
+msgid "Portuguese Embeds"
 msgstr ""
 
 ######MAIN Category DIRECTORY#######

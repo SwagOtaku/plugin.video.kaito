@@ -1,3 +1,7 @@
+Changelog 0.4.12 [20230814]:
+- Added Portuguese Embed
+- Added Otaku Animes Provider
+
 Changelog 0.4.11 [20230813]:
 - Fix favorites error
 
