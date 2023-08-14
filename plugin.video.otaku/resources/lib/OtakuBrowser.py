@@ -85,10 +85,10 @@ class OtakuBrowser(BrowserBase):
         return simkl.SIMKLAPI().get_anime(anilist_id, params)
 
     def get_anime_init(self, anilist_id, filter_lang=None):
-        # show = database.get_show(anilist_id)
-        # if not show:
-        #     from resources.lib.AniListBrowser import AniListBrowser
-        #     show = AniListBrowser().get_anilist(anilist_id)
+        show = database.get_show(anilist_id)
+        if not show:
+            from resources.lib.AniListBrowser import AniListBrowser
+            show = AniListBrowser().get_anilist(anilist_id)
 
         # show_meta = database.get_show_meta(anilist_id)
         # if not show_meta:
