@@ -1,3 +1,10 @@
+Changelog 0.4.13 [20230814]:
+- Added Universal Embed Catagory
+- Moved Aniwatch Embed
+- Removed Zoro Embed
+- Removed GogoHD Embed
+- Made Changes to Aniwatch Defaults
+
 Changelog 0.4.12 [20230814]:
 - Added Portuguese Embed
 - Added Otaku Animes Provider

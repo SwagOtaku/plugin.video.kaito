@@ -1004,11 +1004,15 @@ msgid "Toggle Re-Use Language Invoker:    [COLOR red]Faster speeds but some inst
 msgstr ""
 
 msgctxt "#40504"
-msgid "English Embeds"
+msgid "Universal Sub Embeds (Will Be Based By Region)"
 msgstr ""
 
 msgctxt "#40505"
-msgid "Portuguese Embeds"
+msgid "English Sub/Dub Embeds"
+msgstr ""
+
+msgctxt "#40506"
+msgid "Portuguese Sub/Dub Embeds"
 msgstr ""
 
 ######MAIN Category DIRECTORY#######

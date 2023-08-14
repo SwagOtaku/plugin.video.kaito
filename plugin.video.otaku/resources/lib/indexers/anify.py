@@ -35,7 +35,7 @@ class ANIFYAPI:
     def get_sources(self, anilist_id, episode, provider, lang=''):
         sources = []
         episodes = []
-        if provider not in ['gogoanime', '9anime', 'zoro', 'animepahe']:
+        if provider not in ['gogoanime', '9anime', 'animepahe']:
             return sources
 
         eurl = self.episodesUrl.format(id=anilist_id)

@@ -2,7 +2,7 @@ import threading
 import time
 
 from resources.lib.pages import nyaa, animetosho, animixplay, debrid_cloudfiles, \
-    nineanime, gogoanime, gogohd, animepahe, aniwatch, zoro, animess
+    nineanime, gogoanime, animepahe, aniwatch, animess
 from resources.lib.ui import control
 from resources.lib.windows.get_sources_window import GetSources as DisplayWindow
 
@@ -42,8 +42,8 @@ class Sources(DisplayWindow):
         self.hosterSources = []
         self.cloud_files = []
         self.remainingProviders = [
-            'nyaa', 'animetosho', '9anime', 'gogo', 'gogohd', 'animix',
-            'animepahe', 'aniwatch', 'zoro', 'otakuanimes'
+            'nyaa', 'animetosho', '9anime', 'gogo', 'animix',
+            'animepahe', 'aniwatch', 'otakuanimes'
         ]
         self.allTorrents = {}
         self.allTorrents_len = 0
@@ -72,12 +72,10 @@ class Sources(DisplayWindow):
         self.nyaaSources = []
         self.animetoshoSources = []
         self.gogoSources = []
-        self.gogohdSources = []
         self.nineSources = []
         self.animixplaySources = []
         self.animepaheSources = []
         self.aniwatchSources = []
-        self.zoroSources = []
         self.animessSources = []
         self.threads = []
         self.usercloudSources = []
@@ -124,12 +122,6 @@ class Sources(DisplayWindow):
         else:
             self.remainingProviders.remove('9anime')
 
-        if control.getSetting('provider.gogohd') == 'true':
-            self.threads.append(
-                threading.Thread(target=self.gogohd_worker, args=(anilist_id, episode, get_backup, rescrape)))
-        else:
-            self.remainingProviders.remove('gogohd')
-
         if control.getSetting('provider.animix') == 'true':
             self.threads.append(
                 threading.Thread(target=self.animixplay_worker, args=(anilist_id, episode, get_backup, rescrape,)))
@@ -147,12 +139,6 @@ class Sources(DisplayWindow):
                 threading.Thread(target=self.aniwatch_worker, args=(anilist_id, episode, get_backup, rescrape,)))
         else:
             self.remainingProviders.remove('aniwatch')
-
-        if control.getSetting('provider.zoro') == 'true':
-            self.threads.append(
-                threading.Thread(target=self.zoro_worker, args=(anilist_id, episode, get_backup, rescrape,)))
-        else:
-            self.remainingProviders.remove('zoro')
 
         if control.getSetting('provider.animess') == 'true':
             self.threads.append(
@@ -227,12 +213,6 @@ class Sources(DisplayWindow):
             self.embedSources += self.gogoSources
         self.remainingProviders.remove('gogo')
 
-    def gogohd_worker(self, anilist_id, episode, get_backup, rescrape):
-        if not rescrape:
-            self.gogohdSources = gogohd.sources().get_sources(anilist_id, episode, get_backup)
-            self.embedSources += self.gogohdSources
-        self.remainingProviders.remove('gogohd')
-
     def nine_worker(self, anilist_id, episode, get_backup, rescrape):
         if not rescrape:
             self.nineSources = nineanime.sources().get_sources(anilist_id, episode, get_backup)
@@ -256,12 +236,6 @@ class Sources(DisplayWindow):
             self.aniwatchSources = aniwatch.sources().get_sources(anilist_id, episode, get_backup)
             self.embedSources += self.aniwatchSources
         self.remainingProviders.remove('aniwatch')
-
-    def zoro_worker(self, anilist_id, episode, get_backup, rescrape):
-        if not rescrape:
-            self.zoroSources = zoro.sources().get_sources(anilist_id, episode, get_backup)
-            self.embedSources += self.zoroSources
-        self.remainingProviders.remove('zoro')
 
     def animess_worker(self, anilist_id, episode, get_backup, rescrape):
         self.animessSources = animess.sources().get_sources(anilist_id, episode, get_backup)
