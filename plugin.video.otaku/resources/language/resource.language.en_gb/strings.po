@@ -123,7 +123,7 @@ msgid "Cached"
 msgstr ""
 
 msgctxt "#40223"
-msgid "Embeds"
+msgid "English Embeds"
 msgstr ""
 
 msgctxt "#40224"
@@ -184,6 +184,10 @@ msgstr ""
 
 msgctxt "#40238"
 msgid "Info"
+msgstr ""
+
+msgctxt "#40251"
+msgid "Portugese Embeds"
 msgstr ""
 
 ######SETTINGS.XML VALUES######
@@ -1157,7 +1161,7 @@ msgid "All Time Voted"
 msgstr ""
 
 msgctxt "#50050"
-msgid "Mainmenu Customization"
+msgid "Mainmenu Customize"
 msgstr ""
 
 msgctxt "#50051"
@@ -1173,7 +1177,7 @@ msgid "TV Show Menu Items"
 msgstr ""
 
 msgctxt "#50054"
-msgid "Submenu Customization"
+msgid "Submenu Customize"
 msgstr ""
 
 msgctxt "#50055"

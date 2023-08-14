@@ -1,7 +1,8 @@
 import threading
 import time
 
-from resources.lib.pages import nyaa, animetosho, animixplay, debrid_cloudfiles, nineanime, gogoanime, gogohd, animepahe, aniwatch, zoro
+from resources.lib.pages import nyaa, animetosho, animixplay, debrid_cloudfiles, \
+    nineanime, gogoanime, gogohd, animepahe, aniwatch, zoro, animess
 from resources.lib.ui import control
 from resources.lib.windows.get_sources_window import GetSources as DisplayWindow
 
@@ -40,7 +41,10 @@ class Sources(DisplayWindow):
         self.embedSources = []
         self.hosterSources = []
         self.cloud_files = []
-        self.remainingProviders = ['nyaa', 'animetosho', '9anime', 'gogo', 'gogohd', 'animix', 'animepahe', 'aniwatch', 'zoro']
+        self.remainingProviders = [
+            'nyaa', 'animetosho', '9anime', 'gogo', 'gogohd', 'animix',
+            'animepahe', 'aniwatch', 'zoro', 'otakuanimes'
+        ]
         self.allTorrents = {}
         self.allTorrents_len = 0
         self.hosterDomains = {}
@@ -74,6 +78,7 @@ class Sources(DisplayWindow):
         self.animepaheSources = []
         self.aniwatchSources = []
         self.zoroSources = []
+        self.animessSources = []
         self.threads = []
         self.usercloudSources = []
         self.terminate_on_cloud = control.getSetting('general.terminate.oncloud') == 'true'
@@ -148,6 +153,12 @@ class Sources(DisplayWindow):
                 threading.Thread(target=self.zoro_worker, args=(anilist_id, episode, get_backup, rescrape,)))
         else:
             self.remainingProviders.remove('zoro')
+
+        if control.getSetting('provider.animess') == 'true':
+            self.threads.append(
+                threading.Thread(target=self.animess_worker, args=(anilist_id, episode, get_backup, rescrape,)))
+        else:
+            self.remainingProviders.remove('otakuanimes')
 
         self.threads.append(
             threading.Thread(target=self.user_cloud_inspection, args=(query, anilist_id, episode, media_type, rescrape)))
@@ -251,6 +262,11 @@ class Sources(DisplayWindow):
             self.zoroSources = zoro.sources().get_sources(anilist_id, episode, get_backup)
             self.embedSources += self.zoroSources
         self.remainingProviders.remove('zoro')
+
+    def animess_worker(self, anilist_id, episode, get_backup, rescrape):
+        self.animessSources = animess.sources().get_sources(anilist_id, episode, get_backup)
+        self.embedSources += self.animessSources
+        self.remainingProviders.remove('otakuanimes')
 
     def user_cloud_inspection(self, query, anilist_id, episode, media_type, rescrape):
         self.remainingProviders.append('Cloud Inspection')
