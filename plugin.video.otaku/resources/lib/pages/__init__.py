@@ -337,10 +337,6 @@ class Sources(DisplayWindow):
 
             torrent_list = [i for i in _torrent_list if i['size'] != 'NA' and min_GB <= float(i['size'][:-3]) <= max_GB]
 
-        else:
-            # no filter
-            pass
-
         # Get the value of the 'sourcesort.menu' setting
         sort_option = control.getSetting('general.sourcesort')
 

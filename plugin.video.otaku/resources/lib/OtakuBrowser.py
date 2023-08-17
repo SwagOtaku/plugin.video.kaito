@@ -212,7 +212,7 @@ class OtakuBrowser(BrowserBase):
             'media_type': media_type,
             'rescrape': rescrape,
             'get_backup': self.get_backup,
-            'duration': kodi_meta['duration']
+            'duration': kodi_meta.get('duration', -1)
         }
         sources = pages.getSourcesHelper(actionArgs)
         return sources
