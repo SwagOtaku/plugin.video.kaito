@@ -1015,6 +1015,10 @@ msgctxt "#40506"
 msgid "Portuguese Sub/Dub Embeds"
 msgstr ""
 
+msgctxt "#40507"
+msgid "None"
+msgstr ""
+
 ######MAIN Category DIRECTORY#######
 msgctxt "#50000"
 msgid "Airing Anime Calendar"

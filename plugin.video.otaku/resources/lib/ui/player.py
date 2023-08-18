@@ -197,26 +197,29 @@ class watchlistPlayer(xbmc.Player):
             subtitle_lang = self.getAvailableSubtitleStreams()
             if len(subtitle_lang) > 1:
                 subtitles = [
-                    "eng", "jpn", "spa", "fre", "ger", "ita",
-                    "dut", "rus", "por", "kor", "chi", "ara",
-                    "hin", "tur", "pol", "swe", "nor", "dan",
-                    "fin"
+                    "none", "eng", "jpn", "spa", "fre", "ger", 
+                    "ita", "dut", "rus", "por", "kor", "chi", 
+                    "ara", "hin", "tur", "pol", "swe", "nor", 
+                    "dan", "fin"
                 ]
                 preferred_subtitle = subtitles[int(control.getSetting('general.subtitles'))]
 
-                try:
-                    subtitle_int = subtitle_lang.index(preferred_subtitle)
-                    self.setSubtitleStream(subtitle_int)
-                except ValueError:
-                    preferred_subtitle = "eng"
+                if preferred_subtitle == "none":
+                    self.showSubtitles(False)
+                else:
                     try:
                         subtitle_int = subtitle_lang.index(preferred_subtitle)
                         self.setSubtitleStream(subtitle_int)
                     except ValueError:
-                        # Handle the ValueError by setting subtitle_int to 0 (first available subtitle stream)
-                        subtitle_int = 0
+                        preferred_subtitle = "eng"
+                        try:
+                            subtitle_int = subtitle_lang.index(preferred_subtitle)
+                            self.setSubtitleStream(subtitle_int)
+                        except ValueError:
+                            # Handle the ValueError by setting subtitle_int to 0 (first available subtitle stream)
+                            subtitle_int = 0
 
-                        self.setSubtitleStream(subtitle_int)
+                            self.setSubtitleStream(subtitle_int)
 
             # Audio Preferences
             audio_lang = self.getAvailableAudioStreams()
@@ -224,18 +227,16 @@ class watchlistPlayer(xbmc.Player):
                 audios = ['jpn', 'eng']
                 preferred_audio = audios[int(control.getSetting('general.audio'))]
 
-                try:
-                    audio_int = audio_lang.index(preferred_audio)
-                except ValueError:
-                    # Handle the ValueError by setting audio_int to 0 (play the first audio stream)
-                    audio_int = 0
-
-                self.setAudioStream(audio_int)
-
                 if preferred_audio == "eng":
                     self.showSubtitles(False)
                 else:
-                    self.showSubtitles(True)
+                    try:
+                        audio_int = audio_lang.index(preferred_audio)
+                    except ValueError:
+                        # Handle the ValueError by setting audio_int to 0 (play the first audio stream)
+                        audio_int = 0
+
+                    self.setAudioStream(audio_int)
 
         if control.getSetting('general.dubsubtitles') == 'true':
             self.showSubtitles(True)

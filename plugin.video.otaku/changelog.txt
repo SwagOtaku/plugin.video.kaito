@@ -1,5 +1,8 @@
+Changelog 0.4.15 [20230818]:
+- Added "None" as a Subtitle option
+
 Changelog 0.4.14 [20230817]:
--Small Fix for File Size Settings
+- Small Fix for File Size Settings
 
 Changelog 0.4.13 [20230814]:
 - Added Universal Embed Catagory
