@@ -1,3 +1,7 @@
+Changelog 0.4.16 [20230819]:
+- Added Spanish Sub/Dub Embeds Category
+- Added AnimeLatinoHD Provider
+
 Changelog 0.4.15 [20230818]:
 - Added "None" as a Subtitle option
 
