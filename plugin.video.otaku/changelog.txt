@@ -1,3 +1,7 @@
+Changelog 0.4.17 [20230819]:
+- Removed Consumet
+- Fixed Audio Preferences
+
 Changelog 0.4.16 [20230819]:
 - Added Spanish Sub/Dub Embeds Category
 - Added AnimeLatinoHD Provider

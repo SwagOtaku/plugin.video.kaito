@@ -232,6 +232,7 @@ class watchlistPlayer(xbmc.Player):
                 else:
                     try:
                         audio_int = audio_lang.index(preferred_audio)
+                        self.setAudioStream(audio_int)
                     except ValueError:
                         # Handle the ValueError by setting audio_int to 0 (play the first audio stream)
                         audio_int = 0
