@@ -4,7 +4,7 @@ import pickle
 import random
 
 from resources.lib import pages
-from resources.lib.indexers import simkl, trakt, consumet, enime
+from resources.lib.indexers import simkl, trakt, enime
 from resources.lib.ui import client, control, database, utils
 from resources.lib.ui.BrowserBase import BrowserBase
 
@@ -109,9 +109,7 @@ class OtakuBrowser(BrowserBase):
         override_ep = control.getSetting("override.episode.bool")
         if override_ep:
             selected_api = control.getSetting("override.episode.menu")
-            if selected_api == "Consumet":
-                data = consumet.CONSUMETAPI().get_episodes(anilist_id, filter_lang=filter_lang)
-            elif selected_api == "Enime":
+            if selected_api == "Enime":
                 data = enime.ENIMEAPI().get_episodes(anilist_id, filter_lang=filter_lang)
             elif selected_api == "Simkl":
                 data = self.get_anime_simkl(anilist_id, filter_lang)
@@ -121,9 +119,6 @@ class OtakuBrowser(BrowserBase):
             # data = ([], 'episodes')
             # if show_meta:
             data = enime.ENIMEAPI().get_episodes(anilist_id, filter_lang=filter_lang)
-
-            if not data[0]:
-                data = consumet.CONSUMETAPI().get_episodes(anilist_id, filter_lang=filter_lang)
 
             if not data[0]:
                 data = self.get_anime_simkl(anilist_id, filter_lang)
@@ -138,13 +133,9 @@ class OtakuBrowser(BrowserBase):
             if show['simkl_id']:
                 items = simkl.SIMKLAPI().get_episodes(show_id)
             else:
-                items = consumet.CONSUMETAPI()._process_episodes(show_id, episodes, '')
-            if not items:
                 items = enime.ENIMEAPI()._process_episodes(show_id, episodes, '')
         else:
-            items = consumet.CONSUMETAPI()._process_episodes(show_id, episodes, '')
-            if not items:
-                items = enime.ENIMEAPI()._process_episodes(show_id, episodes, '')
+            items = enime.ENIMEAPI()._process_episodes(show_id, episodes, '')
 
         if rescrape or source_select:
             return items

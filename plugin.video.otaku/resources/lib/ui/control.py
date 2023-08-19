@@ -489,23 +489,23 @@ def getChangeLog():
     del windows
 
 
-def getInstructions():
-    addon_version = xbmcaddon.Addon('plugin.video.otaku').getAddonInfo('version')
-    instructions_file = os.path.join(ADDON_PATH, 'instructions.txt')
-    if not xbmcvfs.exists(instructions_file):
-        return xbmc.executebuiltin('Notification(%s, %s, %d, %s)' % ('Otaku', 'Instructions file not found.', 5000, xbmcgui.NOTIFICATION_ERROR))
-    if PY2:
-        f = open(instructions_file, 'r')
-    else:
-        f = open(instructions_file, 'r', encoding='utf-8', errors='ignore')
-    text = f.read()
-    f.close()
-    heading = '[B]%s -  v%s - Instructions[/B]' % ('Otaku', addon_version)
-    from resources.lib.windows.textviewer import TextViewerXML
-    windows = TextViewerXML('textviewer_1.xml', ADDON_PATH, heading=heading, text=text)
-    # windows = TextViewerXML(*('textviewer_1.xml', ADDON_PATH),heading=heading, text=text).doModal()
-    windows.run()
-    del windows
+# def getInstructions():
+#     addon_version = xbmcaddon.Addon('plugin.video.otaku').getAddonInfo('version')
+#     instructions_file = os.path.join(ADDON_PATH, 'instructions.txt')
+#     if not xbmcvfs.exists(instructions_file):
+#         return xbmc.executebuiltin('Notification(%s, %s, %d, %s)' % ('Otaku', 'Instructions file not found.', 5000, xbmcgui.NOTIFICATION_ERROR))
+#     if PY2:
+#         f = open(instructions_file, 'r')
+#     else:
+#         f = open(instructions_file, 'r', encoding='utf-8', errors='ignore')
+#     text = f.read()
+#     f.close()
+#     heading = '[B]%s -  v%s - Instructions[/B]' % ('Otaku', addon_version)
+#     from resources.lib.windows.textviewer import TextViewerXML
+#     windows = TextViewerXML('textviewer_1.xml', ADDON_PATH, heading=heading, text=text)
+#     # windows = TextViewerXML(*('textviewer_1.xml', ADDON_PATH),heading=heading, text=text).doModal()
+#     windows.run()
+#     del windows
 
 
 def toggle_reuselanguageinvoker(forced_state=None):
