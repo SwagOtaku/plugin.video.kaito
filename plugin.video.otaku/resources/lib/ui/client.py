@@ -186,11 +186,6 @@ def request(
             opener = urllib_request.build_opener(NoRedirectHandler())
             urllib_request.install_opener(opener)
 
-            try:
-                del _headers['Referer']
-            except BaseException:
-                pass
-
         url = byteify(url.replace(' ', '%20'))
         req = urllib_request.Request(url)
 

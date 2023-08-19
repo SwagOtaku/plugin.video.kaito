@@ -54,9 +54,18 @@ def load_video_from_url(in_url):
 
 def __get_packed_data(html):
     packed_data = ''
-    for match in re.finditer(r'(eval\s*\(function\(p,a,c,k,e.+?\)\)[;\n<])', html, re.DOTALL | re.I):
-        packed_data += jsunpack.unpack(match.group(1))
-
+    for match in re.finditer(r'''(eval\s*\(function\(p,a,c,k,e,.*?)</script>''', html, re.DOTALL | re.I):
+        r = match.group(1)
+        t = re.findall(r'(eval\s*\(function\(p,a,c,k,e,)', r, re.DOTALL | re.IGNORECASE)
+        if len(t) == 1:
+            if jsunpack.detect(r):
+                packed_data += jsunpack.unpack(r)
+        else:
+            t = r.split('eval')
+            t = ['eval' + x for x in t if x]
+            for r in t:
+                if jsunpack.detect(r):
+                    packed_data += jsunpack.unpack(r)
     return packed_data
 
 
@@ -93,7 +102,7 @@ def __check_video_list(refer_url, vidlist, add_referer=False,
 
 def __check_video(url):
     temp_req = client.request(url, limit=0, output='extended')
-    if temp_req[1] != '200':
+    if temp_req[1] not in ['200', '201']:
         url = None
 
     return url
@@ -141,6 +150,30 @@ def __extract_okru(url, page_content, referer=None):
 
 def __extract_mixdrop(url, page_content, referer=None):
     r = re.search(r'(?:vsr|wurl|surl)[^=]*=\s*"([^"]+)', __get_packed_data(page_content))
+    if r:
+        surl = r.group(1)
+        if surl.startswith('//'):
+            surl = 'https:' + surl
+        headers = {'User-Agent': _EDGE_UA,
+                   'Referer': url}
+        return surl + __append_headers(headers)
+    return
+
+
+def __extract_filemoon(url, page_content, referer=None):
+    r = re.search(r'sources:\s*\[{\s*file:\s*"([^"]+)', __get_packed_data(page_content))
+    if r:
+        surl = r.group(1)
+        if surl.startswith('//'):
+            surl = 'https:' + surl
+        headers = {'User-Agent': _EDGE_UA,
+                   'Referer': url}
+        return surl + __append_headers(headers)
+    return
+
+
+def __extract_embedrise(url, page_content, referer=None):
+    r = re.search(r'<source\s*src="([^"]+)', page_content)
     if r:
         surl = r.group(1)
         if surl.startswith('//'):
@@ -389,6 +422,12 @@ __register_extractor(["https://www.xstreamcdn.com/v/",
 
 __register_extractor(["https://streamtape.com/e/"],
                      __extract_streamtape)
+
+__register_extractor(["https://filemoon.sx/e/"],
+                     __extract_filemoon)
+
+__register_extractor(["https://embedrise.com/v/"],
+                     __extract_embedrise)
 
 __register_extractor(["https://sbembed.com/e/",
                       "https://sbembed1.com/e/",

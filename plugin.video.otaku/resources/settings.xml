@@ -75,6 +75,11 @@
 		<setting type="lsep" label="40506" />
 		<setting type="sep"/>
 		<setting id="provider.animess" type="bool" label="Otaku Animes" default="true" />
+
+		<!-- Spanish Sub & Dub Embeds -->
+		<setting type="lsep" label="40508" />
+		<setting type="sep"/>
+		<setting id="provider.animelatino" type="bool" label="Anime Latino HD" default="true" />
 	</category>
 
 	<!-- Playback -->

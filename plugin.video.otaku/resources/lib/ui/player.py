@@ -197,9 +197,9 @@ class watchlistPlayer(xbmc.Player):
             subtitle_lang = self.getAvailableSubtitleStreams()
             if len(subtitle_lang) > 1:
                 subtitles = [
-                    "none", "eng", "jpn", "spa", "fre", "ger", 
-                    "ita", "dut", "rus", "por", "kor", "chi", 
-                    "ara", "hin", "tur", "pol", "swe", "nor", 
+                    "none", "eng", "jpn", "spa", "fre", "ger",
+                    "ita", "dut", "rus", "por", "kor", "chi",
+                    "ara", "hin", "tur", "pol", "swe", "nor",
                     "dan", "fin"
                 ]
                 preferred_subtitle = subtitles[int(control.getSetting('general.subtitles'))]
@@ -487,7 +487,7 @@ def _prefetch_play_link(link):
 
     limit = None if '.m3u8' in url else '0'
     linkInfo = client.request(url, headers=headers, limit=limit, output='extended', error=True)
-    if linkInfo[1] != '200':
+    if linkInfo[1] not in ['200', '201']:
         raise Exception('could not resolve %s. status_code=%s' %
                         (link, linkInfo[1]))
     return {

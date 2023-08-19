@@ -2,7 +2,7 @@ import threading
 import time
 
 from resources.lib.pages import nyaa, animetosho, animixplay, debrid_cloudfiles, \
-    nineanime, gogoanime, animepahe, aniwatch, animess
+    nineanime, gogoanime, animepahe, aniwatch, animess, animelatino
 from resources.lib.ui import control
 from resources.lib.windows.get_sources_window import GetSources as DisplayWindow
 
@@ -43,7 +43,7 @@ class Sources(DisplayWindow):
         self.cloud_files = []
         self.remainingProviders = [
             'nyaa', 'animetosho', '9anime', 'gogo', 'animix',
-            'animepahe', 'aniwatch', 'otakuanimes'
+            'animepahe', 'aniwatch', 'otakuanimes', 'animelatino'
         ]
         self.allTorrents = {}
         self.allTorrents_len = 0
@@ -77,6 +77,7 @@ class Sources(DisplayWindow):
         self.animepaheSources = []
         self.aniwatchSources = []
         self.animessSources = []
+        self.animelatinoSources = []
         self.threads = []
         self.usercloudSources = []
         self.terminate_on_cloud = control.getSetting('general.terminate.oncloud') == 'true'
@@ -145,6 +146,12 @@ class Sources(DisplayWindow):
                 threading.Thread(target=self.animess_worker, args=(anilist_id, episode, get_backup, rescrape,)))
         else:
             self.remainingProviders.remove('otakuanimes')
+
+        if control.getSetting('provider.animelatino') == 'true':
+            self.threads.append(
+                threading.Thread(target=self.animelatino_worker, args=(anilist_id, episode, get_backup, rescrape,)))
+        else:
+            self.remainingProviders.remove('animelatino')
 
         self.threads.append(
             threading.Thread(target=self.user_cloud_inspection, args=(query, anilist_id, episode, media_type, rescrape)))
@@ -241,6 +248,11 @@ class Sources(DisplayWindow):
         self.animessSources = animess.sources().get_sources(anilist_id, episode, get_backup)
         self.embedSources += self.animessSources
         self.remainingProviders.remove('otakuanimes')
+
+    def animelatino_worker(self, anilist_id, episode, get_backup, rescrape):
+        self.animelatinoSources = animelatino.sources().get_sources(anilist_id, episode, get_backup)
+        self.embedSources += self.animelatinoSources
+        self.remainingProviders.remove('animelatino')
 
     def user_cloud_inspection(self, query, anilist_id, episode, media_type, rescrape):
         self.remainingProviders.append('Cloud Inspection')
