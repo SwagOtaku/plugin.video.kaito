@@ -227,20 +227,28 @@ class watchlistPlayer(xbmc.Player):
                 audios = ['jpn', 'eng']
                 preferred_audio = audios[int(control.getSetting('general.audio'))]
 
-                if preferred_audio == "eng":
-                    self.showSubtitles(False)
-                else:
-                    try:
-                        audio_int = audio_lang.index(preferred_audio)
-                        self.setAudioStream(audio_int)
-                    except ValueError:
-                        # Handle the ValueError by setting audio_int to 0 (play the first audio stream)
-                        audio_int = 0
+                try:
+                    audio_int = audio_lang.index(preferred_audio)
+                    self.setAudioStream(audio_int)
+                except ValueError:
+                    # Handle the ValueError by setting audio_int to 0 (play the first audio stream)
+                    audio_int = 0
 
                     self.setAudioStream(audio_int)
 
-        if control.getSetting('general.dubsubtitles') == 'true':
-            self.showSubtitles(True)
+                if preferred_audio == "eng":
+                    if control.getSetting('general.dubsubtitles') == 'true':
+                        if preferred_subtitle == "none":
+                            self.showSubtitles(False)
+                        else:
+                            self.showSubtitles(True)
+                    else:
+                        self.showSubtitles(False)
+                elif preferred_audio == "jpn":
+                    if preferred_subtitle == "none":
+                        self.showSubtitles(False)
+                    else:
+                        self.showSubtitles(True)
 
         if self.media_type == 'movie':
             return self.onWatchedPercent()

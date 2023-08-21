@@ -1,3 +1,6 @@
+Changelog 0.4.18 [20230820]:
+- Recoded Audio and Subtitle Preferences
+
 Changelog 0.4.17 [20230819]:
 - Removed Consumet
 - Fixed Audio Preferences
