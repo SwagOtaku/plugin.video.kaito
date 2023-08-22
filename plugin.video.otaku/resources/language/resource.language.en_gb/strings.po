@@ -896,11 +896,11 @@ msgid "Api"
 msgstr ""
 
 msgctxt "#40477"
-msgid ""
+msgid "Consumet Self-Hosting"
 msgstr ""
 
 msgctxt "#40478"
-msgid ""
+msgid "Enable Consumet Self-Hosting"
 msgstr ""
 
 msgctxt "#40479"

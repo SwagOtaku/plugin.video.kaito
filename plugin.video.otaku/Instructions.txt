@@ -1,0 +1,23 @@
+This is a guide on how to host consumet locally on any windows pc.
+
+1. Visit the official Node.js website: Go to https://nodejs.org in your web browser and install the LTS (Long-Term Support) version  of Node.js
+
+2. Open Cmd or Command Prompt and type the following command to clone the repository, and install the dependencies.
+
+- git clone https://github.com/consumet/api.consumet.org.git
+- cd api.consumet.org
+- npm install
+
+3. Start the server!
+
+- npm start
+
+4. This will start the server on port 3000. You can access the server at http://localhost:3000/
+
+5. Enter the local server Url: http://localhost:3000/
+
+- If you cannot acces the local server Url from another local device, Open Cmd or Command Prompt and type "ipconfig" then find your IPv4 Address and put it in the url.
+
+http://(YourIpHere):3000/
+
+If you guys would like to host this api publicly: Go to https://github.com/consumet/api.consumet.org for more infomation.

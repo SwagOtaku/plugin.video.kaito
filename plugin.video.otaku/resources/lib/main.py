@@ -620,6 +620,12 @@ def CHANGE_LOG(payload, params):
     return control.getChangeLog()
 
 
+@route('consumet_inst')
+def CONSUMET_INST(payload, params):
+    from resources.lib.ui import control
+    return control.getInstructions()
+
+
 @route('animes/*')
 def ANIMES_PAGE(payload, params):
     anilist_id, mal_id, filter_lang = payload.rsplit("/")
