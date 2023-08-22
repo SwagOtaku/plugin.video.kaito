@@ -430,11 +430,11 @@
 	<!-- Shortcuts -->
 	<category label="40416">
 		<!-- Self-Hosting -->
-		<setting type="lsep" label="40477"/>
-		<setting id="sep"/>
-		<setting id="consumet.hosting.bool" label="40478" type="bool" default="false"/>
-		<setting id="consumet.hosting.menu" type="text" subsetting="true" label="40479" visible="eq(-1,true)"/>
-		<setting id="consumet.hosting.instructions" type="action" subsetting="true" label="40480" action="RunPlugin(plugin://plugin.video.otaku/consumet_inst)" visible="eq(-2,true)"/>
+		<!-- <setting type="lsep" label="40477"/> -->
+		<!-- <setting id="sep"/> -->
+		<!-- <setting id="consumet.hosting.bool" label="40478" type="bool" default="false"/> -->
+		<!-- <setting id="consumet.hosting.menu" type="text" subsetting="true" label="40479" visible="eq(-1,true)"/> -->
+		<!-- <setting id="consumet.hosting.instructions" type="action" subsetting="true" label="40480" action="RunPlugin(plugin://plugin.video.otaku/consumet_inst)" visible="eq(-2,true)"/> -->
 
 		<!-- Tools -->
 		<setting type="lsep" label="50012"/>
