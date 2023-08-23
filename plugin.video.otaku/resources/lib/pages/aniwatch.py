@@ -77,78 +77,96 @@ class sources(BrowserBase):
         elink = SoupStrainer('div', {'class': re.compile('^ss-list')})
         ediv = BeautifulSoup(res, "html.parser", parse_only=elink)
         items = ediv.find_all('a')
-        e_id = [x.get('data-id') for x in items if x.get('data-number') == episode][0]
+        e_id = [x.get('data-id') for x in items if x.get('data-number') == episode]
+        if e_id:
+            params = {'episodeId': e_id[0]}
+            r = database.get(
+                self._get_request,
+                8,
+                self._BASE_URL + 'ajax/v2/episode/servers',
+                data=params,
+                headers=headers,
+                XHR=True
+            )
+            eres = json.loads(r).get('html')
+            for lang in langs:
+                elink = SoupStrainer('div', {'class': re.compile('servers-{0}$'.format(lang))})
+                sdiv = BeautifulSoup(eres, "html.parser", parse_only=elink)
+                srcs = sdiv.find_all('div', {'class': 'item'})
+                for src in srcs:
+                    edata_id = src.get('data-id')
+                    edata_name = src.text.strip().lower()
+                    eserver_id = src.get('data-server-id')
+                    if edata_name in ['megacloud', 'vidstreaming', 'streamtape']:
+                        params = {'id': edata_id}
+                        r = self._get_request(
+                            self._BASE_URL + 'ajax/v2/episode/sources',
+                            data=params,
+                            headers=headers,
+                            XHR=True
+                        )
+                        slink = json.loads(r).get('link')
+                        if edata_name == 'streamtape':
+                            source = {
+                                'release_title': '{0} - Ep {1}'.format(title, episode),
+                                'hash': slink,
+                                'type': 'embed',
+                                'quality': 'EQ',
+                                'debrid_provider': '',
+                                'provider': 'aniwatch',
+                                'size': 'NA',
+                                'info': ['DUB' if lang == 'dub' else 'SUB', edata_name],
+                                'lang': 2 if lang == 'dub' else 0,
+                            }
+                            sources.append(source)
+                        else:
+                            headers = {'Referer': slink}
+                            sl = urllib_parse.urlparse(slink)
+                            spath = sl.path.split('/')
+                            spath.insert(2, 'ajax')
+                            sid = spath.pop(-1)
+                            eurl = '{}://{}{}/getSources'.format(sl.scheme, sl.netloc, '/'.join(spath))
+                            params = {'id': sid}
+                            res = self._get_request(
+                                eurl,
+                                data=params,
+                                headers=headers,
+                                XHR=True
+                            )
+                            res = json.loads(res)
+                            subs = res.get('tracks')
+                            if subs:
+                                subs = [{'url': x.get('file'), 'lang': x.get('label')} for x in subs if x.get('kind') == 'captions']
+                            slink = self._process_link(res.get('sources'))
+                            if not slink:
+                                continue
+                            res = self._get_request(slink, headers=headers)
+                            quals = re.findall(r'#EXT.+?RESOLUTION=\d+x(\d+).+\n(?!#)(.+)', res)
 
-        params = {'episodeId': e_id}
-        r = database.get(
-            self._get_request,
-            8,
-            self._BASE_URL + 'ajax/v2/episode/servers',
-            data=params,
-            headers=headers,
-            XHR=True
-        )
-        eres = json.loads(r).get('html')
-        for lang in langs:
-            elink = SoupStrainer('div', {'class': re.compile('servers-{0}$'.format(lang))})
-            sdiv = BeautifulSoup(eres, "html.parser", parse_only=elink)
-            edata_id = sdiv.find('div', {'data-server-id': '4'})
-            if edata_id:
-                params = {'id': edata_id.get('data-id')}
-                r = self._get_request(
-                    self._BASE_URL + 'ajax/v2/episode/sources',
-                    data=params,
-                    headers=headers,
-                    XHR=True
-                )
-                slink = json.loads(r).get('link')
-                headers = {'Referer': slink}
-                sl = urllib_parse.urlparse(slink)
-                spath = sl.path.split('/')
-                spath.insert(2, 'ajax')
-                sid = spath.pop(-1)
-                eurl = '{}://{}{}/getSources'.format(sl.scheme, sl.netloc, '/'.join(spath))
-                params = {'id': sid}
-                res = self._get_request(
-                    eurl,
-                    data=params,
-                    headers=headers,
-                    XHR=True
-                )
-                res = json.loads(res)
-                subs = res.get('tracks')
-                if subs:
-                    subs = [{'url': x.get('file'), 'lang': x.get('label')} for x in subs if x.get('kind') == 'captions']
-                slink = self._process_link(res.get('sources'))
-                if not slink:
-                    continue
-                res = self._get_request(slink, headers=headers)
-                quals = re.findall(r'#EXT.+?RESOLUTION=\d+x(\d+).+\n(?!#)(.+)', res)
+                            for qual, qlink in quals:
+                                qual = int(qual)
+                                if qual < 577:
+                                    quality = 'NA'
+                                elif qual < 721:
+                                    quality = '720p'
+                                elif qual < 1081:
+                                    quality = '1080p'
+                                else:
+                                    quality = '4K'
 
-                for item in quals:
-                    qual = int(item[0])
-                    if qual < 577:
-                        quality = 'NA'
-                    elif qual < 721:
-                        quality = '720p'
-                    elif qual < 1081:
-                        quality = '1080p'
-                    else:
-                        quality = '4K'
-                    source = {
-                        'release_title': '{0} - Ep {1}'.format(title, episode),
-                        'hash': urllib_parse.urljoin(slink, item[1]) + '|User-Agent=iPad',
-                        'type': 'direct',
-                        'quality': quality,
-                        'debrid_provider': '',
-                        'provider': 'aniwatch',
-                        'size': 'NA',
-                        'info': ['DUB' if lang == 'dub' else 'SUB'],
-                        'lang': 2 if lang == 'dub' else 0,
-                        'subs': subs
-                    }
-                    sources.append(source)
-
+                                source = {
+                                    'release_title': '{0} - Ep {1}'.format(title, episode),
+                                    'hash': urllib_parse.urljoin(slink, qlink) + '|User-Agent=iPad',
+                                    'type': 'direct',
+                                    'quality': quality,
+                                    'debrid_provider': '',
+                                    'provider': 'aniwatch',
+                                    'size': 'NA',
+                                    'info': ['DUB' if lang == 'dub' else 'SUB', 'Server ' + eserver_id],
+                                    'lang': 2 if lang == 'dub' else 0,
+                                    'subs': subs
+                                }
+                                sources.append(source)
         return sources
 
     def _process_link(self, sources):
@@ -160,11 +178,10 @@ class sources(BrowserBase):
         keyhints = json.loads(r) or self.keyhints
         key = ''
         orig_src = sources
-        for start, end in keyhints:
-            key += orig_src[start:end]
-            sources = sources.replace(orig_src[start:end], '')
-
         try:
+            for start, end in keyhints:
+                key += orig_src[start:end]
+                sources = sources.replace(orig_src[start:end], '')
             if 'file' not in sources:
                 sources = json.loads(jscrypto.decode(sources, key))
             return sources[0].get('file')
