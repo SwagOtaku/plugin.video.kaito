@@ -228,11 +228,24 @@ def __extract_streamlare(url, page_content, referer=None):
 
 
 def __extract_streamtape(url, page_content, referer=None):
-    groups = re.search(
-        r"document\.getElementById\(.*?\)\.innerHTML = [\"'](.*?)[\"'] \+ [\"'](.*?)[\"']",
-        page_content)
-    stream_link = "https:" + groups.group(1) + groups.group(2)
-    return stream_link
+    src = re.findall(r'''ById\('.+?=\s*(["']//[^;<]+)''', page_content)
+    if src:
+        src_url = ''
+        parts = src[-1].replace("'", '"').split('+')
+        for part in parts:
+            p1 = re.findall(r'"([^"]*)', part)[0]
+            p2 = 0
+            if 'substring' in part:
+                subs = re.findall(r'substring\((\d+)', part)
+                for sub in subs:
+                    p2 += int(sub)
+            src_url += p1[p2:]
+        src_url += '&stream=1'
+        headers = {'User-Agent': _EDGE_UA,
+                   'Referer': url}
+        src_url = 'https:' + src_url if src_url.startswith('//') else src_url
+        return src_url + __append_headers(headers)
+    return
 
 
 def __extract_streamsb(url, page_content, referer=None):
