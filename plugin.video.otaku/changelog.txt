@@ -1,3 +1,7 @@
+Changelog 0.4.22 [20230904]:
+- Add additional embed hosters as used by gogo
+- Added Simkl Icons for future watchlist
+
 Changelog 0.4.21 [20230823]:
 - Improved Aniwatch Scraper
 
