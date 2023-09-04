@@ -114,14 +114,14 @@ class sources(BrowserBase):
                 type_ = 'embed'
                 if link.startswith('//'):
                     link = 'https:' + link
-            # elif server == 'xstreamcdn':
-            #     type_ = 'embed'
+            elif server == 'streamwish':
+                type_ = 'embed'
             elif server == 'mp4upload':
                 type_ = 'embed'
             elif server == 'doodstream':
                 type_ = 'embed'
-            # elif server == 'streamsb':
-            #     type_ = 'embed'
+            elif server == 'filelions':
+                type_ = 'embed'
 
             if not type_:
                 continue

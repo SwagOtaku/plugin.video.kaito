@@ -1,5 +1,4 @@
 import base64
-import binascii
 import json
 import random
 import re
@@ -13,7 +12,7 @@ from resources.lib.ui.pyaes import AESModeOfOperationCBC, Decrypter, Encrypter
 from six.moves import urllib_error, urllib_parse
 
 _EMBED_EXTRACTORS = {}
-_EDGE_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.18363'
+_EDGE_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36 Edg/116.0.1938.62'
 
 
 def load_video_from_url(in_url):
@@ -248,31 +247,11 @@ def __extract_streamtape(url, page_content, referer=None):
     return
 
 
-def __extract_streamsb(url, page_content, referer=None):
-    def get_embedurl(host, media_id):
-        def makeid(length):
-            t = string.ascii_letters + string.digits
-            return ''.join([random.choice(t) for _ in range(length)])
-
-        x = '{0}||{1}||{2}||streamsb'.format(makeid(12), media_id, makeid(12))
-        c1 = binascii.hexlify(x.encode('utf8')).decode('utf8')
-        x = '7Vd5jIEF2lKy||nuewwgxb1qs'
-        c2 = binascii.hexlify(x.encode('utf8')).decode('utf8')
-        return 'https://{0}/{1}7/{2}'.format(host, c2, c1)
-
-    pattern = r'(?://|\.)((?:streamsb|streamsss|sb(?:lanh|ani|rapic))\.(?:net|com|pro))/e/([0-9a-zA-Z]+)'
-    host, media_id = re.findall(pattern, url)[0]
-    eurl = get_embedurl(host, media_id)
-    headers = {'User-Agent': _EDGE_UA,
-               'Referer': 'https://{0}/'.format(host),
-               'watchsb': 'sbstream'}
-    html = client.request(eurl, headers=headers, cookie='lang=1')
-    data = json.loads(html).get("stream_data", {})
-    strurl = data.get('file') or data.get('backup')
-    if strurl:
-        headers.pop('watchsb')
-        headers.update({'Origin': 'https://{0}'.format(host)})
-        return strurl + __append_headers(headers)
+def __extract_streamwish(url, page_content, referer=None):
+    page_content += __get_packed_data(page_content)
+    r = re.search(r'''sources:\s*\[{file:\s*["']([^"']+)''', page_content)
+    if r:
+        return r.group(1)
     return
 
 
@@ -307,7 +286,7 @@ def __extract_goload(url, page_content, referer=None):
         decrypted += decrypter.feed()
         return six.ensure_str(decrypted)
 
-    pattern = r'(?://|\.)((?:gogo-(?:play|stream)|streamani|goload|gogohd|vidstreaming|gembedhd|playgo1|anihdplay|playtaku|gotaku1)\.' \
+    pattern = r'(?://|\.)((?:gogo-(?:play|stream)|streamani|goload|gogohd|vidstreaming|gembedhd|playgo1|anihdplay|playtaku|gotaku1|goone)\.' \
               r'(?:io|pro|net|com|cc|online))/(?:streaming|embed(?:plus)?|ajax|load)(?:\.php)?\?id=([a-zA-Z0-9-]+)'
     r = re.search(r'crypto-js\.js.+?data-value="([^"]+)', page_content)
     if r:
@@ -403,7 +382,8 @@ __register_extractor(["https://gogo-stream.com",
                       "https://anihdplay.com/",
                       "https://playtaku.net/",
                       "https://playtaku.online/",
-                      "https://gotaku1.com/"],
+                      "https://gotaku1.com/",
+                      "https://goone.pro"],
                      __extract_goload)
 
 __register_extractor(["https://streamlare.com/",
@@ -442,32 +422,21 @@ __register_extractor(["https://filemoon.sx/e/"],
 __register_extractor(["https://embedrise.com/v/"],
                      __extract_embedrise)
 
-__register_extractor(["https://sbembed.com/e/",
-                      "https://sbembed1.com/e/",
-                      "https://sbplay.org/e/",
-                      "https://sbvideo.net/e/",
-                      "https://streamsb.net/e/",
-                      "https://sbplay.one/e/",
-                      "https://cloudemb.com/e/",
-                      "https://playersb.com/e/",
-                      "https://tubesb.com/e/",
-                      "https://sbplay1.com/e/",
-                      "https://embedsb.com/e/",
-                      "https://watchsb.com/e/",
-                      "https://sbplay2.com/e/",
-                      "https://japopav.tv/e/",
-                      "https://viewsb.com/e/",
-                      "https://sbplay2.xyz/e/",
-                      "https://sbfast.com/e/",
-                      "https://sbfull.com/e/",
-                      "https://javplaya.com/e/",
-                      "https://ssbstream.net/e/",
-                      "https://p1ayerjavseen.com/e/",
-                      "https://sbthe.com/e/",
-                      "https://vidmovie.xyz/e/",
-                      "https://sbspeed.com/e/",
-                      "https://streamsss.net/e/",
-                      "https://sblanh.com/e/",
-                      "https://sbani.pro/e/",
-                      "https://sbrapid.com/e/"],
-                     __extract_streamsb)
+__register_extractor(["https://streamwish.com",
+                      "https://streamwish.to",
+                      "https://wishembed.pro",
+                      "https://streamwish.site",
+                      "https://strmwis.xyz",
+                      "https://embedwish.com",
+                      "https://awish.pro",
+                      "https://dwish.pro",
+                      "https://mwish.pro",
+                      "https://filelions.com",
+                      "https://filelions.to",
+                      "https://filelions.xyz",
+                      "https://filelions.live",
+                      "https://filelions.com",
+                      "https://alions.pro",
+                      "https://dlions.pro",
+                      "https://mlions.pro"],
+                     __extract_streamwish)
