@@ -1,3 +1,7 @@
+Changelog 0.4.23 [20230908]:
+- Fix Setting Defaults
+- Fix Subtitle Default
+
 Changelog 0.4.22 [20230904]:
 - Add additional embed hosters as used by gogo
 - Added Simkl Icons for future watchlist
