@@ -1,3 +1,6 @@
+Changelog 0.4.28 [20230929]:
+- Reverted art poster typo error
+
 Changelog 0.4.27 [20230929]:
 - Changed the cache threshold from 24 to 4 
 
