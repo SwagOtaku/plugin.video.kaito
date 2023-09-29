@@ -1,3 +1,7 @@
+Changelog 0.4.26 [20230929]:
+- Changes Simkl api key to a temporary key
+- Changed the cache cache_threshold from 2 to 24 
+
 Changelog 0.4.25 [20230929]:
 - Fix art poster typo error
 - Fix Rare Bugs for Watchlist

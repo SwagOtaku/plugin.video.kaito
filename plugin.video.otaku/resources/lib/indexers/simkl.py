@@ -9,7 +9,7 @@ from resources.lib.indexers.syncurl import SyncUrl
 
 class SIMKLAPI:
     def __init__(self):
-        self.ClientID = "5178a709b7942f1f5077b737b752eea0f6dee684d0e044fa5acee8822a0cbe9b"
+        self.ClientID = "503b6b37476926a7a17ac86b95a81b245879955a7531e3e7d8913c0624796ea0"
         self.baseUrl = "https://api.simkl.com/"
         self.imagePath = "https://wsrv.nl/?url=https://simkl.in/episodes/%s_w.webp"
 
