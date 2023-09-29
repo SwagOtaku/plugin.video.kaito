@@ -6,8 +6,7 @@ if __name__ == '__main__':
     item = sys.listitem
 
     path = item.getPath()
-    plugin = 'plugin://plugin.video.otaku/'
+    plugin = 'plugin://plugin.video.otaku'
     path = path.split(plugin, 1)[1]
 
-    xbmc.executebuiltin('ActivateWindow(Videos,plugin://plugin.video.otaku/watch_order/%s)'
-                        % path)
+    xbmc.executebuiltin('ActivateWindow(Videos,%s/watch_order/%s)' % (plugin, path))

@@ -125,7 +125,7 @@ class AniListBrowser():
         airing = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(airing, "anilist_airing_anime/%d", page)
 
-    def get_trending_last_year_trending_trending(self, page=1, format_in=''):
+    def get_trending_last_year_trending(self, page=1, format_in=''):
         season, year = self.get_season_year('')
         variables = {
             'page': page,
@@ -147,9 +147,9 @@ class AniListBrowser():
             variables['perPage'] = self.perPage_type
 
         trending = database.get(self.get_base_res, 2, variables, page)
-        return self._process_anilist_view(trending, "anilist_trending_last_year_trending_trending/%d", page)
+        return self._process_anilist_view(trending, "anilist_trending_last_year_trending/%d", page)
 
-    def get_trending_this_year_trending_trending(self, page=1, format_in=''):
+    def get_trending_this_year_trending(self, page=1, format_in=''):
         season, year = self.get_season_year('this')
         variables = {
             'page': page,
@@ -172,7 +172,7 @@ class AniListBrowser():
             variables['perPage'] = self.perPage_type
 
         trending = database.get(self.get_base_res, 2, variables, page)
-        return self._process_anilist_view(trending, "anilist_trending_this_year_trending_trending/%d", page)
+        return self._process_anilist_view(trending, "anilist_trending_this_year_trending/%d", page)
 
     def get_trending_last_season_trending(self, page=1, format_in=''):
         season, year = self.get_season_year('last')
@@ -763,6 +763,443 @@ class AniListBrowser():
         top_100_anime = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(top_100_anime, "anilist_top_100_anime/%d", page)
 
+    def get_genre_action(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Action"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_action = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_action, "anilist_genre_action/%d", page)
+
+    def get_genre_adventure(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Adventure"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_adventure = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_adventure, "anilist_genre_adventure/%d", page)
+
+    def get_genre_comedy(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Comedy"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_comedy = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_comedy, "anilist_genre_comedy/%d", page)
+
+    def get_genre_drama(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Drama"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_drama = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_drama, "anilist_genre_drama/%d", page)
+
+    def get_genre_ecchi(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Ecchi"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_ecchi = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_ecchi, "anilist_genre_ecchi/%d", page)
+
+    def get_genre_fantasy(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Fantasy"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_fantasy = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_fantasy, "anilist_genre_fantasy/%d", page)
+
+    def get_genre_hentai(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Hentai"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_hentai = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_hentai, "anilist_genre_hentai/%d", page)
+
+    def get_genre_horror(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Horror"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_horror = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_horror, "anilist_genre_horror/%d", page)
+
+    def get_genre_shoujo(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Shoujo"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_shoujo = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_shoujo, "anilist_genre_shoujo/%d", page)
+
+    def get_genre_mecha(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Mecha"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_mecha = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_mecha, "anilist_genre_mecha/%d", page)
+
+    def get_genre_music(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Music"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_music = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_music, "anilist_genre_music/%d", page)
+
+    def get_genre_mystery(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Mystery"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_mystery = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_mystery, "anilist_genre_mystery/%d", page)
+
+    def get_genre_psychological(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Psychological"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_psychological = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_psychological, "anilist_genre_psychological/%d", page)
+
+    def get_genre_romance(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Romance"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_romance = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_romance, "anilist_genre_romance/%d", page)
+
+    def get_genre_sci_fi(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Sci-Fi"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_sci_fi = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_sci_fi, "anilist_genre_sci_fi/%d", page)
+
+    def get_genre_slice_of_life(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Slice of Life"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_slice_of_life = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_slice_of_life, "anilist_genre_slice_of_life/%d", page)
+
+    def get_genre_sports(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Sports"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_sports = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_sports, "anilist_genre_sports/%d", page)
+
+    def get_genre_supernatural(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Supernatural"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_supernatural = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_supernatural, "anilist_genre_supernatural/%d", page)
+
+    def get_genre_thriller(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Thriller"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_thriller = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_thriller, "anilist_genre_thriller/%d", page)
+
     def get_search(self, query, page=1):
         variables = {
             'page': page,
@@ -838,7 +1275,7 @@ class AniListBrowser():
         airing = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(airing, "anilist_airing_anime_movie/%d", page)
 
-    def get_trending_last_year_trending_trending_movie(self, page=1, format_in=''):
+    def get_trending_last_year_trending_movie(self, page=1, format_in=''):
         season, year = self.get_season_year('')
         variables = {
             'page': page,
@@ -861,9 +1298,9 @@ class AniListBrowser():
             variables['perPage'] = self.perPage_type
 
         trending = database.get(self.get_base_res, 2, variables, page)
-        return self._process_anilist_view(trending, "anilist_trending_last_year_trending_trending_movie/%d", page)
+        return self._process_anilist_view(trending, "anilist_trending_last_year_trending_movie/%d", page)
 
-    def get_trending_this_year_trending_trending_movie(self, page=1, format_in=''):
+    def get_trending_this_year_trending_movie(self, page=1, format_in=''):
         season, year = self.get_season_year('this')
         variables = {
             'page': page,
@@ -887,7 +1324,7 @@ class AniListBrowser():
             variables['perPage'] = self.perPage_type
 
         trending = database.get(self.get_base_res, 2, variables, page)
-        return self._process_anilist_view(trending, "anilist_trending_this_year_trending_trending_movie/%d", page)
+        return self._process_anilist_view(trending, "anilist_trending_this_year_trending_movie/%d", page)
 
     def get_trending_last_season_trending_movie(self, page=1, format_in=''):
         season, year = self.get_season_year('last')
@@ -1502,6 +1939,462 @@ class AniListBrowser():
         top_100_anime = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(top_100_anime, "anilist_top_100_anime_movie/%d", page)
 
+    def get_genre_action_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Action",
+            'format': "MOVIE"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_action_movie = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_action_movie, "anilist_genre_action_movie/%d", page)
+
+    def get_genre_adventure_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Adventure",
+            'format': "MOVIE"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_adventure_movie = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_adventure_movie, "anilist_genre_adventure_movie/%d", page)
+
+    def get_genre_comedy_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Comedy",
+            'format': "MOVIE"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_comedy_movie = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_comedy_movie, "anilist_genre_comedy_movie/%d", page)
+
+    def get_genre_drama_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Drama",
+            'format': "MOVIE"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_drama_movie = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_drama_movie, "anilist_genre_drama_movie/%d", page)
+
+    def get_genre_ecchi_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Ecchi",
+            'format': "MOVIE"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_ecchi_movie = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_ecchi_movie, "anilist_genre_ecchi_movie/%d", page)
+
+    def get_genre_fantasy_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Fantasy",
+            'format': "MOVIE"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_fantasy_movie = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_fantasy_movie, "anilist_genre_fantasy_movie/%d", page)
+
+    def get_genre_hentai_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Hentai",
+            'format': "MOVIE"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_hentai_movie = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_hentai_movie, "anilist_genre_hentai_movie/%d", page)
+
+    def get_genre_horror_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Horror",
+            'format': "MOVIE"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_horror_movie = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_horror_movie, "anilist_genre_horror_movie/%d", page)
+
+    def get_genre_shoujo_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Shoujo",
+            'format': "MOVIE"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_shoujo_movie = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_shoujo_movie, "anilist_genre_shoujo_movie/%d", page)
+
+    def get_genre_mecha_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Mecha",
+            'format': "MOVIE"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_mecha_movie = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_mecha_movie, "anilist_genre_mecha_movie/%d", page)
+
+    def get_genre_music_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Music",
+            'format': "MOVIE"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_music_movie = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_music_movie, "anilist_genre_music_movie/%d", page)
+
+    def get_genre_mystery_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Mystery",
+            'format': "MOVIE"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_mystery_movie = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_mystery_movie, "anilist_genre_mystery_movie/%d", page)
+
+    def get_genre_psychological_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Psychological",
+            'format': "MOVIE"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_psychological_movie = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_psychological_movie, "anilist_genre_psychological_movie/%d", page)
+
+    def get_genre_romance_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Romance",
+            'format': "MOVIE"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_romance_movie = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_romance_movie, "anilist_genre_romance_movie/%d", page)
+
+    def get_genre_sci_fi_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Sci-Fi",
+            'format': "MOVIE"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_sci_fi_movie = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_sci_fi_movie, "anilist_genre_sci_fi_movie/%d", page)
+
+    def get_genre_slice_of_life_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Slice of Life",
+            'format': "MOVIE"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_slice_of_life_movie = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_slice_of_life_movie, "anilist_genre_slice_of_life_movie/%d", page)
+
+    def get_genre_sports_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Sports",
+            'format': "MOVIE"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_sports_movie = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_sports_movie, "anilist_genre_sports_movie/%d", page)
+
+    def get_genre_supernatural_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Supernatural",
+            'format': "MOVIE"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_supernatural_movie = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_supernatural_movie, "anilist_genre_supernatural_movie/%d", page)
+
+    def get_genre_thriller_movie(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Thriller",
+            'format': "MOVIE"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_thriller_movie = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_thriller_movie, "anilist_genre_thriller_movie/%d", page)
+
     def get_search_movie(self, query, page=1):
         variables = {
             'page': page,
@@ -1578,7 +2471,7 @@ class AniListBrowser():
         airing = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(airing, "anilist_airing_anime_tv/%d", page)
 
-    def get_trending_last_year_trending_trending_tv(self, page=1, format_in=''):
+    def get_trending_last_year_trending_tv(self, page=1, format_in=''):
         season, year = self.get_season_year('')
         variables = {
             'page': page,
@@ -1601,9 +2494,9 @@ class AniListBrowser():
             variables['perPage'] = self.perPage_type
 
         trending = database.get(self.get_base_res, 2, variables, page)
-        return self._process_anilist_view(trending, "anilist_trending_last_year_trending_trending_tv/%d", page)
+        return self._process_anilist_view(trending, "anilist_trending_last_year_trending_tv/%d", page)
 
-    def get_trending_this_year_trending_trending_tv(self, page=1, format_in=''):
+    def get_trending_this_year_trending_tv(self, page=1, format_in=''):
         season, year = self.get_season_year('this')
         variables = {
             'page': page,
@@ -1627,7 +2520,7 @@ class AniListBrowser():
             variables['perPage'] = self.perPage_type
 
         trending = database.get(self.get_base_res, 2, variables, page)
-        return self._process_anilist_view(trending, "anilist_trending_this_year_trending_trending_tv/%d", page)
+        return self._process_anilist_view(trending, "anilist_trending_this_year_trending_tv/%d", page)
 
     def get_trending_last_season_trending_tv(self, page=1, format_in=''):
         season, year = self.get_season_year('last')
@@ -2242,6 +3135,462 @@ class AniListBrowser():
         top_100_anime = database.get(self.get_base_res, 2, variables, page)
         return self._process_anilist_view(top_100_anime, "anilist_top_100_anime_tv/%d", page)
 
+    def get_genre_action_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Action",
+            'format': "TV"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_action_tv = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_action_tv, "anilist_genre_action_tv/%d", page)
+
+    def get_genre_adventure_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Adventure",
+            'format': "TV"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_adventure_tv = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_adventure_tv, "anilist_genre_adventure_tv/%d", page)
+
+    def get_genre_comedy_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Comedy",
+            'format': "TV"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_comedy_tv = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_comedy_tv, "anilist_genre_comedy_tv/%d", page)
+
+    def get_genre_drama_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Drama",
+            'format': "TV"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_drama_tv = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_drama_tv, "anilist_genre_drama_tv/%d", page)
+
+    def get_genre_ecchi_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Ecchi",
+            'format': "TV"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_ecchi_tv = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_ecchi_tv, "anilist_genre_ecchi_tv/%d", page)
+
+    def get_genre_fantasy_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Fantasy",
+            'format': "TV"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_fantasy_tv = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_fantasy_tv, "anilist_genre_fantasy_tv/%d", page)
+
+    def get_genre_hentai_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Hentai",
+            'format': "TV"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_hentai_tv = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_hentai_tv, "anilist_genre_hentai_tv/%d", page)
+
+    def get_genre_horror_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Horror",
+            'format': "TV"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_horror_tv = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_horror_tv, "anilist_genre_horror_tv/%d", page)
+
+    def get_genre_shoujo_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Shoujo",
+            'format': "TV"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_shoujo_tv = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_shoujo_tv, "anilist_genre_shoujo_tv/%d", page)
+
+    def get_genre_mecha_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Mecha",
+            'format': "TV"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_mecha_tv = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_mecha_tv, "anilist_genre_mecha_tv/%d", page)
+
+    def get_genre_music_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Music",
+            'format': "TV"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_music_tv = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_music_tv, "anilist_genre_music_tv/%d", page)
+
+    def get_genre_mystery_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Mystery",
+            'format': "TV"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_mystery_tv = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_mystery_tv, "anilist_genre_mystery_tv/%d", page)
+
+    def get_genre_psychological_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Psychological",
+            'format': "TV"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_psychological_tv = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_psychological_tv, "anilist_genre_psychological_tv/%d", page)
+
+    def get_genre_romance_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Romance",
+            'format': "TV"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_romance_tv = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_romance_tv, "anilist_genre_romance_tv/%d", page)
+
+    def get_genre_sci_fi_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Sci-Fi",
+            'format': "TV"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_sci_fi_tv = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_sci_fi_tv, "anilist_genre_sci_fi_tv/%d", page)
+
+    def get_genre_slice_of_life_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Slice of Life",
+            'format': "TV"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_slice_of_life_tv = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_slice_of_life_tv, "anilist_genre_slice_of_life_tv/%d", page)
+
+    def get_genre_sports_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Sports",
+            'format': "TV"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_sports_tv = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_sports_tv, "anilist_genre_sports_tv/%d", page)
+
+    def get_genre_supernatural_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Supernatural",
+            'format': "TV"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_supernatural_tv = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_supernatural_tv, "anilist_genre_supernatural_tv/%d", page)
+
+    def get_genre_thriller_tv(self, page=1, format_in=''):
+        variables = {
+            'page': page,
+            'type': "ANIME",
+            'sort': "SCORE_DESC",
+            'includedGenres': "Thriller",
+            'format': "TV"
+        }
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
+        genre_thriller_tv = database.get(self.get_genre_res, 2, variables, page)
+        return self._process_anilist_view(genre_thriller_tv, "anilist_genre_thriller_tv/%d", page)
+
     def get_search_tv(self, query, page=1):
         variables = {
             'page': page,
@@ -2283,29 +3632,29 @@ class AniListBrowser():
                 'idMal': idmal
             }
 
-            anilist_item = database.get(self.get_watch_order_res, 2, variables)
+            anilist_item = database.get(self.get_anilist_res_with_mal_id, 2, variables)
             if anilist_item is not None:
                 watch_order_list.append(anilist_item)
 
         return self._process_watch_order_view(watch_order_list, "watch_order/%d")
 
-    def get_anilist(self, mal_id):
-        variables = {
-            'id': mal_id,
-            'type': "ANIME"
-        }
-
-        mal_to_anilist = self.get_anilist_res(variables)
-        return self._process_mal_to_anilist(mal_to_anilist)
-
     def get_mal_to_anilist(self, mal_id):
         variables = {
-            'id': mal_id,
+            'idMal': mal_id,
             'type': "ANIME"
         }
 
-        mal_to_anilist = self.get_mal_to_anilist_res(variables)
-        return self._process_mal_to_anilist(mal_to_anilist)
+        anilist_res = database.get(self.get_anilist_res_with_mal_id, 2, variables)
+        return self.process_res(anilist_res)
+
+    def get_anilist(self, anilist_id):
+        variables = {
+            'id': anilist_id,
+            'type': "ANIME"
+        }
+
+        anilist_res = database.get(self.get_anilist_res, 2, variables)
+        return self.process_res(anilist_res)
 
     def get_airing_calenda_res(self, variables, page=1):
         query = '''
@@ -2377,7 +3726,7 @@ class AniListBrowser():
             $season: MediaSeason,
             $year: String,
             $status: MediaStatus,
-            $sort: [MediaSort] = [POPULARITY_DESC, SCORE_DESC]
+            $sort: [MediaSort] = [POPULARITY_DESC, SCORE_DESC],
         ) {
             Page (page: $page, perPage: $perPage) {
                 pageInfo {
@@ -2389,10 +3738,10 @@ class AniListBrowser():
                     season: $season,
                     startDate_like: $year,
                     sort: $sort,
-                    status: $status
-                    isAdult: $isAdult
-                    countryOfOrigin: $countryOfOrigin
-                    licensedBy: $licensedBy
+                    status: $status,
+                    isAdult: $isAdult,
+                    countryOfOrigin: $countryOfOrigin,
+                    licensedBy: $licensedBy,
                 ) {
                     id
                     idMal
@@ -2417,6 +3766,102 @@ class AniListBrowser():
                     status
                     genres
                     duration
+                    countryOfOrigin
+                    averageScore
+                    characters (
+                        page: 1,
+                        sort: ROLE,
+                        perPage: 10,
+                    ) {
+                        edges {
+                            node {
+                                name {
+                                    userPreferred
+                                }
+                            }
+                            voiceActors (language: JAPANESE) {
+                                name {
+                                    userPreferred
+                                }
+                                image {
+                                    large
+                                }
+                            }
+                        }
+                    }
+                    studios {
+                        edges {
+                            node {
+                                name
+                            }
+                        }
+                    }
+                    trailer {
+                        id
+                        site
+                    }
+                }
+            }
+        }
+        '''
+
+        result = client.request(self._URL, post={'query': query, 'variables': variables}, jpost=True)
+        results = json.loads(result)
+
+        if "errors" in results.keys():
+            return
+
+        json_res = results['data']['Page']
+        return json_res
+
+    def get_genre_res(self, variables, page=1):
+        query = '''
+        query (
+            $page: Int,
+            $perPage: Int,
+            $type: MediaType,
+            $format:[MediaFormat],
+            $isAdult: Boolean = false,
+            $includedGenres: [String],
+            $includedTags: [String],
+            $sort: [MediaSort] = [SCORE_DESC, POPULARITY_DESC]
+        ) {
+            Page (page: $page, perPage: $perPage) {
+                pageInfo {
+                    hasNextPage
+                }
+                ANIME: media (
+                    format_in: $format,
+                    type: $type,
+                    genre_in: $includedGenres,
+                    tag_in: $includedTags,
+                    sort: $sort,
+                    isAdult: $isAdult
+                ) {
+                    id
+                    idMal
+                    title {
+                        userPreferred,
+                        romaji,
+                        english
+                    }
+                    coverImage {
+                        extraLarge
+                    }
+                    bannerImage
+                    startDate {
+                        year,
+                        month,
+                        day
+                    }
+                    description
+                    synonyms
+                    format
+                    episodes
+                    status
+                    genres
+                    duration
+                    isAdult
                     countryOfOrigin
                     averageScore
                     characters (
@@ -2722,80 +4167,6 @@ class AniListBrowser():
         json_res = results['data']['Media']['relations']
         return json_res
 
-    def get_watch_order_res(self, variables):
-        query = '''
-            query ($idMal: Int) {
-                Media (idMal: $idMal, type: ANIME) {
-                    id
-                    idMal
-                    title {
-                        userPreferred,
-                        romaji,
-                        english
-                    }
-                    coverImage {
-                        extraLarge
-                    }
-                    bannerImage
-                    startDate {
-                        year,
-                        month,
-                        day
-                    }
-                    description
-                    synonyms
-                    format
-                    episodes
-                    status
-                    genres
-                    duration
-                    countryOfOrigin
-                    averageScore
-                    characters (
-                        page: 1,
-                        sort: ROLE,
-                        perPage: 10,
-                    ) {
-                        edges {
-                            node {
-                                name {
-                                    userPreferred
-                                }
-                            }
-                            voiceActors (language: JAPANESE) {
-                                name {
-                                    userPreferred
-                                }
-                                image {
-                                    large
-                                }
-                            }
-                        }
-                    }
-                    studios {
-                        edges {
-                            node {
-                                name
-                            }
-                        }
-                    }
-                    trailer {
-                        id
-                        site
-                    }
-                }
-            }
-            '''
-        result = client.request(self._URL, post={'query': query, 'variables': variables}, jpost=True)
-        if result is not None:
-            results = json.loads(result)
-            json_res = results['data']['Media']
-            if "errors" in results.keys():
-                return
-            return json_res
-        else:
-            return None
-
     def get_anilist_res(self, variables):
         query = '''
         query($id: Int, $type: MediaType){
@@ -2870,9 +4241,9 @@ class AniListBrowser():
         json_res = results['data']['Media']
         return json_res
 
-    def get_mal_to_anilist_res(self, variables):
+    def get_anilist_res_with_mal_id(self, variables):
         query = '''
-        query($id: Int, $type: MediaType){Media(idMal: $id, type: $type) {
+        query($idMal: Int, $type: MediaType){Media(idMal: $idMal, type: $type) {
             id
             idMal
             title {
@@ -2926,17 +4297,11 @@ class AniListBrowser():
                     }
                 }
             }
-            trailer {
-                id
-                site
-            }
             }
         }
         '''
-
         result = client.request(self._URL, post={'query': query, 'variables': variables}, jpost=True)
         results = json.loads(result)
-
         if "errors" in results.keys():
             return
 
@@ -3017,11 +4382,11 @@ class AniListBrowser():
 
         return all_results
 
-    def _process_mal_to_anilist(self, res):
+    def process_res(self, res):
         # titles = self._get_titles(res)
         # start_date = self._get_start_date(res)
         self._database_update_show(res)
-        _ = get_meta.collect_meta([res])
+        get_meta.collect_meta([res])
 
         return database.get_show(str(res['id']))
 
@@ -3101,7 +4466,7 @@ class AniListBrowser():
                 cast2.append({'name': actor, 'role': role, 'thumbnail': actor_hs})
             info['cast'] = cast
             info['cast2'] = cast2
-        except:
+        except IndexError:
             pass
         try:
             info['studio'] = [x.get('node').get('name') for x in res.get('studios').get('edges')]
@@ -3471,6 +4836,18 @@ class AniListBrowser():
         if tag_list:
             variables["includedTags"] = tag_list
 
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
         return self._process_genre_view(query, variables, "anilist_genres/%s/%s/%%d" % (genre_list, tag_list), page)
 
     @div_flavor
@@ -3641,6 +5018,18 @@ class AniListBrowser():
 
         if tag_list:
             variables["includedTags"] = tag_list
+
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
 
         return self._process_genre_view_movie(query, variables, "anilist_genres_movie/%s/%s/%%d" % (genre_list, tag_list), page)
 
@@ -3813,6 +5202,18 @@ class AniListBrowser():
         if tag_list:
             variables["includedTags"] = tag_list
 
+        if self.format_in_type:
+            variables['format'] = self.format_in_type
+
+        if self.countryOfOrigin_type:
+            variables['countryOfOrigin'] = self.countryOfOrigin_type
+
+        if self.licensedBy_type:
+            variables['licensedBy'] = self.licensedBy_type
+
+        if self.perPage_type:
+            variables['perPage'] = self.perPage_type
+
         return self._process_genre_view_tv(query, variables, "anilist_genres_tv/%s/%s/%%d" % (genre_list, tag_list), page)
 
     @div_flavor
@@ -3857,4 +5258,3 @@ class AniListBrowser():
             database.remove_season(anilist_id)
             database.remove_episodes(anilist_id)
             control.refresh()
-        return

@@ -354,7 +354,7 @@ def _update_show(anilist_id, mal_id, kodi_meta, last_updated=''):
         control.try_release_lock(control.anilistSyncDB_lock)
 
 
-def _update_show_meta(anilist_id, meta_ids, art):
+def update_show_meta(anilist_id, meta_ids, art):
     control.anilistSyncDB_lock.acquire()
     cursor = _get_cursor()
     if isinstance(meta_ids, dict):
@@ -377,7 +377,6 @@ def _update_show_meta(anilist_id, meta_ids, art):
         cursor.close()
         import traceback
         traceback.print_exc()
-        pass
     finally:
         control.try_release_lock(control.anilistSyncDB_lock)
 
@@ -818,7 +817,6 @@ def addTorrentList(anilist_id, torrent_list, zfill_int):
         except:
             import traceback
             traceback.print_exc()
-            pass
 
         cursor.connection.commit()
         cursor.close()

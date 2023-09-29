@@ -10,14 +10,20 @@ def allocate_item(name, url, is_dir=False, image='', info='', fanart=None, poste
     new_res = {}
     new_res['is_dir'] = is_dir
     if image and '/' not in image:
-        image = os.path.join(control.artPath(), image)
+        genre_image = os.path.join(control.genrePath(), image)
+        art_image = os.path.join(control.artPath(), image)
+        image = genre_image if os.path.exists(genre_image) else art_image
     if fanart:
         if isinstance(fanart, list):
             fanart = random.choice(fanart)
         if '/' not in fanart:
-            fanart = os.path.join(control.artPath(), fanart)
+            genre_fanart = os.path.join(control.genrePath(), fanart)
+            art_fanart = os.path.join(control.artPath(), fanart)
+            fanart = genre_fanart if os.path.exists(genre_fanart) else art_fanart
     if poster and '/' not in poster:
-        poster = os.path.join(control.artPath(), poster)
+        genre_poster = os.path.join(control.genrePath(), poster)
+        art_poster = os.path.join(control.artPath(), poster)
+        poster = genre_poster if os.path.exists(genre_poster) else art_poster
     new_res['image'] = {
         'poster': poster or image,
         'icon': image,

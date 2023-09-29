@@ -1027,6 +1027,30 @@ msgctxt "#40509"
 msgid "French Sub/Dub Embeds"
 msgstr ""
 
+msgctxt "#40510"
+msgid "Simkl"
+msgstr ""
+
+msgctxt "#40511"
+msgid "Enable Simkl"
+msgstr ""
+
+msgctxt "#40512"
+msgid "Context Menu Customization"
+msgstr ""
+
+msgctxt "#40513"
+msgid "Show 'Marked as Watched [COLOR blue](Watchlist)[/COLOR]' in Context Menu"
+msgstr ""
+
+msgctxt "#40514"
+msgid "Set Percent to Mark as Watched"
+msgstr ""
+
+msgctxt "#40515"
+msgid "NOTE: Next up Dialog will not begin until this percentage is met"
+msgstr ""
+
 ######MAIN Category DIRECTORY#######
 msgctxt "#50000"
 msgid "Airing Anime Calendar"
@@ -1270,4 +1294,100 @@ msgstr ""
 
 msgctxt "#50072"
 msgid "Search TV Shows"
+msgstr ""
+
+msgctxt "#50073"
+msgid "Multi Select..."
+msgstr ""
+
+msgctxt "#50074"
+msgid "Action"
+msgstr ""
+
+msgctxt "#50075"
+msgid "Adventure"
+msgstr ""
+
+msgctxt "#50076"
+msgid "Comedy"
+msgstr ""
+
+msgctxt "#50077"
+msgid "Drama"
+msgstr ""
+
+msgctxt "#50078"
+msgid "Ecchi"
+msgstr ""
+
+msgctxt "#50079"
+msgid "Fantasy"
+msgstr ""
+
+msgctxt "#50080"
+msgid "Hentai"
+msgstr ""
+
+msgctxt "#50081"
+msgid "Horror"
+msgstr ""
+
+msgctxt "#50082"
+msgid "Shoujo"
+msgstr ""
+
+msgctxt "#50083"
+msgid "Mecha"
+msgstr ""
+
+msgctxt "#50084"
+msgid "Music"
+msgstr ""
+
+msgctxt "#50085"
+msgid "Mystery"
+msgstr ""
+
+msgctxt "#50086"
+msgid "Psychological"
+msgstr ""
+
+msgctxt "#50087"
+msgid "Romance"
+msgstr ""
+
+msgctxt "#50088"
+msgid "Sci-Fi"
+msgstr ""
+
+msgctxt "#50089"
+msgid "Slice of Life"
+msgstr ""
+
+msgctxt "#50090"
+msgid "Sports"
+msgstr ""
+
+msgctxt "#50091"
+msgid "Supernatural"
+msgstr ""
+
+msgctxt "#50092"
+msgid "Thriller"
+msgstr ""
+
+msgctxt "#50093"
+msgid "Genremenu Customize"
+msgstr ""
+
+msgctxt "#50094"
+msgid "Main Menu - Genre Items"
+msgstr ""
+
+msgctxt "#50095"
+msgid "Movies - Genre Items"
+msgstr ""
+
+msgctxt "#50096"
+msgid "TV Shows - Genre Items"
 msgstr ""

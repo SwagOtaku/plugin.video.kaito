@@ -1,15 +1,14 @@
 import os
 import sys
 import threading
-
 import xbmcgui
 from kodi_six import xbmc, xbmcaddon, xbmcplugin, xbmcvfs
 from six.moves import urllib_parse
 
 try:
     HANDLE = int(sys.argv[1])
-except:
-    HANDLE = '1'
+except IndexError:
+    HANDLE = -1
 
 addonInfo = xbmcaddon.Addon().getAddonInfo
 ADDON_VERSION = addonInfo('version')
@@ -26,6 +25,7 @@ LOGINFO = xbmc.LOGNOTICE if PY2 else xbmc.LOGINFO
 INPUT_ALPHANUM = xbmcgui.INPUT_ALPHANUM
 dataPath = TRANSLATEPATH(addonInfo('profile'))
 ADDON_PATH = __settings__.getAddonInfo('path')
+
 try:
     _kodiver = float(xbmcaddon.Addon('xbmc.addon').getAddonInfo('version')[:4])
 except ValueError:
@@ -87,52 +87,35 @@ def try_release_lock(lock):
 
 
 def real_debrid_enabled():
-    if getSetting('rd.auth') != '' and getSetting('realdebrid.enabled') == 'true':
-        return True
-    else:
-        return False
+    return True if getSetting('rd.auth') != '' and getSetting('realdebrid.enabled') == 'true' else False
 
 
 def debrid_link_enabled():
-    if getSetting('dl.auth') != '' and getSetting('dl.enabled') == 'true':
-        return True
-    else:
-        return False
+    return True if getSetting('dl.auth') != '' and getSetting('dl.enabled') == 'true' else False
 
 
 def all_debrid_enabled():
-    if getSetting('alldebrid.apikey') != '' and getSetting('alldebrid.enabled') == 'true':
-        return True
-    else:
-        return False
+    return True if getSetting('alldebrid.apikey') != '' and getSetting('alldebrid.enabled') == 'true' else False
 
 
 def premiumize_enabled():
-    if getSetting('premiumize.token') != '' and getSetting('premiumize.enabled') == 'true':
-        return True
-    else:
-        return False
+    return True if getSetting('premiumize.token') != '' and getSetting('premiumize.enabled') == 'true' else False
 
 
 def myanimelist_enabled():
-    if getSetting('mal.token') != '' and getSetting('mal.enabled') == 'true':
-        return True
-    else:
-        return False
+    return True if getSetting('mal.token') != '' and getSetting('mal.enabled') == 'true' else False
 
 
 def kitsu_enabled():
-    if getSetting('kitsu.token') != '' and getSetting('kitsu.enabled') == 'true':
-        return True
-    else:
-        return False
+    return True if getSetting('kitsu.token') != '' and getSetting('kitsu.enabled') == 'true' else False
 
 
 def anilist_enabled():
-    if getSetting('anilist.token') != '' and getSetting('anilist.enabled') == 'true':
-        return True
-    else:
-        return False
+    return True if getSetting('anilist.token') != '' and getSetting('anilist.enabled') == 'true' else False
+
+
+def simkl_enabled():
+    return True if getSetting('simkl.token') != '' and getSetting('simkl.enabled') == 'true' else False
 
 
 def watchlist_to_update():
@@ -140,7 +123,6 @@ def watchlist_to_update():
         flavor = getSetting('watchlist.update.flavor').lower()
         if getSetting('%s.enabled' % flavor) == 'true':
             return flavor
-    return
 
 
 def watchlist_enabled():
@@ -164,7 +146,6 @@ def copy2clip(txt):
     elif platform == 'linux2':
         try:
             from subprocess import PIPE, Popen
-
             p = Popen(['xsel', '-pi'], stdin=PIPE)
             p.communicate(input=txt)
         except:
@@ -213,11 +194,10 @@ def get_plugin_params():
 
 
 def keyboard(text):
-    keyboard = xbmc.Keyboard("", text, False)
-    keyboard.doModal()
-    if keyboard.isConfirmed():
-        return keyboard.getText()
-    return None
+    keyboard_ = xbmc.Keyboard("", text, False)
+    keyboard_.doModal()
+    if keyboard_.isConfirmed():
+        return keyboard_.getText()
 
 
 def closeAllDialogs():
@@ -241,9 +221,11 @@ def notify(text):
 
 
 def multiselect_dialog(title, _list):
-    if isinstance(_list, list):
-        return xbmcgui.Dialog().multiselect(title, _list)
-    return None
+    return xbmcgui.Dialog().multiselect(title, _list)
+
+
+def select_dialog(title, dialog_list):
+    return xbmcgui.Dialog().select(title, dialog_list)
 
 
 def clear_settings(dialog):
@@ -279,8 +261,7 @@ def _get_view_type(viewType):
     return viewTypes[viewType]
 
 
-def make_listitem(name, labels):
-    li = xbmcgui.ListItem(name)
+def update_listitem(li, labels):
     cast2 = labels.pop('cast2') if isinstance(labels, dict) and 'cast2' in labels.keys() else []
     if _kodiver > 19.8 and isinstance(labels, dict):
         vtag = li.getVideoInfoTag()
@@ -318,67 +299,68 @@ def make_listitem(name, labels):
             vtag.setFirstAired(labels['aired'])
         if labels.get('playcount'):
             vtag.setPlaycount(labels['playcount'])
-
         if cast2:
             cast2 = [xbmc.Actor(p['name'], p['role'], cast2.index(p), p['thumbnail']) for p in cast2]
             vtag.setCast(cast2)
-
     else:
         li.setInfo(type='Video', infoLabels=labels)
         if cast2:
             li.setCast(cast2)
+    return
+
+
+def make_listitem(name, labels):
+    li = xbmcgui.ListItem(name)
+    update_listitem(li, labels)
     return li
 
 
-def xbmc_add_player_item(name, url, art={}, info={}, draw_cm=None, bulk_add=False):
+def xbmc_add_player_item(name, url, art=None, info=None, draw_cm=None, bulk_add=False):
     u = addon_url(url)
+    if art is None or type(art) is not dict:
+        art = {}
+    if info is None or type(info) is not dict:
+        info = {}
     cm = []
     if draw_cm is not None:
         if isinstance(draw_cm, list):
-            for draw in draw_cm:
-                cm.append((draw[0], 'RunPlugin(plugin://{0}/{1}/{2})'.format(ADDON_ID, draw[1], url)))
+            cm = [(x[0], 'RunPlugin(plugin://{0}/{1}/{2})'.format(ADDON_ID, x[1], url)) for x in draw_cm]
 
     liz = make_listitem(name, info)
 
-    if art is None or type(art) is not dict:
-        art = {}
-
     if art.get('fanart') is None:
         art['fanart'] = OTAKU_FANART_PATH
+    if art.get('thumb') is not None:
+        art['poster'] == art['thumb']
 
     liz.setArt(art)
     liz.setProperty("Video", "true")
     liz.setProperty("IsPlayable", "true")
-    liz.addContextMenuItems(cm)
-    if bulk_add:
-        return u, liz, False
-    else:
-        return xbmcplugin.addDirectoryItem(handle=HANDLE, url=u, listitem=liz, isFolder=False)
+    if cm:
+        liz.addContextMenuItems(cm)
+
+    return u, liz, False if bulk_add else xbmcplugin.addDirectoryItem(handle=HANDLE, url=u, listitem=liz, isFolder=False)
 
 
-def xbmc_add_dir(name, url, art={}, info={}, draw_cm=[]):
+def xbmc_add_dir(name, url, art=None, info=None, draw_cm=None):
     u = addon_url(url)
-    # cm = [('Trakt Meta Correction', 'RunPlugin(plugin://{0}/trakt_correction/{1})'.format(ADDON_ID, url))]
+    if art is None or type(art) is not dict:
+        art = {}
+    if info is None or type(info) is not dict:
+        info = {}
     cm = []
     if draw_cm is not None:
         if isinstance(draw_cm, list):
-            for draw in draw_cm:
-                cm.append((draw[0], 'RunPlugin(plugin://{0}/{1}/{2})'.format(ADDON_ID, draw[1], url)))
-    else:
-        if watchlist_enabled():
-            cm.append(('Add to Watchlist', 'RunPlugin(plugin://{0}/add_to_watchlist/{1})'.format(ADDON_ID, url)))
-            cm.append(('Mark as Completed', 'RunPlugin(plugin://{0}/add_to_completed_watchlist/{1})'.format(ADDON_ID, url)))
+            cm = [(x[0], 'RunPlugin(plugin://{0}/{1}/{2})'.format(ADDON_ID, x[1], url)) for x in draw_cm]
 
     liz = make_listitem(name, info)
-
-    if art is None or type(art) is not dict:
-        art = {}
 
     if art.get('fanart') is None:
         art['fanart'] = OTAKU_FANART_PATH
 
     liz.setArt(art)
-    liz.addContextMenuItems(cm)
+    if cm:
+        liz.addContextMenuItems(cm)
 
     return xbmcplugin.addDirectoryItem(handle=HANDLE, url=u, listitem=liz, isFolder=True)
 
@@ -390,11 +372,11 @@ def draw_items(video_data, contentType="tvshows", viewType=None, draw_cm=[], bul
 
     if not isinstance(video_data, list):
         video_data = [video_data]
-    if not draw_cm and contentType == 'tvshows' and watchlist_enabled():
-        draw_cm.append(('Add to Watchlist', 'add_to_watchlist'))
-        draw_cm.append(('Mark as Completed', 'add_to_completed_watchlist'))
     if getSetting('context.delete.from.database') == 'true' and contentType == 'tvshows':
         draw_cm.append(("Delete from database", 'delete_anime_from_database'))
+    if getSetting('watchlist.update.enabled') == 'true':
+        if getSetting('context.marked.watched') == 'true' and contentType == 'episodes':
+            draw_cm.append(("Marked as Watched [COLOR blue]WatchList[/COLOR]", 'marked_as_watched'))
 
     for vid in video_data:
         if vid['is_dir']:
@@ -411,7 +393,6 @@ def draw_items(video_data, contentType="tvshows", viewType=None, draw_cm=[], bul
     if viewType:
         xbmc.executebuiltin('Container.SetViewMode(%d)' % _get_view_type(viewType))
 
-    # move to episode position currently watching
     if contentType == "episodes" and getSetting('general.smartscroll') == 'true':
         sleep(int(getSetting('general.smartscroll.wait.time')))
         try:
@@ -446,6 +427,15 @@ def artPath():
             'art',
             'themes',
             THEMES[int(getSetting("general.icons"))]
+        )
+
+
+def genrePath():
+    if condVisibility('System.HasAddon(script.otaku.themepak)'):
+        return os.path.join(
+            xbmcaddon.Addon('script.otaku.themepak').getAddonInfo('path'),
+            'art',
+            'genres'
         )
 
 
@@ -546,6 +536,11 @@ def getGlobalProp(property):
         return value
 
 
+def format_string(string, format_):
+    # format_ = B, I
+    return '[{0}]{1}[/{0}]'.format(format_, string)
+
+
 def title_lang(title_key):
     title_lang_dict = {
         "40370": "userPreferred",
@@ -556,9 +551,9 @@ def title_lang(title_key):
     return title_lang_dict[title_key]
 
 
-#             ## for testing ###
-# def print(string, *args):
-#     for i in list(args):
-#         string = f'{string} {i}'
-#     textviewer_dialog('print', f'{string}')
-#     del args, string
+# ### for testing ###
+def _print(string, *args):
+    for i in list(args):
+        string += ' {0}'.format(i)
+    textviewer_dialog('print', string)
+    del args, string

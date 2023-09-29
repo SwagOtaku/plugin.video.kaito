@@ -3,7 +3,7 @@ import pickle
 
 from functools import partial
 
-from resources.lib.ui import client, database, utils, control
+from resources.lib.ui import client, control, database, utils
 
 
 class ENIMEAPI:
@@ -142,7 +142,6 @@ class ENIMEAPI:
         poster = kodi_meta.get('poster')
         eps_watched = kodi_meta.get('eps_watched')
         title_userpreferred = kodi_meta['title_userPreferred']
-
 
         episodes = database.get_episode_list(int(anilist_id))
         title_disable = control.getSetting('general.spoilers') == 'true'

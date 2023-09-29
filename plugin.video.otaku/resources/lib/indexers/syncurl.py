@@ -1,6 +1,6 @@
 import json
 
-from resources.lib.ui import client
+from resources.lib.ui import client, database
 
 
 class SyncUrl:
@@ -9,9 +9,10 @@ class SyncUrl:
     def get_anime_data(self, anime_id, anime_id_provider):
         params = {
             'id': anime_id,
-            'provider': anime_id_provider
+            'provider': anime_id_provider,
+            'includeAdult': 'true'
         }
-        r = client.request(self.BaseURL, params=params)
+        r = database.get(client.request, 2, self.BaseURL, params=params)
         if r:
             res = json.loads(r)
             return res

@@ -160,7 +160,7 @@ class Sources(DisplayWindow):
             i.start()
 
         timeout = 60 if rescrape else int(control.getSetting('general.timeout'))
-        start_time = time.perf_counter()
+        start_time = time.perf_counter() if control.PY3 else time.time()
         runtime = 0
 
         while runtime < timeout:
@@ -190,7 +190,7 @@ class Sources(DisplayWindow):
 
             # Update Progress
             time.sleep(.5)
-            runtime = time.perf_counter() - start_time
+            runtime = (time.perf_counter() if control.PY3 else time.time()) - start_time
             self.progress = runtime / timeout * 100
 
         if len(self.torrentCacheSources) + len(self.embedSources) + len(self.cloud_files) == 0:

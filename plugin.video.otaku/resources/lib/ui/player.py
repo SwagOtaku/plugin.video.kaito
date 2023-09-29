@@ -5,10 +5,7 @@ from resources.lib.ui import client, control, utils, database
 from six.moves import urllib_parse
 from resources.lib.indexers import aniskip
 
-try:
-    HANDLE = int(sys.argv[1])
-except:
-    HANDLE = '1'
+HANDLE = control.HANDLE
 
 playList = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
 player = xbmc.Player
@@ -51,6 +48,7 @@ class watchlistPlayer(xbmc.Player):
         self.current_time = 0
         self.updated = False
         self.media_type = None
+        self.update_percent = int(control.getSetting('watchlist.update.percent'))
         # self.AVStarted = False
 
         self.total_time = None
@@ -68,10 +66,7 @@ class watchlistPlayer(xbmc.Player):
 
     def handle_player(self, anilist_id, watchlist_update, build_playlist, episode, filter_lang):
         self._anilist_id = anilist_id
-
-        if watchlist_update:
-            self._watchlist_update = watchlist_update(anilist_id, episode)
-
+        self._watchlist_update = watchlist_update
         self._build_playlist = build_playlist
         self._episode = episode
         self._filter_lang = filter_lang
@@ -136,49 +131,23 @@ class watchlistPlayer(xbmc.Player):
         sys.exit(1)
 
     def getWatchedPercent(self):
-        try:
-            current_position = self.getTime()
-        except:
-            current_position = self.current_time
-
+        current_position = self.getTime()
         media_length = self.getTotalTime()
-        watched_percent = 0
-
-        if int(media_length) != 0:
-            watched_percent = float(current_position) / float(media_length) * 100
-
-        return watched_percent
+        return float(current_position) / float(media_length) * 100 if int(media_length) != 0 else 0
 
     def onWatchedPercent(self):
         if not self._watchlist_update:
             return
 
         while self.isPlaying() and not self.updated:
-            try:
-                watched_percentage = self.getWatchedPercent()
+            watched_percentage = self.getWatchedPercent()
+            self.current_time = self.getTime()
 
-                try:
-                    self.current_time = self.getTime()
-
-                except:
-                    import traceback
-                    traceback.print_exc()
-
-                if watched_percentage > 80:
-                    self._watchlist_update()
-                    self.updated = True
-                    break
-
-            except:
-                import traceback
-                traceback.print_exc()
-                xbmc.sleep(5000)
-                continue
-
+            if watched_percentage > self.update_percent:
+                self._watchlist_update(self._anilist_id, self._episode)
+                self.updated = True
+                break
             xbmc.sleep(5000)
-
-        else:
-            return
 
     def keepAlive(self):
         for i in range(0, 480):
@@ -521,7 +490,7 @@ def _prefetch_play_link(link):
     }
 
 
-def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=None, episode=None, filter_lang=None, rescrape=False, source_select=False, subs=[]):
+def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=None, episode=None, filter_lang=None, rescrape=False, source_select=False, subs=None):
     try:
         if isinstance(link, tuple):
             link, subs = link
@@ -533,8 +502,11 @@ def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=Non
         cancelPlayback()
         control.ok_dialog('Otaku', str(e))
         return
+    if subs is None:
+        subs = []
 
     item = xbmcgui.ListItem(path=linkInfo['url'])
+
     if subs:
         utils.del_subs()
         subtitles = []
@@ -544,17 +516,22 @@ def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=Non
             subtitles = [utils.get_sub(x.get('url'), x.get('lang')) for x in subs if 'english' in x.get('lang').lower()]
         item.setSubtitles(subtitles)
 
-    if rescrape or source_select:
-        episode_info = build_playlist(anilist_id, '', filter_lang, source_select=source_select, rescrape=rescrape)[episode - 1]
-        item.setInfo('video', infoLabels=episode_info['info'])
-        item.setArt(episode_info['image'])
-
     if 'Content-Type' in linkInfo['headers'].keys():
         item.setProperty('MimeType', linkInfo['headers']['Content-Type'])
         # Run any mimetype hook
         item = hook_mimetype.trigger(linkInfo['headers']['Content-Type'], item)
 
-    xbmcplugin.setResolvedUrl(HANDLE, True, item)
+    if rescrape or source_select:
+        control.playList.add(linkInfo['url'], item)
+        playlist_info = build_playlist(anilist_id, episode, filter_lang)
+        episode_info = playlist_info[episode - 1]
+        control.update_listitem(item, episode_info['info'])
+        item.setArt(episode_info['image'])
+        xbmc.Player().play(control.playList, item)
+        watchlistPlayer().handle_player(anilist_id, watchlist_update, None, episode, filter_lang)
+        return
+
+    xbmcplugin.setResolvedUrl(control.HANDLE, True, item)
     watchlistPlayer().handle_player(anilist_id, watchlist_update, build_playlist, episode, filter_lang)
 
 

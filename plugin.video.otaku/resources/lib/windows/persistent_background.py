@@ -1,4 +1,3 @@
-
 from resources.lib.ui import control
 from resources.lib.base_window import BaseWindow
 

@@ -8,9 +8,9 @@
 		<setting id="general.searchhistory" type="labelenum" label="40301" values="Yes|No" default="Yes"/>
 		<setting id="general.showchangelog" type="labelenum" label="40426" values="Yes|No" default="Yes"/>
 		<setting id="changelog.clean_cache" type="bool" label="40488" default="true"/>
-		<setting id="general.smartscroll" type="bool" label="40483" default="False" />
+		<setting id="general.smartscroll" type="bool" label="40483" default="false" />
 		<setting id="general.smartscroll.wait.time" type="slider" label="40487" default="500" range="10,100,2000" option="int" visible="eq(-1,true)" />
-		<setting id="general.spoilers" type="bool" label="40486" default="False" />
+		<setting id="general.spoilers" type="bool" label="40486" default="false" />
 
 		<!-- Content Customization -->
 		<setting type="lsep" label="40302"/>
@@ -29,8 +29,12 @@
 		<setting id="sep"/>
 		<setting id="perpage.bool" label="40466" type="bool" default="false"/>
 		<setting id="perpage.menu" type="slider" subsetting="true" label="40467" range="5,5,50" default="20" option="int" visible="eq(-1,true)"/>
+
+		<!-- Context Menu Customization -->
+		<setting type="lsep" label="40512"/>
 		<setting id="sep"/>
 		<setting id="context.delete.from.database" type="bool" label="40501" default="false" />
+		<setting id="context.marked.watched" label="40513" type="bool" default="true" />
 
 		<!-- Artwork Customization -->
 		<setting type="lsep" label="40484"/>
@@ -142,7 +146,7 @@
 		<setting type="sep" />
 		<!-- Manual File Selection -->
 		<setting type="lsep" label="40481"/>
-		<setting id="general.selection" type="bool" label="40482" default="false" />
+		<setting id="general.manual.select" type="bool" label="40482" default="false" />
 		<!-- Source Sorting -->
 		<setting type="lsep" label="40331"/>
 		<setting id="general.sortsources" type="enum" label="40332" values="Torrents|Embeds" default="0" />
@@ -201,7 +205,9 @@
 		<setting type="lsep" label="40300"/>
 		<setting id="sep"/>
 		<setting id="watchlist.update.enabled" label="40346" type="bool" default="false"/>
-		<setting id="watchlist.update.flavor" type="labelenum" subsetting="true" label="40347" values="MAL|Kitsu|AniList" default="MAL" visible="eq(-1,true)"/>
+		<setting id="watchlist.update.flavor" type="labelenum" subsetting="true" label="40347" values="MAL|Kitsu|AniList|Simkl" default="MAL" visible="eq(-1,true)"/>
+		<setting id="watchlist.update.percent" type="slider" subsetting="true" label="40514" default="80" range="70,90" option="int" visible="eq(-2,true)"/>
+		<setting type="text" label="40515" visible="eq(-3,true)"/>
 
 		<!-- Anilist -->
 		<setting type="lsep" label="40348"/>
@@ -239,6 +245,15 @@
 		<setting id="mal.refresh" type="text"  default="" visible="false"/>
 		<setting id="mal.password" type="text"  default="" visible="false"/>
 		<setting id="mal.titles" type="text"  default="" visible="false"/>
+
+		<!-- Simkl -->
+		<setting type="lsep" label="40510"/>
+		<setting id="simkl.enabled" label="40511" type="bool" default="false"/>
+		<setting id="simkl.username" type="text" subsetting="true" label="40350" default="" enable="false" visible="eq(-1,true)"/>
+		<setting id="simkl.login" type="action" subsetting="true" label="40352" option="close" action="RunPlugin(plugin://plugin.video.otaku/watchlist_login/simkl)" visible="eq(-2,true)"/>
+		<setting id="simkl.sort" type="labelenum" subsetting="true" label="40354" values="Last Updated|Anime Title|User Rating" default="Last Updated" visible="eq(-3,true)"/>
+		<setting id="simkl.unaired" type="bool" label="Show Unaired Episodes" default="false" visible="eq(-4,true)"/>
+
 	</category>
 
 	<!-- Main Menu Customization -->
@@ -256,7 +271,7 @@
 		<setting id="completed" label="50007" type="bool" default="true"/>
 		<setting id="upcoming" label="50008" type="bool" default="true"/>
 		<setting id="anilist_top_100_anime" label="50009" type="bool" default="true"/>
-		<setting id="anilist_genres" label="50010" type="bool" default="true" visible="false"/>
+		<setting id="genres" label="50010" type="bool" default="true" visible="false"/>
 		<setting id="anilist_search" label="50011" type="bool" default="true" visible="false"/>
 		<setting id="tools" label="50012" type="bool" default="true"/>
 
@@ -271,7 +286,7 @@
 		<setting id="completed_movie" label="50007" type="bool" default="true"/>
 		<setting id="upcoming_movie" label="50008" type="bool" default="true"/>
 		<setting id="anilist_top_100_anime_movie" label="50009" type="bool" default="true"/>
-		<setting id="anilist_genres_movie" label="50010" type="bool" default="true" visible="false"/>
+		<setting id="genres_movie" label="50010" type="bool" default="true" visible="false"/>
 		<setting id="search_history_movie" label="50011" type="bool" default="true" visible="false"/>
 
 		<!-- TV Show Menu Items -->
@@ -285,7 +300,7 @@
 		<setting id="completed_tv" label="50007" type="bool" default="true"/>
 		<setting id="upcoming_tv" label="50008" type="bool" default="true"/>
 		<setting id="anilist_top_100_anime_tv" label="50009" type="bool" default="true"/>
-		<setting id="anilist_genres_tv" label="50010" type="bool" default="true" visible="false"/>
+		<setting id="genres_tv" label="50010" type="bool" default="true" visible="false"/>
 		<setting id="search_history_tv" label="50011" type="bool" default="true" visible="false"/>
 	</category>
 
@@ -426,6 +441,81 @@
 		<setting id="anilist_upcoming_this_season_upcoming_tv" label="50033" type="bool" default="true"/>
 		<setting id="anilist_upcoming_next_season_upcoming_tv" label="50034" type="bool" default="true"/>
 	</category>	
+
+	<!-- Genre Menu Customization -->
+	<category label="50093">
+		<!-- Main Menu - Genre Items -->	
+		<setting type="lsep" label="50094"/>
+		<setting id="sep"/>			
+		<setting id="anilist_genres" label="50073" type="bool" default="true"/>
+		<setting id="anilist_genre_action" label="50074" type="bool" default="true"/>
+		<setting id="anilist_genre_adventure" label="50075" type="bool" default="true"/>
+		<setting id="anilist_genre_comedy" label="50076" type="bool" default="true"/>
+		<setting id="anilist_genre_drama" label="50077" type="bool" default="true"/>
+		<setting id="anilist_genre_ecchi" label="50078" type="bool" default="true"/>
+		<setting id="anilist_genre_fantasy" label="50079" type="bool" default="true"/>
+		<setting id="anilist_genre_hentai" label="50080" type="bool" default="false"/>
+		<setting id="anilist_genre_horror" label="50081" type="bool" default="true"/>
+		<setting id="anilist_genre_shoujo" label="50082" type="bool" default="true"/>
+		<setting id="anilist_genre_mecha" label="50083" type="bool" default="true"/>
+		<setting id="anilist_genre_music" label="50084" type="bool" default="true"/>
+		<setting id="anilist_genre_mystery" label="50085" type="bool" default="true"/>
+		<setting id="anilist_genre_psychological" label="50086" type="bool" default="true"/>
+		<setting id="anilist_genre_romance" label="50087" type="bool" default="true"/>
+		<setting id="anilist_genre_sci_fi" label="50088" type="bool" default="true"/>
+		<setting id="anilist_genre_slice_of_life" label="50089" type="bool" default="true"/>
+		<setting id="anilist_genre_sports" label="50090" type="bool" default="true"/>
+		<setting id="anilist_genre_supernatural" label="50091" type="bool" default="true"/>
+		<setting id="anilist_genre_thriller" label="50092" type="bool" default="true"/>
+
+		<!-- Movies - Genre Items -->	
+		<setting type="lsep" label="50095"/>
+		<setting id="sep"/>			
+		<setting id="anilist_genres_movie" label="50073" type="bool" default="true"/>
+		<setting id="anilist_genre_action_movie" label="50074" type="bool" default="true"/>
+		<setting id="anilist_genre_adventure_movie" label="50075" type="bool" default="true"/>
+		<setting id="anilist_genre_comedy_movie" label="50076" type="bool" default="true"/>
+		<setting id="anilist_genre_drama_movie" label="50077" type="bool" default="true"/>
+		<setting id="anilist_genre_ecchi_movie" label="50078" type="bool" default="true"/>
+		<setting id="anilist_genre_fantasy_movie" label="50079" type="bool" default="true"/>
+		<setting id="anilist_genre_hentai_movie" label="50080" type="bool" default="false"/>
+		<setting id="anilist_genre_horror_movie" label="50081" type="bool" default="true"/>
+		<setting id="anilist_genre_shoujo_movie" label="50082" type="bool" default="true"/>
+		<setting id="anilist_genre_mecha_movie" label="50083" type="bool" default="true"/>
+		<setting id="anilist_genre_music_movie" label="50084" type="bool" default="true"/>
+		<setting id="anilist_genre_mystery_movie" label="50085" type="bool" default="true"/>
+		<setting id="anilist_genre_psychological_movie" label="50086" type="bool" default="true"/>
+		<setting id="anilist_genre_romance_movie" label="50087" type="bool" default="true"/>
+		<setting id="anilist_genre_sci_fi_movie" label="50088" type="bool" default="true"/>
+		<setting id="anilist_genre_slice_of_life_movie" label="50089" type="bool" default="true"/>
+		<setting id="anilist_genre_sports_movie" label="50090" type="bool" default="true"/>
+		<setting id="anilist_genre_supernatural_movie" label="50091" type="bool" default="true"/>
+		<setting id="anilist_genre_thriller_movie" label="50092" type="bool" default="true"/>
+
+		<!-- TV Shows - Genre Items -->	
+		<setting type="lsep" label="50096"/>
+		<setting id="sep"/>			
+		<setting id="anilist_genres_tv" label="50073" type="bool" default="true"/>
+		<setting id="anilist_genre_action_tv" label="50074" type="bool" default="true"/>
+		<setting id="anilist_genre_adventure_tv" label="50075" type="bool" default="true"/>
+		<setting id="anilist_genre_comedy_tv" label="50076" type="bool" default="true"/>
+		<setting id="anilist_genre_drama_tv" label="50077" type="bool" default="true"/>
+		<setting id="anilist_genre_ecchi_tv" label="50078" type="bool" default="true"/>
+		<setting id="anilist_genre_fantasy_tv" label="50079" type="bool" default="true"/>
+		<setting id="anilist_genre_hentai_tv" label="50080" type="bool" default="false"/>
+		<setting id="anilist_genre_horror_tv" label="50081" type="bool" default="true"/>
+		<setting id="anilist_genre_shoujo_tv" label="50082" type="bool" default="true"/>
+		<setting id="anilist_genre_mecha_tv" label="50083" type="bool" default="true"/>
+		<setting id="anilist_genre_music_tv" label="50084" type="bool" default="true"/>
+		<setting id="anilist_genre_mystery_tv" label="50085" type="bool" default="true"/>
+		<setting id="anilist_genre_psychological_tv" label="50086" type="bool" default="true"/>
+		<setting id="anilist_genre_romance_tv" label="50087" type="bool" default="true"/>
+		<setting id="anilist_genre_sci_fi_tv" label="50088" type="bool" default="true"/>
+		<setting id="anilist_genre_slice_of_life_tv" label="50089" type="bool" default="true"/>
+		<setting id="anilist_genre_sports_tv" label="50090" type="bool" default="true"/>
+		<setting id="anilist_genre_supernatural_tv" label="50091" type="bool" default="true"/>
+		<setting id="anilist_genre_thriller_tv" label="50092" type="bool" default="true"/>
+	</category>
 
 	<!-- Shortcuts -->
 	<category label="40416">

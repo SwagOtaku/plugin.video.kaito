@@ -119,7 +119,7 @@ class CONSUMETAPI:
 
         return parsed
 
-    def _process_episodes(self, anilist_id, episodes, eps_watched, title_disable=False):
+    def process_episodes(self, anilist_id, episodes, eps_watched, title_disable=False):
         mapfunc = partial(self._parse_episodes, show_id=anilist_id, eps_watched=eps_watched, title_disable=title_disable)
         all_results = list(map(mapfunc, episodes))
 
@@ -145,7 +145,7 @@ class CONSUMETAPI:
         title_disable = control.getSetting('general.spoilers') == 'true'
 
         if episodes:
-            return self._process_episodes(anilist_id, episodes, eps_watched, title_disable), 'episodes'
+            return self.process_episodes(anilist_id, episodes, eps_watched, title_disable), 'episodes'
 
         return self._process_episode_view(anilist_id, meta_ids, poster, fanart, eps_watched, title_disable), 'episodes'
 
