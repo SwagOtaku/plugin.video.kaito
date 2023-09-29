@@ -1,9 +1,14 @@
-Now Icon Packs:
-Hey everyone, i know its a bit late but we just updated to version 0.4.0 recently and we want to give you icons packs for Otaku.
+A Major Update: Watchlist Recode
+Warning - Favorites From Watchlist will not work.
+Warning - Make sure to Rebuild Database
+Hey everyone, sorry its been while and we have been super busy making this update and we have finally completed it. We have recoded the whole watchlist and added simkl watchlist so that users will have a much better experience with it. We added a watchlist manager where you can manage all your watchlist easily without going to the website. It will be a lot less buggy and very stable for everyone. This is all thanks to the Simkl Team, Otaku Team, Anify Team, and Our Contributors. Special Thanks to Joezito for doing the whole recode and Special Thanks for Gujal for converting his code to be fully compatable with Python 2. 
 
-Summary:
-- Added ColouredV2 which removes the Otaku Word.
-- Added WhiteV2 which also removes the Otaku Word.
-- Added Exodus Icons for people who remember Exodus.
-- Added Seren Icons for people who think this addon is very similar to Seren.
-- Readded Otaku Themepak, Reason why was cause we update Otaku very often. This was also giving bugs for Linux.
+Here is a little summary of what we did this month:
+- Recoded Watchlist
+- Added a Watchlist Manger
+- Added Simkl Watchlist
+- Improved Episode Meta
+- Improved and gave Genres a new look
+- Added 2 New Settings and Customization
+- Added Support for Subtitle Addons
+- Most Bug Fixes

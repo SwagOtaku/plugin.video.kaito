@@ -1,3 +1,30 @@
+Changelog 0.4.24 [20230928]:
+- Fixed Episode Meta Bug
+- Fixed Menu Submenu Customization Bugs
+- Fixed Genre Widget Menu Bug
+- Fixed All Context Menus for Watchlist
+- Fixed Amount of Items in Watchlist
+- Fixed Watch Indicators in Watchlist
+- Fixed Anilist Watchlist
+- Fixed Mal Watchlist
+- Fixed Kitsu Watchlist
+- Added Simkl Watchlist
+- Added New Setting "Set Percentage to Mark as Watched"
+- Added New Setting "Show Mark as Watched Watchlist Context Menu"
+- Added "Marked as Watched Watchlist"
+- Added Watchlist Manager Context Menu
+- Added "Add to Current" For Watchlist Manager
+- Added "Add to Planning" For Watchlist Manager
+- Added "Add to Completed" For Watchlist Manager
+- Added "Add to Rewatching" For Watchlist Manager
+- Added "Add to Paused" For Watchlist Manager
+- Added "Add to Dropped" For Watchlist Manager
+- Added "Set Score" For Watchlist Manager
+- Added "Delete" For Watchlist Manager
+- Added Support for Subtitle Addons
+- Added Main Genres 
+- Added Genre Menu Customization
+
 Changelog 0.4.23 [20230908]:
 - Fix Setting Defaults
 - Fix Subtitle Default
