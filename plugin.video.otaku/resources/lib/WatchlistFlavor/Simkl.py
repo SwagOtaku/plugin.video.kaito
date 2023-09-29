@@ -13,7 +13,7 @@ class SimklWLF(WatchlistFlavorBase):
     _NAME = 'simkl'
     _IMAGE = "simkl.png"
 
-    client_id = '5178a709b7942f1f5077b737b752eea0f6dee684d0e044fa5acee8822a0cbe9b'
+    client_id = '59dfdc579d244e1edf6f89874d521d37a69a95a1abd349910cb056a1872ba2c8'
 
     def __headers(self):
         headers = {
@@ -86,7 +86,7 @@ class SimklWLF(WatchlistFlavorBase):
             ("Currently Watching", "watching"),
             ("Completed", "completed"),
             ("On Hold", "hold"),
-            ("Dropped", "notinteresting"),
+            ("Dropped", "dropped"),
             ("Plan to Watch", "plantowatch"),
             ("All Anime", "ALL")
         ]
@@ -100,7 +100,7 @@ class SimklWLF(WatchlistFlavorBase):
             ("Add to Currently Watching", "watching"),
             ("Add to Completed", "completed"),
             ("Add to On Hold", "hold"),
-            ("Add to Dropped", "notinteresting"),
+            ("Add to Dropped", "dropped"),
             ("Add to Plan to Watch", "plantowatch"),
             ("Set Score", "set_score"),
             ("Delete", "DELETE")
