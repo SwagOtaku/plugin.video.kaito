@@ -39,8 +39,6 @@ If you guys are having problems with Otaku, please feel free to contact me or ta
 ## Todo List
 
 **_Function_**:
-- Watchlist: Automatically mark an anime as completed when the whole series is watched. 
-- Watchlist: Want to do a full recode on it sense its very confusing to understand. 
 - Tmdb Helper Player: Want to add an Otaku Player for Tmdb Helper. (I found ways to get the Anilist ID)
 	- Api Documentation: https://tmdb2anilist.slidemovies.org/
 	- Api TV Shows Example: `https://tmdb2anilist.slidemovies.org/tv/?id=TMDB_ID&s=SEASON`
