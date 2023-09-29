@@ -1,3 +1,8 @@
+Changelog 0.4.25 [20230929]:
+- Fix art poster typo error
+- Fix Rare Bugs for Watchlist
+- Made "simkl.unaired" a subsetting
+
 Changelog 0.4.24 [20230928]:
 - Fixed Episode Meta Bug
 - Fixed Menu Submenu Customization Bugs
