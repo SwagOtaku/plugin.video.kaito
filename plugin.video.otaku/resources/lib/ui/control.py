@@ -331,7 +331,7 @@ def xbmc_add_player_item(name, url, art=None, info=None, draw_cm=None, bulk_add=
     if art.get('fanart') is None:
         art['fanart'] = OTAKU_FANART_PATH
     if art.get('thumb') is not None:
-        art['poster'] = art['thumb']
+        art['poster'] == art['thumb']
 
     liz.setArt(art)
     liz.setProperty("Video", "true")
