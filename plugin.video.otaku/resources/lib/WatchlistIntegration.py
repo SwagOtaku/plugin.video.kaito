@@ -69,81 +69,126 @@ def WATCHLIST_TO_EP(payload, params):
 
 @route('watchlist_context/*')
 def CONTEXT_MENU(payload, params):
-    try:
-        payload_list = payload.rsplit('/')[1:]
-        if len(payload_list) == 5:
-            path, anilist_id, mal_id, kitsu_id, eps_watched = payload_list
-        else:
-            path, anilist_id, mal_id, kitsu_id = payload_list
-
-        if not anilist_id:
-            show = database.get_show_mal(mal_id)
-            if not show:
-                show = AniListBrowser().get_mal_to_anilist(mal_id)
-            anilist_id = show['anilist_id']
-        else:
-            show = database.get_show(anilist_id)
-            if not show:
-                show = AniListBrowser().get_anilist(anilist_id)
-        flavor = WatchlistFlavor.get_update_flavor()
-        actions = WatchlistFlavor.context_statuses()
-
-        kodi_meta = pickle.loads(show['kodi_meta'])
-        title = kodi_meta['title_userPreferred'] or kodi_meta['name']
-
-        context = control.select_dialog('{0} {1}'.format(title, control.colorString("(" + str(flavor.flavor_name).capitalize() + ")", "blue")), list(map(lambda x: x[0], actions)))
-        if context != -1:
-            heading = '{0} - ({1})'.format(control.ADDON_NAME, str(flavor.flavor_name).capitalize())
-            status = actions[context][1]
-            if status == 'DELETE':
-                yn_title = control.format_string(title, "I")
-                yn_flavor = control.format_string(flavor.flavor_name, "B")
-                yesno = control.yesno_dialog(
-                    heading,
-                    'Are you sure you want to delete {0} from {1}[CR][CR]Press YES to Continue:'.format(yn_title, yn_flavor)
-                )
-                if yesno:
-                    delete = delete_watchlist_anime(anilist_id)
-                    if delete:
-                        control.ok_dialog(heading, '{0}  was deleted from {1}'.format(yn_title, yn_flavor))
-                    else:
-                        control.ok_dialog(heading, 'Unable to delete from Watchlist')
-            elif status == 'set_score':
-                score_list = [
-                    "(10) Masterpiece",
-                    "(9) Great",
-                    "(8) Very Good",
-                    "(7) Good",
-                    "(6) Fine",
-                    "(5) Average",
-                    "(4) Bad",
-                    "(3) Very Bad",
-                    "(2) Horrible",
-                    "(1) Appalling",
-                    "(0) No Score"
-                ]
-                score = control.select_dialog('{0} ({1})'.format(title, str(flavor.flavor_name).capitalize()), score_list)
-                if score != -1:
-                    score = 10 - score
-                    set_score = set_watchlist_score(anilist_id, score)
-                    if set_score:
-                        control.ok_dialog(heading, '{0} was set to {1}'.format(control.format_string(title, "I"), control.format_string(score, "B")))
-                    else:
-                        control.ok_dialog(heading, 'Unable to Set Score')
-            else:
-                set_status = set_watchlist_status(anilist_id, status)
-                if set_status == 'watching':
-                    control.ok_dialog(
-                        heading,
-                        'This show is still airing, so we are keeping it in your "Watching" list and marked all aired episodes as watched.'
-                    )
-                elif set_status:
-                    control.ok_dialog(heading, '{0}  was added to {1}'.format(control.format_string(title, "I"), control.format_string(status, "B")))
-                else:
-                    control.ok_dialog(heading, 'Unable to Set Watchlist')
-    except AttributeError:
-        heading = "Error: Setting Not Enabled"
+    if control.getSetting('watchlist.update.enabled') == 'false':
+        heading = "Watchlist: Setting Not Enabled"
         control.ok_dialog(heading, 'Please toggle the "Update Watchlist" setting before using the Watchlist Manager')
+        return
+
+    if control.getSetting('watchlist.update.flavor') == 'AniList':
+        if control.getSetting('anilist.enabled') == "true":
+            if control.getSetting('anilist.username') == "":
+                heading = "AniList Watchlist: Not Logged in"
+                control.ok_dialog(heading, 'Your "Watchlist to Update" is set to Anilist but your AniList Watchlist is not logged in, please log into your Anilist Watchlist before using the Watchlist Manager')
+                return
+        else:
+            heading = "AniList Watchlist: Not Enabled"
+            control.ok_dialog(heading, 'Your "Watchlist to Update" is set to AniList but your AniList Watchlist is not enabled, please enable your AniList Watchlist before using the Watchlist Manager')
+            return
+
+    if control.getSetting('watchlist.update.flavor') == 'Kitsu':
+        if control.getSetting('kitsu.enabled') == "true":
+            if control.getSetting('kitsu.username') == "":
+                heading = "Kitsu Watchlist: Not Logged in"
+                control.ok_dialog(heading, 'Your "Watchlist to Update" is set to Kitsu but your Kitsu Watchlist is not logged in, please log into your Kitsu Watchlist before using the Watchlist Manager')
+                return
+        else:
+            heading = "Kitsu Watchlist: Not Enabled"
+            control.ok_dialog(heading, 'Your "Watchlist to Update" is set to Kitsu but your Kitsu Watchlist is not enabled, please enable your Kitsu Watchlist before using the Watchlist Manager')
+            return
+
+    if control.getSetting('watchlist.update.flavor') == 'MAL':
+        if control.getSetting('mal.enabled') == "true":
+            if control.getSetting('mal.username') == "":
+                heading = "MAL Watchlist: Not Logged in"
+                control.ok_dialog(heading, 'Your "Watchlist to Update" is set to MAL but your MAL Watchlist is not logged in, please log into your MAL Watchlist before using the Watchlist Manager')
+                return
+        else:
+            heading = "MAL Watchlist: Not Enabled"
+            control.ok_dialog(heading, 'Your "Watchlist to Update" is set to MAL but your MAL Watchlist is not enabled, please enable your MAL Watchlist before using the Watchlist Manager')
+            return
+
+    if control.getSetting('watchlist.update.flavor') == 'Simkl':
+        if control.getSetting('simkl.enabled') == "true":
+            if control.getSetting('simkl.username') == "":
+                heading = "Simkl Watchlist: Not Logged in"
+                control.ok_dialog(heading, 'Your "Watchlist to Update" is set to Simkl but your Simkl Watchlist is not logged in, please log into your Simkl Watchlist before using the Watchlist Manager')
+                return
+        else:
+            heading = "Simkl Watchlist: Not Enabled"
+            control.ok_dialog(heading, 'Your "Watchlist to Update" is set to Simkl but your Simkl Watchlist is not enabled, please enable your Simkl Watchlist before using the Watchlist Manager')
+            return
+
+    payload_list = payload.rsplit('/')[1:]
+    if len(payload_list) == 5:
+        path, anilist_id, mal_id, kitsu_id, eps_watched = payload_list
+    else:
+        path, anilist_id, mal_id, kitsu_id = payload_list
+
+    if not anilist_id:
+        show = database.get_show_mal(mal_id)
+        if not show:
+            show = AniListBrowser().get_mal_to_anilist(mal_id)
+        anilist_id = show['anilist_id']
+    else:
+        show = database.get_show(anilist_id)
+        if not show:
+            show = AniListBrowser().get_anilist(anilist_id)
+    flavor = WatchlistFlavor.get_update_flavor()
+    actions = WatchlistFlavor.context_statuses()
+
+    kodi_meta = pickle.loads(show['kodi_meta'])
+    title = kodi_meta['title_userPreferred'] or kodi_meta['name']
+
+    context = control.select_dialog('{0} {1}'.format(title, control.colorString("(" + str(flavor.flavor_name).capitalize() + ")", "blue")), list(map(lambda x: x[0], actions)))
+    if context != -1:
+        heading = '{0} - ({1})'.format(control.ADDON_NAME, str(flavor.flavor_name).capitalize())
+        status = actions[context][1]
+        if status == 'DELETE':
+            yn_title = control.format_string(title, "I")
+            yn_flavor = control.format_string(flavor.flavor_name, "B")
+            yesno = control.yesno_dialog(
+                heading,
+                'Are you sure you want to delete {0} from {1}[CR][CR]Press YES to Continue:'.format(yn_title, yn_flavor)
+            )
+            if yesno:
+                delete = delete_watchlist_anime(anilist_id)
+                if delete:
+                    control.ok_dialog(heading, '{0}  was deleted from {1}'.format(yn_title, yn_flavor))
+                else:
+                    control.ok_dialog(heading, 'Unable to delete from Watchlist')
+        elif status == 'set_score':
+            score_list = [
+                "(10) Masterpiece",
+                "(9) Great",
+                "(8) Very Good",
+                "(7) Good",
+                "(6) Fine",
+                "(5) Average",
+                "(4) Bad",
+                "(3) Very Bad",
+                "(2) Horrible",
+                "(1) Appalling",
+                "(0) No Score"
+            ]
+            score = control.select_dialog('{0} ({1})'.format(title, str(flavor.flavor_name).capitalize()), score_list)
+            if score != -1:
+                score = 10 - score
+                set_score = set_watchlist_score(anilist_id, score)
+                if set_score:
+                    control.ok_dialog(heading, '{0} was set to {1}'.format(control.format_string(title, "I"), control.format_string(score, "B")))
+                else:
+                    control.ok_dialog(heading, 'Unable to Set Score')
+        else:
+            set_status = set_watchlist_status(anilist_id, status)
+            if set_status == 'watching':
+                control.ok_dialog(
+                    heading,
+                    'This show is still airing, so we are keeping it in your "Watching" list and marked all aired episodes as watched.'
+                )
+            elif set_status:
+                control.ok_dialog(heading, '{0}  was added to {1}'.format(control.format_string(title, "I"), control.format_string(status, "B")))
+            else:
+                control.ok_dialog(heading, 'Unable to Set Watchlist')
 
 
 def add_watchlist(items):

@@ -252,8 +252,7 @@
 		<setting id="simkl.username" type="text" subsetting="true" label="40350" default="" enable="false" visible="eq(-1,true)"/>
 		<setting id="simkl.login" type="action" subsetting="true" label="40352" option="close" action="RunPlugin(plugin://plugin.video.otaku/watchlist_login/simkl)" visible="eq(-2,true)"/>
 		<setting id="simkl.sort" type="labelenum" subsetting="true" label="40354" values="Last Updated|Anime Title|User Rating" default="Last Updated" visible="eq(-3,true)"/>
-		<setting id="simkl.unaired" type="bool" label="Show Unaired Episodes" default="false" visible="eq(-4,true)"/>
-
+		<setting id="simkl.unaired" type="bool" subsetting="true" label="Show Unaired Episodes" default="false" visible="eq(-4,true)"/>
 	</category>
 
 	<!-- Main Menu Customization -->
