@@ -11,6 +11,7 @@
 		<setting id="general.smartscroll" type="bool" label="40483" default="false" />
 		<setting id="general.smartscroll.wait.time" type="slider" label="40487" default="500" range="10,100,2000" option="int" visible="eq(-1,true)" />
 		<setting id="general.spoilers" type="bool" label="40486" default="false" />
+		<setting id="general.unaired" type="bool" label="40516" default="false" />	
 
 		<!-- Content Customization -->
 		<setting type="lsep" label="40302"/>
@@ -252,7 +253,6 @@
 		<setting id="simkl.username" type="text" subsetting="true" label="40350" default="" enable="false" visible="eq(-1,true)"/>
 		<setting id="simkl.login" type="action" subsetting="true" label="40352" option="close" action="RunPlugin(plugin://plugin.video.otaku/watchlist_login/simkl)" visible="eq(-2,true)"/>
 		<setting id="simkl.sort" type="labelenum" subsetting="true" label="40354" values="Last Updated|Anime Title|User Rating" default="Last Updated" visible="eq(-3,true)"/>
-		<setting id="simkl.unaired" type="bool" subsetting="true" label="Show Unaired Episodes" default="false" visible="eq(-4,true)"/>
 	</category>
 
 	<!-- Main Menu Customization -->

@@ -12,6 +12,7 @@ class SIMKLAPI:
         self.ClientID = "59dfdc579d244e1edf6f89874d521d37a69a95a1abd349910cb056a1872ba2c8"
         self.baseUrl = "https://api.simkl.com/"
         self.imagePath = "https://wsrv.nl/?url=https://simkl.in/episodes/%s_w.webp"
+        self.disable_unaired = control.getSetting('general.unaired') == 'true'
 
     def _to_url(self, url=''):
         if url.startswith("/"):
@@ -68,7 +69,8 @@ class SIMKLAPI:
         return parsed
 
     def _process_episode_view(self, anilist_id, poster, fanart, eps_watched, tvshowtitle, filter_lang, title_disable):
-        from datetime import date
+        from datetime import date, datetime
+
         update_time = date.today().isoformat()
         result = database.get(self.get_anime_info, 6, anilist_id)
         result_ep = database.get(self.get_anilist_meta, 6, anilist_id)
@@ -84,25 +86,22 @@ class SIMKLAPI:
 
         result_ep = [x for x in result_ep if x['type'] == 'episode']
 
-        mapfunc = partial(self._parse_episode_view, anilist_id=anilist_id, season=season, poster=poster, fanart=fanart,
-                          eps_watched=eps_watched, filter_lang=filter_lang, update_time=update_time,
-                          tvshowtitle=tvshowtitle, title_disable=title_disable)
-        all_results = list(map(mapfunc, result_ep))
-
-        if len(all_results) == 0 or control.getSetting('simkl.unaired') == 'true':
-            total_ep = result.get('total_episodes', 0)
-            empty_ep = []
-            for ep in range(len(all_results) + 1, total_ep + 1):
-                empty_ep.append({
-                    # 'title': control.colorString('Episode %s' % ep, 'red'),
-                    'title': 'Episode %s' % ep,
-                    'episode': ep,
-                    'image': poster
-                })
-            mapfunc_emp = partial(self._parse_episode_view, anilist_id=anilist_id, season=season, poster=poster, fanart=fanart,
-                                  eps_watched=eps_watched, update_time=update_time, tvshowtitle=tvshowtitle, filter_lang=filter_lang,
-                                  title_disable=title_disable)
-            all_results += list(map(mapfunc_emp, empty_ep))
+        if self.disable_unaired:
+            all_results = []
+            for res in result_ep:
+                try:
+                    aired_date = datetime.strptime(res['date'], '%Y-%m-%d')
+                except:
+                    continue
+                if aired_date <= datetime.now():
+                    parsed = self._parse_episode_view(res, anilist_id, season, poster, fanart, eps_watched, update_time, tvshowtitle, filter_lang, title_disable)
+                    if parsed:
+                        all_results.append(parsed)
+        else:
+            mapfunc = partial(self._parse_episode_view, anilist_id=anilist_id, season=season, poster=poster, fanart=fanart,
+                              eps_watched=eps_watched, filter_lang=filter_lang, update_time=update_time,
+                              tvshowtitle=tvshowtitle, title_disable=title_disable)
+            all_results = list(map(mapfunc, result_ep))
 
         return all_results
 

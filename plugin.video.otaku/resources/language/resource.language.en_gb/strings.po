@@ -1051,6 +1051,10 @@ msgctxt "#40515"
 msgid "NOTE: Next up Dialog will not begin until this percentage is met"
 msgstr ""
 
+msgctxt "#40516"
+msgid "Hide Unaired Episodes"
+msgstr ""
+
 ######MAIN Category DIRECTORY#######
 msgctxt "#50000"
 msgid "Airing Anime Calendar"

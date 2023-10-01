@@ -69,54 +69,35 @@ def WATCHLIST_TO_EP(payload, params):
 
 @route('watchlist_context/*')
 def CONTEXT_MENU(payload, params):
-    if control.getSetting('watchlist.update.enabled') == 'false':
+    flavor_settings = {
+        'AniList': ('anilist.enabled', 'anilist.username'),
+        'Kitsu': ('kitsu.enabled', 'kitsu.username'),
+        'MAL': ('mal.enabled', 'mal.username'),
+        'Simkl': ('simkl.enabled', 'simkl.username')
+    }
+
+    update_enabled = control.getSetting('watchlist.update.enabled')
+    if update_enabled == 'false':
         heading = "Watchlist: Setting Not Enabled"
         control.ok_dialog(heading, 'Please toggle the "Update Watchlist" setting before using the Watchlist Manager')
         return
 
-    if control.getSetting('watchlist.update.flavor') == 'AniList':
-        if control.getSetting('anilist.enabled') == "true":
-            if control.getSetting('anilist.username') == "":
-                heading = "AniList Watchlist: Not Logged in"
-                control.ok_dialog(heading, 'Your "Watchlist to Update" is set to Anilist but your AniList Watchlist is not logged in, please log into your Anilist Watchlist before using the Watchlist Manager')
-                return
-        else:
-            heading = "AniList Watchlist: Not Enabled"
-            control.ok_dialog(heading, 'Your "Watchlist to Update" is set to AniList but your AniList Watchlist is not enabled, please enable your AniList Watchlist before using the Watchlist Manager')
-            return
+    flavor = control.getSetting('watchlist.update.flavor')
+    if flavor not in flavor_settings:
+        heading = "%s Watchlist: Not Supported" % flavor
+        control.ok_dialog(heading, 'Your "Watchlist to Update" is set to %s but this watchlist is not supported by the Watchlist Manager' % flavor)
+        return
 
-    if control.getSetting('watchlist.update.flavor') == 'Kitsu':
-        if control.getSetting('kitsu.enabled') == "true":
-            if control.getSetting('kitsu.username') == "":
-                heading = "Kitsu Watchlist: Not Logged in"
-                control.ok_dialog(heading, 'Your "Watchlist to Update" is set to Kitsu but your Kitsu Watchlist is not logged in, please log into your Kitsu Watchlist before using the Watchlist Manager')
-                return
-        else:
-            heading = "Kitsu Watchlist: Not Enabled"
-            control.ok_dialog(heading, 'Your "Watchlist to Update" is set to Kitsu but your Kitsu Watchlist is not enabled, please enable your Kitsu Watchlist before using the Watchlist Manager')
+    enabled_setting, username_setting = flavor_settings[flavor]
+    if control.getSetting(enabled_setting) == "true":
+        if control.getSetting(username_setting) == "":
+            heading = "%s Watchlist: Not Logged in" % flavor
+            control.ok_dialog(heading, 'Your "Watchlist to Update" is set to %s but your %s Watchlist is not logged in, please log into your %s Watchlist before using the Watchlist Manager' % (flavor, flavor, flavor))
             return
-
-    if control.getSetting('watchlist.update.flavor') == 'MAL':
-        if control.getSetting('mal.enabled') == "true":
-            if control.getSetting('mal.username') == "":
-                heading = "MAL Watchlist: Not Logged in"
-                control.ok_dialog(heading, 'Your "Watchlist to Update" is set to MAL but your MAL Watchlist is not logged in, please log into your MAL Watchlist before using the Watchlist Manager')
-                return
-        else:
-            heading = "MAL Watchlist: Not Enabled"
-            control.ok_dialog(heading, 'Your "Watchlist to Update" is set to MAL but your MAL Watchlist is not enabled, please enable your MAL Watchlist before using the Watchlist Manager')
-            return
-
-    if control.getSetting('watchlist.update.flavor') == 'Simkl':
-        if control.getSetting('simkl.enabled') == "true":
-            if control.getSetting('simkl.username') == "":
-                heading = "Simkl Watchlist: Not Logged in"
-                control.ok_dialog(heading, 'Your "Watchlist to Update" is set to Simkl but your Simkl Watchlist is not logged in, please log into your Simkl Watchlist before using the Watchlist Manager')
-                return
-        else:
-            heading = "Simkl Watchlist: Not Enabled"
-            control.ok_dialog(heading, 'Your "Watchlist to Update" is set to Simkl but your Simkl Watchlist is not enabled, please enable your Simkl Watchlist before using the Watchlist Manager')
-            return
+    else:
+        heading = "%s Watchlist: Not Enabled" % flavor
+        control.ok_dialog(heading, 'Your "Watchlist to Update" is set to %s but your %s Watchlist is not enabled, please enable your %s Watchlist before using the Watchlist Manager' % (flavor, flavor, flavor))
+        return
 
     payload_list = payload.rsplit('/')[1:]
     if len(payload_list) == 5:
