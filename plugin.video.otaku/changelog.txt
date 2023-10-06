@@ -1,3 +1,6 @@
+Changelog 0.4.31 [20231006]:
+- Fixed Anify 9anime Embed
+
 Changelog 0.4.30 [20231005]:
 - Fixed Artwork Bug with Episode Thumbnails
 - Fixed Anilist Watchlist with Current Stuff
