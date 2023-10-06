@@ -1,3 +1,7 @@
+Changelog 0.4.30 [20231005]:
+- Fixed Artwork Bug with Episode Thumbnails
+- Fixed Anilist Watchlist with Current Stuff
+
 Changelog 0.4.29 [20231001]:
 - Added New Setting "Hide Unaired Episodes"
 - Made Rare Bugs for Watchlist Smaller
