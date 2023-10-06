@@ -54,7 +54,7 @@ class ANIFYAPI:
                 params = {
                     'providerId': provider,
                     'watchId': eid[0],
-                    'episode': episode,
+                    'episodeNumber': episode,
                     'id': anilist_id,
                     'subType': lang
                 }
