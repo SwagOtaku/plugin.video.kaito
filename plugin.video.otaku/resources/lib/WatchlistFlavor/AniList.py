@@ -386,7 +386,7 @@ class AniListWLF(WatchlistFlavorBase):
             return {}
         anime_entry = {
             'eps_watched': results.get('progress'),
-            'status': results['status'].title(),
+            'status': results['status'],
             'score': results['score']
         }
 
