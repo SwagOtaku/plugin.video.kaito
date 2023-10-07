@@ -3,7 +3,6 @@ import threading
 from resources.lib.indexers.fanart import FANARTAPI
 from resources.lib.indexers.tmdb import TMDBAPI
 from resources.lib.indexers.trakt import TRAKTAPI
-from resources.lib.indexers.enime import ENIMEAPI
 from resources.lib.ui import database
 
 
@@ -28,13 +27,9 @@ def collect_meta(anime_list):
 
 
 def __get_meta(anilist_id, name, mtype='tv', year=''):
-    res = ENIMEAPI().get_anilist_mapping(anilist_id)
-    if isinstance(res, dict):
-        meta_ids = res.get('mappings')
-        if 'themoviedb' in meta_ids.keys() or 'thetvdb' in meta_ids.keys():
-            update_meta(anilist_id, meta_ids, mtype)
-        else:
-            __trakt_fallback(anilist_id, name, mtype=mtype, year=year)
+    meta_ids = database.get_mapping(anilist_id)
+    if 'themoviedb_id' in meta_ids.keys() or 'thetvdb_id' in meta_ids.keys():
+        update_meta(anilist_id, meta_ids, mtype)
     else:
         __trakt_fallback(anilist_id, name, mtype=mtype, year=year)
 

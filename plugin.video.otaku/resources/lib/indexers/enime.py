@@ -9,14 +9,16 @@ from resources.lib.ui import client, control, database, utils
 class ENIMEAPI:
     def __init__(self):
         self.baseUrl = 'https://api.enime.moe/'
+        # self.baseUrl = 'https://users-s-hpve.vercel.app/'
         self.episodesUrl = 'mapping/anilist/{0}'
         self.streamUrl = 'source/{0}'
 
     def _json_request(self, url):
-        url = self.baseUrl + url
-        response = client.request(url)
-        if response:
-            response = json.loads(response)
+        response = {}
+        # url = self.baseUrl + url
+        # response = client.request(url)
+        # if response:
+        #     response = json.loads(response)
         return response
 
     @staticmethod

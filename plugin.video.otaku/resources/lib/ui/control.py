@@ -25,6 +25,7 @@ LOGINFO = xbmc.LOGNOTICE if PY2 else xbmc.LOGINFO
 INPUT_ALPHANUM = xbmcgui.INPUT_ALPHANUM
 dataPath = TRANSLATEPATH(addonInfo('profile'))
 ADDON_PATH = __settings__.getAddonInfo('path')
+mappingPath = TRANSLATEPATH(xbmcaddon.Addon('script.otaku.mappings').getAddonInfo('path'))
 
 try:
     _kodiver = float(xbmcaddon.Addon('xbmc.addon').getAddonInfo('version')[:4])
@@ -42,6 +43,8 @@ searchHistoryMovieDB_lock = threading.Lock()
 searchHistoryTVDB_lock = threading.Lock()
 anilistSyncDB = os.path.join(dataPath, 'anilistSync.db')
 anilistSyncDB_lock = threading.Lock()
+mappingDB = os.path.join(mappingPath, 'resources', 'data', 'anime_mappings.db')
+mappingDB_lock = threading.Lock()
 torrentScrapeCacheFile = os.path.join(dataPath, 'torrentScrape.db')
 torrentScrapeCacheFile_lock = threading.Lock()
 

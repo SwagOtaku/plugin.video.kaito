@@ -2,7 +2,7 @@ import json
 import pickle
 
 from resources.lib import pages
-from resources.lib.indexers import simkl, consumet, enime
+from resources.lib.indexers import simkl
 from resources.lib.ui import client, control, database, utils
 from resources.lib.ui.BrowserBase import BrowserBase
 from resources.lib.AniListBrowser import AniListBrowser
@@ -97,8 +97,8 @@ class OtakuBrowser(BrowserBase):
         #         data = ([], 'episodes')
         # else:
         data = simkl.SIMKLAPI().get_episodes(anilist_id, filter_lang)
-        if not data[0]:
-            data = consumet.CONSUMETAPI().get_episodes(anilist_id, filter_lang)
+        # if not data[0]:
+        #     data = consumet.CONSUMETAPI().get_episodes(anilist_id, filter_lang)
         return data
 
     @staticmethod
@@ -117,18 +117,18 @@ class OtakuBrowser(BrowserBase):
             }
             items = [utils.allocate_item(title, 'null', info=info, poster=kodi_meta['poster'])]
 
-        else:
-            episodes = database.get_episode_list(anilist_id)
-            items = enime.ENIMEAPI()._process_episodes(episodes, '') if episodes else []
-            playlist = control.bulk_draw_items(items)[pass_idx:]
-            if len(playlist) > int(control.getSetting('general.playlist_length')):
-                playlist = playlist[:int(control.getSetting('general.playlist_length'))]
+        # else:
+        #     episodes = database.get_episode_list(anilist_id)
+        #     items = enime.ENIMEAPI()._process_episodes(episodes, '') if episodes else []
+        #     playlist = control.bulk_draw_items(items)[pass_idx:]
+        #     if len(playlist) > int(control.getSetting('general.playlist_length')):
+        #         playlist = playlist[:int(control.getSetting('general.playlist_length'))]
 
-            for i in playlist:
-                url = i[0]
-                if filter_lang:
-                    url += filter_lang
-                control.playList.add(url=url, listitem=i[1])
+        #     for i in playlist:
+        #         url = i[0]
+        #         if filter_lang:
+        #             url += filter_lang
+        #         control.playList.add(url=url, listitem=i[1])
         return items
 
     def get_sources(self, anilist_id, episode, filter_lang, media_type, rescrape=False, source_select=False):

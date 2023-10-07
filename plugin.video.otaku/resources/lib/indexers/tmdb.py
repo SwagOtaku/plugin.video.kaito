@@ -174,9 +174,9 @@ class TMDBAPI:
 
     def getArt(self, meta_ids, mtype):
         art = {}
-        mid = meta_ids.get('themoviedb') or meta_ids.get('tmdb')
+        mid = meta_ids.get('themoviedb_id') or meta_ids.get('tmdb')
         if mid is None:
-            tvdb = meta_ids.get('thetvdb') or meta_ids.get('tvdb')
+            tvdb = meta_ids.get('thetvdb_id') or meta_ids.get('tvdb')
             if tvdb:
                 url = 'find/{0}?external_source=tvdb_id'.format(tvdb)
                 res = self.get_request(url)

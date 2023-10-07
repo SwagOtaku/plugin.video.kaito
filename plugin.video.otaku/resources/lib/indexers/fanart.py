@@ -21,9 +21,9 @@ class FANARTAPI:
     def getArt(self, meta_ids, mtype='tv'):
         art = {}
         if mtype == 'movies':
-            mid = meta_ids.get('themoviedb') or meta_ids.get('tmdb')
+            mid = meta_ids.get('themoviedb_id') or meta_ids.get('tmdb')
         else:
-            mid = meta_ids.get('thetvdb') or meta_ids.get('tvdb')
+            mid = meta_ids.get('thetvdb_id') or meta_ids.get('tvdb')
 
         if mid:
             url = '{0}/{1}/{2}'.format(self.baseUrl, mtype, mid)

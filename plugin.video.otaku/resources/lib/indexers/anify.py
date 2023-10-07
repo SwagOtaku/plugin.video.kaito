@@ -32,6 +32,25 @@ class ANIFYAPI:
             data = json.loads(response[0])
         return data
 
+    def _parse_episode_view(self, res, show_id, show_meta, season, poster, fanart, eps_watched, update_time, title_disable):
+        return
+
+    def _process_episode_view(self, anilist_id, show_meta, poster, fanart, eps_watched, title_disable=False):
+        return
+
+    @staticmethod
+    def _parse_episodes(res, show_id, eps_watched, title_disable=False):
+        return
+
+    def process_episodes(self, anilist_id, episodes, eps_watched, title_disable=False):
+        return
+
+    def get_anilist_meta(self, anilist_id):
+        return
+
+    def get_episodes(self, anilist_id, filter_lang):
+        return
+
     def get_sources(self, anilist_id, episode, provider, lang=''):
         sources = []
         episodes = []

@@ -713,10 +713,10 @@ def CHANGE_LOG(payload, params):
     return control.getChangeLog()
 
 
-@route('consumet_inst')
-def CONSUMET_INST(payload, params):
-    from resources.lib.ui import control
-    return control.getInstructions()
+# @route('consumet_inst')
+# def CONSUMET_INST(payload, params):
+#     from resources.lib.ui import control
+#     return control.getInstructions()
 
 
 @route('animes/*')

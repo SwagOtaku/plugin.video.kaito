@@ -327,6 +327,29 @@ def _build_episode_table():
     control.try_release_lock(control.anilistSyncDB_lock)
 
 
+def get_mapping(anilist_id='', mal_id='', kitsu_id=''):
+    control.mappingDB_lock.acquire()
+    conn = db.connect(control.mappingDB, timeout=60.0)
+    conn.row_factory = _dict_factory
+    conn.execute("PRAGMA FOREIGN_KEYS = 1")
+    cursor = conn.cursor()
+    mapping = {}
+    id_type, id_val = '', ''
+    if anilist_id:
+        id_type, id_val = 'anilist_id', anilist_id
+    elif mal_id:
+        id_type, id_val = 'mal_id', mal_id
+    elif kitsu_id:
+        id_type, id_val = 'kitsu_id', kitsu_id
+    if id_type and id_val:
+        db_query = 'SELECT * FROM anime WHERE {0} IN ({1})'.format(id_type, id_val)
+        cursor.execute(db_query)
+        mapping = cursor.fetchone()
+        cursor.close()
+    control.try_release_lock(control.mappingDB_lock)
+    return mapping
+
+
 def _update_show(anilist_id, mal_id, kodi_meta, last_updated=''):
     control.anilistSyncDB_lock.acquire()
     cursor = _get_cursor()
