@@ -68,7 +68,7 @@ class sources(BrowserBase):
             'type': 'direct',
             'quality': quality,
             'debrid_provider': '',
-            'provider': '9anime',
+            'provider': 'Aniwave',
             'size': 'NA',
             'info': [item.get('type')],
             'lang': 0 if item.get('type') == 'SUB' else 2

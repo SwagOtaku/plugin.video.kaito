@@ -42,7 +42,7 @@ class Sources(DisplayWindow):
         self.hosterSources = []
         self.cloud_files = []
         self.remainingProviders = [
-            'nyaa', 'animetosho', '9anime', 'gogo', 'animix',
+            'nyaa', 'animetosho', 'Aniwave', 'gogo', 'animix',
             'animepahe', 'aniwatch', 'otakuanimes', 'animelatino'
         ]
         self.allTorrents = {}
@@ -121,7 +121,7 @@ class Sources(DisplayWindow):
             self.threads.append(
                 threading.Thread(target=self.nine_worker, args=(anilist_id, episode, get_backup, rescrape)))
         else:
-            self.remainingProviders.remove('9anime')
+            self.remainingProviders.remove('Aniwave')
 
         if control.getSetting('provider.animix') == 'true':
             self.threads.append(
@@ -224,7 +224,7 @@ class Sources(DisplayWindow):
         if not rescrape:
             self.nineSources = nineanime.sources().get_sources(anilist_id, episode, get_backup)
             self.embedSources += self.nineSources
-        self.remainingProviders.remove('9anime')
+        self.remainingProviders.remove('Aniwave')
 
     def animixplay_worker(self, anilist_id, episode, get_backup, rescrape):
         if not rescrape:
