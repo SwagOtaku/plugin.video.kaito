@@ -1,3 +1,7 @@
+Changelog 0.4.33 [20231008]:
+- Changed 9anime to Aniwave
+- Fixed Playlist Errors
+
 Changelog 0.4.32 [20231007]:
 - Added local anime_id mapping database
 
