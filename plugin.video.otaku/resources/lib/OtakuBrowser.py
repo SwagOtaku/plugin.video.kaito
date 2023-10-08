@@ -117,18 +117,18 @@ class OtakuBrowser(BrowserBase):
             }
             items = [utils.allocate_item(title, 'null', info=info, poster=kodi_meta['poster'])]
 
-        # else:
-        #     episodes = database.get_episode_list(anilist_id)
-        #     items = enime.ENIMEAPI()._process_episodes(episodes, '') if episodes else []
-        #     playlist = control.bulk_draw_items(items)[pass_idx:]
-        #     if len(playlist) > int(control.getSetting('general.playlist_length')):
-        #         playlist = playlist[:int(control.getSetting('general.playlist_length'))]
+        else:
+            episodes = database.get_episode_list(anilist_id)
+            items = simkl.SIMKLAPI()._process_episodes(episodes, '') if episodes else []
+            playlist = control.bulk_draw_items(items)[pass_idx:]
+            if len(playlist) > int(control.getSetting('general.playlist_length')):
+                playlist = playlist[:int(control.getSetting('general.playlist_length'))]
 
-        #     for i in playlist:
-        #         url = i[0]
-        #         if filter_lang:
-        #             url += filter_lang
-        #         control.playList.add(url=url, listitem=i[1])
+            for i in playlist:
+                url = i[0]
+                if filter_lang:
+                    url += filter_lang
+                control.playList.add(url=url, listitem=i[1])
         return items
 
     def get_sources(self, anilist_id, episode, filter_lang, media_type, rescrape=False, source_select=False):
