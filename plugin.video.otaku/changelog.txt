@@ -1,3 +1,8 @@
+Changelog 0.4.34 [20231009]:
+- Fixed Unaired Episodes Setting
+- Added New Setting "Hide Unaired Episodes in Playlist"
+- Restrict season number guess to < 20
+
 Changelog 0.4.33 [20231008]:
 - Changed 9anime to Aniwave
 - Fixed Playlist Errors

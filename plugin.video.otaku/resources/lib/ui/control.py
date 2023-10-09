@@ -555,7 +555,7 @@ def title_lang(title_key):
 
 
 def hide_unaired(content_type):
-    return getSetting('general.unaired') == 'true' and content_type == 'episodes'
+    return getSetting('general.unaired.episodes') == 'true' and content_type == 'episodes'
 
 
 # ### for testing ###
