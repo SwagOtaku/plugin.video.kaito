@@ -1055,10 +1055,6 @@ msgctxt "#40516"
 msgid "Hide Unaired Episodes"
 msgstr ""
 
-msgctxt "#40517"
-msgid "Hide Unaired Episodes in Playlist"
-msgstr ""
-
 ######MAIN Category DIRECTORY#######
 msgctxt "#50000"
 msgid "Airing Anime Calendar"

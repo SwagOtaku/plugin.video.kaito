@@ -12,7 +12,6 @@
 		<setting id="general.smartscroll.wait.time" type="slider" label="40487" default="500" range="10,100,2000" option="int" visible="eq(-1,true)" />
 		<setting id="general.spoilers" type="bool" label="40486" default="false" />
 		<setting id="general.unaired.episodes" type="bool" label="40516" default="false" />
-		<setting id="general.unaired.playlists" type="bool" label="40517" default="true" />	
 
 		<!-- Content Customization -->
 		<setting type="lsep" label="40302"/>
