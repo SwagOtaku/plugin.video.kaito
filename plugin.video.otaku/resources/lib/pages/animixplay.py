@@ -86,13 +86,17 @@ class sources(BrowserBase):
                 epage = database.get(client.request, 8, esurl, referer=eurl)
                 soup = BeautifulSoup(epage, "html.parser")
                 epurls = soup.find_all('a', {'class': 'playbutton'})
+                ep_not_found = True
                 for epurl in epurls:
                     if int(epurl.text) == int(episode):
+                        ep_not_found = False
                         epi_url = epurl.get('href')
                         resp = database.get(client.request, 8, epi_url, referer=eurl, output='extended')
                         cookie = resp[4]
                         s = resp[0]
                         break
+                if ep_not_found:
+                    return sources
 
             mlink = SoupStrainer('div', {'class': re.compile('sv_container$')})
             mdiv = BeautifulSoup(s, "html.parser", parse_only=mlink)
