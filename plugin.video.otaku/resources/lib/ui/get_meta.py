@@ -28,7 +28,7 @@ def collect_meta(anime_list):
 
 def __get_meta(anilist_id, name, mtype='tv', year=''):
     meta_ids = database.get_mapping(anilist_id)
-    if 'themoviedb_id' in meta_ids.keys() or 'thetvdb_id' in meta_ids.keys():
+    if meta_ids and ('themoviedb_id' in meta_ids.keys() or 'thetvdb_id' in meta_ids.keys()):
         update_meta(anilist_id, meta_ids, mtype)
     else:
         __trakt_fallback(anilist_id, name, mtype=mtype, year=year)

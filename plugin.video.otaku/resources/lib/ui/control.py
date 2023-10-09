@@ -62,7 +62,6 @@ OTAKU_LOGO2_PATH = os.path.join(IMAGES_PATH, 'trans-goku-small.png')
 OTAKU_FANART_PATH = "%s/fanart.jpg" % ADDON_PATH
 menuItem = xbmcgui.ListItem
 execute = xbmc.executebuiltin
-
 progressDialog = xbmcgui.DialogProgress()
 
 playList = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
@@ -553,6 +552,10 @@ def title_lang(title_key):
         "English (Attack on Titan)": "english"
     }
     return title_lang_dict[title_key]
+
+
+def hide_unaired(content_type):
+    return getSetting('general.unaired') == 'true' and content_type == 'episodes'
 
 
 # ### for testing ###

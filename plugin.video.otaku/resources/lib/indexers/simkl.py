@@ -1,6 +1,7 @@
 import json
 import pickle
 import random
+import time
 
 from functools import partial
 from resources.lib.ui import client, database, utils, control
@@ -12,7 +13,6 @@ class SIMKLAPI:
         self.ClientID = "59dfdc579d244e1edf6f89874d521d37a69a95a1abd349910cb056a1872ba2c8"
         self.baseUrl = "https://api.simkl.com/"
         self.imagePath = "https://wsrv.nl/?url=https://simkl.in/episodes/%s_w.webp"
-        self.disable_unaired = control.getSetting('general.unaired') == 'true'
 
     def _to_url(self, url=''):
         if url.startswith("/"):
@@ -54,13 +54,15 @@ class SIMKLAPI:
             if int(eps_watched) >= res['episode']:
                 info['playcount'] = 1
 
+        aired = ''
         try:
             info['aired'] = res['date'][:10]
+            aired = res['date'][:10]
         except:
             pass
 
         parsed = utils.allocate_item(title, "play/%s" % url, False, image, info, fanart, poster)
-        database._update_episode(anilist_id, season, res['episode'], '', update_time, parsed)
+        database._update_episode(anilist_id, season, res['episode'], '', update_time, parsed, air_date=aired)
 
         if title_disable and info.get('playcount') != 1:
             parsed['info']['title'] = 'Episode %s' % res["episode"]
@@ -69,9 +71,9 @@ class SIMKLAPI:
         return parsed
 
     def _process_episode_view(self, anilist_id, poster, fanart, eps_watched, tvshowtitle, filter_lang, title_disable):
-        from datetime import date, datetime
-
+        from datetime import date
         update_time = date.today().isoformat()
+        all_results = []
         result = database.get(self.get_anime_info, 6, anilist_id)
         result_ep = database.get(self.get_anilist_meta, 6, anilist_id)
 
@@ -86,29 +88,16 @@ class SIMKLAPI:
 
         result_ep = [x for x in result_ep if x['type'] == 'episode']
 
-        if self.disable_unaired:
-            all_results = []
-            for res in result_ep:
-                try:
-                    aired_date = datetime.strptime(res['date'], '%Y-%m-%d')
-                except:
-                    continue
-                if aired_date <= datetime.now():
-                    parsed = self._parse_episode_view(res, anilist_id, season, poster, fanart, eps_watched, update_time, tvshowtitle, filter_lang, title_disable)
-                    if parsed:
-                        all_results.append(parsed)
-        else:
-            mapfunc = partial(self._parse_episode_view, anilist_id=anilist_id, season=season, poster=poster, fanart=fanart,
-                              eps_watched=eps_watched, filter_lang=filter_lang, update_time=update_time,
-                              tvshowtitle=tvshowtitle, title_disable=title_disable)
-            all_results = list(map(mapfunc, result_ep))
+        mapfunc = partial(self._parse_episode_view, anilist_id=anilist_id, season=season, poster=poster, fanart=fanart,
+                          eps_watched=eps_watched, filter_lang=filter_lang, update_time=update_time,
+                          tvshowtitle=tvshowtitle, title_disable=title_disable)
+        all_results = list(map(mapfunc, result_ep))
 
         return all_results
 
     def _append_episodes(self, anilist_id, episodes, eps_watched, poster, fanart, tvshowtitle, filter_lang,
                          title_disable):
         import datetime
-        import time
         update_time = datetime.date.today().isoformat()
         last_updated = datetime.datetime(*(time.strptime(episodes[0]['last_updated'], "%Y-%m-%d")[0:6]))
         diff = (datetime.datetime.today() - last_updated).days

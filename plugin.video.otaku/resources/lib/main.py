@@ -18,6 +18,7 @@
 
 import pickle
 import six
+import time
 from resources.lib.AniListBrowser import AniListBrowser
 from resources.lib.OtakuBrowser import OtakuBrowser
 from resources.lib.ui import control, database, player, utils
@@ -728,6 +729,10 @@ def ANIMES_PAGE(payload, params):
     else:
         anilist_id, mal_id, kitsu_id, filter_lang = payload.rsplit("/")
     anime_general, content = _BROWSER.get_anime_init(anilist_id, filter_lang)
+    if control.hide_unaired(content) and anime_general[0].get('info').get('aired'):
+        anime_general = [x for x in anime_general
+                         if x.get('info').get('aired')
+                         and time.strptime(x.get('info').get('aired'), '%Y-%m-%d') < time.localtime()]
     return control.draw_items(anime_general, content)
 
 

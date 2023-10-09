@@ -1,5 +1,6 @@
 import json
 import pickle
+import time
 
 from resources.lib import pages
 from resources.lib.indexers import simkl
@@ -120,6 +121,13 @@ class OtakuBrowser(BrowserBase):
         else:
             episodes = database.get_episode_list(anilist_id)
             items = simkl.SIMKLAPI()._process_episodes(episodes, '') if episodes else []
+
+            ep1_date_str = items[0].get('info').get('aired')
+            if ep1_date_str:
+                items = [x for x in items
+                         if x.get('info').get('aired')
+                         and time.strptime(x.get('info').get('aired'), '%Y-%m-%d') < time.localtime()]
+
             playlist = control.bulk_draw_items(items)[pass_idx:]
             if len(playlist) > int(control.getSetting('general.playlist_length')):
                 playlist = playlist[:int(control.getSetting('general.playlist_length'))]

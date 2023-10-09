@@ -116,6 +116,6 @@ def get_season(res):
             if not cour:
                 s_ids += [re.findall(regex, name, re.IGNORECASE) for name in res.get('title')]
                 s_ids += [re.findall(regex, name, re.IGNORECASE) for name in res.get('synonyms')]
-        s_ids = [s[0] for s in s_ids if s]
+        s_ids = [s[0] for s in s_ids if s and int(s[0]) < 20]
 
     return s_ids
