@@ -6,8 +6,7 @@ from six.moves import urllib_parse
 from resources.lib.indexers import aniskip
 
 HANDLE = control.HANDLE
-
-playList = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
+playList = control.playList
 player = xbmc.Player
 progressDialog = xbmcgui.DialogProgress()
 
@@ -522,12 +521,12 @@ def play_source(link, anilist_id=None, watchlist_update=None, build_playlist=Non
         item = hook_mimetype.trigger(linkInfo['headers']['Content-Type'], item)
 
     if rescrape or source_select:
-        control.playList.add(linkInfo['url'], item)
+        playList.add(linkInfo['url'], item)
         playlist_info = build_playlist(anilist_id, episode, filter_lang)
         episode_info = playlist_info[episode - 1]
         control.update_listitem(item, episode_info['info'])
         item.setArt(episode_info['image'])
-        xbmc.Player().play(control.playList, item)
+        xbmc.Player().play(playList, item)
         watchlistPlayer().handle_player(anilist_id, watchlist_update, None, episode, filter_lang)
         return
 

@@ -1,5 +1,6 @@
 import json
 import pickle
+import random
 import time
 
 from resources.lib import pages
@@ -106,7 +107,17 @@ class OtakuBrowser(BrowserBase):
     def get_episodeList(anilist_id, pass_idx, filter_lang=None):
         show = database.get_show(anilist_id)
         kodi_meta = pickle.loads(show['kodi_meta'])
+        show_meta = database.get_show_meta(anilist_id)
+        if show_meta.get('art'):
+            show_art = pickle.loads(show_meta.get('art'))
+        else:
+            show_art = {}
         if kodi_meta['format'] == 'MOVIE' and kodi_meta['episodes'] == 1:
+            clearart = clearlogo = None
+            if show_art.get('clearart'):
+                clearart = random.choice(show_art['clearart'])
+            if show_art.get('clearlogo'):
+                clearlogo = random.choice(show_art['clearlogo'])
             title = kodi_meta.get('userPreferred') or kodi_meta['name']
             info = {
                 "title": title,
@@ -116,7 +127,7 @@ class OtakuBrowser(BrowserBase):
                 'premiered': str(kodi_meta['start_date']),
                 'year': int(str(kodi_meta['start_date'])[:4])
             }
-            items = [utils.allocate_item(title, 'null', info=info, poster=kodi_meta['poster'])]
+            items = [utils.allocate_item(title, 'null', info=info, poster=kodi_meta['poster'], clearart=clearart, clearlogo=clearlogo)]
 
         else:
             episodes = database.get_episode_list(anilist_id)
@@ -128,7 +139,17 @@ class OtakuBrowser(BrowserBase):
                          if x.get('info').get('aired')
                          and time.strptime(x.get('info').get('aired'), '%Y-%m-%d') < time.localtime()]
 
-            playlist = control.bulk_draw_items(items)[pass_idx:]
+            eitems = []
+            for i in items:
+                addl_art = {}
+                if show_art.get('clearart'):
+                    addl_art.update({'clearart': random.choice(show_art['clearart'])})
+                if show_art.get('clearlogo'):
+                    addl_art.update({'clearlogo': random.choice(show_art['clearlogo'])})
+                if addl_art:
+                    i['image'].update(addl_art)
+                eitems.append(i)
+            playlist = control.bulk_draw_items(eitems)[pass_idx:]
             if len(playlist) > int(control.getSetting('general.playlist_length')):
                 playlist = playlist[:int(control.getSetting('general.playlist_length'))]
 

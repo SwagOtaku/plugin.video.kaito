@@ -246,14 +246,17 @@ class AniListWLF(WatchlistFlavorBase):
         except TypeError:
             pass
 
-        cast = []
         try:
+            cast = []
+            cast2 = []
             for x in res['characters']['edges']:
                 role = x['node']['name']['userPreferred']
                 actor = x['voiceActors'][0]['name']['userPreferred']
                 actor_hs = x['voiceActors'][0]['image'].get('large')
-                cast.append({'name': actor, 'role': role, 'thumbnail': actor_hs})
+                cast.append((actor, role))
+                cast2.append({'name': actor, 'role': role, 'thumbnail': actor_hs})
                 info['cast'] = cast
+                info['cast2'] = cast2
         except IndexError:
             pass
 
