@@ -1,3 +1,8 @@
+Changelog 0.4.37 [20231016]:
+- Added Clearart for Episode Meta
+- Fixed cast missing inside Anilist Watchlist Menu
+- Fixed Clearart on Playback
+
 Changelog 0.4.36 [20231009]:
 - Fixed Animix Scraper
 
