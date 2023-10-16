@@ -40,6 +40,19 @@ class SIMKLAPI:
             title = "Episode %s" % res["episode"]
 
         image = self.imagePath % res['img'] if res.get('img') else poster
+        show_meta = database.get_show_meta(anilist_id)
+        show_art = pickle.loads(show_meta.get('art')) if show_meta.get('art') else {}
+        clearart = clearlogo = landscape = banner = None
+        cast = []
+        if show_art:
+            if show_art.get('clearart'):
+                clearart = random.choice(show_art['clearart'])
+            if show_art.get('clearlogo'):
+                clearlogo = random.choice(show_art['clearlogo'])
+            if show_art.get('banner'):
+                banner = show_art['banner']
+            if show_art.get('landscape'):
+                landscape = show_art['landscape']
 
         info = {
             'plot': res.get('description', ''),
@@ -61,7 +74,7 @@ class SIMKLAPI:
         except:
             pass
 
-        parsed = utils.allocate_item(title, "play/%s" % url, False, image, info, fanart, poster)
+        parsed = utils.allocate_item(title, "play/%s" % url, False, image, info, fanart, poster, cast, landscape, banner, clearart, clearlogo)
         database._update_episode(anilist_id, season, res['episode'], '', update_time, parsed, air_date=aired)
 
         if title_disable and info.get('playcount') != 1:
@@ -77,7 +90,7 @@ class SIMKLAPI:
         result = database.get(self.get_anime_info, 6, anilist_id)
         result_ep = database.get(self.get_anilist_meta, 6, anilist_id)
 
-        season = result.get('season')
+        season = result.get('season') if result else '1'
 
         sync_data = SyncUrl().get_anime_data(anilist_id, 'Anilist')
         s_id = utils.get_season(sync_data[0])
