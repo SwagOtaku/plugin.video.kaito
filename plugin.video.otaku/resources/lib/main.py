@@ -577,7 +577,7 @@ def _add_last_watched():
         last_watched = kodi_meta.get('title_userPreferred')
         MENU_ITEMS.insert(0, (
             "%s[I]%s[/I]" % (control.lang(30000), last_watched.encode('utf-8') if six.PY2 else last_watched),
-            "animes/%s/null/" % anilist_id,
+            "animes/%s///" % anilist_id,
             kodi_meta['poster']
         ))
     except:
