@@ -1,3 +1,7 @@
+Changelog 0.4.39 [20231018]:
+- Fixed Episode Thumbnails
+- Fixed Playing Next not working on some embeds
+
 Changelog 0.4.38 [20231016]:
 - Fixed a small path issue with Last Watch for Watchlist
 
