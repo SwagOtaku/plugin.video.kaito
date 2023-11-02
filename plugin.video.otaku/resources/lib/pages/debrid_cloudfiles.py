@@ -39,21 +39,18 @@ class sources(BrowserBase):
 
         for i in resp:
             torrent = torrents[i]
-            filename = re.sub(r'\[.*?\]', '', torrent['filename']).lower()
-
+            filename = re.sub(r'\[.*?]', '', torrent['filename']).lower()
             if source_utils.is_file_ext_valid(filename) and episode not in filename.rsplit('-', 1)[1]:
                 continue
-
             torrent_info = api.torrentInfo(torrent['id'])
 
-            if not any(source_utils.is_file_ext_valid(tor_file['path'].lower()) for tor_file in
-                       [selected for selected in torrent_info['files'] if selected['selected'] == 1]):
+            torrent_files = [selected for selected in torrent_info['files'] if selected['selected'] == 1]
+            if not any(source_utils.is_file_ext_valid(tor_file['path'].lower()) for tor_file in torrent_files):
                 continue
 
-            for f_index, torrent_file in enumerate([cloud_file for cloud_file in torrent_info['files']
-                                                    if cloud_file['selected'] == 1]):
-
-                if source_utils.get_best_match('path', [torrent_file], episode):
+            best_math = source_utils.get_best_match('path', torrent_files, episode)
+            for f_index, torrent_file in enumerate(torrent_files):
+                if torrent_file['path'] == best_math['path']:
                     self.cloud_files.append(
                         {
                             'quality': source_utils.getQuality(torrent['filename']),
@@ -64,7 +61,7 @@ class sources(BrowserBase):
                             'release_title': torrent['filename'],
                             'info': source_utils.getInfo(torrent['filename']),
                             'debrid_provider': 'real_debrid',
-                            'size': '.%d GB' % ((torrent_file['bytes'] / 1024) / 1024)
+                            'size': self.get_size(torrent_file['bytes'])
                         }
                     )
                     break
